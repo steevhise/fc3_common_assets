@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Freecycle: {{ title }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic|Roboto+Slab:400,700'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+    {% endblock %}
+</head>
+<body>
+{% block header %}
+{% endblock %}
+<div class="content-container">
+    {% block content %}
+    {% endblock %}
+</div>
+{% include '../partials/footer.html' %}
+<script src="//code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+        crossorigin="anonymous"></script>
+<script src="js/main.bundle.js" defer></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+</body>
+</html>

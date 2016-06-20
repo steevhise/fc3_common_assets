@@ -1,0 +1,62 @@
+<div class="row color-palette">
+    <div class="row collapse">
+        <div class="medium-6 columns">
+            {%
+                include './color_palette_group.html'
+                with {
+                    title: "freecyle primary colors",
+                    colorClasses: [
+                        "bg-primary",
+                        "bg-primary-darken",
+                        "bg-primary-darker",
+                        "bg-primary-darkest"
+                    ]
+                }
+            %}
+        </div>
+        <div class="medium-6 columns neutral-group">
+            {%
+                include './color_palette_group.html'
+                with {
+                    title: "neutral colors",
+                    colorClasses: [
+                        "bg-white",
+                        "bg-light-gray",
+                        "bg-medium-gray",
+                        "bg-dark-gray"
+                    ]
+                }
+            %}
+        </div>
+    </div>
+    <div class="row collapse">
+        <div class="medium-6 columns">
+            {%
+                include './color_palette_group.html'
+                with {
+                    title: "item board colors",
+                    colorClasses: [
+                        "btn-offer-color",
+                        "btn-offer-hover",
+                        "btn-wanted-color",
+                        "btn-wanted-hover"
+                    ]
+                }
+            %}
+        </div>
+        <div class="medium-6 columns">
+            {%
+                include './color_palette_group.html'
+                with {
+                    title: "lending library colors",
+                    colorClasses: [
+                        "btn-lend-color",
+                        "btn-lend-hover",
+                        "btn-borrow-color",
+                        "btn-borrow-hover"
+                    ]
+                }
+            %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+/*
+ *  Header imports
+ */
+@import "./modules/hamburger_menu";
+@import "./modules/header_banner_ad";
+@import "./modules/header_logged_out";
+@import "./modules/header_search";
+
+
+/*
+ *  Header component styles
+ */
+
+.header {
+  background: $white;
+}
+
+.header-outer {
+  border-top: 2px solid $medium-gray;
+
+  @include breakpoint(header) {
+    border-bottom: 2px solid $medium-gray;
+  }
+}
+
+.header-outer:last-child {
+  @include breakpoint(header) {
+    border-top: none;
+  }
+}
+
+.header-inner {
+  height: auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-direction: column;
+
+  @include breakpoint(header) {
+    align-items: center;
+    flex-direction: row;
+    margin: 0 auto;
+    height: 90px;
+  }
+}
+
+.header-logo {
+  position: relative;
+  top: -5px;
+  border-bottom: 2px solid $medium-gray;
+  order: 1;
+
+  svg {
+    width: 185px;
+    margin: 0 1.25rem;
+
+    @include breakpoint(header) {
+      margin: 0;
+    }
+  }
+
+  @include breakpoint(header) {
+    flex: 0;
+    border: none;
+  }
+}
+
+.header-stretch {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  margin: 1.25rem;
+  order: 3;
+
+  @include breakpoint(header) {
+    margin: 0;
+  }
+}
+
+.header-links {
+  order: 2;
+  text-align: center;
+  border-bottom: 2px solid $medium-gray;
+
+  position: relative;
+  top: -7px;
+  margin-bottom: -7px;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 250ms ease;
+
+  &.hamburger-menu-open {
+    padding: 1.25rem;
+    top: 0;
+    margin: 0;
+    max-height: 150px;
+  }
+
+  @include breakpoint(header) {
+    display: block;
+    order: 3;
+    position: static;
+    padding: 0;
+    margin: 0;
+    border: none;
+    max-height: 150px;
+    overflow: visible;
+  }
+}

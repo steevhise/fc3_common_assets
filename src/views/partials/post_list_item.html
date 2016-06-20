@@ -1,0 +1,46 @@
+<div class="post-list-item">
+    <div class="post-list-item-photo">
+        <img src="{{post.image}}"/>
+    </div>
+    <div class="post-list-item-content">
+        <div class="post-list-item-content-header">
+            <div class="post-list-item-header-left">
+                <div class="post-list-item-category-icon">
+                    {% if post.category === 'offer'  %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+                    <span class="text-offer">Offer</span>
+                    {% elseif post.category === 'lend' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
+                    <span class="text-lend">Lend</span>
+                    {% elseif post.category === 'borrow' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
+                    <span class="text-borrow">Borrow</span>
+                    {% elseif post.category === 'wanted' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+                    <span class="text-wanted">Wanted</span>
+                    {% endif %}
+                </div>
+                <div class="post-list-item-header-icon">
+                    {% include '../icons/map_pin.html' %}
+                    <span>{{post.location}}</span>
+                </div>
+            </div>
+            <div class="post-list-item-header-right">
+                <span class="text-lighten">{{post.time}}</span>
+                {% if post.category === 'offer'  %}
+                    <button class="btn-offer">Reply</button>
+                {% elseif post.category === 'lend' %}
+                    <button class="btn-lend">Reply</button>
+                {% elseif post.category === 'borrow' %}
+                    <button class="btn-borrow">Reply</button>
+                {% elseif post.category === 'wanted' %}
+                    <button class="btn-wanted">Reply</button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="post-list-item-content-description">
+            <h4>{{post.title}}</h4>
+            <p class="paragraph-small">{{post.description}}</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+{% extends './layout/layout.html' %}
+
+{% block header %}
+{% include './partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+
+{% block content %}
+<div class="submit_post row">
+
+  <div class="row">
+    <h2 class="submit_post-header text-center columns large-12">Make a Post</h2>
+  </div>
+  <div class="row">
+    <form class="columns large-10 large-offset-1">
+      <div class="form-group">
+        <label>Select type of Post</label>
+        <div class="button-bar">
+          <button class="active">
+            <div class="post-list-item-category-icon icon-container">
+              {% include './icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+              <span class="text-offer">Offer</span>
+            </div>
+          </button>
+          <button>
+            <div class="post-list-item-category-icon icon-container">
+              {% include './icons/chevron.html' with {className:'icon-chevron-lend'} only %}
+              <span class="text-lend">Lend</span>
+            </div>
+          </button>
+          <button>
+            <div class="post-list-item-category-icon icon-container">
+              {% include './icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
+              <span class="text-borrow">Borrow</span>
+            </div>
+          </button>
+          <button>
+            <div class="post-list-item-category-icon icon-container">
+              {% include './icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+              <span class="text-wanted">Wanted</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Post title</label>
+        <input type="text"/>
+      </div>
+      <div class="form-group">
+        <label>Upload a Picture</label>
+        <input type="text"/>
+      </div>
+      <div class="form-group">
+        <label>Post to Local Group</label>
+        <input type="text"/>
+      </div>
+      <div class="form-group">
+        <label>Nearest Crossroads</label>
+        <div class="input-with-icon">
+          <input class="input-with-icon" type="search" placeholder="{{label}}"/>
+          <span class="icon search-icon">
+                {% include './icons/search.html' %}
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text"/>
+      </div>
+      <div class="form-group text-center">
+        <button type="submit" role="submit" class="btn-default btn-wide">Post Item</button>
+      </div>
+    </form>
+    </div>
+</div>
+{% include './partials/in_body_banner_row.html'%}
+
+{% endblock %}

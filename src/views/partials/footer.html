@@ -1,0 +1,25 @@
+<footer>
+    <div class="footer-inner column row">
+        <div class="row footer-row">
+            <div class="footer-image-row small-12 columns">
+                <div class="footer-image-container">
+                    <a href="/"><img src="images/logo.png"></a>
+                </div>
+                <div class="footer-social-list-container">
+                    <span class="social-list-label">Follow Freecycle</span>
+                    {% include 'social_list.html' %}
+                </div>
+            </div>
+        </div>
+        <div class="row footer-row">
+            {% include 'footer_menu.html' with footerMenuItems %}
+        </div>
+        <div class="row footer-row">
+            <div class="small-12 columns">
+                <p class="footer-lowlight">Copyright ©2016 The Freecycle Network. All rights reserved. Freecycle and the
+                    Freecycle logo are
+                    trademarks of The Freecycle Network in various countries.</p>
+            </div>
+        </div>
+    </div>
+</footer>
