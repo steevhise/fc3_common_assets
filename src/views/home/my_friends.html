@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends '../layout/layout.html' %}
 
-</body>
-</html>
+{% block header %}
+{% include '../partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+
+{% block content %}
+<div class="horizontal_tabs">
+  <!--  tabs  -->
+  <ul class="tabs" data-tabs id="h-example-tabs">
+    <li class="tabs-title"><a href="/desktop-dash">Dashboard</a></li>
+    <li class="tabs-title"><a href="#replies">Replies</a></li>
+    <li class="tabs-title"><a href="#myposts">My Posts</a></li>
+    <li class="tabs-title is-active"><a href="/home/my-friends" aria-selected="true">My Friends</a></li>
+    <li class="tabs-title"><a href="#mygroups">My Groups</a></li>
+  </ul>
+
+  <!--  tabs-content  -->
+  <div class="tabs-content" data-tabs-content="h-example-tabs">
+    <div class="tabs-panel" id="dashboard">
+
+    </div>
+    <div class="tabs-panel" id="replies">
+      
+    </div>
+    <div class="tabs-panel" id="myposts">
+    </div>
+    <div class="tabs-panel is-active" id="myfriends">
+      {% include '../partials/my_friends_page.html'%}
+    </div>
+    <div class="tabs-panel" id="mygroups">
+    </div>
+  </div>
+  {% include '../partials/in_body_banner_row.html'%}
+</div>
+
+
+{% endblock %}
