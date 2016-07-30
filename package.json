@@ -1,5 +1,5 @@
 {
-  "name": "freecycle3_main",
+  "name": "fc3_main",
   "version": "0.0.1",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "index.js",
@@ -10,6 +10,7 @@
     "browser-sync": "^2.12.1",
     "foundation-sites": "^6.2.1",
     "hapi": "^13.3.0",
+    "hapi-error": "^1.0.4",
     "hapi-plug-routes": "^1.0.2",
     "hapi-sass": "^2.1.0",
     "inert": "^3.2.0",

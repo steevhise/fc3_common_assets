@@ -4,6 +4,8 @@ var Hapi = require('hapi');
 var path = require('path');
 var HapiSass = require('hapi-sass');
 var Inert = require('inert');
+var HapiError = require('hapi-error');
+var Swig = require('swig');
 
 // sass config
 var sassOptions = {
@@ -41,6 +43,9 @@ server.register([Inert,
     {
         register: HapiSass,
         options: sassOptions
+    },
+    {
+        register: HapiError
     },
     {
         register: require('vision')
@@ -85,17 +90,15 @@ server.register([Inert,
     });
 
 
-
-
-
-    server.views({
+   server.views({
         engines: {
-            html: require('swig')
+            html: Swig
         },
         context: {},
         path: path.join(__dirname, '/src/views'),
         layoutPath: path.join(__dirname, '/src/views/layout')
     });
+
 
     server.start(function () {
         console.log('Server running at:', server.info.uri);
