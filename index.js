@@ -5,7 +5,7 @@ var path = require('path');
 var HapiSass = require('hapi-sass');
 var Inert = require('inert');
 var HapiError = require('hapi-error');
-var Swig = require('swig');
+var Swig = require('swig-templates');
 
 // sass config
 var sassOptions = {
