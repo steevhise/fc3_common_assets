@@ -1,0 +1,42 @@
+<div class="row">
+  <h4 class="text-center page-sub-title">My Groups</h4>
+  {% include './in_page_search.html' with {label:'Search Groups'} %}
+</div>
+<div class="row">
+  <div class="item-list-header small-centered large-8 column">
+    <div class="item-list-header-controls my-groups-header-controls">
+        <label class="text-lighten item-list-header-controls-label">View: </label>
+        <ul class="item-list-header-controls-list">
+            <li class="item-list-header-filter-icon item-list-grid-view">
+                {% include '../icons/list.html' %} <span>List</span>
+            </li>
+            <li class="item-list-header-filter-icon item-list-list-view inactive">
+                  {% include '../icons/map_compass.html' %} <span>Map</span>
+            </li>
+        </ul>
+    </div>
+  </div>
+</div>
+  
+<div class="row">
+  <div class="table-example small-centered large-8 column">
+    <table>
+      <thead>
+      <tr>
+        <th>Local Group</th>
+        <th>State</th>
+        <th>Distance</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for group in myGroups %}
+        <tr>
+          <td><h4>{{group.name}}</h4></td>
+          <td>{{group.state}}</td>
+          <td>{{group.distance}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
