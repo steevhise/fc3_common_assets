@@ -38,6 +38,29 @@ const friends = [
   }
 ];
 
+const myGroups = [
+  {
+    name: "Tucson",
+    state: "AZ",
+    distance: "0 miles" // unit should probably be separated for our UK bros, correct?
+  },
+  {
+    name: "Marana",
+    state: "AZ",
+    distance: "15 miles"
+  },
+  {
+    name: "Vail",
+    state: "AZ",
+    distance: "15 miles" 
+  },
+  {
+    name: "Oro Valley",
+    state: "AZ",
+    distance: "15 miles" 
+  },
+];
+
 // dummy footer items
 const footerMenuItems = [
   'Local Groups',
@@ -127,6 +150,22 @@ module.exports = [
         title: "My Friends",
         footerMenuItems: footerMenuItems,
         posts: posts
+      });
+    }
+  },
+  {
+    method: 'GET',
+    path: '/home/my-groups',
+    handler: function (request, reply) {
+      const inBodyAds = [
+        "one",
+        "two"
+      ];
+      reply.view('./home/my_groups', {
+        inBodyAds: inBodyAds,
+        title: "My Groups",
+        myGroups: myGroups,
+        footerMenuItems: footerMenuItems,
       });
     }
   }
