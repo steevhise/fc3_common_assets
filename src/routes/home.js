@@ -130,14 +130,14 @@ module.exports = [
                 title: "Deron Beal",
                 image: "http://lorempixel.com/250/250",
                 type: "ChatMessage",
-                time: '1 Week Ago',
+                time: '5 minutes ago',
                 id: 7
               },
               {
                 title: "Steev Hise",
                 image: "http://lorempixel.com/250/250",
                 type: "ChatMessage",
-                time: '3 Weeks Ago',
+                time: '3 weeks ago',
                 id: 8
               }
             ]
