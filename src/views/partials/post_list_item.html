@@ -28,13 +28,13 @@
             <div class="post-list-item-header-right">
                 <span class="text-lighten">{{post.time}}</span>
                 {% if post.category === 'offer'  %}
-                    <button class="btn-offer">Reply</button>
+                    <button class="btn-offer">{{ postAction|default('Reply') }}</button>
                 {% elseif post.category === 'lend' %}
-                    <button class="btn-lend">Reply</button>
+                    <button class="btn-lend">{{ postAction|default('Reply') }}</button>
                 {% elseif post.category === 'borrow' %}
-                    <button class="btn-borrow">Reply</button>
+                    <button class="btn-borrow">{{ postAction|default('Reply') }}</button>
                 {% elseif post.category === 'wanted' %}
-                    <button class="btn-wanted">Reply</button>
+                    <button class="btn-wanted">{{ postAction|default('Reply') }}</button>
                 {% endif %}
             </div>
         </div>
