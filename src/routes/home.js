@@ -52,12 +52,12 @@ const myGroups = [
   {
     name: "Vail",
     state: "AZ",
-    distance: "15 miles" 
+    distance: "15 miles"
   },
   {
     name: "Oro Valley",
     state: "AZ",
-    distance: "15 miles" 
+    distance: "15 miles"
   },
 ];
 
@@ -122,7 +122,7 @@ module.exports = [
         "two"
       ];
       reply.view('./home/my_friends', {
-        messageSets: [          
+        messageSets: [
           {
             messageHeader: "Chat With Friends",
             messages: [
@@ -165,6 +165,21 @@ module.exports = [
         inBodyAds: inBodyAds,
         title: "My Groups",
         myGroups: myGroups,
+        footerMenuItems: footerMenuItems,
+      });
+    }
+  },
+  {
+    method: 'GET',
+    path: '/home/my-posts',
+    handler: function (request, reply) {
+      const inBodyAds = [
+        "one",
+        "two"
+      ];
+      reply.view('./home/my_posts', {
+        inBodyAds: inBodyAds,
+        title: "My Posts",
         footerMenuItems: footerMenuItems,
       });
     }
