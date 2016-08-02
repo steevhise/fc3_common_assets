@@ -137,7 +137,7 @@ module.exports = [
                 title: "Steev Hise",
                 image: "http://lorempixel.com/250/250",
                 type: "ChatMessage",
-                time: '2 Weeks Ago',
+                time: '3 Weeks Ago',
                 id: 8
               }
             ]
