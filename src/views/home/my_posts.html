@@ -23,6 +23,11 @@
     <div class="tabs-panel" id="replies">
     </div>
     <div class="tabs-panel is-active" id="myposts">
+      <div class="row">
+        {% for post in posts %}
+        {% include '../partials/post_list_item.html' with post %}
+        {% endfor %}
+      </div>
     </div>
     <div class="tabs-panel" id="myfriends">
     </div>

@@ -180,6 +180,8 @@ module.exports = [
       reply.view('./home/my_posts', {
         inBodyAds: inBodyAds,
         title: "My Posts",
+        posts: posts,
+        postAction: "Manage",
         footerMenuItems: footerMenuItems,
       });
     }
