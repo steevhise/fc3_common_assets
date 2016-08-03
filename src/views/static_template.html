@@ -1,0 +1,13 @@
+{% extends './layout/layout.html' %}
+
+{% block header %}
+  {% include './partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+{% block content %}
+  <div id="static-wrapper">
+    {{ static_content() }}
+  </div>
+
+
+{% endblock %}

@@ -254,5 +254,31 @@ module.exports = [
         posts: posts
       });
     }
+  },
+  {
+    method: 'GET',
+    path: '/pages/{page_path}',
+    handler: function (request, reply) {
+      const inBodyAds = [
+        "one",
+        "two"
+      ];
+
+      var page_path = request.params.page_path;
+      console.log(page_path);
+
+      // TODO: look up the page in the database using page_path
+      var page = {
+        title: "Sample Static Page",
+          content:  "<div>Hello world.<br><h1>I said hello world.</h1> This is the path: "  + page_path
+      };
+
+      reply.view('static_template', {
+        title: page.title,
+        footerMenuItems: footerMenuItems,
+        static_content: function pageContent() { return page.content;},
+
+      });
+    }
   }
 ];
