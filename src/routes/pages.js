@@ -1,5 +1,7 @@
 'use strict';
 
+var Hoek = require('hoek');
+
 const friends = [
   {
     avatar_url: "http://lorempixel.com/150/150/people/1",
@@ -268,17 +270,52 @@ module.exports = [
       console.log(page_path);
 
       // TODO: look up the page in the database using page_path
-      var page = {
-        title: "Sample Static Page",
-          content:  "<div>Hello world.<br><h1>I said hello world.</h1> This is the path: "  + page_path
-      };
+      var query = '{ page (where: {path: "' + page_path + `"})
+        {
+          page_id
+          title
+          content
+          path
+        }
+      }`;
 
-      reply.view('static_template', {
-        title: page.title,
-        footerMenuItems: footerMenuItems,
-        static_content: function pageContent() { return page.content;},
-
-      });
+      var page = request.server.graphql(request.server.schema, query)
+          .then(function(queryResult) {
+            var retval;
+            if (typeof queryResult.data.page === 'undefined' || queryResult.data.page === null) {
+              retval = "404";
+            }
+            else if (queryResult.data.page) {
+              retval = Object.assign({}, queryResult.data.page);
+              console.log('result from page query is ', retval);
+            } else {    // put this first?
+              console.log('error', queryResult);
+              retval = queryResult.toString || 'unknown error.';
+            }
+            return retval;
+          })
+          .then( page => {
+            if(typeof page === 'string') {
+              // error of some kind.
+              if(page === '404') {
+                reply.view('error_template', { statusCode: 404, errorTitle: "Not Found", errorMessage: "Sorry, '" + request.path + "' not found."});
+              } else {
+                console.log('some other error', page);
+                reply.view('error_template', { statusCode: 500, errorTitle: "Server Error", errorMessage: page});
+              }
+            }  else {   // success!
+              reply.view('static_template', {
+                title: page.title,
+                footerMenuItems: footerMenuItems,
+                static_content: function pageContent() { return page.content;},
+              });
+            }
+          })
+          .catch(function (reason) {
+            // handle rejected promise
+            console.error('page query GraphQL promise rejected. (' + reason + ').');
+            throw reason;
+          });
     }
   }
 ];

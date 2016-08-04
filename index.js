@@ -34,6 +34,16 @@ var server = new Hapi.Server({
         }
     }
 });
+
+// database stuff
+import { graphql } from 'graphql';
+import  schema  from '@freecycle/freecycle_graphql_schema';
+import {Context,onLog,offLog} from '@freecycle/freecycle_node_dal';
+
+server.decorate('server', 'context', Context);   // access via server.context
+server.decorate('server', 'graphql', graphql);   // access via server.graphql
+server.decorate('server', 'schema', schema);      // access via server.schema
+
 // setup connection
 server.connection({ port: process.env.PORT || 8000 });
 
@@ -63,7 +73,7 @@ server.register([Inert,
         path: '/images/{param*}',
         handler: {
             directory: {
-                path: 'public/assets/images',
+                path: '../public/assets/images',
                 listing: true
             }
         }
@@ -73,7 +83,7 @@ server.register([Inert,
         path: '/fonts/{param*}',
         handler: {
             directory: {
-                path: 'public/assets/fonts',
+                path: '../public/assets/fonts',
                 listing: true
             }
         }
@@ -83,7 +93,7 @@ server.register([Inert,
         path: '/js/{param*}',
         handler: {
             directory: {
-                path: 'public/assets/js',
+                path: '../public/assets/js',
                 listing: true
             }
         }
@@ -95,8 +105,8 @@ server.register([Inert,
             html: Swig
         },
         context: {},
-        path: path.join(__dirname, '/src/views'),
-        layoutPath: path.join(__dirname, '/src/views/layout')
+        path: path.join(__dirname, '../src/views'),
+        layoutPath: path.join(__dirname, '../src/views/layout')
     });
 
 
