@@ -1,0 +1,24 @@
+<freecycle>
+    <message_queue>
+        <gearman>
+            server tagadab4.freecycle.org:4730
+            server tagadab2.lcy.freecycle.org:4730
+            server hetzner8.freecycle.org:4730
+        </gearman>
+    </message_queue>
+    <database>
+        <master>
+            server newdev.freecycle.org
+        </master>
+        <slave>
+            <local>
+                server newdev.freecycle.org
+                server newdev.freecycle.org
+            </local>
+            <fallback>
+                server newdev.freecycle.org
+                server newdev.freecycle.org
+            </fallback>
+        </slave>
+    </database>
+</freecycle>

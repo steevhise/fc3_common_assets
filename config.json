@@ -1,0 +1,24 @@
+{
+  "database": {
+    "dialect": "mysql",
+    "host": "newdev.freecycle.org",
+    "username": "tfn_admin",
+    "password": "5a25e9d8d900d70973cb2dc7137384bf",
+    "port": 3306,
+    "database": "newsystem",
+    "define": {
+      "charset": "utf8"
+    },
+    "replication": {
+      "badConnectionWindow": 300000,
+      "replicationThresholdInSeconds": 5
+
+    },
+    "pool": {
+      "maxConnections": 10,
+      "maxIdleTime": 30000,
+      "handleDisconnects":true,
+      "timeout": 60000
+    }
+  }
+}
