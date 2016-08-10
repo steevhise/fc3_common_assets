@@ -10,6 +10,8 @@
     <link href='//fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic|Roboto+Slab:400,700'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/main.css">
+
+
     {% endblock %}
 </head>
 <body>
@@ -20,9 +22,12 @@
     {% endblock %}
 </div>
 {% include '../partials/footer.html' %}
-<script src="//code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
-<script src="/js/main.bundle.js" defer></script>
+<script src="/js/main.bundle.js" ></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+{% block extra_scripts %}
+{% endblock %}
 </body>
 </html>

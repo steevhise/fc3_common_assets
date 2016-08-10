@@ -1,0 +1,102 @@
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+    {% include '../partials/header.html' with {loggedIn:true} %}
+{% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="/trumbowyg/ui/trumbowyg.min.css">
+
+            <h2>Hi. This page is for administering and creating static pages, i.e. pages with unchanging, undynamic content blocks.</h2>
+<p></p>
+    <!-- TODO: we need a select list of existing pages to edit.   -->
+<div style="width: 70%; background-color: darkseagreen; padding:10px;">
+    <div style="width:50%;">
+        <form>
+            <div id="pages">
+                <label>Existing Pages:</label>
+                <select title="page" name="pageselect">
+                    {%  for page in pages %}
+                        {% if page.path %}
+                            <option value="{{ page.page_id }}" >{{ page.title }} ({{ page.path }})</option>
+                        {% endif %}
+                    {%  endfor %}
+                </select>
+            </div>
+
+
+
+        <label>title:<input type="text" size=32 name="title" value="{{ page_title }}"></label>
+        <span>author: {{ page.author.username }}</span>
+        <div>Created: {{ date_created }}</div>
+        <span>Date last edited: {{ date_last_modified }}  by {{ page.last_editor.username }}</span>
+
+
+        <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
+
+    </div>
+    <textarea id="trumbo" placeholder="enter the text of your page here."></textarea>
+</div>
+
+    <div class="form-group text-center">
+        <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
+        <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
+
+    </div>
+
+    </form>
+
+
+{% endblock %}
+
+
+{% include '../partials/footer.html' %}
+
+{% block extra_scripts %}
+<script src="/trumbowyg/trumbowyg.min.js"></script>
+<script src="/trumbowyg/plugins/upload/trumbowyg.upload.js"></script>
+
+<script>
+    // document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
+        $('#trumbo').trumbowyg( {
+            removeformatPasted: true,
+            autogrow: true,
+            btnsDef: {
+                // Create a new dropdown
+                image: {
+                    dropdown: ['insertImage', 'upload'],
+                    ico: 'insertImage'
+                }
+            },
+            btns: [
+                ['viewHTML'],
+                ['formatting'],
+                'btnGrp-semantic',
+                ['superscript', 'subscript'],
+                ['link'],
+                ['foreColor'],
+                'image',
+                'btnGrp-justify',
+                'btnGrp-lists',
+                ['horizontalRule'],
+                ['removeformat'],
+                ['fullscreen']
+            ],
+            plugins: [
+                'upload',
+                'colors'
+            ]
+        });
+
+        $("#pageselect").select2({
+            placeholder: "Select a page to edit",
+            //width: "80%",
+            theme: "classic",
+            templateResult: formatOption
+        });
+    });
+</script>
+
+{% endblock %}
