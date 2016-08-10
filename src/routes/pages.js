@@ -1,7 +1,5 @@
 'use strict';
 
-var Hoek = require('hoek');
-
 const friends = [
   {
     avatar_url: "http://lorempixel.com/150/150/people/1",
@@ -269,7 +267,6 @@ module.exports = [
       var page_path = request.params.page_path;
       console.log(page_path);
 
-      // TODO: look up the page in the database using page_path
       var query = '{ page (where: {path: "' + page_path + `"})
         {
           page_id
@@ -279,6 +276,7 @@ module.exports = [
         }
       }`;
 
+      // TODO: cache this
       var page = request.server.graphql(request.server.schema, query)
           .then(function(queryResult) {
             var retval;

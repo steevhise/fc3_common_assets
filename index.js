@@ -73,17 +73,17 @@ server.register([Inert,
         path: '/images/{param*}',
         handler: {
             directory: {
-                path: '../public/assets/images',
+                path: './public/assets/images',
                 listing: true
             }
         }
     });
     server.route({
         method: 'GET',
-        path: '/fonts/{param*}',
+        path: '/font/{param*}',
         handler: {
             directory: {
-                path: '../public/assets/fonts',
+                path: './public/assets/font',
                 listing: true
             }
         }
@@ -93,7 +93,17 @@ server.register([Inert,
         path: '/js/{param*}',
         handler: {
             directory: {
-                path: '../public/assets/js',
+                path: './public/assets/js',
+                listing: true
+            }
+        }
+    });
+    server.route({
+        method: 'GET',
+        path: '/trumbowyg/{param*}',
+        handler: {
+            directory: {
+                path: './public/assets/trumbowyg',
                 listing: true
             }
         }

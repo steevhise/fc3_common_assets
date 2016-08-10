@@ -21,18 +21,21 @@
     "masonry-layout": "^4.0.0",
     "nodemon": "^1.9.1",
     "path": "^0.12.7",
+    "summernote": "^0.8.1",
     "swig-templates": "^2.0.1",
+    "trumbowyg": "^2.1.1",
     "vision": "^4.1.0",
     "webpack": "^1.12.15"
   },
   "scripts": {
     "watch:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader' --watch",
     "build:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader'",
+    "build:trumbowyg": "cp -rp ./node_modules/trumbowyg/dist ./public/assets/trumbowyg",
     "build": "babel index.js -o lib/index.js",
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
-    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js" ,
+    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
     "test": "mocha --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",
