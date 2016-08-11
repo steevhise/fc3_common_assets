@@ -16,7 +16,7 @@
     5. `npm run build`
     6. `npm run build:trumbowyg`  (this installs the wysiwyg page editor)
 
-* to run there are a few choices:  
+* to run there are a few choices:
 `npm run start`  - this will auto-launch a browser pointed to the server (via browsersync) and auto-restart when you make changes (nodemon)
 (Note that browsersync won't start for a few seconds in order to give the web app a chance to get started.) 
 You can browse to localhost:3001  to see browsersync's UI, which is pretty snazzy.

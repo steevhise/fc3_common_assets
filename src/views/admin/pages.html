@@ -19,7 +19,7 @@
                 <select title="page" name="pageselect">
                     {%  for page in pages %}
                         {% if page.path %}
-                            <option value="{{ page.page_id }}" >{{ page.title }} ({{ page.path }})</option>
+                            <option value="{{ page.page_id }}" >{{ page.title }} (/pages/{{ page.path }})</option>
                         {% endif %}
                     {%  endfor %}
                 </select>
