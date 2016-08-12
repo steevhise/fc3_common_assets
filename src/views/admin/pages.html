@@ -1,22 +1,25 @@
 {% extends '../layout/layout.html' %}
 
+{% block more %}
+{% endblock %}
+
 {% block header %}
     {% include '../partials/header.html' with {loggedIn:true} %}
 {% endblock %}
 
 {% block content %}
-
     <link rel="stylesheet" href="/trumbowyg/ui/trumbowyg.min.css">
 
-            <h2>Hi. This page is for administering and creating static pages, i.e. pages with unchanging, undynamic content blocks.</h2>
+
+    <h2>Static Pages Administration</h2>
 <p></p>
-    <!-- TODO: we need a select list of existing pages to edit.   -->
-<div style="width: 70%; background-color: darkseagreen; padding:10px;">
+<div style="width: 70%; background-color: darkseagreen; padding:20px;">
     <div style="width:50%;">
         <form>
             <div id="pages">
                 <label>Existing Pages:</label>
-                <select title="page" name="pageselect">
+                <select title="page" name="pageselect" id="pageselect">
+                    <option value="" selected></option>
                     {%  for page in pages %}
                         {% if page.path %}
                             <option value="{{ page.page_id }}" >{{ page.title }} (/pages/{{ page.path }})</option>
@@ -24,8 +27,6 @@
                     {%  endfor %}
                 </select>
             </div>
-
-
 
         <label>title:<input type="text" size=32 name="title" value="{{ page_title }}"></label>
         <span>author: {{ page.author.username }}</span>
@@ -35,18 +36,15 @@
 
         <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
 
-    </div>
     <textarea id="trumbo" placeholder="enter the text of your page here."></textarea>
-</div>
+        <div class="form-group text-center">
+            <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
+            <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
+        </div>
 
-    <div class="form-group text-center">
-        <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
-        <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
-
+        </form>
     </div>
-
-    </form>
-
+</div>
 
 {% endblock %}
 
@@ -54,11 +52,13 @@
 {% include '../partials/footer.html' %}
 
 {% block extra_scripts %}
-<script src="/trumbowyg/trumbowyg.min.js"></script>
-<script src="/trumbowyg/plugins/upload/trumbowyg.upload.js"></script>
+
+    <script src="/trumbowyg/trumbowyg.min.js" ></script>
+    <script src="/trumbowyg/plugins/upload/trumbowyg.upload.js" ></script>
 
 <script>
     // document.addEventListener('DOMContentLoaded', function() {
+
     $(document).ready(function() {
         $('#trumbo').trumbowyg( {
             removeformatPasted: true,
@@ -76,8 +76,7 @@
                 'btnGrp-semantic',
                 ['superscript', 'subscript'],
                 ['link'],
-                ['foreColor'],
-                'image',
+                 'image',
                 'btnGrp-justify',
                 'btnGrp-lists',
                 ['horizontalRule'],
@@ -86,15 +85,14 @@
             ],
             plugins: [
                 'upload',
-                'colors'
             ]
         });
 
         $("#pageselect").select2({
             placeholder: "Select a page to edit",
             //width: "80%",
-            theme: "classic",
-            templateResult: formatOption
+            theme: "classic"
+//            templateResult: formatOption  // i forget what this is for, i guess i don't need.
         });
     });
 </script>
