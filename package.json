@@ -21,7 +21,6 @@
     "masonry-layout": "^4.0.0",
     "nodemon": "^1.9.1",
     "path": "^0.12.7",
-    "summernote": "^0.8.1",
     "swig-templates": "^2.0.1",
     "trumbowyg": "^2.1.1",
     "vision": "^4.1.0",
