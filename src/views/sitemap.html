@@ -1,0 +1,22 @@
+{% extends './layout/layout.html' %}
+
+{% block header %}
+    {% include './partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+{% block content %}
+    <h1>Sitemap (auto-generated)</h1>
+    <div id="list">
+        <ul>
+        {%  for page in pages %}
+
+                <li><h3><strong>{{  page.public.settings.id }}</strong>&nbsp;&nbsp;<a href="{{ page.path }}">{{ page.path }}</a></h3>
+                {{ page.public.settings.description }}</li>
+        {%  endfor %}
+        </ul>
+
+
+    </div>
+
+
+{% endblock %}

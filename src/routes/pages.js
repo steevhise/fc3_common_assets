@@ -92,7 +92,11 @@ const posts = [
 module.exports = [
   {
     method: 'GET',
-    path: '/',
+    path: '/styleguide',
+    config: {
+      id: 'style guide',
+      description: 'this is a demonstration page of all the componenets of the site.'
+    },
     handler: function (request, reply) {
       const footerMenuItems = [
         'Local Groups',
@@ -148,6 +152,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/submit-post',
+    config: {
+      id: 'submit a post',
+      description: 'Where users create new posts.',
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",
@@ -164,6 +172,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/desktop-dash',
+    config: {
+      id: 'Dashboard',
+      description: "The user's 'home'.",
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",
@@ -258,6 +270,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/pages/{page_path}',
+    config: {
+      id: 'static pages',
+      description: 'a certain static page stored in database.',
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",
@@ -315,5 +331,52 @@ module.exports = [
             throw reason;
           });
     }
+  },
+  {
+    method: 'GET',
+    path: '/',
+    config: {
+      id: 'Site Map',
+      description: 'Simple list of all pages on site.',
+    },
+    handler: function (request, reply) {
+      var routeTable = request.server.table();
+      var results = [];
+
+      for(var i = 0; i < routeTable.length; i++){
+        var route = routeTable[i];
+        console.log("---------------------");
+
+        for(var j = 0; j<route.table.length; j++) {
+          var table = route.table[j];
+          console.log("****************");
+          console.log(table.path);
+          if (table.path == '/pages/{page_path}') {
+            console.log(table.public.settings);
+          }
+
+          // exclude a route by adding a tag 'exclude' in the config.
+          if(table.public.settings.tags) {
+            var i = table.public.settings.tags.indexOf('exclude');
+            console.log(i);
+            if (i > -1 ) {
+              continue;
+            }
+          }
+          results.push(table);   // this is an array of {route settings: method: path: etc } hashes.
+
+        }
+      }
+      // TODO: the static pages need to return all the actual pages.
+
+      console.log("---------------------");
+      // TODO: do some error catching, maybe - like what if there's no results?
+      reply.view('sitemap', {
+        title: "Site Map",
+        footerMenuItems: footerMenuItems,
+        pages: results,
+      });
+    }
   }
+
 ];

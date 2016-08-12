@@ -10,6 +10,10 @@ module.exports = [
     {
         method: 'GET',
         path: '/admin/pages',
+        config: {
+            id: 'Page Administration',
+            description: 'this is for creating and editing "static" pages.'
+        },
         handler: function (request, reply) {
             // get all the pages. TODO: cache this. probably make it a server method.
             return getPages(request.server)

@@ -91,6 +91,11 @@ server.register([Inert,
     server.route({
         method: 'GET',
         path: '/js/{param*}',
+        config: {
+            id: 'js',
+            description: 'directory where Front-end javascript code goes',
+            tags: ['js']
+        },
         handler: {
             directory: {
                 path: './public/assets/js',
@@ -101,6 +106,9 @@ server.register([Inert,
     server.route({
         method: 'GET',
         path: '/trumbowyg/{param*}',
+        config: {
+            tags: ['exclude', 'js']
+        },
         handler: {
             directory: {
                 path: './public/assets/trumbowyg',

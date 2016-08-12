@@ -116,6 +116,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/home/my-friends',
+    config: {
+      id: 'My Friends',
+      description: "The logged in user's friends list."
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",
@@ -156,6 +160,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/home/my-groups',
+    config: {
+      id: 'My Groups',
+      description: "The logged in user's Groups."
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",
@@ -172,6 +180,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/home/my-posts',
+    config: {
+      id: 'My Posts',
+      description: "Posts created by the logged in user."
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",
