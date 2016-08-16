@@ -61,6 +61,9 @@ server.register([Inert,
         register: require('vision')
     },
     {
+        register: require('crumb')                  // security against CRSF attacks.
+    },
+    {
         register: require('hapi-plug-routes')
     }
 ], function ( registerError ) {
