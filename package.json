@@ -3,7 +3,9 @@
   "version": "0.0.3",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "lib/index.js",
+  "repository": "gitolite@devserver.freecycle.org:fc3_main",
   "dependencies": {
+    "@freecycle/common-hapi-plugins": "^0.0.3",
     "@freecycle/freecycle_graphql_schema": "^0.1.9",
     "@freecycle/freecycle_node_dal": "^0.1.2",
     "babel-loader": "^6.2.4",
@@ -12,6 +14,8 @@
     "browser-sync": "^2.12.1",
     "crumb": "^6.0.3",
     "foundation-sites": "^6.2.1",
+    "good": "^7.0.2",
+    "good-console": "^6.1.2",
     "graphql-relay": "^0.4.2",
     "hapi": "^13.3.0",
     "hapi-error": "^1.0.4",
@@ -39,5 +43,5 @@
     "test": "mocha --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",
-  "license": "MIT"
+  "license": "UNLICENSED"
 }

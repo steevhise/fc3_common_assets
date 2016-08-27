@@ -1,5 +1,6 @@
 'use strict';
 
+var Boom = require('boom');
 var Hapi = require('hapi');
 var path = require('path');
 var HapiSass = require('hapi-sass');
@@ -65,11 +66,27 @@ server.register([Inert,
     },
     {
         register: require('hapi-plug-routes')
-    }
-], function ( registerError ) {
+    },
+    {
+        register: require("good"),
+        options: {
+            ops: {
+                interval: 20000
+            },
+            reporters: {
+                myConsoleReporter: [{
+                    module: 'good-console',
+                    args: [{ format: 'YYYY-MM-DD/HH:mm:ssZ', utc: false},
+                        {log: '*', response: '*', server: '*', request: '*', ops: 'none'}]
+                }, 'stdout']
+            }
+        }
+    }], function ( registerError ) {
     if ( registerError ) {
         console.error('Failed to load plugin:', registerError);
     }
+
+    server.log('info', 'loading static routes');
     // static handlers
     server.route({
         method: 'GET',
