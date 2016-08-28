@@ -95,7 +95,8 @@ module.exports = [
     path: '/styleguide',
     config: {
       id: 'style guide',
-      description: 'this is a demonstration page of all the componenets of the site.'
+      description: 'this is a demonstration page of all the componenets of the site.',
+      auth: false
     },
     handler: function (request, reply) {
       const footerMenuItems = [

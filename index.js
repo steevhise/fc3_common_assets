@@ -16,17 +16,23 @@ var sassOptions = {
     debug: true,
     routePath: '/css/{file}.css',
     outputStyle: 'nested',
-    srcExtension: 'scss'
+    srcExtension: 'scss',
 };
 
 //basic server
 var server = new Hapi.Server({
+    cache: {
+        engine: require('catbox-memory'),
+        name: 'catmem',
+        segment: 'auth'
+    },
     connections: {
         router: {
             isCaseSensitive: false,
             stripTrailingSlash: true
         },
         routes: {
+            auth: false,    // default to no auth needed anywhere.
             validate: {
                 options: {
                     allowUnknown: true
@@ -81,75 +87,116 @@ server.register([Inert,
                 }, 'stdout']
             }
         }
-    }], function ( registerError ) {
-    if ( registerError ) {
+    },
+    {
+        register: require('@freecycle/common-hapi-plugins/freecycle-login')
+    },
+    {
+        register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
+        options: {
+            redirectTo: false,    // for this site, we don't want to make people login, right?
+            auth: false,
+            // mode: 'try'   ??
+        }
+    }
+], function ( registerError ) {
+    if (registerError) {
         console.error('Failed to load plugin:', registerError);
+        throw(registerError);
     }
 
-    server.log('info', 'loading static routes');
-    // static handlers
-    server.route({
-        method: 'GET',
-        path: '/images/{param*}',
-        handler: {
-            directory: {
-                path: './public/assets/images',
-                listing: true
-            }
+    // store user info that we can get to from anywhere.
+    server.app.cache = server.cache({segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000});
+
+    // prepare for auth stuff now that we've loaded the auth  plugin.
+    server.auth.strategy('session', 'cookie', true, server.plugins['auth-cookie-freecycle']['strategy']);
+
+    server.register({
+        register: require('hapi-authorization'),
+        options: {
+            // roles: [...server.privileges.keys()]     // this will be a list of all the privilege ids, if we pre-define them.
+            roles: false   // by default no roles are required.
         }
-    });
-    server.route({
-        method: 'GET',
-        path: '/font/{param*}',
-        handler: {
-            directory: {
-                path: './public/assets/font',
-                listing: true
-            }
+    }, function (registerError) {
+        if (registerError) {
+            console.error('Failed to load plugin:', registerError);
+            throw(registerError);
         }
-    });
-    server.route({
-        method: 'GET',
-        path: '/js/{param*}',
-        config: {
-            id: 'js',
-            description: 'directory where Front-end javascript code goes',
-            tags: ['js']
-        },
-        handler: {
-            directory: {
-                path: './public/assets/js',
-                listing: true
+
+        server.log('info', 'loading static routes');
+        // static handlers
+        server.route({
+            method: 'GET',
+            path: '/images/{param*}',
+            handler: {
+                directory: {
+                    path: './public/assets/images',
+                    listing: true
+                }
             }
-        }
-    });
-    server.route({
-        method: 'GET',
-        path: '/trumbowyg/{param*}',
-        config: {
-            tags: ['exclude', 'js']
-        },
-        handler: {
-            directory: {
-                path: './public/assets/trumbowyg',
-                listing: true
+        });
+        server.route({
+            method: 'GET',
+            path: '/font/{param*}',
+            handler: {
+                directory: {
+                    path: './public/assets/font',
+                    listing: true
+                }
             }
-        }
-    });
+        });
+        server.route({
+            method: 'GET',
+            path: '/js/{param*}',
+            config: {
+                id: 'js',
+                description: 'directory where Front-end javascript code goes',
+                tags: ['js'],
+            },
+            handler: {
+                directory: {
+                    path: './public/assets/js',
+                    listing: true
+                }
+            }
+        });
+        server.route({
+            method: 'GET',
+            path: '/trumbowyg/{param*}',
+            config: {
+                tags: ['exclude', 'js'],
+            },
+            handler: {
+                directory: {
+                    path: './public/assets/trumbowyg',
+                    listing: true
+                }
+            }
+        });
+
+        // this shows up in all views. right now just for info about credentialed current authenticated user.
+        const defaultContext = function(request) {
+            console.log('global context', request.auth.credentials);
+            return { session: request.auth.credentials };
+        };
+
+        server.views({
+            engines: {
+                html: Swig
+            },
+            context: {},
+            path: path.join(__dirname, '../src/views'),
+            layoutPath: path.join(__dirname, '../src/views/layout')
+        });
 
 
-   server.views({
-        engines: {
-            html: Swig
-        },
-        context: {},
-        path: path.join(__dirname, '../src/views'),
-        layoutPath: path.join(__dirname, '../src/views/layout')
-    });
-
-
-    server.start(function () {
-        console.log('Server running at:', server.info.uri);
+        server.start(function (err) {
+            if (err) {
+                console.error('server startup error', err);
+            } else {
+                console.log('Server running at:', server.info.uri);
+            }
+        });
     });
 });
 
