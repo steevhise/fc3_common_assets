@@ -28,10 +28,13 @@ Make sure you have node and npm, and then:
 * `npm run dev` - start app with nodemon but no browsersync
  
 ### Coding/Architecture Guidelines 
-* src/packages is for other code of ours (our unpackaged intern al hapi plugins, etc) not contined in routes, etc 
-* keep routes and views organized by section of site: Home, Groups, etc 
+* reusable plugins that we want to use in other apps (like ModTools, Group Admin, etc) should be put in the `@freecycle/common-hapi-plugins` npm.
+The repo for that is at gitolite@devserver.freecycle.org:common-hapi-plugins
+* `src/packages/` is for other code of ours (our unpackaged internal hapi plugins, etc) not contained in the above package or in `src/routes/`, etc 
+* keep routes and views organized by section of site: Home, Groups, etc. any js file in the routes dir will get included. 
  
 ### Frontend
+Foundation, JQuery, SASS, blah blah blah.
  
 ### Stuff there's no mockups of (?): 
  
