@@ -117,7 +117,7 @@ module.exports = [
     method: 'GET',
     path: '/home/my-friends',
     config: {
-      id: 'My Friends',
+      id: 'MyFriends',
       description: "The logged in user's friends list."
     },
     handler: function (request, reply) {

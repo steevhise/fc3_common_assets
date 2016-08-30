@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 const friends = [
   {
     avatar_url: "http://lorempixel.com/150/150/people/1",
@@ -331,8 +333,35 @@ module.exports = [
             console.error('page query GraphQL promise rejected. (' + reason + ').');
             throw reason;
           });
-    }
-  },
+        }
+    },
+    {
+      method: '*',
+      path: '/login',
+      config: {
+        id: 'login',
+        description: 'login on this page',
+        auth: false,
+      },
+      handler: _loginHandler
+    },
+
+    {
+        method: 'GET',
+        path: '/logout',
+        config: {
+            id: 'logout',
+            description: 'log out on this page, delete your cookie',
+            auth: false,
+            handler: function (request, reply) {
+                "use strict";
+                request.cookieAuth.clear();
+                reply.view('logout', {
+                    title: 'Logged out',
+                });
+            }
+        }
+    },
   {
     method: 'GET',
     path: '/',
@@ -381,3 +410,51 @@ module.exports = [
   }
 
 ];
+
+
+function _loginHandler(request, reply) {
+  var msg = null;
+  // if credentials are passed in from form...
+  if(request.payload && request.payload.user && request.payload.password) {
+    var user = request.payload.user;
+    var pw = request.payload.password;
+    console.log('user and pw:', user, pw);
+    // console.log('inside login Handler the server is: ', request.server);
+    request.server.methods.loginUser(user, pw, request.server, function (err,userId) {   //callback neccessary, i guess.???
+      if(err) {
+        console.log('ERROR:', err);
+        // TODO: Boom this.
+      }
+      var msg = null;
+      // console.log('userID found after login:', userId);
+      if (userId) {
+        reply.setCookie(Number(userId), function (err,cookieContent) {
+          var result;
+          if(err) {   // some problem with setting the cookie.
+            console.log('error', err);
+            msg = 'error:' + err;
+          } else {    // success
+            reply.state('MyFreecycle', cookieContent);
+            console.log('ok we gave out the cookie', cookieContent);
+            reply.redirect('/desktop-dash');
+          }
+        });
+       } else {
+          // bad login.
+          msg = 'invalid username/email or password.';
+          reply.view('login', {
+            title: 'Login Required',
+            msg: msg
+          });
+       }
+
+    });
+
+  } else {
+    reply.view('login', {
+      title: 'Login Required',
+      msg: msg
+    });
+  }
+}
+

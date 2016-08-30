@@ -13,7 +13,7 @@ var sassOptions = {
     src: './src/assets/scss',
     dest: './public/assets/css',
     force: true,
-    debug: true,
+    debug: false,
     routePath: '/css/{file}.css',
     outputStyle: 'nested',
     srcExtension: 'scss',
@@ -42,6 +42,9 @@ var server = new Hapi.Server({
     }
 });
 
+// Export the server to be required elsewhere.  TODO: does this do any good?
+module.exports = server;
+
 // database stuff
 import { graphql } from 'graphql';
 import  schema  from '@freecycle/freecycle_graphql_schema';
@@ -53,6 +56,10 @@ server.decorate('server', 'schema', schema);      // access via server.schema
 
 // setup connection
 server.connection({ port: process.env.PORT || 8000 });
+
+server.on('request', (request, event, tags) => {
+    console.log(event);
+});
 
 
 // register plugins
@@ -71,13 +78,10 @@ server.register([Inert,
         register: require('crumb')                  // security against CRSF attacks.
     },
     {
-        register: require('hapi-plug-routes')
-    },
-    {
         register: require("good"),
         options: {
             ops: {
-                interval: 20000
+                interval: 600000
             },
             reporters: {
                 myConsoleReporter: [{
@@ -89,6 +93,9 @@ server.register([Inert,
         }
     },
     {
+        register: require("hapi-named-routes"),
+    },
+    {
         register: require('@freecycle/common-hapi-plugins/freecycle-login')
     },
     {
@@ -98,7 +105,8 @@ server.register([Inert,
             auth: false,
             // mode: 'try'   ??
         }
-    }
+    },
+
 ], function ( registerError ) {
     if (registerError) {
         console.error('Failed to load plugin:', registerError);
@@ -123,79 +131,90 @@ server.register([Inert,
             throw(registerError);
         }
 
-        server.log('info', 'loading static routes');
-        // static handlers
-        server.route({
-            method: 'GET',
-            path: '/images/{param*}',
-            handler: {
-                directory: {
-                    path: './public/assets/images',
-                    listing: true
-                }
-            }
-        });
-        server.route({
-            method: 'GET',
-            path: '/font/{param*}',
-            handler: {
-                directory: {
-                    path: './public/assets/font',
-                    listing: true
-                }
-            }
-        });
-        server.route({
-            method: 'GET',
-            path: '/js/{param*}',
-            config: {
-                id: 'js',
-                description: 'directory where Front-end javascript code goes',
-                tags: ['js'],
-            },
-            handler: {
-                directory: {
-                    path: './public/assets/js',
-                    listing: true
-                }
-            }
-        });
-        server.route({
-            method: 'GET',
-            path: '/trumbowyg/{param*}',
-            config: {
-                tags: ['exclude', 'js'],
-            },
-            handler: {
-                directory: {
-                    path: './public/assets/trumbowyg',
-                    listing: true
-                }
-            }
-        });
+        server.log('info', 'loading  routes');
 
-        // this shows up in all views. right now just for info about credentialed current authenticated user.
-        const defaultContext = function(request) {
-            console.log('global context', request.auth.credentials);
-            return { session: request.auth.credentials };
-        };
-
-        server.views({
-            engines: {
-                html: Swig
-            },
-            context: {},
-            path: path.join(__dirname, '../src/views'),
-            layoutPath: path.join(__dirname, '../src/views/layout')
-        });
+        server.register({
+            register: require('hapi-plug-routes')
+        }, function (registerError) {
+            if (registerError) {
+                console.error('Failed to load plugin:', registerError);
+                throw(registerError);
+            }
 
 
-        server.start(function (err) {
-            if (err) {
-                console.error('server startup error', err);
-            } else {
-                console.log('Server running at:', server.info.uri);
-            }
+            // static route handlers
+            server.route({
+                method: 'GET',
+                path: '/images/{param*}',
+                handler: {
+                    directory: {
+                        path: './public/assets/images',
+                        listing: true
+                    }
+                }
+            });
+            server.route({
+                method: 'GET',
+                path: '/font/{param*}',
+                handler: {
+                    directory: {
+                        path: './public/assets/font',
+                        listing: true
+                    }
+                }
+            });
+            server.route({
+                method: 'GET',
+                path: '/js/{param*}',
+                config: {
+                    id: 'js',
+                    description: 'directory where Front-end javascript code goes',
+                    tags: ['js'],
+                },
+                handler: {
+                    directory: {
+                        path: './public/assets/js',
+                        listing: true
+                    }
+                }
+            });
+            server.route({
+                method: 'GET',
+                path: '/trumbowyg/{param*}',
+                config: {
+                    tags: ['exclude', 'js'],
+                },
+                handler: {
+                    directory: {
+                        path: './public/assets/trumbowyg',
+                        listing: true
+                    }
+                }
+            });
+
+            // this shows up in all views. right now just for info about credentialed current authenticated user.
+            const defaultContext = function (request) {
+                console.log('global context', request.auth.credentials);
+                return {session: request.auth.credentials};
+            };
+
+            server.views({
+                engines: {
+                    html: Swig
+                },
+                context: {},
+                path: path.join(__dirname, '../src/views'),
+                layoutPath: path.join(__dirname, '../src/views/layout')
+            });
+
+
+            server.start(function (err) {
+                if (err) {
+                    console.error('server startup error', err);
+                } else {
+                    console.log('Server running at:', server.info.uri);
+                }
+            });
         });
     });
 });

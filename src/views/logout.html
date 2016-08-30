@@ -1,0 +1,13 @@
+{% extends './layout/layout.html' %}
+
+{% block content %}
+  Ok you've been logged out. Log in again  <a href="/login">here</a>.)
+
+  <hr>
+
+  {% if msg %}
+    <p class="error-message">{{ msg }}</p>
+  {% endif %}
+
+
+{% endblock %}
