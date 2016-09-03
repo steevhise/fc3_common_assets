@@ -118,7 +118,8 @@ module.exports = [
     path: '/home/my-friends',
     config: {
       id: 'MyFriends',
-      description: "The logged in user's friends list."
+      description: "The logged in user's friends list.",
+      auth: 'session'
     },
     handler: function (request, reply) {
       const inBodyAds = [

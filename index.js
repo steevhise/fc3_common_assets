@@ -8,6 +8,8 @@ var Inert = require('inert');
 var HapiError = require('hapi-error');
 var Swig = require('swig-templates');
 
+var longjohn = require('longjohn');     // only for development!!  (stack traces)
+
 // sass config
 var sassOptions = {
     src: './src/assets/scss',
@@ -57,19 +59,19 @@ server.decorate('server', 'schema', schema);      // access via server.schema
 // setup connection
 server.connection({ port: process.env.PORT || 8000 });
 
-server.on('request', (request, event, tags) => {
+// extra logging, too raw though and redundant with the Good logging.
+/*server.on('request', (request, event, tags) => {
     console.log(event);
-});
+});*/
 
 
 // register plugins
-server.register([Inert,
+server.register([
+    Inert,
+    HapiError,
     {
         register: HapiSass,
         options: sassOptions
-    },
-    {
-        register: HapiError
     },
     {
         register: require('vision')
@@ -93,19 +95,14 @@ server.register([Inert,
         }
     },
     {
-        register: require("hapi-named-routes"),
-    },
-    {
-        register: require('@freecycle/common-hapi-plugins/freecycle-login')
+        register: require("hapi-named-routes")
     },
     {
         register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
         options: {
-            redirectTo: false,    // for this site, we don't want to make people login, right?
-            auth: false,
-            // mode: 'try'   ??
+            redirectTo: false,    // for this site, we don't want to MAKE people login, right?
         }
-    },
+    }
 
 ], function ( registerError ) {
     if (registerError) {
@@ -116,31 +113,38 @@ server.register([Inert,
     // store user info that we can get to from anywhere.
     server.app.cache = server.cache({segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000});
 
-    // prepare for auth stuff now that we've loaded the auth  plugin.
+    // register auth strategy now that we've loaded the auth  plugin.
     server.auth.strategy('session', 'cookie', true, server.plugins['auth-cookie-freecycle']['strategy']);
 
-    server.register({
-        register: require('hapi-authorization'),
-        options: {
-            // roles: [...server.privileges.keys()]     // this will be a list of all the privilege ids, if we pre-define them.
-            roles: false   // by default no roles are required.
-        }
-    }, function (registerError) {
+    // register even more plugins
+    server.register([
+        {
+            // auth strategy seem to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
+            register: require('hapi-plug-routes')
+        },
+        {
+            register: require('@freecycle/common-hapi-plugins/freecycle-login')
+        },
+
+
+    ], function ( registerError ) {
         if (registerError) {
-            console.error('Failed to load plugin:', registerError);
+            console.error('Failed to load more plugins:', registerError);
             throw(registerError);
         }
 
-        server.log('info', 'loading  routes');
 
         server.register({
-            register: require('hapi-plug-routes')
+            register: require('hapi-authorization'),
+            options: {
+                // roles: [...server.privileges.keys()]     // this will be a list of all the privilege ids, if we pre-define them.
+                roles: false   // by default no roles are required.
+            }
         }, function (registerError) {
             if (registerError) {
                 console.error('Failed to load plugin:', registerError);
                 throw(registerError);
             }
-
 
             // static route handlers
             server.route({
@@ -202,7 +206,7 @@ server.register([Inert,
                 engines: {
                     html: Swig
                 },
-                context: {},
+                context: defaultContext,
                 path: path.join(__dirname, '../src/views'),
                 layoutPath: path.join(__dirname, '../src/views/layout')
             });

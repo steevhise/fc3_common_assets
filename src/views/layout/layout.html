@@ -13,6 +13,10 @@
     {% endblock %}
 </head>
 <body>
+{% if session %}
+    you are {{ session.username }}
+    {% set loggedIn = true %}
+{% endif %}
 {% block header %}
 {% endblock %}
 <div class="content-container">

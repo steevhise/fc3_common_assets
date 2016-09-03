@@ -1,5 +1,6 @@
 'use strict';
 
+var Hoek = require('hoek');
 
 
 const friends = [
@@ -98,7 +99,7 @@ module.exports = [
     config: {
       id: 'style guide',
       description: 'this is a demonstration page of all the componenets of the site.',
-      auth: false
+      // auth: false
     },
     handler: function (request, reply) {
       const footerMenuItems = [
@@ -178,6 +179,10 @@ module.exports = [
     config: {
       id: 'Dashboard',
       description: "The user's 'home'.",
+      auth: 'session',
+      plugins: {
+        // 'hapiAuthorization': {role: '1'}    // you don't have to have any special privs to see your own dashboard
+      }
     },
     handler: function (request, reply) {
       const inBodyAds = [
@@ -341,7 +346,7 @@ module.exports = [
       config: {
         id: 'login',
         description: 'login on this page',
-        auth: false,
+        // auth: false,
       },
       handler: _loginHandler
     },
@@ -352,7 +357,7 @@ module.exports = [
         config: {
             id: 'logout',
             description: 'log out on this page, delete your cookie',
-            auth: false,
+            // auth: false,
             handler: function (request, reply) {
                 "use strict";
                 request.cookieAuth.clear();
@@ -375,20 +380,20 @@ module.exports = [
 
       for(var i = 0; i < routeTable.length; i++){
         var route = routeTable[i];
-        console.log("---------------------");
+        // console.log("---------------------");
 
         for(var j = 0; j<route.table.length; j++) {
           var table = route.table[j];
-          console.log("****************");
-          console.log(table.path);
+          //console.log("****************");
+          //console.log(table.path);
           if (table.path == '/pages/{page_path}') {
-            console.log(table.public.settings);
+            // console.log(table.public.settings);
           }
 
           // exclude a route by adding a tag 'exclude' in the config.
           if(table.public.settings.tags) {
             var i = table.public.settings.tags.indexOf('exclude');
-            console.log(i);
+            // console.log(i);
             if (i > -1 ) {
               continue;
             }
@@ -399,7 +404,7 @@ module.exports = [
       }
       // TODO: the static pages need to return all the actual pages.
 
-      console.log("---------------------");
+      // console.log("---------------------");
       // TODO: do some error catching, maybe - like what if there's no results?
       reply.view('sitemap', {
         title: "Site Map",
@@ -418,26 +423,21 @@ function _loginHandler(request, reply) {
   if(request.payload && request.payload.user && request.payload.password) {
     var user = request.payload.user;
     var pw = request.payload.password;
-    console.log('user and pw:', user, pw);
-    // console.log('inside login Handler the server is: ', request.server);
+
     request.server.methods.loginUser(user, pw, request.server, function (err,userId) {   //callback neccessary, i guess.???
-      if(err) {
-        console.log('ERROR:', err);
-        // TODO: Boom this.
-      }
+      Hoek.assert(!err, 'loginUser ERROR: ' + err);
+
       var msg = null;
       // console.log('userID found after login:', userId);
       if (userId) {
         reply.setCookie(Number(userId), function (err,cookieContent) {
-          var result;
-          if(err) {   // some problem with setting the cookie.
-            console.log('error', err);
-            msg = 'error:' + err;
-          } else {    // success
-            reply.state('MyFreecycle', cookieContent);
-            console.log('ok we gave out the cookie', cookieContent);
-            reply.redirect('/desktop-dash');
-          }
+          Hoek.assert(!err, 'Error: ' + err);
+
+          // or success
+          reply.state('MyFreecycle', cookieContent);
+          console.log('ok we gave out the cookie', cookieContent);
+          reply.redirect('/desktop-dash');
+
         });
        } else {
           // bad login.

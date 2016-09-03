@@ -12,7 +12,11 @@ module.exports = [
         path: '/admin/pages',
         config: {
             id: 'Page Administration',
-            description: 'this is for creating and editing "static" pages.'
+            description: 'this is for creating and editing "static" pages.',
+            auth: "session",
+            plugins: {
+                'hapiAuthorization': {role: '1'}    // Only priv type id 1  - note: role has to be a string.
+            },
         },
         handler: function (request, reply) {
             // get all the pages. TODO: cache this. probably make it a server method.
@@ -35,6 +39,21 @@ module.exports = [
                         });
                     }
                 });
+        }
+    },
+    {
+        method: 'GET',
+        path: '/admin/verboten',
+        config: {
+            id: "verboten",
+            description: 'this is a sample forbidden page.',
+            auth: "session",
+            plugins: {
+                'hapiAuthorization': {role: '100'}    // Only priv type id 1  - note: role has to be a string.
+            },
+        },
+        handler: function (request, reply) {
+            reply('you are cool, i guess');
         }
     }
 ];
@@ -71,9 +90,8 @@ const getPages = function(server) {   // i think we have to make this function t
                 retval = "0";
             }
             else if (queryResult.data.pages) {  // we've got data
-                //retval = Object.assign({}, queryResult.data.pages);
                 retval = queryResult.data.pages;
-                console.log('result from page query is ', retval);
+                // console.log('result from page query is ', retval);
             } else {    // put this first?
                 console.log('error', queryResult);
                 retval = queryResult.toString || 'unknown error.';

@@ -1,18 +1,18 @@
 {% extends './layout/layout.html' %}
 
 {% block header %}
-  {% include './partials/header.html' with {loggedIn:false} %}
+  {% include './partials/header.html' %}
 {% endblock %}
 
 {% block content %}
   {% if msg %}
-    <p class="error-message">{{ msg }}</p>
+    <p class="callout alert">{{ msg }}</p>
   {% endif %}
   <form method="POST">
     <input type="hidden" name="crumb" value="{{crumb}}"/>
     <input type="text" name="user" placeholder="username or email address">
     <input type="password" name="password" placeholder="password">
-    <input type="submit">
+    <input type="submit" value="Log in">
 
   </form>
 
