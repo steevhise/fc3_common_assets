@@ -44,9 +44,6 @@ var server = new Hapi.Server({
     }
 });
 
-// Export the server to be required elsewhere.  TODO: does this do any good?
-module.exports = server;
-
 // database stuff
 import { graphql } from 'graphql';
 import  schema  from '@freecycle/freecycle_graphql_schema';
@@ -96,6 +93,9 @@ server.register([
     },
     {
         register: require("hapi-named-routes")
+    },
+    {
+        register: require("@freecycle/common-hapi-plugins/hapi-graphql-wrapper")
     },
     {
         register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
@@ -223,3 +223,5 @@ server.register([
     });
 });
 
+// Export the server to be required elsewhere.  TODO: does this do any good?
+module.exports.server = server;

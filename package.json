@@ -49,6 +49,8 @@
   "author": "The Freecycle Network",
   "license": "UNLICENSED",
   "devDependencies": {
+    "code": "^3.0.2",
+    "lab": "^11.0.1",
     "longjohn": "^0.2.11"
   }
 }

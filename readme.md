@@ -40,4 +40,11 @@ Foundation, JQuery, SASS, blah blah blah.
  
 - [ ] Login/signup (?) 
 - [ ] edit profile/settings 
-- what else? 
+- what else?
+ 
+ 
+### Backend Esoterica:
+* there's now a plugin for a GraphQL query wrapper that should cut down on some boilerplate.  
+use it like so:  `server.methods.wrapGraphQL(query, 'user.user_id', function(err, result) { whatever callback stuff... });`
+It will return (null, null) for nothing found, (null, queryResult.data) for found data, and (err, null) for errors.
+Does this really save anything though? Still have to test for errors. hmm.
