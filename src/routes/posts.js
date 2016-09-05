@@ -93,6 +93,11 @@ module.exports = [
   {
     method: 'GET',
     path: '/posts/nnnn',
+    config: {
+      id: 'post',
+      description: 'an individual post',
+      auth: 'session'
+    },
     handler: function (request, reply) {
       const inBodyAds = [
         "one",

@@ -183,7 +183,8 @@ module.exports = [
     path: '/home/my-posts',
     config: {
       id: 'My Posts',
-      description: "Posts created by the logged in user."
+      description: "Posts created by the logged in user.",
+      auth: 'session'
     },
     handler: function (request, reply) {
       const inBodyAds = [
