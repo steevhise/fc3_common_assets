@@ -1,27 +1,9 @@
 <div class="header-logo">
-    {% include '../icons/logo.html' %}
+    {% include '../icons/logo_my.html' %}
 </div>
 
 <div class="header-stretch">
-    <div class="header-search">
-
-        <div class="search-input">
-            <input class="search input-group-field" type="search" placeholder="Search for items..."/>
-        </div>
-
-        <div class="search-location">
-            <span class="search-map-icon">
-                {% include '../icons/map_pin.html' %}
-            </span>
-
-            <span class="location">Tucson, AZ</span>
-
-            <span class="search-icon">
-                {% include '../icons/search.html' %}
-            </span>
-        </div>
-
-    </div>
+    {% include './header_search.html' %}
 </div>
 
 <div class="header-links">
