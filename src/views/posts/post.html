@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends '../layout/layout.html' %}
 
-</body>
-</html>
+{% block header %}
+{% include '../partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+{% block content %}
+
+{% include '../partials/in_body_banner_row.html'%}
+{% include '../partials/in_page_ribbon.html'%}
+
+{% endblock %}
