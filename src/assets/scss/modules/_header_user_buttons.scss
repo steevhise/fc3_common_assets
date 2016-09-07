@@ -4,6 +4,16 @@
   align-items: center;
 }
 
+.header-user-buttons-list {
+  display: flex;
+  list-style-type: none;
+  margin-bottom: 0;
+}
+
+.header-user-buttons-list-right {
+  border-left: 2px solid #d4cfc7;
+}
+
 .header-user-button {
   margin: 0 15px;
   svg {
@@ -14,14 +24,4 @@
   span {
     vertical-align: middle;
   }
-}
-
-.header-user-buttons-list {
-  display: flex;
-  list-style-type: none;
-  margin-bottom: 0;
-}
-
-.header-user-buttons-list-right {
-  border-left: 2px solid #d4cfc7;
 }
