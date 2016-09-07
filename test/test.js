@@ -65,10 +65,11 @@ lab.experiment('graphql wrapper: ', function() {
    // this doesn't work. but if i just call the server method normally outside of a lab test, it does. so fuck it. fuck you, lab.
 
     lab.test('should return user_id 23736881', function(done) {
-        Expect( server.methods.wrapGraphQL(query, 'user.user_id',
-            function(err, result) { server.log('debug', result.user.user_id); return result.user.user_id; }))
+        Expect(   server.methods.wrapGraphQL(query, 'user.user_id',
+            function(err, result) { server.log('debug', result.user.user_id); return result.user.user_id;  }) )
             .to.equal(23736881);
         done();
+
     });
 
 });
