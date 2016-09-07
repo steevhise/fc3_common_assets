@@ -5,6 +5,7 @@
 @import "./modules/header_banner_ad";
 @import "./modules/header_logged_out";
 @import "./modules/header_search";
+@import "./modules/header_user_buttons";
 
 
 /*
@@ -112,4 +113,9 @@
     @include heading-text();
     margin-top: -4px;
     padding: 0.875rem 1.2rem;
+}
+
+.header-user-buttons {
+  display: flex;
+  order: 3
 }
