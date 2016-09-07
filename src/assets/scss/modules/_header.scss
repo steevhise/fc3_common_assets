@@ -72,6 +72,7 @@
   align-items: flex-start;
   margin: 1.25rem;
   order: 3;
+  justify-content: space-between;
 
   @include breakpoint(header) {
     margin: 0;
@@ -113,9 +114,4 @@
     @include heading-text();
     margin-top: -4px;
     padding: 0.875rem 1.2rem;
-}
-
-.header-user-buttons {
-  display: flex;
-  order: 3
 }
