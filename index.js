@@ -121,12 +121,11 @@ server.register([
     // register even more plugins
     server.register([
         {
-            // auth strategy seem to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
-            register: require('hapi-plug-routes')
-        },
-        {
             register: require('@freecycle/common-hapi-plugins/freecycle-login')
         },
+        {
+            register: require('bell')
+        }
 
 
     ], function ( registerError ) {
@@ -135,14 +134,31 @@ server.register([
             throw(registerError);
         }
 
+        // Declare an authentication strategy using the bell scheme
+        // with the name of the provider, cookie encryption password,
+        // and the OAuth client credentials.
+        server.auth.strategy('facebook', 'bell', false, {
+            provider: 'facebook',
+            password: 'abscdfvhgnjtrueyfhdmjkrutifhdjr4',  // whatever
+            clientId: '117834011565165',
+            clientSecret: 'fa596fcabbeb2651544ed73ea7c847e3',
+            isSecure: false,     // Terrible idea but required if not using HTTPS especially if developing locally
+            providerParams: { display: 'popup'}
+        });
 
-        server.register({
-            register: require('hapi-authorization'),
-            options: {
-                // roles: [...server.privileges.keys()]     // this will be a list of all the privilege ids, if we pre-define them.
-                roles: false   // by default no roles are required.
+        server.register([
+            {
+                // auth strategy seem to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
+                register: require('hapi-plug-routes')
+            },
+            {
+                register: require('hapi-authorization'),
+                options: {
+                    // roles: [...server.privileges.keys()]     // this will be a list of all the privilege ids, if we pre-define them.
+                    roles: false   // by default no roles are required.
+                }
             }
-        }, function (registerError) {
+        ], function (registerError) {
             if (registerError) {
                 console.error('Failed to load plugin:', registerError);
                 throw(registerError);
