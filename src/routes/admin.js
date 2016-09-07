@@ -13,7 +13,7 @@ module.exports = [
         config: {
             id: 'Page Administration',
             description: 'this is for creating and editing "static" pages.',
-            auth: "session",
+            auth:  {mode: 'required'},
             plugins: {
                 'hapiAuthorization': {role: '1'}    // Only priv type id 1  - note: role has to be a string.
             },

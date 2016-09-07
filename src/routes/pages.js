@@ -99,7 +99,6 @@ module.exports = [
     config: {
       id: 'style guide',
       description: 'this is a demonstration page of all the componenets of the site.',
-      // auth: false
     },
     handler: function (request, reply) {
       const footerMenuItems = [
@@ -179,7 +178,7 @@ module.exports = [
     config: {
       id: 'Dashboard',
       description: "The user's 'home'.",
-      auth: 'session',
+      auth:  {mode: 'required'},
       plugins: {
         // 'hapiAuthorization': {role: '1'}    // you don't have to have any special privs to see your own dashboard
       }
@@ -280,7 +279,7 @@ module.exports = [
     path: '/pages/{page_path}',
     config: {
       id: 'static pages',
-      description: 'a certain static page stored in database.',
+      description: 'a certain static page stored in database. For example, try /pages/test',
     },
     handler: function (request, reply) {
       const inBodyAds = [
@@ -346,7 +345,7 @@ module.exports = [
       config: {
         id: 'login',
         description: 'login on this page',
-        // auth: false,
+        auth: false,
       },
       handler: _loginHandler
     },
@@ -357,7 +356,7 @@ module.exports = [
         config: {
             id: 'logout',
             description: 'log out on this page, delete your cookie',
-            // auth: false,
+            auth: false,
             handler: function (request, reply) {
                 "use strict";
                 request.cookieAuth.clear();

@@ -100,7 +100,9 @@ server.register([
     {
         register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
         options: {
-            redirectTo: false,    // for this site, we don't want to MAKE people login, right?
+            redirectTo: "/login",    // for this site, we don't want to MAKE people login, right?
+            redirectOnTry: false,
+            // mode: 'try'    // this means if they have no cookie or a bad cookie, let them in
         }
     }
 
@@ -114,7 +116,7 @@ server.register([
     server.app.cache = server.cache({segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000});
 
     // register auth strategy now that we've loaded the auth  plugin.
-    server.auth.strategy('session', 'cookie', true, server.plugins['auth-cookie-freecycle']['strategy']);
+    server.auth.strategy('session', 'cookie', "try", server.plugins['auth-cookie-freecycle']['strategy']);
 
     // register even more plugins
     server.register([
@@ -160,6 +162,9 @@ server.register([
             server.route({
                 method: 'GET',
                 path: '/font/{param*}',
+                config: {
+                    tags: ['exclude'],
+                },
                 handler: {
                     directory: {
                         path: './public/assets/font',
@@ -173,7 +178,7 @@ server.register([
                 config: {
                     id: 'js',
                     description: 'directory where Front-end javascript code goes',
-                    tags: ['js'],
+                    tags: ['js', 'exclude'],
                 },
                 handler: {
                     directory: {

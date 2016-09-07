@@ -94,9 +94,12 @@ module.exports = [
     method: 'GET',
     path: '/posts/nnnn',
     config: {
-      id: 'post',
-      description: 'an individual post',
-      auth: 'session'
+        id: 'post',
+        description: 'an individual post',
+        /*plugins: { 'auth-cookie-freecycle': {
+            redirectTo: false,
+            redirectOnTry: false
+        }}*/
     },
     handler: function (request, reply) {
       const inBodyAds = [

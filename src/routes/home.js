@@ -119,7 +119,7 @@ module.exports = [
     config: {
       id: 'MyFriends',
       description: "The logged in user's friends list.",
-      auth: 'session'
+      auth:  {mode: 'required'},
     },
     handler: function (request, reply) {
       const inBodyAds = [
@@ -163,7 +163,8 @@ module.exports = [
     path: '/home/my-groups',
     config: {
       id: 'My Groups',
-      description: "The logged in user's Groups."
+      description: "The logged in user's Groups.",
+      auth:  {mode: 'required'},
     },
     handler: function (request, reply) {
       const inBodyAds = [
@@ -184,7 +185,7 @@ module.exports = [
     config: {
       id: 'My Posts',
       description: "Posts created by the logged in user.",
-      auth: 'session'
+      auth:  {mode: 'required'},
     },
     handler: function (request, reply) {
       const inBodyAds = [
