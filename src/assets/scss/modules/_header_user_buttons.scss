@@ -1,10 +1,28 @@
-.header-user-button {
-  svg {
-    width: 1.25rem;
-  }
+.header-user-buttons {
+  display: flex;
+  height: 40px;
+  align-items: center;
 }
 
 .header-user-buttons-list {
   display: flex;
   list-style-type: none;
+  margin-bottom: 0;
+}
+
+.header-user-buttons-list-right {
+  border-left: 2px solid #d4cfc7;
+}
+
+.header-user-button {
+  margin: 0 15px;
+  svg {
+    width: 1.25rem;
+    vertical-align: middle;
+    fill: $black;
+  }
+
+  span {
+    vertical-align: middle;
+  }
 }
