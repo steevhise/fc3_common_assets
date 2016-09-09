@@ -8,7 +8,7 @@ This is for restricted sections of the site that control and administrate the si
 // route definitions
 module.exports = [
     {
-        method: 'GET',
+        method: '*',
         path: '/admin/pages',
         config: {
             id: 'Page Administration',

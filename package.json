@@ -1,6 +1,6 @@
 {
   "name": "fc3_main",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "lib/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
@@ -32,7 +32,7 @@
     "nodemon": "^1.9.1",
     "path": "^0.12.7",
     "swig-templates": "^2.0.1",
-    "trumbowyg": "^2.1.1",
+    "trumbowyg": "^2.3.0",
     "vision": "^4.1.0",
     "webpack": "^1.12.15"
   },

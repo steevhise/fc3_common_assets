@@ -14,10 +14,11 @@
     <h2>Static Pages Administration</h2>
 <p></p>
 <div style="width: 70%; background-color: darkseagreen; padding:20px;">
-    <div style="width:50%;">
-        <form>
+    <div style="width:90%;">
+        <form method="post">
             <input type="hidden" name="crumb" value="{{crumb}}"/>
             <div id="pages">
+                Select an existing Page to edit, or create a new one.
                 <label>Existing Pages:</label>
                 <select title="page" name="pageselect" id="pageselect">
                     <option value="" selected></option>
@@ -29,10 +30,10 @@
                 </select>
             </div>
 
-        <label>title:<input type="text" size=32 name="title" value="{{ page_title }}"></label>
+        <label>title:<input type="text" size=32 name="title" value="{{ page.title }}" placeholder="title"></label>
         <span>author: {{ page.author.username }}</span>
-        <div>Created: {{ date_created }}</div>
-        <span>Date last edited: {{ date_last_modified }}  by {{ page.last_editor.username }}</span>
+        <div>Created: {{ page.date_created }}</div>
+        <span>Date last edited: {{ page.date_last_modified }}  by {{ page.last_editor.username }}</span>
 
 
         <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
@@ -78,7 +79,7 @@
                 ['superscript', 'subscript'],
                 ['link'],
                  'image',
-                'btnGrp-justify',
+                // 'btnGrp-justify',
                 'btnGrp-lists',
                 ['horizontalRule'],
                 ['removeformat'],
