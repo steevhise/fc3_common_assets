@@ -180,7 +180,8 @@ module.exports = [
       description: "The user's 'home'.",
       auth:  {mode: 'required'},
       plugins: {
-        // 'hapiAuthorization': {role: '1'}    // you don't have to have any special privs to see your own dashboard
+        // 'hapiAuthorization': {role: '1'}
+        // you don't have to have any special privs to see your own dashboard, but this is how you do it.
       }
     },
     handler: function (request, reply) {
@@ -445,8 +446,8 @@ function _loginHandler(request, reply) {
 
           // or success
           reply.state('MyFreecycle', cookieContent);
-          console.log('ok we gave out the cookie', cookieContent);
-          reply.redirect('/desktop-dash');
+          request.log('debug', 'ok we gave out the cookie', cookieContent);
+          reply.redirect('/desktop-dash').temporary(true);
 
         });
        } else {
