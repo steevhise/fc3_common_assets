@@ -100,9 +100,10 @@ server.register([
     {
         register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
         options: {
-            redirectTo: "/login",    // for this site, we don't want to MAKE people login, right?
-            redirectOnTry: false,
-            // mode: 'try'    // this means if they have no cookie or a bad cookie, let them in
+            redirectTo: "/login",
+            redirectOnTry: false,    // if mode is 'try' on a public page, don't redirect them if they're not logged in
+            clearInvalid: true,
+            keepAlive: false
         }
     }
 
@@ -117,6 +118,7 @@ server.register([
 
     // register auth strategy now that we've loaded the auth  plugin.
     server.auth.strategy('session', 'cookie', "try", server.plugins['auth-cookie-freecycle']['strategy']);
+    console.log(server.plugins['auth-cookie-freecycle']['strategy']);
 
     // register even more plugins
     server.register([
@@ -134,7 +136,7 @@ server.register([
             throw(registerError);
         }
 
-        // Declare an authentication strategy using the bell scheme
+        // Declare an authentication strategy using the bell scheme for Facebook login
         // with the name of the provider, cookie encryption password,
         // and the OAuth client credentials.
         server.auth.strategy('facebook', 'bell', false, {
@@ -148,7 +150,7 @@ server.register([
 
         server.register([
             {
-                // auth strategy seem to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
+                // auth strategy (above) seems to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
                 register: require('hapi-plug-routes')
             },
             {
@@ -244,5 +246,5 @@ server.register([
     });
 });
 
-// Export the server to be required elsewhere.  TODO: does this do any good?
+// Export the server to be required elsewhere.
 module.exports.server = server;
