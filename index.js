@@ -95,7 +95,7 @@ server.register([
         register: require("hapi-named-routes")
     },
     {
-        register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
+        register: require("@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle"),
         options: {
             redirectTo: "/login",
             redirectOnTry: false,    // if mode is 'try' on a public page, don't redirect them if they're not logged in
@@ -120,7 +120,7 @@ server.register([
     // register even more plugins
     server.register([
         {
-            register: require('@freecycle/common-hapi-plugins/freecycle-login')
+            register: require('@freecycle/common-hapi-plugins/plugins/freecycle-login')
         },
         {
             register: require('bell')
