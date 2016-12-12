@@ -95,9 +95,6 @@ server.register([
         register: require("hapi-named-routes")
     },
     {
-        register: require("@freecycle/common-hapi-plugins/hapi-graphql-wrapper")
-    },
-    {
         register: require("@freecycle/common-hapi-plugins/auth-cookie-freecycle"),
         options: {
             redirectTo: "/login",

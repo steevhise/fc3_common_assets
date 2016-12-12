@@ -38,6 +38,7 @@ lab.experiment('graphql wrapper: ', function() {
 
     var query = '{ user (where: {username: "steevhise"}) { user_id } }';
 
+    // TODO: these are out of date, the graphql wrapper is now NOT a hapi plugin.
    /* lab.test('missing query should throw an error', function(done) {
        Code.expect(server.methods.wrapGraphQL(null, 'user.user_id', (err, result) => { console.log(err, result);})).to.throw();    // should throw a Boom object, right?
        done();

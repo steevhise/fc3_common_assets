@@ -1,6 +1,7 @@
 'use strict';
 
 var Hoek = require('hoek');
+var WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
 
 
 const friends = [
@@ -487,7 +488,7 @@ function _facebookLoginHandler (request, reply) {
   // return reply.redirect('/desktop-dash');
 
   var query = "{ user_static (where: {facebook_id: " + fbId + "}) {   facebook_id user_id} } ";
-  request.server.methods.wrapGraphQL(query, 'user_static.user_id', function(err, result) {
+  WGQL.GraphQLWrapper(request.server, query, 'user_static.user_id', function(err, result) {
     Hoek.assert(!err, err);
     var userId = result.user_static.user_id;
     console.log('userId ', userId);
@@ -497,7 +498,7 @@ function _facebookLoginHandler (request, reply) {
 
        // or success
        reply.state('MyFreecycle', cookieContent);
-       // console.log('ok we gave out the cookie after Facebook login', cookieContent);
+       console.log('ok we gave out the cookie after Facebook login', cookieContent);
        return reply.redirect('/desktop-dash');
 
      });
