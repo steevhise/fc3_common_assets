@@ -1,3 +1,5 @@
 node_modules/
 public/assets/css/
 public/assets/js/
+public/assets/trumbowyg
+jsconfig.json
