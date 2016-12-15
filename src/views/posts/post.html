@@ -6,7 +6,11 @@
 
 {% block content %}
 
-<h1>post id: {{  post }}</h1>
+<h1>{{ post.post_subject }} ( #{{  post.post_id }} )</h1>
+    <p>
+    {{ post.post_description }}
+    </p>
+    {{ post.post_date }}
 
 {% include '../partials/in_body_banner_row.html'%}
 {% include '../partials/in_page_ribbon.html'%}

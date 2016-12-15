@@ -53,6 +53,12 @@ server.decorate('server', 'context', Context);   // access via server.context
 server.decorate('server', 'graphql', graphql);   // access via server.graphql
 server.decorate('server', 'schema', schema);      // access via server.schema
 
+// our object stuff. is this the best way?
+import { postClassFunc } from "@freecycle/common-hapi-plugins/lib/freecycle-post";
+
+const Post = postClassFunc(server);
+server.decorate('server', 'Post', Post);        // access via server.Post
+
 // setup connection
 server.connection({ port: process.env.PORT || 8000 });
 

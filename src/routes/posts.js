@@ -107,14 +107,23 @@ module.exports = [
         "two"
       ];
 
-      var post_id = request.params.post_id;
+      var post_id = Number(request.params.post_id);
+        request.log('debug', 'about to look up post ' + post_id);
 
-      reply.view('posts/post.html', {
-        showFilterSelectors: true,
-        inBodyAds: inBodyAds,
-        title: "Post #" + post_id,
-        footerMenuItems: footerMenuItems,
-        post: post_id
+      new request.server.Post(post_id, function(err, post) {
+        console.log('returned from Post constructor:');
+        console.log(post);
+
+        // return Promise.resolve(post1);
+
+        reply.view('posts/post.html', {
+          showFilterSelectors: true,
+          inBodyAds: inBodyAds,
+          // title: "Post #" + post_id,
+          footerMenuItems: footerMenuItems,
+          post: post
+        });
+
       });
     }
   }
