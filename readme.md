@@ -27,6 +27,8 @@ Make sure you have node and npm, and then:
  
 * `npm run serve`  - start app without launching browser or nodemon 
 * `npm run dev` - start app with nodemon but no browsersync. if you do this you get to app on port 8000, not 3000.
+
+* a test user exists on the dev database that you can use to log in to the new site. username: `fc3devtest`  pw: `blahblahblah`
  
 ### Coding/Architecture Guidelines 
 * reusable plugins and modules that we want to use in other apps (like ModTools, Group Admin, etc) should be put in the `@freecycle/common-hapi-plugins` npm.
