@@ -1,0 +1,15 @@
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+  {% include '../partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+{% block content %}
+
+<h1></p>{{ group.group_name }}</h1>
+
+
+  {% include '../partials/in_body_banner_row.html'%}
+  {% include '../partials/in_page_ribbon.html'%}
+
+{% endblock %}
