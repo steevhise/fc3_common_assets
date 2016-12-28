@@ -36,14 +36,18 @@ The repo for that is at gitolite@devserver.freecycle.org:common-hapi-plugins
 Within that there is now a directory `plugins/` and a directory `modules/` please put things in appropriate place.
 * `src/packages/` is for other code of ours (our unpackaged internal hapi plugins, etc) not contained in the above package or in `src/routes/`, etc 
 * Please keep routes and views organized by section of site: Home, Groups, etc. any js file in the routes dir will get included. 
+* I'm considering adopting [semistandard](https://github.com/Flet/semistandard) for a coding style standard. thoughts are welcome about that.
+[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
  
 ### Frontend
-Foundation, JQuery, SASS, blah blah blah.
+* Foundation, JQuery, SASS, blah blah blah.
+* templating engine is swig-templates. docs for that are at http://node-swig.github.io/swig-templates/
  
 ### Stuff there's no mockups of (?): 
  
 - [ ] Login/signup (?) 
 - [ ] edit profile/settings 
+- [ ] pretty much all of ModTools and GroupAdmin
 - what else?
  
  
@@ -54,4 +58,4 @@ use it like so:
 `WGQL.GraphQLWrapper(server, query, datawanted, function(err, result)  { whatever callback stuff... });`
 where datawanted is a result property you're looking for, like *user.user_id*.
 It will return (null, null) for nothing found, (null, queryResult.data) for found data, and (err, null) for errors.
-Does this really save anything though? Still have to test for errors. hmm.
+... Does this really save anything though? Still have to test for errors. hmm.
