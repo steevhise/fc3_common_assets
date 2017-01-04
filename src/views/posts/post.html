@@ -14,7 +14,7 @@
 
 <hr/>
 
-<div class="row">
+<div class="row post-detail">
 	<div class="post-list-item">
 		<div class="row">
 			<div class="columns medium-8">
@@ -50,12 +50,11 @@
 									<h4 class="section-title">{{post.post_subject}}</h4>
 								</div>
 								<div class="row">
-									<ul class="small-block-grid-4">
-										<li class="text-lighten">Near Stone &amp; Speedway</li>
-										<li class="text-lighten">15 Minutes Ago</li>
-										<li class="text-lighten">11/20/2016</li>
-										<li class="text-lighten">#{{post.post_id}}</li>
-									</ul>
+									<!-- TODO we need to set a swig filter for momentjs -->
+									<div class=" columns medium-3 float-left text-lighten">Near Stone &amp; Speedway</div>
+									<div class=" columns medium-3 float-left text-lighten">15 Minutes Ago</div>
+									<div class=" columns medium-3 float-left text-lighten">11/20/2016</div>
+									<div class=" columns medium-3 float-left text-lighten">#{{post.post_id}}</div>
 								</div>
 							</div>
 						</div>
