@@ -33,12 +33,6 @@
 										</svg>
 										<span class="text-offer">Offer</span>
 									</div>
-									<div class="post-list-item-header-icon">
-										<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-											<path d="M10.75,0A6.25,6.25,0,0,0,4.5,6.25c0,6,6.25,13.75,6.25,13.75S17,12.22,17,6.25A6.25,6.25,0,0,0,10.75,0Zm0,9.7a3.38,3.38,0,1,1,3.38-3.38A3.37,3.37,0,0,1,10.75,9.7Z"></path>
-										</svg>
-										<span>Tucson, AZ</span>
-									</div>
 								</div>
 								<div class="post-list-item-header-right">
 									<!-- TODO add share and report button -->
@@ -46,21 +40,33 @@
 							</div>
 							<div class="clearfix" style="margin-top: 10px;"></div>
 							<div class="row">
-								<div class="row">
-									<h4 class="section-title">{{post.post_subject}}</h4>
-								</div>
-								<div class="row">
-									<!-- TODO we need to set a swig filter for momentjs -->
-									<div class=" columns medium-3 float-left text-lighten">Near Stone &amp; Speedway</div>
-									<div class=" columns medium-3 float-left text-lighten">15 Minutes Ago</div>
-									<div class=" columns medium-3 float-left text-lighten">11/20/2016</div>
-									<div class=" columns medium-3 float-left text-lighten">#{{post.post_id}}</div>
-								</div>
+								<h4 class="section-title">{{post.post_subject}}</h4>
+								
+								<!-- TODO we need to set a swig filter for momentjs -->
+								<ul class="post-items">
+									<li>Near Stone &amp; Speedway</li>
+									<li>15 Minutes Ago</li>
+									<li>11/20/2016</li>
+									<li>#{{post.post_id}}</li>
+								</ul>
 							</div>
 						</div>
 					</div>
+					<ul class="post-items">
+						<li><span>Tucson, AZ</span></li>
+						<li>{{post.user.username}}</li>
+						
+						<!-- TODO tags will be replaced with a for loop once tag data is available -->
+						<li><a>Furniture</a>,<a>Sofa</a>,<a>Bed</a></li>
+					</ul>
 					<div class="post-list-item-content-description">
-						<p>{{post.post_description}}</p>
+						<div class="row">
+							<p>{{post.post_description}}</p>"
+						</div>
+						
+						<div class="row">
+							<button class="btn-offer">Reply</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -73,12 +79,6 @@
 				</div>
 				<div class="row text-center">
 					<a>View Full Size</a>
-				</div>
-			</div>
-			
-			<div class="columns medium-12">
-				<div class="row">
-					<button class="btn-offer">Reply</button>
 				</div>
 			</div>
 		</div>
