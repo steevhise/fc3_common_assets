@@ -379,6 +379,21 @@ module.exports = [
             }
         }
     },
+    {
+        method: 'GET',
+        path: '/home',
+        config: {
+            id: 'home',
+            description: 'Front Door for logged-out users',
+            auth: false,
+            handler: function (request, reply) {
+                "use strict";
+                reply.view('home', {
+                    title: 'Freecycle',
+                });
+            }
+        }
+    },
   {
     method: 'GET',
     path: '/',
