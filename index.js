@@ -7,8 +7,12 @@ var HapiSass = require('hapi-sass');
 var Inert = require('inert');
 var HapiError = require('hapi-error');
 var Swig = require('swig-templates');
+var SwigMoment = require('swig-moment')();
 
 var longjohn = require('longjohn');     // only for development!!  (stack traces)
+
+// swig config
+Swig.setFilter('mdate', SwigMoment.date);
 
 // sass config
 var sassOptions = {
