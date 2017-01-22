@@ -7,6 +7,9 @@
 {% block content %}
 
 <div class="row text-center" style="margin: 20px 0px 20px 0px;">
+	{#
+		TODO determine where the back to posts link should go.
+	#}
 	<a href="/posts/">
 		<span>
 			< BACK TO POSTS
@@ -35,22 +38,19 @@
 									</div>
 								</div>
 								<div class="post-list-item-header-right">
-									<!-- TODO add share and report button -->
+									{# TODO add share and report button #}
 								</div>
 							</div>
 							<div class="clearfix" style="margin-top: 10px;"></div>
 							<div class="row">
 								<h4 class="section-title">{{post.post_subject}}</h4>
 								
-								<!-- TODO we need to set a swig filter for momentjs -->
+								{# TODO we need to set a swig filter for momentjs #}
 								<ul class="post-items">
 									<li>Near Stone &amp; Speedway</li>
 									<li>15 Minutes Ago</li>
-									<li>11/20/2016</li>
-									
-									<!-- TODO remove -->
-									<li>{{post.post_date|mdate('YYYYMMDD').fromNow()}}</li>
-									
+									<li>{{post.post_date|mdate('MM/DD/YYYY')}}</li>
+									<li>{{post.post_date|mreldate|capitalize}}</li>
 									<li>#{{post.post_id}}</li>
 								</ul>
 							</div>
@@ -58,9 +58,9 @@
 					</div>
 					<ul class="post-items">
 						<li><span>Tucson, AZ</span></li>
-						<li><div>{{post.user.username|lower}}</div></li>
+						<li><div>{{post.user.username|upper}}</div></li>
 						
-						<!-- TODO tags will be replaced with a for loop once tag data is available -->
+						{# TODO tags will be replaced with a for loop once tag data is available #}
 						<li><a>Furniture</a>,<a>Sofa</a>,<a>Bed</a></li>
 					</ul>
 					<div class="post-list-item-content-description align-left">
