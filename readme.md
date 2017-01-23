@@ -4,7 +4,7 @@
 
 Make sure you have node and npm, and then:  
  
-1. Make sure you have access to the freecycle npm registry so you can get our private packages: 
+1. Be sure you have access to the freecycle npm registry so you can get our private packages: 
 2. Put this in your `.npmrc` file:
     
     ```
