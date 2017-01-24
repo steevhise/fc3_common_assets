@@ -10,14 +10,16 @@
             <li class="item-list-header-filter-icon item-list-grid-view">
                 {% include '../icons/list.html' %} <span>List</span>
             </li>
-            <li class="item-list-header-filter-icon item-list-list-view inactive">
+            <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="map">
                   {% include '../icons/map_compass.html' %} <span>Map</span>
             </li>
         </ul>
     </div>
   </div>
 </div>
-  
+
+{% include './modal_body.html' with {id: 'map', content: 'Place Holder, Update once Map is in Place.'} %}
+
 <div class="row">
   <div class="table-example small-centered large-8 column">
     <table>
