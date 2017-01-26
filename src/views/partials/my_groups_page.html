@@ -13,12 +13,13 @@
             <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="map">
                   {% include '../icons/map_compass.html' %} <span>Map</span>
             </li>
+            <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="map1">
+                  {% include '../icons/map_compass.html' %} <span>Map</span>
+            </li>
         </ul>
     </div>
   </div>
 </div>
-
-{% include './modal_body.html' with {id: 'map', content: 'Place Holder, Update once Map is in Place.'} %}
 
 <div class="row">
   <div class="table-example small-centered large-8 column">
@@ -42,3 +43,6 @@
     </table>
   </div>
 </div>
+
+{% include './modal_map.html' with {id: 'map', mapid: 'geomap', size: 'large', title: 'My Groups Map', content: 'Place Holder, Update once Map is in Place.'} %}
+{% include './modal_map.html' with {id: 'map1', mapid1: 'geomap', size: 'large', title: 'My Groups Map', content: 'Place Holder, Update once Map is in Place.'} %}

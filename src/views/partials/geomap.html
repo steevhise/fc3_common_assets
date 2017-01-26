@@ -1,3 +1,13 @@
-<div id="geomap">
+<div id="{{mapid}}"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>	
+
+<script>
+	var map = L.map('{{mapid}}', {
+		center: [51.505, -9.09],
+		zoom: 13
+	});
 	
-</div>
+</script>
+
