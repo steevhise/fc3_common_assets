@@ -2,6 +2,7 @@
   <h4 class="text-center page-sub-title">My Groups</h4>
   {% include './in_page_search.html' with {label:'Search Groups'} %}
 </div>
+
 <div class="row">
   <div class="item-list-header small-centered large-8 column">
     <div class="item-list-header-controls my-groups-header-controls">
@@ -11,9 +12,6 @@
                 {% include '../icons/list.html' %} <span>List</span>
             </li>
             <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="map">
-                  {% include '../icons/map_compass.html' %} <span>Map</span>
-            </li>
-            <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="map1">
                   {% include '../icons/map_compass.html' %} <span>Map</span>
             </li>
         </ul>
@@ -45,4 +43,3 @@
 </div>
 
 {% include './modal_map.html' with {id: 'map', mapid: 'geomap', size: 'large', title: 'My Groups Map', content: 'Place Holder, Update once Map is in Place.'} %}
-{% include './modal_map.html' with {id: 'map1', mapid1: 'geomap', size: 'large', title: 'My Groups Map', content: 'Place Holder, Update once Map is in Place.'} %}

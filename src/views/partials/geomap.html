@@ -4,10 +4,9 @@
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>	
 
 <script>
-	var map = L.map('{{mapid}}', {
-		center: [51.505, -9.09],
-		zoom: 13
-	});
-	
+	var map = L.map('{{mapid}}').setView([51.505, -0.09], 13);
 </script>
 
+<style>
+	#{{mapid}} { height: 300px;}
+</style>
