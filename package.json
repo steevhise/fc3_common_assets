@@ -29,6 +29,7 @@
     "inert": "^3.2.0",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
+    "moment": "^2.17.1",
     "nodemon": "^1.9.1",
     "path": "^0.12.7",
     "swig-templates": "^2.0.1",
