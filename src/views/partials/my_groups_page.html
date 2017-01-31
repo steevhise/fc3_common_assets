@@ -11,7 +11,7 @@
             <li class="item-list-header-filter-icon item-list-grid-view">
                 {% include '../icons/list.html' %} <span>List</span>
             </li>
-            <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="map">
+            <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="mygroups_map">
                   {% include '../icons/map_compass.html' %} <span>Map</span>
             </li>
         </ul>
@@ -42,4 +42,6 @@
   </div>
 </div>
 
-{% include './modal_map.html' with {id: 'map', mapid: 'geomap', size: 'large', title: 'My Groups Map', content: 'Place Holder, Update once Map is in Place.'} %}
+{% include "./leaflet_assets.html" %}
+
+<div id="mygroups_map" class="reveal-modal large"></div>
