@@ -2,3 +2,38 @@
 #static-wrapper {
   padding: 100px;
 }
+
+.home .mission {
+  padding: 3.75rem 3.75rem 3.438rem 3.75rem;
+  margin-bottom: 0.125rem
+}
+
+.home .mission h4 {
+  color: map-get($freecycle-palette,primary-darken);
+  margin-bottom: 1.563em;
+}
+
+.home .mission small {
+  vertical-align: super;
+  color: #258025;
+  font-size: 40%;
+  font-weight: bold;
+}
+
+.home .ads {
+  padding-right: 0;
+}
+
+.home .in-body-banner-ad {
+  float: right;
+  margin-bottom: 2.5rem;
+}
+
+.home .metrics {
+  padding: 0 3.75rem;
+}
+
+.home .metrics .metric {
+  text-align: center;
+
+}
