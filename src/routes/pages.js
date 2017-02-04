@@ -386,13 +386,38 @@ module.exports = [
             id: 'home',
             description: 'Front Door for logged-out users',
             auth: false,
-            handler: function (request, reply) {
-                "use strict";
-                reply.view('home', {
-                    title: 'Freecycle',
-                });
+        },
+        handler: function (request, reply) {
+          const inBodyAds = [
+            "one",
+            "two"
+          ];
+          const localGroups = [
+            "Tuscon", "Marana", "Oro Valley", "Vail", "Sanuarita"
+          ];
+          const metrics = [
+            {
+              name: "Members",
+              count: 9073808
+            },
+            {
+              name: "Local Groups",
+              count: 5270
+            },
+            {
+              name: "Scams or Cost",
+              count: 0
             }
-        }
+          ];
+          "use strict";
+          reply.view('home', {
+              title: 'Freecycle',
+              inBodyAds: inBodyAds,
+              posts: posts.slice(0, 3),
+              groups: localGroups,
+              metrics: metrics
+          });
+        },
     },
   {
     method: 'GET',
@@ -514,8 +539,7 @@ function _facebookLoginHandler (request, reply) {
        // or success
        reply.state('MyFreecycle', cookieContent);
        console.log('ok we gave out the cookie after Facebook login', cookieContent);
-       return reply.redirect('/desktop-dash');
-
+      return reply.redirect('/desktop-dash');
      });
   });
 }

@@ -34,6 +34,10 @@
 .section-divider:nth-of-type(2) {
 }
 
+.home .section-divider,.home .section-divider:nth-of-type(1), .home .section-divider:nth-of-type(2) {
+  margin: 1.25rem auto;
+}
+
 .font-block {
   display: flex;
   align-items: stretch;
@@ -70,4 +74,3 @@
   font-family: $header-font-family;
   font-weight: bold;
 }
-
