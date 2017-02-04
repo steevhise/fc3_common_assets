@@ -57,5 +57,10 @@
     "longjohn": "^0.2.11",
     "semistandard": "*",
     "snazzy": "*"
+  },
+  "semistandard": {
+    "ignore": [
+      "src/assets/"
+    ]
   }
 }

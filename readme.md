@@ -36,7 +36,8 @@ The repo for that is at gitolite@devserver.freecycle.org:common-hapi-plugins
 Within that there is now a directory `plugins/` and a directory `modules/` please put things in appropriate place.
 * `src/packages/` is for other code of ours (our unpackaged internal hapi plugins, etc) not contained in the above package or in `src/routes/`, etc 
 * Please keep routes and views organized by section of site: Home, Groups, etc. any js file in the routes dir will get included. 
-* I'm considering adopting [semistandard](https://github.com/Flet/semistandard) for a coding style standard. thoughts are welcome about that.
+* We are now trying to use the [semistandard](https://github.com/Flet/semistandard) coding style. Thoughts are welcome about that.
+To lint your code for this standard, use `npm run lint`.  We will "fix" these things gradually.
 [![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
  
 ### Frontend
