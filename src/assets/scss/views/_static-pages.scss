@@ -35,5 +35,14 @@
 
 .home .metrics .metric {
   text-align: center;
+}
 
+.home .metrics .metric h4 {
+  padding: 3.75rem 0 0.75rem 0;
+  border-bottom: 1px solid #ede7de;
+}
+
+.home .metrics .metric small {
+  text-transform: uppercase;
+  color: map-get($freecycle-palette,primary-darken);
 }
