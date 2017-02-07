@@ -24,7 +24,7 @@ const sassOptions = {
     src: './src/assets/scss',
     dest: './public/assets/css',
     force: true,
-    debug: false,
+    debug: true,
     routePath: '/css/{file}.css',
     outputStyle: 'nested',
     srcExtension: 'scss'
@@ -187,6 +187,9 @@ server.register([
             server.route({
                 method: 'GET',
                 path: '/images/{param*}',
+                config: {
+                    tags: ['exclude']
+                },
                 handler: {
                     directory: {
                         path: './public/assets/images',
