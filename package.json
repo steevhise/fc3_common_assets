@@ -39,6 +39,7 @@
   },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js . | snazzy",
+    "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
     "watch:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader' --watch",
     "build:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader'",
     "build:trumbowyg": "cp -rp ./node_modules/trumbowyg/dist ./public/assets/trumbowyg",
