@@ -1,21 +1,21 @@
-'use strict';
+
 
 const Hoek = require('hoek');
 
 // dummy footer items
 const footerMenuItems = [
-  'Local Groups',
-  'Merchandise',
-  'Donate',
-  'Privacy',
-  'About',
-  'Sponsors',
-  'Volunteer',
-  'Terms',
-  'News',
-  'Help',
-  'Contact',
-  'Wiki'];
+    'Local Groups',
+    'Merchandise',
+    'Donate',
+    'Privacy',
+    'About',
+    'Sponsors',
+    'Volunteer',
+    'Terms',
+    'News',
+    'Help',
+    'Contact',
+    'Wiki'];
 
 // dummy post data
 /* const posts = [
@@ -54,39 +54,41 @@ const footerMenuItems = [
 
 // route definitions
 module.exports = [
-  {
-    method: 'GET',
-    path: '/posts/{postId}',
-    config: {
-      id: 'post',
-      description: 'an individual post.  use a number, like /posts/123454'
+    {
+        method: 'GET',
+        path: '/posts/{postId}',
+        config: {
+            id: 'post',
+            description: 'an individual post.  use a number, like /posts/123454'
         /* plugins: { 'auth-cookie-freecycle': {
             redirectTo: false,
             redirectOnTry: false
         }} */
-    },
-    handler: function (request, reply) {
-      const inBodyAds = [
-        'one',
-        'two'
-      ];
+        },
+        handler: function (request, reply) {
 
-      var postId = Number(request.params.postId);
-      request.log('debug', 'about to look up post ' + postId);
+            const inBodyAds = [
+                'one',
+                'two'
+            ];
 
-      new request.server.Post(postId, function (err, post) {
-        Hoek.assert(!err, 'Probem getting Post!');
-        console.log('returned from Post constructor:');
-        console.log(post);
+            const postId = Number(request.params.postId);
+            request.log('debug', 'about to look up post ' + postId);
 
-        reply.view('posts/post.html', {
-          showFilterSelectors: true,
-          inBodyAds: inBodyAds,
+            new request.server.Post(postId, (err, post) => {
+
+                Hoek.assert(!err, 'Probem getting Post!');
+                console.log('returned from Post constructor:');
+                console.log(post);
+
+                reply.view('posts/post.html', {
+                    showFilterSelectors: true,
+                    inBodyAds,
           // title: "Post #" + post_id,
-          footerMenuItems: footerMenuItems,
-          post: post
-        });
-      });
+                    footerMenuItems,
+                    post
+                });
+            });
+        }
     }
-  }
 ];

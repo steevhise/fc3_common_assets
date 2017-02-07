@@ -1,3 +1,5 @@
+
+
 // const A = require('assert');
 // const Code = require('code');
 // const Expect = Code.expect;
@@ -6,7 +8,7 @@
 
 const App = require('../lib/index.js');   // require the whole server app? can we do that?
 
-var server = App.server;
+const server = App.server;
 
 console.log(server.methods);
 
