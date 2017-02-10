@@ -3,6 +3,15 @@
   padding: 100px;
 }
 
+.home .banner-movie {
+  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.home .nearby-groups-label {
+  margin-right: 3.750rem;
+}
+
 .home .mission {
   padding: 3.75rem 3.75rem 3.438rem 3.75rem;
   margin-bottom: 0.125rem
@@ -45,4 +54,21 @@
 .home .metrics .metric small {
   text-transform: uppercase;
   color: map-get($freecycle-palette,primary-darken);
+}
+
+.home .mission-subtext {
+  padding: 3.750rem 0rem;
+  text-align: center;
+}
+
+.home .mission-subtext p {
+  font-family: "Roboto Slab", serif;
+  font-size: 0.625rem;
+  font-weight: bold;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
+
+.home .mission-subtext button {
+  margin-top: 1.500rem;
 }
