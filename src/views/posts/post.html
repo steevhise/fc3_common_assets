@@ -46,8 +46,7 @@
 								<h4 class="section-title">{{post.post_subject}}</h4>
 								
 								<ul class="post-items">
-									<li>Near Stone &amp; Speedway</li>
-									<li>15 Minutes Ago</li>
+									<li>{{ post.post_location }}</li>
 									<li>{{post.post_date|mdate('MM/DD/YYYY')}}</li>
 									<li>{{post.post_date|mreldate|capitalize}}</li>
 									<li>#{{post.post_id}}</li>
@@ -56,7 +55,8 @@
 						</div>
 					</div>
 					<ul class="post-items">
-						<li><span>Tucson, AZ</span></li>
+						<li><span>{{post.group.group_name}} group</span></li>
+						{# TODO eventually we'll need to include the region/country when available #}
 						<li><div>{{post.user.username|upper}}</div></li>
 						
 						{# TODO tags will be replaced with a for loop once tag data is available #}

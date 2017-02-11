@@ -38,7 +38,7 @@
     "webpack": "^1.12.15"
   },
   "scripts": {
-    "lint": "./node_modules/eslint/bin/eslint.js . | snazzy",
+    "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
     "watch:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader' --watch",
     "build:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader'",
@@ -60,10 +60,5 @@
     "lab": "^11.0.1",
     "longjohn": "^0.2.11",
     "snazzy": "*"
-  },
-  "semistandard": {
-    "ignore": [
-      "src/assets/"
-    ]
   }
 }
