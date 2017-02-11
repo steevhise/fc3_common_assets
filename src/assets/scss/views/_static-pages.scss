@@ -3,23 +3,111 @@
   padding: 100px;
 }
 
-.home .banner-movie {
-  margin-top: 0.75rem;
+.home .banner-movie-inner {
   margin-bottom: 1.5rem;
+  margin-top: 1.25rem;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+
+  @include breakpoint(large) {
+    margin-top: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.home .recent-list-inner {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+
+  @include breakpoint(large) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.home .post-grid-item {
+  @extend .post-grid-item;
+  @media #{$medium-up} {
+    width: calc(50% - 0.5rem);
+  }
+  @media #{$large-up} {
+    width: calc(33.3333% - 0.5rem);
+  }
+
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.home .recent-grid-view .post-grid-item:nth-child(3) {
+  @include breakpoint(large) {
+    margin-left: 0;
+  }
+}
+.home .recent-grid-view .post-grid-item:nth-last-child(1) {
+  @include breakpoint(large) {
+    margin-right: 0;
+  }
+}
+
+.home .nearby-groups-browse-all {
+  margin-top: 15px;
+
+  @include breakpoint(large) {
+    margin-top: 0.5rem;
+  }
+}
+
+.home .recent-list-load-more {
+  display: none;
+}
+
+.home .section-title-small {
+  @include heading-text();
+  color: $dark-gray;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.home .row .nearby-groups {
+  margin-bottom: 0;
 }
 
 .home .nearby-groups-label {
-  margin-right: 3.750rem;
+  margin-right: 0;
+
+  @include breakpoint(large) {
+    margin-right: 3.750rem;
+  }
+}
+
+.home .row.section-divider {
+  margin: 1.25rem;
+
+  @include breakpoint(large) {
+    margin: 1.25rem auto;
+  }
 }
 
 .home .mission {
-  padding: 3.75rem 3.75rem 3.438rem 3.75rem;
-  margin-bottom: 0.125rem
+  padding: 1.250rem;
+  margin-bottom: 0.125rem;
+  margin: 1.25rem;
+
+  @include breakpoint(large) {
+    padding: 3.75rem 3.75rem 3.438rem 3.75rem;
+    margin: 0;
+  }
 }
 
 .home .mission h4 {
   color: map-get($freecycle-palette,primary-darken);
   margin-bottom: 1.563em;
+  font-size: 1.5rem;
+
+  @include breakpoint(large) {
+    font-size: 1.125rem;
+  }
 }
 
 .home .mission small {
@@ -67,8 +155,13 @@
   font-weight: bold;
   letter-spacing: 1.25px;
   text-transform: uppercase;
+  margin-bottom: 0.3125rem;
 }
 
 .home .mission-subtext button {
   margin-top: 1.500rem;
+}
+
+.home .mission-and-ads {
+  margin-bottom: 6.250em
 }

@@ -388,10 +388,6 @@ module.exports = [
             auth: false,
         },
         handler: function (request, reply) {
-          const inBodyAds = [
-            "one",
-            "two"
-          ];
           const localGroups = [
             "Tuscon", "Marana", "Oro Valley", "Vail", "Sanuarita"
           ];
@@ -412,10 +408,10 @@ module.exports = [
           "use strict";
           reply.view('home', {
               title: 'Freecycle',
-              inBodyAds: inBodyAds,
               posts: posts.slice(0, 3),
               groups: localGroups,
-              metrics: metrics
+              metrics: metrics,
+              footerMenuItems: footerMenuItems
           });
         },
     },
