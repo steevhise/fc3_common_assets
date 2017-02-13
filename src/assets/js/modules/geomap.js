@@ -12,17 +12,14 @@ export default class GeoMap {
 	 * @param {Object} options accepts an object of options to be passed to Leaflet
 	 * @param {Object} config configuration options specifically for the map element itself.
 	 */
-	constructor(container, options, config) {
-		this.container = container;
+	constructor(options, config) {
+		this.container = 'geomap';
 		this.options = options;
-		this.config = config || {};
 
-		this.$element = $(`#${this.container}`);
-
+		this.$element = $(`#geomap`);
 		this.registeredMaps = [];
-		this.markers = this.options.markers || [];
-		
-		this.cssLoaded = false;
+
+		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
 		
 		this.init();
 	}
@@ -43,7 +40,6 @@ export default class GeoMap {
 
 		if (this.markers.length > 0 ) {
 			$.each(this.markers, function(idx, item) {
-				console.log(item);
 				L.marker([item.lat, item.long]).addTo(map)
 					.bindPopup(item.description)
 					.openPopup();
@@ -63,13 +59,7 @@ export default class GeoMap {
 	
 }
 
-// create new map instances with respected options,
-// be sure to pass a unique id to 
-
-const myGroupsMap = new GeoMap('mygroups_map', {
-	height: '200px',
-	width: '100%',
-	markers: [
-		{ lat: 51.5, long: -0.09, description: 'Hello World' }
-	]
+new GeoMap({
+	height: '300px',
+	width: '100%'
 });

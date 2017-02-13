@@ -42,6 +42,9 @@
   </div>
 </div>
 
-{% include "./leaflet_assets.html" %}
+<div class="row">
+  <div id="mygroups_map" class="large-8 column">
+    {% include "./geomap.html" with { }  %}
+  </div>
+</div>
 
-<div id="mygroups_map" class="reveal-modal large"></div>
