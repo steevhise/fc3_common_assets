@@ -22,10 +22,10 @@
   <div class="row">
     <hr class="row section-divider"/>
   </div>
-  <div class="row">
+  <div class="row mission">
     <div class="medium-8 columns">
       <div class="row">
-        <div class="mission bg-white">
+        <div class="bg-white">
           <h4>changing the world one gift at a time<small>TM</small></h4>
           <p>
             Our mission is to build a worldwide gifting movement that reduces waste,
@@ -39,23 +39,27 @@
       {% include './partials/in_body_banner.html' %}
     </div>
   </div>
-  <div class="row mission-and-ads">
+  <div class="row metrics">
     <div class="medium-8 columns">
-      <div class="row metrics bg-white">
-        {% for key,val in metrics %}
-          <div class="medium-4 columns metric">
-            <h4>{{val.count}}</h4>
-            <small>{{val.name}}</small>
-          </div>
-        {% endfor %}
+      <div class="row">
+        <div>
+          {% for key,val in metrics %}
+            <div class="medium-4 columns metric bg-white">
+              <h4>{{val.count}}</h4>
+              <small>{{val.name}}</small>
+            </div>
+          {% endfor %}
+        </div>
       </div>
-    <div class="row bg-white">
-        <div class="mission-subtext">
-          <p>Membership is always free</p>
-          <p>Operation is grassroots and 100% nonprofit</p>
-          <p>Local groups are moderated by volunteers</p>
-          <p>Safe from scams, spam, &amp; adult content</p>
-          <button class="btn btn-default">Learn More</button>
+      <div class="row">
+        <div class="bg-white">
+          <div class="mission-subtext">
+            <p>Membership is always free</p>
+            <p>Operation is grassroots and 100% nonprofit</p>
+            <p>Local groups are moderated by volunteers</p>
+            <p>Safe from scams, spam, &amp; adult content</p>
+            <button class="btn btn-default">Learn More</button>
+          </div>
         </div>
       </div>
     </div>
@@ -63,5 +67,5 @@
       {% include './partials/in_body_banner.html' %}
     </div>
   </div>
-
+  {% include './partials/in_page_ribbon.html'%}
 {% endblock %}

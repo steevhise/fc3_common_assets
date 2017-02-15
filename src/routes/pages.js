@@ -394,15 +394,15 @@ module.exports = [
           const metrics = [
             {
               name: "Members",
-              count: 9073808
+              count: '9,073,808'
             },
             {
               name: "Local Groups",
-              count: 5270
+              count: '5,270'
             },
             {
               name: "Scams or Cost",
-              count: 0
+              count: '0'
             }
           ];
           "use strict";
