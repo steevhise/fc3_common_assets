@@ -8,12 +8,8 @@
 
 <div class="horizontal_tabs">
   <!--  tabs  -->
-  <ul class="tabs" id="h-example-tabs" data-tab data-options="deep_linking:true">
-    <li class="tabs-title is-active"><a href="/desktop-dash" aria-selected="true">Dashboard</a></li>
-    <li class="tabs-title"><a href="/home/my-replies">My Replies</a></li>
-    <li class="tabs-title"><a href="/home/my-posts">My Posts</a></li>
-    <li class="tabs-title"><a href="/home/my-friends">My Friends</a></li>
-    <li class="tabs-title"><a href="/home/my-groups">My Groups</a></li>
+  <ul class="tabs" id="h-example-tabs" data-tab data-update-history="true" data-options="deep_linking:true">
+    {% include './partials/home_tabs.html' %}
   </ul>
 
   <!--  tabs-content  -->

@@ -1,0 +1,71 @@
+{% extends './layout/layout.html' %}
+
+{% block header %}
+{% include './partials/header.html'  %}
+{% endblock %}
+
+{% block content %}
+  {% if msg %}
+    <p class="error-message">{{ msg }}</p>
+  {% endif %}
+
+  <div class="banner-movie">
+    <div class="banner-movie-inner row">
+      <img src="http://lorempixel.com/1200/600/nightlife" />
+    </div>
+  </div>
+  {% include './partials/recent_list.html'  %}
+  <div class="row">
+    <hr class="row section-divider"/>
+  </div>
+  {% include './partials/nearby_groups.html'  %}
+  <div class="row">
+    <hr class="row section-divider"/>
+  </div>
+  <div class="row mission">
+    <div class="medium-8 columns">
+      <div class="row">
+        <div class="bg-white">
+          <h4>changing the world one gift at a time<small>TM</small></h4>
+          <p>
+            Our mission is to build a worldwide gifting movement that reduces waste,
+            saves prevous resources &amp; eases the burdon on our landfills while enabling
+            our members to benefit from the strength of a larger community.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="medium-4 columns ads">
+      {% include './partials/in_body_banner.html' %}
+    </div>
+  </div>
+  <div class="row metrics">
+    <div class="medium-8 columns">
+      <div class="row">
+        <div>
+          {% for key,val in metrics %}
+            <div class="medium-4 columns metric bg-white">
+              <h4>{{val.count}}</h4>
+              <small>{{val.name}}</small>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="bg-white">
+          <div class="mission-subtext">
+            <p>Membership is always free</p>
+            <p>Operation is grassroots and 100% nonprofit</p>
+            <p>Local groups are moderated by volunteers</p>
+            <p>Safe from scams, spam, &amp; adult content</p>
+            <button class="btn btn-default">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="medium-4 columns ads">
+      {% include './partials/in_body_banner.html' %}
+    </div>
+  </div>
+  {% include './partials/in_page_ribbon.html'%}
+{% endblock %}

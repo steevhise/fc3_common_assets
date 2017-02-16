@@ -1,28 +1,40 @@
-'use strict';
 
-var Boom = require('boom');
-var Hapi = require('hapi');
-var path = require('path');
-var HapiSass = require('hapi-sass');
-var Inert = require('inert');
-var HapiError = require('hapi-error');
-var Swig = require('swig-templates');
 
-var longjohn = require('longjohn');     // only for development!!  (stack traces)
+// var Boom = require('boom');
+const Hapi = require('hapi');
+const path = require('path');
+const HapiSass = require('hapi-sass');
+const Inert = require('inert');
+const HapiError = require('hapi-error');
+const Swig = require('swig-templates');
+const Moment = require('moment');
+
+// var longjohn = require('longjohn');     // only for development!!  (stack traces) - not sure if this ever worked.
+
+// swig filters
+Swig.setFilter('mdate', (date, format) => {
+
+    return Moment(date, 'ddd MMM D YYYY H:mm:ss').format(format);
+});
+
+Swig.setFilter('mreldate', (date) => {
+
+    return Moment(date, 'ddd MMM D YYYY H:mm:ss').fromNow();
+});
 
 // sass config
-var sassOptions = {
+const sassOptions = {
     src: './src/assets/scss',
     dest: './public/assets/css',
     force: true,
-    debug: false,
+    debug: true,
     routePath: '/css/{file}.css',
     outputStyle: 'nested',
-    srcExtension: 'scss',
+    srcExtension: 'scss'
 };
 
-//basic server
-var server = new Hapi.Server({
+// basic server
+const server = new Hapi.Server({
     cache: {
         engine: require('catbox-memory'),
         name: 'catmem',
@@ -46,15 +58,15 @@ var server = new Hapi.Server({
 
 // database stuff
 import { graphql } from 'graphql';
-import  schema  from '@freecycle/freecycle_graphql_schema';
-import {Context,onLog,offLog} from '@freecycle/freecycle_node_dal';
+import schema from '@freecycle/freecycle_graphql_schema';
+import { Context } from '@freecycle/freecycle_node_dal';
 
 server.decorate('server', 'context', Context);   // access via server.context
 server.decorate('server', 'graphql', graphql);   // access via server.graphql
 server.decorate('server', 'schema', schema);      // access via server.schema
 
 // our object stuff. is this the best way?
-import { postClassFunc } from "@freecycle/common-hapi-plugins/lib/freecycle-post";
+import { postClassFunc } from '@freecycle/common-hapi-plugins/lib/freecycle-post';
 
 const Post = postClassFunc(server);
 server.decorate('server', 'Post', Post);        // access via server.Post
@@ -63,10 +75,9 @@ server.decorate('server', 'Post', Post);        // access via server.Post
 server.connection({ port: process.env.PORT || 8000 });
 
 // extra logging, too raw though and redundant with the Good logging.
-/*server.on('request', (request, event, tags) => {
+/* server.on('request', (request, event, tags) => {
     console.log(event);
-});*/
-
+}); */
 
 // register plugins
 server.register([
@@ -83,45 +94,50 @@ server.register([
         register: require('crumb')                  // security against CRSF attacks.
     },
     {
-        register: require("good"),
+        register: require('good'),
         options: {
             ops: {
                 interval: 600000
             },
             reporters: {
-                myConsoleReporter: [{
+                myConsoleReporter:
+                [{
                     module: 'good-console',
-                    args: [{ format: 'YYYY-MM-DD/HH:mm:ssZ', utc: false},
-                        {log: '*', response: '*', server: '*', request: '*', ops: 'none'}]
-                }, 'stdout']
+                    args:
+                    [{ format: 'YYYY-MM-DD/HH:mm:ssZ', utc: false },
+           { log: '*', response: '*', server: '*', request: '*', ops: 'none' }
+                    ]
+                }, 'stdout'
+                ]
             }
         }
     },
     {
-        register: require("hapi-named-routes")
+        register: require('hapi-named-routes')
     },
     {
-        register: require("@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle"),
+        register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle'),
         options: {
-            redirectTo: "/login",
+            redirectTo: '/login',
             redirectOnTry: false,    // if mode is 'try' on a public page, don't redirect them if they're not logged in
             clearInvalid: true,
             keepAlive: false
         }
     }
 
-], function ( registerError ) {
+], (registerError) => {
+
     if (registerError) {
         console.error('Failed to load plugin:', registerError);
-        throw(registerError);
+        throw (registerError);
     }
 
     // store user info that we can get to from anywhere.
-    server.app.cache = server.cache({segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000});
+    server.app.cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
 
     // register auth strategy now that we've loaded the auth  plugin.
-    server.auth.strategy('session', 'cookie', "try", server.plugins['auth-cookie-freecycle']['strategy']);
-    console.log(server.plugins['auth-cookie-freecycle']['strategy']);
+    server.auth.strategy('session', 'cookie', 'try', server.plugins['auth-cookie-freecycle'].strategy);
+    console.log(server.plugins['auth-cookie-freecycle'].strategy);
 
     // register even more plugins
     server.register([
@@ -132,11 +148,11 @@ server.register([
             register: require('bell')
         }
 
+    ], (registerError2) => {
 
-    ], function ( registerError ) {
-        if (registerError) {
-            console.error('Failed to load more plugins:', registerError);
-            throw(registerError);
+        if (registerError2) {
+            console.error('Failed to load more plugins:', registerError2);
+            throw (registerError2);
         }
 
         // Declare an authentication strategy using the bell scheme for Facebook login
@@ -148,7 +164,7 @@ server.register([
             clientId: '117834011565165',
             clientSecret: 'fa596fcabbeb2651544ed73ea7c847e3',
             isSecure: false,     // Terrible idea but required if not using HTTPS especially if developing locally
-            providerParams: { display: 'popup'}
+            providerParams: { display: 'popup' }
         });
 
         server.register([
@@ -163,16 +179,20 @@ server.register([
                     roles: false   // by default no roles are required.
                 }
             }
-        ], function (registerError) {
-            if (registerError) {
-                console.error('Failed to load plugin:', registerError);
-                throw(registerError);
+        ], (registerError3) => {
+
+            if (registerError3) {
+                console.error('Failed to load plugin:', registerError3);
+                throw (registerError3);
             }
 
             // static route handlers
             server.route({
                 method: 'GET',
                 path: '/images/{param*}',
+                config: {
+                    tags: ['exclude']
+                },
                 handler: {
                     directory: {
                         path: './public/assets/images',
@@ -184,7 +204,7 @@ server.register([
                 method: 'GET',
                 path: '/font/{param*}',
                 config: {
-                    tags: ['exclude'],
+                    tags: ['exclude']
                 },
                 handler: {
                     directory: {
@@ -199,7 +219,7 @@ server.register([
                 config: {
                     id: 'js',
                     description: 'directory where Front-end javascript code goes',
-                    tags: ['js', 'exclude'],
+                    tags: ['js', 'exclude']
                 },
                 handler: {
                     directory: {
@@ -212,7 +232,7 @@ server.register([
                 method: 'GET',
                 path: '/trumbowyg/{param*}',
                 config: {
-                    tags: ['exclude', 'js'],
+                    tags: ['exclude', 'js']
                 },
                 handler: {
                     directory: {
@@ -225,7 +245,7 @@ server.register([
             // this shows up in all views. right now just for info about credentialed current authenticated user.
             const defaultContext = function (request) {
                 console.log('global context', request.auth.credentials);
-                return {session: request.auth.credentials};
+                return { session: request.auth.credentials };
             };
 
             server.views({
@@ -237,11 +257,11 @@ server.register([
                 layoutPath: path.join(__dirname, '../src/views/layout')
             });
 
-
-            server.start(function (err) {
+            server.start((err) => {
                 if (err) {
                     console.error('server startup error', err);
-                } else {
+                }
+                else {
                     console.log('Server running at:', server.info.uri);
                 }
             });
