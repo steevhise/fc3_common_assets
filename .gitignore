@@ -7,3 +7,4 @@ lib/index.js
 .npmrc
 jsconfig.json
 */.DS_store
+npm-debug.log
