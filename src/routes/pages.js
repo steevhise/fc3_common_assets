@@ -417,13 +417,34 @@ module.exports = [
         config: {
             id: 'home',
             description: 'Front Door for logged-out users',
-            auth: false,
-            handler: function (request, reply) {
-
-                reply.view('home', {
-                    title: 'Freecycle'
-                });
-            }
+            auth: false
+        },
+        handler: function (request, reply) {
+            const localGroups = [
+                'Tuscon', 'Marana', 'Oro Valley', 'Vail', 'Sanuarita'
+            ];
+            const metrics = [
+                {
+                    name: 'Members',
+                    count: '9,073,808'
+                },
+                {
+                    name: 'Local Groups',
+                    count: '5,270'
+                },
+                {
+                    name: 'Scams or Cost',
+                    count: '0'
+                }
+            ];
+            'use strict';
+            reply.view('home', {
+                title: 'Freecycle',
+                posts: posts.slice(0, 3),
+                groups: localGroups,
+                metrics,
+                footerMenuItems
+            });
         }
     },
     {
