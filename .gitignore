@@ -6,3 +6,4 @@ lib/index.js
 .editorconfig
 .npmrc
 jsconfig.json
+*/.DS_store
