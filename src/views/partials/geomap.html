@@ -1,4 +1,9 @@
+{% set markers = this.geomap.markers %}
+{% set settings = this.geomap.settings %}
+
+
 <div 
 	id="geomap"
-	data-geomap-markers='[{ "lat" : "51.5", "long" : "-0.09", "description" : "Hello World" }, { "lat" : "51.5", "long" : "-0.09", "description" : "Hello World" }]'>
+	data-geomap-markers='{{markers}}'
+	data-geomap-settings='{{settings}}'>
 </div>

@@ -38,6 +38,17 @@ const friends = [
   }
 ];
 
+const myGroupsGeomap = {
+  settings: {
+    height: '300px',
+    width: '100%'
+  },
+  markers: [
+    { "lat" : "51.5", "long" : "-0.09", "description" : "Hello World" },
+    { "lat" : "53.5", "long" : "-1.09", "description" : "Hello World" }
+  ]
+}
+
 const myGroups = [
   {
     name: "Tucson",
@@ -175,6 +186,7 @@ module.exports = [
         inBodyAds: inBodyAds,
         title: "My Groups",
         myGroups: myGroups,
+        geomap: myGroupsGeomap,
         footerMenuItems: footerMenuItems,
       });
     }

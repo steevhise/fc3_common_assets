@@ -12,13 +12,13 @@ export default class GeoMap {
 	 * @param {Object} options accepts an object of options to be passed to Leaflet
 	 * @param {Object} config configuration options specifically for the map element itself.
 	 */
-	constructor(options, config) {
+	constructor() {
 		this.container = 'geomap';
-		this.options = options;
 
 		this.$element = $(`#geomap`);
 		this.registeredMaps = [];
 
+		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || [];
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
 		
 		this.init();
@@ -29,15 +29,14 @@ export default class GeoMap {
 	 * @return {null} 
 	 */
 	init() {
-		// new L.map(this.container, this.options);
 		let map = new L.map(this.container);
-
 		map.locate({setView: true});
 
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
+		// loop through markers and attach them to the map instance.
 		if (this.markers.length > 0 ) {
 			$.each(this.markers, function(idx, item) {
 				L.marker([item.lat, item.long]).addTo(map)
@@ -47,8 +46,8 @@ export default class GeoMap {
 		}
 
 		this.$element.css({
-			height: this.options.height,
-			width: this.options.width
+			height: this.settings.height,
+			width: this.settings.width
 		});
 
 		map.invalidateSize(false);
@@ -59,7 +58,4 @@ export default class GeoMap {
 	
 }
 
-new GeoMap({
-	height: '300px',
-	width: '100%'
-});
+new GeoMap();
