@@ -5,3 +5,4 @@ public/assets/trumbowyg/
 .editorconfig
 .npmrc
 jsconfig.json
+.vscode
