@@ -6,3 +6,4 @@ public/assets/trumbowyg/
 .npmrc
 jsconfig.json
 .vscode
+.tern-project

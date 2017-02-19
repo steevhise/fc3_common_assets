@@ -27,7 +27,7 @@ export default class GeoMap {
 	init() {
 		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || this.defaultSettings;
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
-
+		
 		let map = new L.map(this.instance, {
 			zoom: 13
 		});
@@ -40,6 +40,9 @@ export default class GeoMap {
 		// loop through markers and attach them to the map instance.
 		if (this.markers.length > 0 ) {
 			$.each(this.markers, function(idx, item) {
+				//TODO we the second argument for L.marker , should be an object,
+				// where we pass icon : {iconUrl: 'someUrl'}
+				// we should do this when we are ready to define different marker types.
 				L.marker([item.lat, item.long]).addTo(map)
 					.bindPopup(item.description)
 					.openPopup();
