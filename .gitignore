@@ -7,3 +7,5 @@ public/assets/trumbowyg/
 jsconfig.json
 .vscode
 .tern-project
+docker-compose.yml
+Dockerfile
