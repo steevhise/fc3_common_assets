@@ -40,11 +40,10 @@ const friends = [
 
 const myGroupsGeomap = {
   settings: {
-    height: '300px',
-    width: '100%'
+    "height" : "400",
+    "width": "100%"
   },
   markers: [
-    { "lat" : "51.5", "long" : "-0.09", "description" : "Hello World" },
     { "lat" : "53.5", "long" : "-1.09", "description" : "Hello World" }
   ]
 }

@@ -6,21 +6,17 @@ import L from 'leaflet';
  * @class {null} GeoMap
  */
 export default class GeoMap {
-	/**
-	 * GeoMap constructor
-	 * @param {String} container accepts a container, this will be the map element id
-	 * @param {Object} options accepts an object of options to be passed to Leaflet
-	 * @param {Object} config configuration options specifically for the map element itself.
-	 */
-	constructor() {
-		this.container = 'geomap';
-
-		this.$element = $(`#geomap`);
-		this.registeredMaps = [];
-
-		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || [];
-		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
+	constructor(instance) {
 		
+		this.instance = instance;
+		this.$element = $(this.instance);
+
+		this.defaultSettings = {
+			height: '400',
+			width: '100%'
+		};
+
+		// this function builds the map.
 		this.init();
 	}
 
@@ -29,7 +25,12 @@ export default class GeoMap {
 	 * @return {null} 
 	 */
 	init() {
-		let map = new L.map(this.container);
+		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || this.defaultSettings;
+		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
+
+		let map = new L.map(this.instance, {
+			zoom: 13
+		});
 		map.locate({setView: true});
 
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -51,11 +52,10 @@ export default class GeoMap {
 		});
 
 		map.invalidateSize(false);
-
-		// upon instantiation push the map to the array.
-		this.registeredMaps.push(this.container);
 	}
 	
 }
 
-new GeoMap();
+$('body').find('[data-geomap]').each(function(idx, item) {
+	new GeoMap(item);
+});

@@ -1,9 +1,6 @@
-{% set markers = this.geomap.markers %}
-{% set settings = this.geomap.settings %}
-
-
 <div 
 	id="geomap"
-	data-geomap-markers='{{markers}}'
-	data-geomap-settings='{{settings}}'>
+	data-geomap
+	data-geomap-markers='{{geomap.markers|json}}'
+	data-geomap-settings='{{geomap.settings|json}}'>
 </div>
