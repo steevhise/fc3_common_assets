@@ -2,6 +2,9 @@ node_modules/
 public/assets/css/
 public/assets/js/
 public/assets/trumbowyg/
+lib/index.js
 .editorconfig
 .npmrc
 jsconfig.json
+*/.DS_store
+npm-debug.log

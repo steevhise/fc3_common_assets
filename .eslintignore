@@ -1,0 +1,7 @@
+
+#ignore built files
+lib/*
+public/*
+
+# ignore front-end js
+src/assets/*

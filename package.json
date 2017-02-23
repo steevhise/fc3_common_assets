@@ -29,6 +29,7 @@
     "inert": "^3.2.0",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
+    "moment": "^2.17.1",
     "nodemon": "^1.9.1",
     "path": "^0.12.7",
     "swig-templates": "^2.0.1",
@@ -37,6 +38,8 @@
     "webpack": "^1.12.15"
   },
   "scripts": {
+    "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
+    "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
     "watch:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader' --watch",
     "build:javascript": "webpack ./src/assets/js/main.js ./public/assets/js/main.bundle.js  --module-bind 'js=babel-loader'",
     "build:trumbowyg": "cp -rp ./node_modules/trumbowyg/dist ./public/assets/trumbowyg",
@@ -51,7 +54,11 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "code": "^3.0.2",
+    "eslint": "^3.15.0",
+    "eslint-config-hapi": "^10.0.0",
+    "eslint-plugin-hapi": "^4.0.0",
     "lab": "^11.0.1",
-    "longjohn": "^0.2.11"
+    "longjohn": "^0.2.11",
+    "snazzy": "*"
   }
 }
