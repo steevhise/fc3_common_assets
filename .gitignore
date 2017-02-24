@@ -6,5 +6,9 @@ lib/index.js
 .editorconfig
 .npmrc
 jsconfig.json
+.vscode
+.tern-project
+docker-compose.yml
+Dockerfile
 */.DS_store
 npm-debug.log
