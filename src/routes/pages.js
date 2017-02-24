@@ -102,13 +102,15 @@ const _loginHandler = function (request, reply) {
         const pw = request.payload.password;
 
         request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
+
             Hoek.assert(!err, 'loginUser ERROR: ' + err);
       // console.log('userID found after login:', userId);
             if (userId) {
                 reply.setCookie(Number(userId), (err, cookieContent) => {
+
                     Hoek.assert(!err, 'Error: ' + err);
 
-          // or success
+                    // or success
                     reply.state('MyFreecycle', cookieContent);
                     request.log('debug', 'ok we gave out the cookie', cookieContent);
                     reply.redirect('/desktop-dash').temporary(true);
@@ -151,11 +153,13 @@ const _facebookLoginHandler = function (request, reply) {
 
     const query = '{ user_static (where: {facebook_id: ' + fbId + '}) {   facebook_id user_id} } ';
     WGQL.GraphQLWrapper(request.server, query, 'user_static.user_id', (err, result) => {
+
         Hoek.assert(!err, err);
         const userId = result.user_static.user_id;
         console.log('userId ', userId);
 
         reply.setCookie(Number(userId), (err, cookieContent) => {
+
             Hoek.assert(!err, 'Error: ' + err);
 
       // or success
@@ -331,6 +335,7 @@ module.exports = [
       // TODO: cache this
             request.server.graphql(request.server.schema, query)
           .then((queryResult) => {
+
               let retval;
               if (typeof queryResult.data.page === 'undefined' || queryResult.data.page === null) {
                   retval = '404';
@@ -346,6 +351,7 @@ module.exports = [
               return retval;
           })
           .then((page) => {
+
               if (typeof page === 'string') {
               // error of some kind.
                   if (page === '404') {
@@ -404,6 +410,7 @@ module.exports = [
             description: 'log out on this page, delete your cookie',
             auth: false,
             handler: function (request, reply) {
+
                 request.cookieAuth.clear();
                 reply.view('logout', {
                     title: 'Logged out'
@@ -420,6 +427,7 @@ module.exports = [
             auth: false
         },
         handler: function (request, reply) {
+
             const localGroups = [
                 'Tuscon', 'Marana', 'Oro Valley', 'Vail', 'Sanuarita'
             ];
