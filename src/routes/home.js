@@ -44,9 +44,10 @@ const myGroupsGeomap = {
     "width": "100%"
   },
   markers: [
-    { "lat" : "53.5", "long" : "-1.09", "description" : "Hello World" }
-  ]
-}
+    { "lat" : "32.5", "long" : "-110.09", "description" : "Tucson" },
+    { "lat" : "32.0", "long" : "-111.09", "description" : "Oro Valley" },
+    { "lat" : "31.5", "long" : "-110.09", "description" : "Green Valley" }  ]
+};
 
 const myGroups = [
   {
