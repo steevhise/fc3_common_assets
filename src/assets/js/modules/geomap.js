@@ -29,8 +29,9 @@ export default class GeoMap {
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
 		
 		let map = new L.map(this.instance, {
-			zoom: 13
+			zoom: 13,
 		});
+		
 		map.locate({setView: true});
 
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
