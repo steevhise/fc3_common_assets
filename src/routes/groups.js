@@ -1,5 +1,9 @@
 'use strict';
 
+const localGroups = [
+  "Tuscon", "Marana", "Oro Valley", "Vail", "Sanuarita"
+];
+
 // fake data for now
 const group = {
          "group_id": 1014,
@@ -85,7 +89,8 @@ module.exports = [
                     // title: "Post #" + post_id,
                     // footerMenuItems: footerMenuItems,
                     group: group,
-                    posts: group.posts
+                    posts: group.posts,
+                    groups: localGroups
                 });
 
             // });
