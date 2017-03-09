@@ -3,7 +3,7 @@ import gmap from 'google-maps';
 
 // default values that must be available to all map instances
 gmap.KEY = 'AIzaSyAF77Fi1J3JmCKUHxEGaGRDVit5E_CTAmQ';
-
+gmap.LIBRARIES = ['places'];
 /**
  * A class wrapper for geomap, that simplifies the instantiation process.
  * @class {null} GeoMap
@@ -31,6 +31,15 @@ export default class GeoMap {
 		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || this.defaultSettings;
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
 		
+		let geoLocation;
+		
+		navigator.geolocation.getCurrentPosition( (position) =>  {
+			geoLocation = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude
+			}
+		});
+		
 		// loads the google maps api
 		gmap.load( (google) => {
 			// instantiates a new map instance
@@ -39,6 +48,8 @@ export default class GeoMap {
 				center: {lat: 32.5, lng: -110.09}
 			});
 			
+			map.setCenter(geoLocation ? geoLocation : map.getCenter());
+
 			// create an infoWindow
 			let mapInfoWindow = new google.maps.InfoWindow();
 			
