@@ -43,16 +43,18 @@ export default class GeoMap {
 			let mapInfoWindow = new google.maps.InfoWindow();
 			
 			let marker, i;
+			let mapLocations = this.markers;
+			
 			// loop through the markers and attach them to the map instance
-			for (i = 0; i < this.markers.length; i++) { 
+			for (i = 0; i < mapLocations.length; i++) { 
 				marker = new google.maps.Marker({
-					position: new google.maps.LatLng(this.markers[i].lat, this.markers[i].lng),
+					position: new google.maps.LatLng(mapLocations[i].lat, mapLocations[i].lng),
 					map: map
 				});
 
 				google.maps.event.addListener(marker, 'click', (function(marker, i) {
 					return function() {
-						mapInfoWindow.setContent(this.markers[i].description);
+						mapInfoWindow.setContent(mapLocations[i].description);
 						mapInfoWindow.open(map, marker);
 					}
 				})(marker, i));
