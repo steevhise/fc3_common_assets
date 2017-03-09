@@ -48,7 +48,7 @@ export default class GeoMap {
 			// loop through the markers and attach them to the map instance
 			for (i = 0; i < mapLocations.length; i++) { 
 				marker = new google.maps.Marker({
-					position: new google.maps.LatLng(mapLocations[i].lat, mapLocations[i].lng),
+					position: new google.maps.LatLng(Number(mapLocations[i].lat), Number(mapLocations[i].lng)),
 					map: map
 				});
 
