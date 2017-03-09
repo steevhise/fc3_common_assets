@@ -5,7 +5,7 @@ import gmap from 'google-maps';
 gmap.KEY = 'AIzaSyAF77Fi1J3JmCKUHxEGaGRDVit5E_CTAmQ';
 
 /**
- * A class wrapper for leaflet, that simplifies the instantiation process.
+ * A class wrapper for geomap, that simplifies the instantiation process.
  * @class {null} GeoMap
  */
 export default class GeoMap {
