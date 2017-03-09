@@ -1,5 +1,8 @@
 import $ from 'jquery';
-import L from 'leaflet';
+import gmap from 'google-maps';
+
+// default values that must be available to all map instances
+gmap.KEY = 'AIzaSyAF77Fi1J3JmCKUHxEGaGRDVit5E_CTAmQ';
 
 /**
  * A class wrapper for leaflet, that simplifies the instantiation process.
@@ -28,34 +31,38 @@ export default class GeoMap {
 		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || this.defaultSettings;
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
 		
-		let map = new L.map(this.instance, {
-			zoom: 13,
-		});
-		
-		map.locate({setView: true});
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-		// loop through markers and attach them to the map instance.
-		if (this.markers.length > 0 ) {
-			$.each(this.markers, function(idx, item) {
-				//TODO we the second argument for L.marker , should be an object,
-				// where we pass icon : {iconUrl: 'someUrl'}
-				// we should do this when we are ready to define different marker types.
-				L.marker([item.lat, item.long]).addTo(map)
-					.bindPopup(item.description)
-					.openPopup();
+		// loads the google maps api
+		gmap.load( (google) => {
+			// instantiates a new map instance
+			let map = new google.maps.Map(this.instance, {
+				zoom: 8,
+				center: {lat: 32.5, lng: -110.09}
 			});
-		}
+			
+			// create an infoWindow
+			let mapInfoWindow = new google.maps.InfoWindow();
+			
+			let marker, i;
+			// loop through the markers and attach them to the map instance
+			for (i = 0; i < this.markers.length; i++) { 
+				marker = new google.maps.Marker({
+					position: new google.maps.LatLng(this.markers[i].lat, this.markers[i].lng),
+					map: map
+				});
+
+				google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					return function() {
+						mapInfoWindow.setContent(this.markers[i].description);
+						mapInfoWindow.open(map, marker);
+					}
+				})(marker, i));
+			}
+		});
 
 		this.$element.css({
 			height: this.settings.height,
 			width: this.settings.width
 		});
-
-		map.invalidateSize(false);
 	}
 	
 }
