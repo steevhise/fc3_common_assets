@@ -1,6 +1,7 @@
 # made this alphabetical - smh
 */.DS_store
 .editorconfig
+.idea
 .npmrc
 .tern-project
 .vscode
