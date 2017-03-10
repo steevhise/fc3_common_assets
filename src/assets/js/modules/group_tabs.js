@@ -2,9 +2,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
 	// define tabRoot to ensure strict scoping
 	const tabRoot = $('#g-example-tabs');
 
-	console.log("path is "+path);
-
-
 	let setActiveTab = function (elm) {
 		$(elm).attr('aria-selected', 'true');
 		$(elm).closest('li').addClass('is-active');
