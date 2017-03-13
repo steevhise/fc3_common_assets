@@ -3,7 +3,7 @@
   padding: 100px;
 }
 
-.home .banner-movie-inner {
+body[data-fc-route="home"] .banner-movie-inner {
   margin-bottom: 1.5rem;
   margin-top: 1.25rem;
   margin-left: 1.25rem;
@@ -16,7 +16,7 @@
   }
 }
 
-.home .recent-list-inner {
+body[data-fc-route="home"] .recent-list-inner {
   margin-left: 1.25rem;
   margin-right: 1.25rem;
 
@@ -26,7 +26,7 @@
   }
 }
 
-.home .post-grid-item {
+body[data-fc-route="home"] .post-grid-item {
   @extend .post-grid-item;
   @media #{$medium-up} {
     width: calc(50% - 0.5rem);
@@ -39,18 +39,18 @@
   margin-right: 0.25rem;
 }
 
-.home .recent-grid-view .post-grid-item:nth-child(3) {
+body[data-fc-route="home"] .recent-grid-view .post-grid-item:nth-child(3) {
   @include breakpoint(large) {
     margin-left: 0;
   }
 }
-.home .recent-grid-view .post-grid-item:nth-last-child(1) {
+body[data-fc-route="home"] .recent-grid-view .post-grid-item:nth-last-child(1) {
   @include breakpoint(large) {
     margin-right: 0;
   }
 }
 
-.home .nearby-groups-browse-all {
+body[data-fc-route="home"] .nearby-groups-browse-all {
   margin-top: 15px;
 
   @include breakpoint(large) {
@@ -58,22 +58,22 @@
   }
 }
 
-.home .recent-list-load-more {
+body[data-fc-route="home"] .recent-list-load-more {
   display: none;
 }
 
-.home .section-title-small {
+body[data-fc-route="home"] .section-title-small {
   @include heading-text();
   color: $dark-gray;
   text-align: center;
   margin-bottom: 1rem;
 }
 
-.home .row .nearby-groups {
+body[data-fc-route="home"] .row .nearby-groups {
   margin-bottom: 0;
 }
 
-.home .nearby-groups-label {
+body[data-fc-route="home"] .nearby-groups-label {
   margin-right: 0;
 
   @include breakpoint(large) {
@@ -81,7 +81,7 @@
   }
 }
 
-.home .row.section-divider {
+body[data-fc-route="home"] .row.section-divider {
   margin: 1.25rem;
 
   @include breakpoint(large) {
@@ -89,11 +89,11 @@
   }
 }
 
-.home .mission {
+body[data-fc-route="home"] .mission {
   margin-bottom: 0.188em
 }
 
-.home .mission .bg-white {
+body[data-fc-route="home"] .mission .mission-inner {
   padding: 1.250rem;
   margin: 1.25rem;
   margin-bottom: 0.125rem;
@@ -104,7 +104,7 @@
   }
 }
 
-.home .mission h4 {
+body[data-fc-route="home"] .mission h4 {
   color: map-get($freecycle-palette,primary-darken);
   margin-bottom: 1.563em;
   font-size: 1.5rem;
@@ -114,53 +114,53 @@
   }
 }
 
-.home .mission p {
+body[data-fc-route="home"] .mission p {
   margin-bottom: 0;
 }
 
-.home .mission small {
+body[data-fc-route="home"] .mission small {
   vertical-align: super;
   color: #258025;
   font-size: 40%;
   font-weight: bold;
 }
 
-.home .ads {
+body[data-fc-route="home"] .ads {
   @include breakpoint(large) {
     padding-right: 0;
   }
 }
 
-.home .in-body-banner-ad {
+body[data-fc-route="home"] .in-body-banner-ad {
   margin: 0 auto 0.125rem auto;
   @include breakpoint(large) {
     float: right;
   }
 }
 
-.home .metrics {
+body[data-fc-route="home"] .metrics {
   margin-bottom: 1.250rem;
   @include breakpoint(large) {
     margin-bottom: 6.250rem;
   }
 }
 
-.home .metrics .metric {
+body[data-fc-route="home"] .metrics .metric {
   text-align: center;
 }
 
-.home .metrics .metric h4 {
+body[data-fc-route="home"] .metrics .metric h4 {
   padding: 3.75rem 0 0.75rem 0;
   border-bottom: 1px solid #ede7de;
   font-size: xx-large;
 }
 
-.home .metrics .metric small {
+body[data-fc-route="home"] .metrics .metric small {
   text-transform: uppercase;
   color: map-get($freecycle-palette,primary-darken);
 }
 
-.home .mission-subtext {
+body[data-fc-route="home"] .mission-subtext {
   padding: 2.500rem 0rem;
   text-align: center;
 
@@ -169,7 +169,7 @@
   }
 }
 
-.home .mission-subtext p {
+body[data-fc-route="home"] .mission-subtext p {
   font-family: "Roboto Slab", serif;
   font-size: 0.625rem;
   font-weight: bold;
@@ -178,6 +178,6 @@
   margin-bottom: 0.3125rem;
 }
 
-.home .mission-subtext button {
+body[data-fc-route="home"] .mission-subtext button {
   margin-top: 1.500rem;
 }
