@@ -1,7 +1,15 @@
+# made this alphabetical - smh
+*/.DS_store
+.editorconfig
+.npmrc
+.tern-project
+.vscode
+Dockerfile
+docker-compose.yml
+jsconfig.json
+lib/index.js
 node_modules/
+npm-debug.log
 public/assets/css/
 public/assets/js/
 public/assets/trumbowyg/
-.editorconfig
-.npmrc
-jsconfig.json

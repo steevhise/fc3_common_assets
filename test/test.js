@@ -1,22 +1,22 @@
-const A = require('assert');
-const Code = require('code');
-const Expect = Code.expect;
-const Lab = require('lab');
-const lab = exports.lab = Lab.script();
+
+
+// const A = require('assert');
+// const Code = require('code');
+// const Expect = Code.expect;
+// const Lab = require('lab');
+// const lab = exports.lab = Lab.script();
 
 const App = require('../lib/index.js');   // require the whole server app? can we do that?
 
-var server = App.server;
+const server = App.server;
 
 console.log(server.methods);
-
 
 // query = '{ user (where: {username: "steevhise"}) { user_id } }';
 
 // const query = 5;
 
 // server.methods.wrapGraphQL(query, 'user.user_id', function(err, result) { server.log('debug', err + result.user.user_id) });
-
 
 // This test stuff is harder than it looks. Just ignore for now.
 
@@ -31,10 +31,9 @@ lab.experiment('basic arithmetic', function () {
         A(10 - 2 === 8);
         done();
     });
-});*/
+}); */
 
-
-lab.experiment('graphql wrapper: ', function() {
+// lab.experiment('graphql wrapper: ', function () {
 
     // var query = '{ user (where: {username: "steevhise"}) { user_id } }';
 
@@ -71,6 +70,6 @@ lab.experiment('graphql wrapper: ', function() {
             .to.equal(23736881);
         done();
 
-    });*/
+    }); */
 
-});
+// });

@@ -2,6 +2,7 @@
   <h4 class="text-center page-sub-title">My Groups</h4>
   {% include './in_page_search.html' with {label:'Search Groups'} %}
 </div>
+
 <div class="row">
   <div class="item-list-header small-centered large-8 column">
     <div class="item-list-header-controls my-groups-header-controls">
@@ -10,14 +11,14 @@
             <li class="item-list-header-filter-icon item-list-grid-view">
                 {% include '../icons/list.html' %} <span>List</span>
             </li>
-            <li class="item-list-header-filter-icon item-list-list-view inactive">
+            <li class="item-list-header-filter-icon item-list-list-view inactive" data-open="mygroups_map">
                   {% include '../icons/map_compass.html' %} <span>Map</span>
             </li>
         </ul>
     </div>
   </div>
 </div>
-  
+
 <div class="row">
   <div class="table-example small-centered large-8 column">
     <table>
@@ -40,3 +41,10 @@
     </table>
   </div>
 </div>
+
+<div class="row">
+  <div id="mygroups_map" class="small-centered large-8 column">
+    {% include "./geomap.html" with geomap %}
+  </div>
+</div>
+
