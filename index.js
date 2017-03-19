@@ -244,8 +244,12 @@ server.register([
 
             // this shows up in all views. right now just for info about credentialed current authenticated user.
             const defaultContext = function (request) {
+                const routeData = {
+                    id: request.route.settings.id,
+                    auth: request.route.settings.auth
+                };
                 console.log('global context', request.auth.credentials);
-                return { session: request.auth.credentials };
+                return { session: request.auth.credentials, route: routeData };
             };
 
             server.views({
