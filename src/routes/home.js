@@ -320,5 +320,22 @@ module.exports = [
                 posts
             });
         }
+    },
+    {
+        method: 'GET',
+        path: '/home/post_new',
+        config: {
+            id: 'PostNew',
+            description: 'Create a new post.',
+            auth: { mode: 'required' }
+        },
+        handler: function (request, post) {
+            const inBodyAds = [
+                'one', 'two'
+            ];
+            post.view('./home/post_new', {
+
+            });
+        }
     }
 ];
