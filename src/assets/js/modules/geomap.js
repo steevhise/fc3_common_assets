@@ -19,6 +19,12 @@ export default class GeoMap {
 			width: '100%'
 		};
 
+		this.markerIcons = {
+			groups : '',
+			posts : '',
+			users : '',
+		};
+
 		// this function builds the map.
 		this.init();
 	}
@@ -30,7 +36,12 @@ export default class GeoMap {
 	init() {
 		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || this.defaultSettings;
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
-		
+
+		// marker icons construction.
+		// this.markerIcons = {
+         //    group:
+        // };
+
 		let geoLocation;
 		
 		navigator.geolocation.getCurrentPosition( (position) =>  {
@@ -60,6 +71,7 @@ export default class GeoMap {
 			for (i = 0; i < mapLocations.length; i++) { 
 				marker = new google.maps.Marker({
 					position: new google.maps.LatLng(Number(mapLocations[i].lat), Number(mapLocations[i].lng)),
+					icon : 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png',
 					map: map
 				});
 
@@ -76,7 +88,14 @@ export default class GeoMap {
 			height: this.settings.height,
 			width: this.settings.width
 		});
-	}
+	};
+
+	setMarkerIcon(icon) {
+		return Object.assign(this.markerIcons, icon);
+	};
+	getMarkerIcon(icon) {
+		return this.markerIcons[icon];
+	};
 	
 }
 
