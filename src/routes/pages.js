@@ -212,7 +212,7 @@ module.exports = [
         path: '/desktop-dash',
         config: {
             id: 'Dashboard',
-            description: 'The user\'s \'home\'.',
+            description: 'The logged-in user\'s \'home\'.',
             auth: { mode: 'required' },
             plugins: {
         // 'hapiAuthorization': {role: '1'}
