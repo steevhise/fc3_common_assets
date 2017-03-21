@@ -15,7 +15,12 @@
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="group_posts">
-      {% include '../partials/nearby_groups.html'%}
+      <div class="nearby-wrapper">
+        {% include '../partials/nearby_groups.html'%}
+      </div>
+      <div class="upper-ad-wrapper">
+        <div class="in-body-banner-ad">300 x 250 banner ad</div>
+      </div>
       {% include '../partials/item_list.html'%}
       {% include '../partials/in_body_banner_row.html'%}
     </div>
