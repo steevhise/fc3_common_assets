@@ -1,4 +1,3 @@
-'use strict';
 
 const localGroups = [
   "Tuscon", "Marana", "Oro Valley", "Vail", "Sanuarita"
@@ -65,19 +64,20 @@ module.exports = [
         path: '/group/{unique_group_name}',
         config: {
             id: 'group',
-            description: 'a group page, for example try /group/freecycle',
+            description: 'a group page, for example try /group/freecycle'
             /*plugins: { 'auth-cookie-freecycle': {
              redirectTo: false,
              redirectOnTry: false
              }}*/
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
-                "one",
-                "two"
+                'one',
+                'two'
             ];
 
-            var unique_name = request.params.unique_group_name;
+            const unique_name = request.params.unique_group_name;
             request.log('debug', 'about to look up group ' + unique_name);
 
            /* new request.server.Group(unique_name, function(err, group) {
