@@ -57,6 +57,26 @@ const group = {
        ]
      };
 
+const freecycle = {
+  copyright:    'The official TFN copyright notice.',
+  disclaimer:   'The official TFN disclaimer.',
+  logo:         'The official TFN logo  (bare <img> tag with width and height attributes)',
+  num_groups:   'The number of official freecycle groups.',
+  num_members:  'The total number of members in all groups.'
+};
+
+const description_tokens = {
+  '%%copyright': freecycle.copyright,
+  '%%custom_logo': group.logo,
+  '%%disclaimer': freecycle.disclaimer,
+  '%%freecycle_logo': freecycle.logo,
+  '%%group_name': group.group_name,
+  '%%num_groups': freecycle.num_groups,
+  '%%num_members': group.num_members,
+  '%%total_num_members': freecycle.num_members,
+  '%%yahoogroup_link': '<a href="' + group.yahoo_group_name + '">' + group.yahoo_group_name + '</a>"'
+};
+
 // route definitions
 module.exports = [
     {
@@ -168,11 +188,17 @@ module.exports = [
                 'one',
                 'two'
             ];
+
+            group.description = group.description.replace(/%%\w+/g, function(all) {
+              return description_tokens[all] || all;
+            });
+
             reply.view('./groups/info', {
               inBodyAds: inBodyAds,
               // title: "Post #" + post_id,
               // footerMenuItems: footerMenuItems,
-              group: group
+              group:      group,
+              freecycle:  freecycle
             });
         }
     },
