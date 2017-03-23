@@ -13,6 +13,7 @@
     {% endblock %}
 </head>
 <body data-fc-route="{{ route.id|lower }}" >
+<body class="groups">
 {% if session %}
     you are {{ session.username }}
     {% set loggedIn = true %}
