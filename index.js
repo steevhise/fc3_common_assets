@@ -67,9 +67,12 @@ server.decorate('server', 'schema', schema);      // access via server.schema
 
 // our object stuff. is this the best way?
 import { postClassFunc } from '@freecycle/common-hapi-plugins/lib/freecycle-post';
+import { userClassFunc } from  '@freecycle/common-hapi-plugins/lib/freecycle-user';
 
 const Post = postClassFunc(server);
+const User = userClassFunc(server);
 server.decorate('server', 'Post', Post);        // access via server.Post
+server.decorate('server', 'User', User);        // access via server.User
 
 // setup connection
 server.connection({ port: process.env.PORT || 8000 });
@@ -242,12 +245,16 @@ server.register([
                 }
             });
 
-            // this shows up in all views. right now just for info about credentialed current authenticated user.
+            // this shows up in all views.
             const defaultContext = function (request) {
+
+                // data about current route.
                 const routeData = {
                     id: request.route.settings.id,
                     auth: request.route.settings.auth
                 };
+
+                //  info about credentialed current authenticated user.
                 console.log('global context', request.auth.credentials);
                 return { session: request.auth.credentials, route: routeData };
             };

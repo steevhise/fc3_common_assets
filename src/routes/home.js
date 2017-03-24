@@ -1,4 +1,4 @@
-
+const Hoek = require('hoek');
 
 const friends = [
     {
@@ -38,6 +38,9 @@ const friends = [
     }
 ];
 
+// see google docs for custom svg settings, these are just a few mainly the
+// ones we would use to configure a new icon. but you can also pass things like maxWidth,
+// and other settings as well https://developers.google.com/maps/documentation/javascript/symbols
 const customIcon = {
     path : 'M10.75,0A6.25,6.25,0,0,0,4.5,6.25c0,6,6.25,13.75,6.25,13.75S17,12.22,17,6.25A6.25,6.25,0,0,0,10.75,0Zm0,9.7a3.38,3.38,0,1,1,3.38-3.38A3.37,3.37,0,0,1,10.75,9.7Z',
     fillColor : 'teal',
@@ -56,7 +59,8 @@ const myGroupsGeomap = {
         { 'lat' : 32.0, 'lng' : -111.09, 'description' : 'Oro Valley', 'icon' : 'user' },
         { 'lat' : 31.5, 'lng' : -110.09, 'description' : 'Green Valley', 'icon' : 'post' },
         { 'lat' : 33.5, 'lng' : -110.09, 'description' : 'Custom Marker Test', 'icon' : { custom : customIcon } },
-        { 'lat' : 33.0, 'lng' : -110.09, 'description' : '<strong>No Icon Check</strong><br/><p>Also a test for html as the description</p>' }
+        { 'lat' : 33.0, 'lng' : -110.09, 'description' : '<strong>No Icon Check</strong><br/><p>Also a test for html as the description</p>' },
+        { 'lat' : 32.10, 'lng' : -110.09, 'description' : 'Read More Marker Test', 'readmore' : { text : 'Click Me', path : '/home/some-404-page/' } }
     ]
 };
 
@@ -98,39 +102,99 @@ const footerMenuItems = [
     'Contact',
     'Wiki'];
 
+/**
+ * gets all the posts of the current user
+ * @returns array of Freecycle Post objects
+ * @param req  request object
+ * @param next {function}  callback
+ */
+const findMyPosts = function (req, next) {
+
+    let myPostIDs;   // the array of post ids.
+    let currentUser;
+    new req.server.User(Number(req.auth.credentials.id), (err, result) => {
+
+        Hoek.assert(!err, err);
+        if (!result) {
+            throw 'no user found?';
+        }
+
+        // otherwise...
+        currentUser = result;
+        currentUser.getPosts('open', (err, result2) => {
+
+            Hoek.assert(!err, err);
+            myPostIDs = result2.posts;   // this is an array of post ids.
+            const myPosts = [];   // the array of post objects.
+
+            // now make a Post object for each id.
+            myPostIDs.forEach((p, i) => {
+
+                let post;
+                myPosts[i] = new Promise((resolve, reject) => {
+
+                    new req.server.Post(p.post_id, (err, result3) => {
+
+                        Hoek.assert(!err, err);
+                        post = result3;
+                        post.location = 'Tucson, AZ';
+                        post.image = 'http://lorempixel.com/350/150/nightlife';
+                        post.category = 'wanted';
+                        myPosts[i] = post;
+                        resolve(post);
+                    });
+                });
+            });
+
+            return Promise.all(myPosts).then((values) => {
+
+                req.log('findMyPosts-allLoaded', values);
+                return next(null, values);
+            });
+        });
+    });
+
+};
+
 // dummy post data
 const posts = [
     {
-        title: 'Sofa Loveseat',
-        location: 'Tucson, AZ',
-        time: '15 minutes ago',
-        category: 'wanted',
+        post_subject: 'Sofa Loveseat',
+        group: { group_name: 'Tucson, AZ' },
+        post_date: '15 minutes ago',
+        postType: { post_type_name: 'WANTED' },
         image: 'http://lorempixel.com/350/150/nightlife',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
+        post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
     },
     {
-        title: 'Twin Bed Mattress',
+        post_subject: 'Twin Bed Mattress',
         location: 'Tucson, AZ',
-        time: '15 minutes ago',
+        group: { group_name: 'Tucson, AZ' },
+        post_date: '15 minutes ago',
         category: 'offer',
+        postType: { post_type_name: 'OFFER' },
         image: 'http://lorempixel.com/350/400/food',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
+        post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
     },
     {
-        title: 'Computer Monitor',
+        post_subject: 'Computer Monitor',
         location: 'Tucson, AZ',
-        time: '15 minutes ago',
+        group: { group_name: 'Patagonia, AZ' },
+        post_date: '15 minutes ago',
         category: 'borrow',
+        postType: { post_type_name: 'BORROW' },
         image: 'http://lorempixel.com/350/500/city',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
+        post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
     },
     {
-        title: 'Nail Gun',
+        post_subject: 'Nail Gun',
         location: 'Tucson, AZ',
-        time: '15 minutes ago',
+        group: { group_name: 'Phoenix, AZ' },
+        post_date: '15 minutes ago',
         category: 'lend',
+        postType: { post_type_name: 'LEND' },
         image: 'http://lorempixel.com/350/250/sports',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
+        post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
     }];
 
 // route definitions
@@ -189,6 +253,7 @@ module.exports = [
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
@@ -210,17 +275,30 @@ module.exports = [
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
             ];
-            reply.view('./home/my_posts', {
-                inBodyAds,
-                title: 'My Posts',
-                posts,
-                postAction: 'Manage',
-                footerMenuItems
+
+            let userPosts;
+            findMyPosts(request, (err, result) => {
+
+                Hoek.assert(!err, err);
+                userPosts = result;
+
+                request.log('my-post', 'in the route - ' + userPosts);
+
+                reply.view('./home/my_posts', {
+                    inBodyAds,
+                    title: 'My Posts',
+                    posts: userPosts,
+                    postAction: 'Manage',
+                    footerMenuItems
+                });
+                return Promise.resolve();
             });
+
         }
     },
     {
@@ -315,7 +393,7 @@ module.exports = [
                 filterType: 'circle',
                 friends,
                 inBodyAds,
-                title: 'Desktop Dash',
+                title: 'My Replies',
                 footerMenuItems,
                 posts
             });
