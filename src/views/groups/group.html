@@ -1,0 +1,34 @@
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+  {% include '../partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+{% block content %}
+
+{% include './groups_header.html'%}
+<div class="horizontal_tabs">
+
+  <!--  tabs  -->
+  {% include '../partials/group_tabs.html' %}
+
+  <!--  tabs-content  -->
+  <div class="tabs-content" data-tabs-content="h-example-tabs">
+    <div class="tabs-panel is-active" id="group_posts">
+      <div class="nearby-wrapper">
+        {% include '../partials/nearby_groups.html'%}
+      </div>
+      <div class="upper-ad-wrapper">
+        <div class="in-body-banner-ad">300 x 250 banner ad</div>
+      </div>
+      {% include '../partials/item_list.html'%}
+      {% include '../partials/in_body_banner_row.html'%}
+    </div>
+    <div class="tabs-panel" id="group_guidelines"></div>
+    <div class="tabs-panel" id="group_announcements"></div>
+    <div class="tabs-panel" id="group_contact"></div>
+    <div class="tabs-panel" id="group_info"></div>
+  </div>
+</div>
+
+{% endblock %}
