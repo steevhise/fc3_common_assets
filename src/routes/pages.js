@@ -3,6 +3,31 @@
 var Hoek = require('hoek');
 var WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
 
+const user = {
+  avatar_url: "http://lorempixel.com/150/150/people/8",
+  name: "Nathan Puente",
+  username: 'npuente',
+  description: "I'm a business-owener and entrepreneur in Tuscon.",
+  thumbsup: 100,
+  groups: [
+    {
+      name: 'Tucson',
+      state: 'AZ',
+    },
+    {
+      name: 'Marana',
+      state: 'AZ',
+    },
+    {
+      name: 'Vail',
+      state: 'AZ',
+    },
+    {
+      name: 'Oro Valley',
+      state: 'AZ',
+    }
+]};
+
 
 const friends = [
   {
@@ -271,6 +296,34 @@ module.exports = [
         friends: friends,
         inBodyAds: inBodyAds,
         title: "Desktop Dash",
+        footerMenuItems: footerMenuItems,
+        posts: posts
+      });
+    }
+  },
+  {
+    method: 'GET',
+    path: '/user/{username}',
+    config: {
+      id: 'user',
+      description: "The user's profile, viewed by others.",
+      plugins: {
+        // 'hapiAuthorization': {role: '1'}
+        // you don't have to have any special privs to see your own dashboard, but this is how you do it.
+      }
+    },
+    handler: function (request, reply) {
+      const inBodyAds = [
+        "one",
+        "two"
+      ];
+
+      reply.view('user', {
+        user: user,
+        showFilterSelectors: false,
+        filterType: 'circle',
+        inBodyAds: inBodyAds,
+        title: "User Profile",
         footerMenuItems: footerMenuItems,
         posts: posts
       });
