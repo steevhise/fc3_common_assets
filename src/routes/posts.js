@@ -58,7 +58,7 @@ module.exports = [
         method: 'GET',
         path: '/posts/{postId}',
         config: {
-            id: 'post',
+            id: 'posts_detail',
             description: 'an individual post.  use a number, like /posts/123454'
         /* plugins: { 'auth-cookie-freecycle': {
             redirectTo: false,
