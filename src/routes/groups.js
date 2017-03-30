@@ -103,7 +103,7 @@ module.exports = [
         method: 'GET',
         path: '/group/{unique_group_name}',
         config: {
-            id: 'group',
+            id: 'group_main',
             description: 'a group page, for example try /group/freecycle'
             /*plugins: { 'auth-cookie-freecycle': {
              redirectTo: false,
