@@ -103,7 +103,7 @@ module.exports = [
         method: 'GET',
         path: '/group/{unique_group_name}',
         config: {
-            id: 'group_main',
+            id: 'groups_main',
             description: 'a group page, for example try /group/freecycle'
             /*plugins: { 'auth-cookie-freecycle': {
              redirectTo: false,
@@ -140,7 +140,7 @@ module.exports = [
         method: 'GET',
         path: '/group/guidelines/{unique_group_name}',
         config: {
-            id: 'group_guidelines',
+            id: 'groups_guidelines',
             description: 'The named group\'s guidelines.'
         },
         handler: function (request, reply) {
@@ -161,7 +161,7 @@ module.exports = [
         method: 'GET',
         path: '/group/announcements/{unique_group_name}',
         config: {
-            id: 'group_announcements',
+            id: 'groups_announcements',
             description: 'The named group\'s announcements.'
         },
         handler: function (request, reply) {
@@ -181,7 +181,7 @@ module.exports = [
         method: 'GET',
         path: '/group/contact/{unique_group_name}',
         config: {
-            id: 'group_contact',
+            id: 'groups_contact',
             description: 'The named group\'s guidelines.'
         },
         handler: function (request, reply) {
