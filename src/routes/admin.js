@@ -11,7 +11,7 @@ module.exports = [
         method: '*',
         path: '/admin/pages',
         config: {
-            id: 'Page Administration',
+            id: 'admin_pages',
             description: 'this is for creating and editing "static" pages.',
             auth: { mode: 'required' },
             plugins: {
@@ -47,7 +47,7 @@ module.exports = [
         method: 'GET',
         path: '/admin/verboten',
         config: {
-            id: 'verboten',
+            id: 'admin_verboten',
             description: 'this is a sample forbidden page.',
             auth: 'session',
             plugins: {
