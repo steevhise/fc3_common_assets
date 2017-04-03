@@ -6,88 +6,11 @@
 
 {% block content %}
 
-<div class="row text-center" style="margin: 20px 0px 20px 0px;">
-	{#
-		TODO determine where the back to posts link should go.
-	#}
-	<a href="/posts/">
-		<span>
-			< BACK TO POSTS
-		</span>
-	</a>
-</div>
+  <div class="row">
+    <h1>post id: {{  post }}</h1>
+    {% include '../partials/post_body.html' %}
+  </div>
 
-<div class="row post-detail">
-	<div class="post-list-item">
-		<div class="row">
-			<div class="columns medium-8">
-				<div class="post-list-item-content">
-					<div class="post-list-item-content-header">
-						<div class="columns medium-12">
-							<div class="row">
-								<div class="post-list-item-header-left">
-									<div class="post-list-item-category-icon">
-										<button class="btn-offer">Reply</button>
-									</div>
-									<div class="post-list-item-category-icon">
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 25" width="20" height="25" class="icon-chevron-offer">
-											<path d="M0 0v17.499l10 7.501v-17.501l-10-7.499z"></path>
-											<path d="M20 0l-10 7.499v17.501l10-7.501v-17.499z"></path>
-										</svg>
-										<span class="text-offer">Offer</span>
-									</div>
-								</div>
-								<div class="post-list-item-header-right">
-									{# TODO add share and report button #}
-								</div>
-							</div>
-							<div class="clearfix" style="margin-top: 10px;"></div>
-							<div class="row">
-								<h4 class="section-title">{{post.post_subject}}</h4>
-								
-								<ul class="post-items">
-									<li>{{ post.post_location }}</li>
-									<li>{{post.post_date|mdate('MM/DD/YYYY')}}</li>
-									<li>{{post.post_date|mreldate|capitalize}}</li>
-									<li>#{{post.post_id}}</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<ul class="post-items">
-						<li><span>{{post.group.group_name}} group</span></li>
-						{# TODO eventually we'll need to include the region/country when available #}
-						<li><div>{{post.user.username|upper}}</div></li>
-						
-						{# TODO tags will be replaced with a for loop once tag data is available #}
-						<li><a>Furniture</a>,<a>Sofa</a>,<a>Bed</a></li>
-					</ul>
-					<div class="post-list-item-content-description align-left">
-						<div class="container">
-							<p>{{post.post_description}}</p>
-						</div>
-						
-						<div class="container">
-							<button class="btn-offer">Reply</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="columns medium-4">
-				<div class="row">
-					<div class="post-list-item-photo">
-						<img src="http://lorempixel.com/358/238/food">
-					</div>
-				</div>
-				<div class="row text-center">
-					<a>View Full Size</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-	
 {% include '../partials/in_body_banner_row.html'%}
 {% include '../partials/in_page_ribbon.html'%}
 
