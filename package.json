@@ -4,6 +4,9 @@
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "lib/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
+  "engines": {
+    "node": "6.9.x"
+  },
   "dependencies": {
     "@freecycle/common-hapi-plugins": "*",
     "@freecycle/freecycle_graphql_schema": "*",

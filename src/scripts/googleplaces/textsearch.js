@@ -8,8 +8,10 @@ const Hoek = require('hoek');
 // import all our classes
 import { groupClassFunc } from '../../../node_modules/@freecycle/common-hapi-plugins/lib/freecycle-group.js';
 
-import { Context } from '@freecycle/freecycle_node_dal';
-import { graphql } from '@freecycle/freecycle_node_dal';
+import { Context } from '../../../node_modules/@freecycle/freecycle_node_dal';
+import { graphql } from '../../../node_modules/graphql';
+import schema from '../../../node_modules/@freecycle/freecycle_graphql_schema';
+
 
 const server = new Hapi.Server();
 
@@ -28,6 +30,9 @@ const Readline = require('readline');
 const Util = require('util');
 
 const textSearch = new TextSearch(Config.apiKey, Config.outputFormat);
+
+const done = 0;
+
 /*
 
   const groupname = 'Tucson';
@@ -52,56 +57,84 @@ const textSearch = new TextSearch(Config.apiKey, Config.outputFormat);
 
 */
 
+let numlines = 0;
+let queries = 0;
 
 
-  // read a list of groups
-const RL = Readline.createInterface({
-    input:   FS.createReadStream('./US-W_Groups_locations.csv')
-});
+const data = FS.readFileSync('./US-W_Groups_locations.csv', 'utf8');
+const lines = data.split('\n');
 
-  // for every line, split by comma and then search google places.
-RL.on('line', (line) => {
+// every so often, process a line
+const intervalId = setInterval(() => {
 
+    const line = lines.shift();
+    console.error('-------------------');
+    console.error(line);
+
+    // if no more lines
+    if (!line) {
+        clearInterval(intervalId);   // stop the loop...
+        // if we're done with the whole file, then we're done.
+        if (queries === numlines) {
+            Context.close();   // disconnect from database? Not doing this is what causes the hang at the end.
+            console.error('we are done.');
+            return;
+        }
+    }
+
+    numlines++;
     const groupname = line.slice(0, line.indexOf(','));
     let location = line.slice(line.indexOf(',') + 1);
     location = location.replace(/"/g, '');   // get rid of extra quotes
-      // console.log(groupname + ' : ' + location);
+    //console.log(groupname + ' : ' + location);
 
     const parameters = {
         query: location
     };
 
-      // limit how often we hit the google api...
-    setTimeout( () => {
+    // TODO: generalize this function so we can swap in other apis when we want to use others besides Google.
+    textSearch(parameters, (error, response) => {
 
-        textSearch(parameters, (error, response) => {
+        if (error) {
+            throw error;
+        }
+        console.error('looking for ' + groupname + ' : ' + location);
 
-            if (error) {
-                throw error;
+        if (response.results.length === 0) {
+            console.error('   0 results');
+            throw (response.error_message);     // we've probably exceeded our API quota, so bail.
+        }
+
+        // now look up the group and save the new coordinates
+        let group;
+        let id;
+        return new Group(groupname, (err, result) => {
+
+            Hoek.assert(!err, err);
+            if (result === null) {
+                console.error('couldnt find ' + groupname);
+                id = '?';
             }
-              // console.log(groupname + ' : ' + location);
-
-            if (response.results.length === 0) {
-                console.error('   0 results');
-                return;
-            }
-            console.log(Util.format('%s,%s,%s', groupname, response.results[0].geometry.location.lat, response.results[0].geometry.location.lng));
-
-              // now look up the group and assign the new coordinates
-            let group;
-            return new Group(groupname, (err, result) => {
-
-                Hoek.assert(!err, err);
+            else {
                 group = result;
                 group.latitude = response.results[0].geometry.location.lat;
                 group.longitude = response.results[0].geometry.location.lng;
-                console.log(group);
-                  // group.save(); TODO
+                id = group.group_id;
+            }
 
-            });
+            // console.log(group);
+            // now either way we have something to output even if we didn't find a group id.
+            console.log(Util.format('%d,%s,%s,%s', id, groupname, response.results[0].geometry.location.lat, response.results[0].geometry.location.lng));
+            console.error('group id: ' + id);
+                // group.save(); TODO
+
+            queries++;
+
         });
-    }, 1000);
+    });
 
-});
+}, 2000);
+
+
 
 
