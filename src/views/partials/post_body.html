@@ -7,35 +7,47 @@
           <button class="btn-offer">Reply</button>
         </div>
         <div class="medium-3 left">
-          <div class="post-list-item-category-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 25" width="20" height="25" class="icon-chevron-offer">
-              <path d="M0 0v17.499l10 7.501v-17.501l-10-7.499z"></path>
-              <path d="M20 0l-10 7.499v17.501l10-7.501v-17.499z"></path>
-            </svg>
-            <span class="text-offer">Offer</span>
+            <div class="post-list-item-category-icon">
+              {# TODO: this logic should be in a partial, i think #}
+              {% if post.postType.post_type_name === 'OFFER'  %}
+              {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+              <span class="text-offer">Offer</span>
+              {% elseif post.postType.post_type_name === 'LEND' %}
+              {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
+              <span class="text-lend">Lend</span>
+              {% elseif post.postType.post_type_name === 'BORROW' %}
+              {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
+              <span class="text-borrow">Borrow</span>
+              {% elseif post.postType.post_type_name === 'WANTED' %}
+              {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+              <span class="text-wanted">Wanted</span>
+              {% endif %}
+            </div>
           </div>
         </div>
+        <h1 class="post-header-title">{{post.post_subject}}</h1>
         <div class="post-list-item-header-left">
           <div class="post-list-item-header-icon">
             <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
               <path d="M10.75,0A6.25,6.25,0,0,0,4.5,6.25c0,6,6.25,13.75,6.25,13.75S17,12.22,17,6.25A6.25,6.25,0,0,0,10.75,0Zm0,9.7a3.38,3.38,0,1,1,3.38-3.38A3.37,3.37,0,0,1,10.75,9.7Z"></path>
             </svg>
-            <span>Tucson, AZ</span>
+            <span>{{ post.post_location }}  {# TODO eventually we'll need to include the region/country when available #}</span>
+            <span class="text-lighten">{{post.post_date|mreldate|capitalize}}</span>
+            <span>{{post.post_date|mdate('MM/DD/YYYY')}}</span>
+            <span>#{{post.post_id}}</span>
+            <p>
+            <span>{{post.group.group_name}} group  -  </span>
+            <span>{{post.user.username|upper}}</span>
+            {# TODO tags will be replaced with a for loop once tag data is available #}
+            <span><a>Furniture</a>,<a>Couch</a>,<a>Bed</a></span>
+            </p>
           </div>
         </div>
-        <div class="post-list-item-header-right">
-          <span class="text-lighten">15 minutes ago</span>
-        </div>
+
       </div>
-
-      <h1 class="post-header-title">{{title}}</h1>
-
+      
       <div class="post-list-item-content-description">
-        <p class="paragraph-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil
-          architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta
-          tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus
-          autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam
-          repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.</p>
+        <p class="paragraph-small">{{post.post_description}}</p>
       </div>
     </div>
   </div>

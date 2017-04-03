@@ -84,7 +84,7 @@ module.exports = [
                 reply.view('posts/post.html', {
                     showFilterSelectors: true,
                     inBodyAds,
-          // title: "Post #" + post_id,
+                    // title: "Post #" + post_id,
                     footerMenuItems,
                     post
                 });
