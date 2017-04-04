@@ -1,6 +1,15 @@
-/// this looks up coordinates for local groups.
-
-  // const Assert = require('assert');
+/**
+ *  This looks up coordinates for local groups using Google Places API.
+ *  Meant to read a csv file full of groupname, group location (city and state, usually)
+ *  such as:
+ *  PeoriaFreecycle,"Peoria, Illinois"
+ *
+ *  Outputs to stdout csv records with groupid, groupname, latitude, longitude
+ *  such as:
+ *  3030,PeoriaFreecycle,40.6936488,-89.5889864
+ *
+ *  NOTE: Google will only allow 100 text searches per day with free account.
+ */
 
 const Hapi = require('hapi');
 const Hoek = require('hoek');
@@ -25,15 +34,11 @@ const TextSearch = require('../../../node_modules/googleplaces/lib/TextSearch.js
 const Config = require('./config.js');
 
 const FS = require('fs');
-const Readline = require('readline');
-
 const Util = require('util');
-
 const textSearch = new TextSearch(Config.apiKey, Config.outputFormat);
 
-const done = 0;
-
 /*
+// sample...
 
   const groupname = 'Tucson';
   const location = 'Tucson, Arizona';
