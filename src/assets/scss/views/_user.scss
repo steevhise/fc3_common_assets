@@ -60,6 +60,7 @@
 
 .user .row.user-details {
   padding-bottom: 5rem;
+  position: relative;
 }
 
 .user .post-grid-item {
@@ -80,6 +81,10 @@
 
 .user .tabs-content {
   background: $body-background;
+}
+
+.user .tabs-panel {
+  padding-top: 0px;
 }
 
 .user .in-body-banner-ad {

@@ -38,13 +38,6 @@
         <a href="#panel2v" role="tab" aria-controls="panel2v" aria-selected="false" id="panel2v-label">Groups</a>
       </li>
     </ul>
-    <div>
-      <div class="ad-container">
-      {% for ad in inBodyAds %}
-          {% include './partials/in_body_banner.html' with ad %}
-      {% endfor %}
-      </div>
-    </div>
   </div>
   <div class="medium-8 columns last">
     <div class="tabs-content column  vertical page-tabs-panels" data-tabs-content="profile-vert-tabs">
@@ -83,6 +76,9 @@
       </div>
     </div>
   </div>
+  {% include './partials/left_column_banner_row.html'%}
 </div>
+<div>
+
 
 {% endblock %}
