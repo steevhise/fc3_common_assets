@@ -1,26 +1,27 @@
 <div class="post-list-item">
-  <div class="medium-8">
-    <div class="post-list-item-content">
-      
-      <div class="post-list-item-content-header">
-        <div class="medium-4 left">
-          <button class="btn-offer">Reply</button>
-        </div>
-        <div class="medium-3 left">
+  <div class="row">
+    <div class="columns medium-8">
+      <div class="post-list-item-content">
+
+        <div class="post-list-item-content-header">
+          <div class="medium-4 left">
+            <button class="btn-offer">Reply</button>
+          </div>
+          <div class="medium-3 left">
             <div class="post-list-item-category-icon">
               {# TODO: this logic should be in a partial, i think #}
               {% if post.postType.post_type_name === 'OFFER'  %}
-              {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
-              <span class="text-offer">Offer</span>
+                {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+                <span class="text-offer">Offer</span>
               {% elseif post.postType.post_type_name === 'LEND' %}
-              {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
-              <span class="text-lend">Lend</span>
+                {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
+                <span class="text-lend">Lend</span>
               {% elseif post.postType.post_type_name === 'BORROW' %}
-              {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
-              <span class="text-borrow">Borrow</span>
+                {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
+                <span class="text-borrow">Borrow</span>
               {% elseif post.postType.post_type_name === 'WANTED' %}
-              {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
-              <span class="text-wanted">Wanted</span>
+                {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+                <span class="text-wanted">Wanted</span>
               {% endif %}
             </div>
           </div>
@@ -36,26 +37,27 @@
             <span>{{post.post_date|mdate('MM/DD/YYYY')}}</span>
             <span>#{{post.post_id}}</span>
             <p>
-            <span>{{post.group.group_name}} group  -  </span>
-            <span>{{post.user.username|upper}}</span>
-            {# TODO tags will be replaced with a for loop once tag data is available #}
-            <span><a>Furniture</a>,<a>Couch</a>,<a>Bed</a></span>
+              <span>{{post.group.group_name}} group  -  </span>
+              <span>{{post.user.username|upper}}</span>
+              {# TODO tags will be replaced with a for loop once tag data is available #}
+              <span><a>Furniture</a>,<a>Couch</a>,<a>Bed</a></span>
             </p>
           </div>
         </div>
 
       </div>
-      
+
       <div class="post-list-item-content-description">
         <p class="paragraph-small">{{post.post_description}}</p>
       </div>
     </div>
-  </div>
-  <div class="medium-4">
-    <div class="post-list-item-photo">
-      <img src="http://lorempixel.com/400/250/food">
+    <div class="columns medium-4">
+      <div class="post-list-item-photo">
+        <img src="http://lorempixel.com/400/250/food">
+      </div>
+      <div class="row text-center">
+        <a>View Full Size</a>
+      </div>
     </div>
-    <div class="row text-center">
-      <a>View Full Size</a>
-    </div>
   </div>
+</div>
