@@ -401,18 +401,19 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/home/post_new',
+        path: '/home/new_post',
         config: {
-            id: 'PostNew',
+            id: 'home_post_new',
             description: 'Create a new post.',
             auth: { mode: 'required' }
         },
-        handler: function (request, post) {
+        handler: function (request, reply) {
             const inBodyAds = [
                 'one', 'two'
             ];
-            post.view('./home/post_new', {
-
+            reply.view('./home/post_new', {
+                inBodyAds,
+              title: 'Make A Post'
             });
         }
     }
