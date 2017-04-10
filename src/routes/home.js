@@ -413,7 +413,8 @@ module.exports = [
             ];
             reply.view('./home/post_new', {
                 inBodyAds,
-              title: 'Make A Post'
+                title: 'Make A Post',
+                footerMenuItems
             });
         }
     }
