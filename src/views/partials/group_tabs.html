@@ -1,0 +1,13 @@
+<div class="row group-tabs-container">
+	{% include './group_hamburger_menu.html' %}
+
+	<ul class="tabs group-menu-links" id="g-example-tabs" data-tab data-options="deep_linking:true">
+		<li class="tabs-title"><a id="group_posts" href="/group/{{ group.group_id }}">Posts</a></li>
+		<li class="tabs-title"><a id="group_guidelines" href="/group/guidelines/{{ group.group_id }}">Guidelines</a></li>
+		<li class="tabs-title"><a id="group_announcements" href="/group/announcements/{{ group.group_id }}">Announcements</a></li>
+		<li class="tabs-title"><a id="group_contact" href="/group/contact/{{ group.group_id }}">Contact Moderators</a></li>
+		<li class="tabs-title"><a id="group_info" href="/group/info/{{ group.group_id }}">Group Info</a></li>
+	</ul>
+</div>
+
+{# NOTE see assets/js/modules/group_tabs.js for tab state logic #}

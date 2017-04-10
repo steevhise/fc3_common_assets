@@ -11,7 +11,7 @@ gmap.LIBRARIES = ['places'];
  */
 export default class GeoMap {
 	constructor(instance) {
-		
+		// setup
 		this.instance = instance;
 		this.$element = $(this.instance);
 		this.markerIcons = {};
@@ -21,10 +21,8 @@ export default class GeoMap {
 			width: '100%'
 		};
 
-		// initialize the default marker icons.
+		// instantiation functions must be called last.
 		this.initIcons();
-
-		// this function builds the map.
 		this.init();
 	}
 
@@ -60,7 +58,8 @@ export default class GeoMap {
 			
 			let marker, i;
 			let mapLocations = this.markers;
-			
+			let self = this;
+
 			// loop through the markers and attach them to the map instance
 			for (i = 0; i < mapLocations.length; i++) {
 				marker = new google.maps.Marker({
@@ -70,8 +69,13 @@ export default class GeoMap {
 				});
 
 				google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					let markerContent = `
+						${mapLocations[i].description} <br/>
+						${self.getReadMore(mapLocations[i].readmore)}
+					`;
+
 					return function() {
-						mapInfoWindow.setContent(mapLocations[i].description);
+						mapInfoWindow.setContent(markerContent);
 						mapInfoWindow.open(map, marker);
 					}
 				})(marker, i));
@@ -150,7 +154,19 @@ export default class GeoMap {
 			// if all else fails return a default marker icon.
 			return this.markerIcons.default;
 		}
-	}
+	};
+
+	getReadMore(item) {
+		let result;
+
+		if (item !== undefined && item.text !== undefined && item.path !== undefined) {
+			result = `<a href="${item.path}">${item.text}</a>`;
+		} else {
+			result = '';
+		}
+		
+		return result;
+	};
 	
 }
 
