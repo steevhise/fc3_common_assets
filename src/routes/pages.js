@@ -188,7 +188,7 @@ module.exports = [
         method: 'GET',
         path: '/styleguide',
         config: {
-            id: 'style guide',
+            id: 'pages_styleguide',
             description: 'this is a demonstration page of all the componenets of the site.'
         },
         handler: function (request, reply) {
@@ -200,7 +200,7 @@ module.exports = [
         method: 'GET',
         path: '/submit-post',
         config: {
-            id: 'submit a post',
+            id: 'pages_submitpost',
             description: 'Where users create new posts.'
         },
         handler: function (request, reply) {
@@ -221,7 +221,7 @@ module.exports = [
         method: 'GET',
         path: '/desktop-dash',
         config: {
-            id: 'Dashboard',
+            id: 'pages_dashboard',
             description: 'The user\'s \'home\'.',
             auth: { mode: 'required' },
             plugins: {
@@ -325,7 +325,7 @@ module.exports = [
         method: 'GET',
         path: '/pages/{pagePath}',
         config: {
-            id: 'static pages',
+            id: 'pages_static',
             description: 'a certain static page stored in database. For example, try /pages/test'
         },
         handler: function (request, reply) {
@@ -394,7 +394,7 @@ module.exports = [
         method: '*',
         path: '/login',
         config: {
-            id: 'login',
+            id: 'pages_login',
             description: 'login on this page',
             auth: false
         },
@@ -405,7 +405,7 @@ module.exports = [
         method: '*', // Must handle both GET and POST
         path: '/fb_login',          // The callback endpoint registered with the provider
         config: {
-            id: 'Facebook Login',
+            id: 'pages_fblogin',
             description: 'go here to log in via FB',
             auth: 'facebook',
             handler: _facebookLoginHandler
@@ -416,7 +416,7 @@ module.exports = [
         method: 'GET',
         path: '/logout',
         config: {
-            id: 'logout',
+            id: 'pages_logout',
             description: 'log out on this page, delete your cookie',
             auth: false,
             handler: function (request, reply) {
@@ -432,7 +432,7 @@ module.exports = [
         method: 'GET',
         path: '/home',
         config: {
-            id: 'home',
+            id: 'pages_home',
             description: 'Front Door for logged-out users',
             auth: false
         },
@@ -469,7 +469,7 @@ module.exports = [
         method: 'GET',
         path: '/',
         config: {
-            id: 'Site Map',
+            id: 'pages_sitemap',
             description: 'Simple list of all pages on site.'
         },
         handler: function (request, reply) {
