@@ -203,7 +203,7 @@ module.exports = [
         method: 'GET',
         path: '/home/my-friends',
         config: {
-            id: 'MyFriends',
+            id: 'home_myfriends',
             description: 'The logged in user\'s friends list.',
             auth:  { mode: 'required' }
         },
@@ -248,7 +248,7 @@ module.exports = [
         method: 'GET',
         path: '/home/my-groups',
         config: {
-            id: 'My Groups',
+            id: 'home_mygroups',
             description: 'The logged in user\'s Groups.',
             auth:  { mode: 'required' }
         },
@@ -270,7 +270,7 @@ module.exports = [
         method: 'GET',
         path: '/home/my-posts',
         config: {
-            id: 'My Posts',
+            id: 'home_myposts',
             description: 'Posts created by the logged in user.',
             auth:  { mode: 'required' }
         },
@@ -305,7 +305,7 @@ module.exports = [
         method: 'GET',
         path: '/home/my-replies',
         config: {
-            id: 'MyReplies',
+            id: 'home_myreplies',
             description: 'The logged in user\'s replies list.',
             auth:  { mode: 'required' }
         },
