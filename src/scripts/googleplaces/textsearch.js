@@ -125,13 +125,24 @@ const intervalId = setInterval(() => {
                 group.latitude = response.results[0].geometry.location.lat;
                 group.longitude = response.results[0].geometry.location.lng;
                 id = group.group_id;
+                group.id = group.group_id;
             }
 
-            // console.log(group);
+            Promise.resolve(group);
+
+            console.error(group);
             // now either way we have something to output even if we didn't find a group id.
             console.log(Util.format('%d,%s,%s,%s', id, groupname, response.results[0].geometry.location.lat, response.results[0].geometry.location.lng));
             console.error('group id: ' + id);
-                // group.save(); TODO
+
+            // save the modified group   TODO: this is broken.
+            group.save((err,result2) => {
+
+                Hoek.assert(!err, err);
+                console.error('group ' + result2 + ' saved.');
+                Promise.resolve(result2);
+
+            });   // we don't care if the loop goes on while the save is still happening...
 
             queries++;
 
