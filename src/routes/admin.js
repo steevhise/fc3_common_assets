@@ -22,6 +22,7 @@ module.exports = [
             // get all the pages. TODO: cache this. probably make it a server method.
             return getPages(request.server)
                 .then((result) => {
+
                     if (typeof result === 'string') {
                         // error of some kind, or just no results from the query.
                         if (result === '0') {
@@ -55,13 +56,15 @@ module.exports = [
             }
         },
         handler: function (request, reply) {
+
             reply('you are cool, i guess');
         }
     }
 ];
 
 // a function to grab all the Page records out of the database.
-const getPages = function (server) {   // i think we have to make this function thenable. ??
+const getPages = function (server) {   // TODO: make Page class in common-hapi-plugins and refactor this to use it.
+
     const query = `{
   pages 
   {
@@ -86,6 +89,7 @@ const getPages = function (server) {   // i think we have to make this function 
     // console.log('about to query this query: ', query);
     return server.graphql(server.schema, query)
         .then((queryResult) => {
+
             let retval;
             if (typeof queryResult.data.pages === 'undefined' || queryResult.data.pages === null) {
                 retval = '0';
@@ -101,6 +105,7 @@ const getPages = function (server) {   // i think we have to make this function 
             return retval;
         })
         .catch((reason) => {
+
             // handle rejected promise
             console.error('pages query GraphQL promise rejected. (' + reason + ').');
             throw reason;

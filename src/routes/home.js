@@ -208,6 +208,7 @@ module.exports = [
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
@@ -310,6 +311,7 @@ module.exports = [
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'

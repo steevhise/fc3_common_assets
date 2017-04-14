@@ -165,6 +165,7 @@ module.exports = [
             description: 'The named group\'s announcements.'
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
@@ -185,6 +186,7 @@ module.exports = [
             description: 'The named group\'s guidelines.'
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
@@ -205,12 +207,14 @@ module.exports = [
             description: 'The named group\'s information.'
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
             ];
 
             group.description = group.description.replace(/%%\w+/g, (all) => {
+
                 return description_tokens[all] || all;
             });
 

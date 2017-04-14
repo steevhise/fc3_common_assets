@@ -1,15 +1,16 @@
+/**
+ * It's the Freecycle 3.0 main web application! w00t!
+ */
 
-
-// var Boom = require('boom');
 const Hapi = require('hapi');
-const path = require('path');
+const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
 const Swig = require('swig-templates');
 const Moment = require('moment');
 
-// var longjohn = require('longjohn');     // only for development!!  (stack traces) - not sure if this ever worked.
+// var longjohn = require('longjohn');   // only for development!!  (stack traces) - not sure if this ever worked.
 
 // swig filters
 Swig.setFilter('mdate', (date, format) => {
@@ -264,11 +265,12 @@ server.register([
                     html: Swig
                 },
                 context: defaultContext,
-                path: path.join(__dirname, '../src/views'),
-                layoutPath: path.join(__dirname, '../src/views/layout')
+                path: Path.join(__dirname, '../src/views'),
+                layoutPath: Path.join(__dirname, '../src/views/layout')
             });
 
             server.start((err) => {
+
                 if (err) {
                     console.error('server startup error', err);
                 }
