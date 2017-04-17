@@ -417,5 +417,24 @@ module.exports = [
                 footerMenuItems
             });
         }
+    },
+    {
+        method: 'GET',
+        path: '/home/edit_post/{postId}',
+        config: {
+            id: 'home_post_edit',
+            description: 'Edit a post',
+            auth:  { mode: 'required' }
+        },
+        handler: function (request, reply) {
+            const inBodoyAds = [
+                'one', 'two'
+            ];
+            reply.view('./home/post_edit', {
+                inBodyAds,
+                title: 'Edit A Post',
+                footerMenuItems
+            });
+        }
     }
 ];
