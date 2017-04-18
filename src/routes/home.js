@@ -1,4 +1,5 @@
 const Hoek = require('hoek');
+// const Purdy = require('purdy');
 
 const friends = [
     {
@@ -121,11 +122,14 @@ const findMyPosts = function (req, next) {
 
         // otherwise...
         currentUser = result;
-        currentUser.getPosts('open', (err, result2) => {
+
+        return currentUser.getPosts('open', (err, result2) => {      // getPosts() returns an array
 
             Hoek.assert(!err, err);
-            myPostIDs = result2.posts;   // this is an array of post ids.
+            myPostIDs = result2;
+
             const myPosts = [];   // the array of post objects.
+            // console.log('post IDs: ', myPostIDs);
 
             // now make a Post object for each id.
             myPostIDs.forEach((p, i) => {
@@ -133,6 +137,7 @@ const findMyPosts = function (req, next) {
                 let post;
                 myPosts[i] = new Promise((resolve, reject) => {
 
+                  // TODO: obvs this is part-fake data
                     new req.server.Post(p.post_id, (err, result3) => {
 
                         Hoek.assert(!err, err);
@@ -283,7 +288,7 @@ module.exports = [
             ];
 
             let userPosts;
-            findMyPosts(request, (err, result) => {
+            userPosts = findMyPosts(request, (err, result) => {
 
                 Hoek.assert(!err, err);
                 userPosts = result;
