@@ -7,21 +7,6 @@ const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
-const Swig = require('swig-templates');
-const Moment = require('moment');
-
-// var longjohn = require('longjohn');   // only for development!!  (stack traces) - not sure if this ever worked.
-
-// swig filters
-Swig.setFilter('mdate', (date, format) => {
-
-    return Moment(date, 'ddd MMM D YYYY H:mm:ss').format(format);
-});
-
-Swig.setFilter('mreldate', (date) => {
-
-    return Moment(date, 'ddd MMM D YYYY H:mm:ss').fromNow();
-});
 
 // sass config
 const sassOptions = {
@@ -115,6 +100,9 @@ server.register([
                 ]
             }
         }
+    },
+    {
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
     },
     {
         register: require('hapi-named-routes')
@@ -262,7 +250,7 @@ server.register([
 
             server.views({
                 engines: {
-                    html: Swig
+                    html: server.plugins['hapi-swig-extensions'].swig
                 },
                 context: defaultContext,
                 path: Path.join(__dirname, '../src/views'),
