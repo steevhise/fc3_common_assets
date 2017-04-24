@@ -342,7 +342,7 @@ module.exports = [
         }
       }`;
 
-      // TODO: cache this
+      // TODO: cache this  - static pages don't change much so set expire time accordingly
             request.server.graphql(request.server.schema, query)
           .then((queryResult) => {
 
