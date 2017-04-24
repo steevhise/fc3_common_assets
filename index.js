@@ -23,7 +23,7 @@ const sassOptions = {
 const server = new Hapi.Server({
     cache: {
         engine: require('catbox-memory'),
-        name: 'catmem',
+        name: 'freecycleMain',
         partition: 'freecycle-app'
     },
     connections: {
