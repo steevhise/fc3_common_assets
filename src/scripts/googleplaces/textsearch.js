@@ -4,7 +4,8 @@
  *  such as:
  *  PeoriaFreecycle,"Peoria, Illinois"
  *
- *  Outputs to stdout csv records with groupid, groupname, latitude, longitude
+ *  attempts to save coordinates to the group in the database.
+ *  Also outputs to stdout csv records with groupid, groupname, latitude, longitude
  *  such as:
  *  3030,PeoriaFreecycle,40.6936488,-89.5889864
  *
@@ -20,7 +21,6 @@ import { groupClassFunc } from '../../../node_modules/@freecycle/common-hapi-plu
 import { Context } from '../../../node_modules/@freecycle/freecycle_node_dal';
 import { graphql } from '../../../node_modules/graphql';
 import schema from '../../../node_modules/@freecycle/freecycle_graphql_schema';
-
 
 const server = new Hapi.Server({
     cache: {
@@ -91,12 +91,17 @@ server.start((err) => {
             console.error(line);
 
             // if no more lines
-            if (!line) {
+            if (!line || (line.length < 2)) {
                 clearInterval(intervalId);   // stop the loop...
                 // if we're done with the whole file, then we're done.
                 if (queries === numlines) {
                     Context.close();   // disconnect from database? Not doing this is what causes the hang at the end.
                     console.error('we are done.');
+                    server.stop({ timeout: 10 * 1000 }, (err) => {
+
+                        Hoek.assert(!err, err);
+                        console.error('Server stopped');
+                    });
                     return;
                 }
             }
@@ -115,6 +120,10 @@ server.start((err) => {
 
                 if (error) {
                     throw error;
+                }
+
+                if (!groupname) {
+                    return 'blank line. we are done.';
                 }
                 console.error('looking for ' + groupname + ' : ' + location);
 
@@ -164,7 +173,7 @@ server.start((err) => {
 
         }, 2000);
 
-        console.log('Server running at:', server.info.uri);
+        console.error('Server running at:', server.info.uri);
     }
 });
 
