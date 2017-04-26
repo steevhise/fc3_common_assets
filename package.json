@@ -8,7 +8,7 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "*",
+    "@freecycle/common-hapi-plugins": "^0.1.x",
     "@freecycle/freecycle_graphql_schema": "*",
     "@freecycle/freecycle_node_dal": "*",
     "babel-loader": "^6.2.4",
