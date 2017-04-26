@@ -1,6 +1,6 @@
 {
   "name": "fc3_main",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "lib/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
