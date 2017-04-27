@@ -7,6 +7,12 @@ module.exports = {
         filename: 'main.bundle.js',
         path: path.resolve(__dirname, 'public/assets/js')
     },
+    devServer : {
+        contentBase: path.join(__dirname, "src"),
+        compress: true,
+        hot: true,
+        port: 3000
+    },
     module: {
         rules:[
             {
@@ -28,5 +34,6 @@ module.exports = {
                 warnings: false
             }
         }),
+        new webpack.HotModuleReplacementPlugin()
     ]
 };
