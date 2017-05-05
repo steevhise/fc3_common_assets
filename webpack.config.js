@@ -5,7 +5,8 @@ module.exports = {
     entry: './src/assets/js/main.js',
     output: {
         filename: 'main.bundle.js',
-        path: Path.resolve(__dirname, 'public/assets/js')
+        path: Path.resolve(__dirname, 'public/assets/js'),
+        publicPath: '/assets/'
     },
     devServer : {
         contentBase: Path.join(__dirname, 'src'),

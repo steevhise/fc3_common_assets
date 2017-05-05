@@ -45,7 +45,7 @@
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
-    "watch:javascript": "webpack --progress --watch",
+    "watch:javascript": "webpack-dev-server --config webpack.config.js --progress --colors --watch",
     "build:javascript": "webpack",
     "build:trumbowyg": "cp -rp ./node_modules/trumbowyg/dist ./public/assets/trumbowyg",
     "build": "babel index.js  -d lib",
