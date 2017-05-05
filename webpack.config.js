@@ -5,14 +5,7 @@ module.exports = {
     entry: './src/assets/js/main.js',
     output: {
         filename: 'main.bundle.js',
-        path: Path.resolve(__dirname, 'public/assets/js'),
-        publicPath: '/assets/'
-    },
-    devServer : {
-        contentBase: Path.join(__dirname, 'src'),
-        compress: true,
-        hot: true,
-        port: 3000
+        path: Path.resolve(__dirname, 'public/assets/js')
     },
     module: {
         rules:[
@@ -34,7 +27,6 @@ module.exports = {
             compress: {
                 warnings: false
             }
-        }),
-        new Webpack.HotModuleReplacementPlugin()
+        })
     ]
 };
