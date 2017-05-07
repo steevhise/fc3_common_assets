@@ -7,3 +7,4 @@ export {ReplyItem as ReplyItem} from "./replies";
 export {default as HomeTabs} from './home_tabs';
 export {default as GeoMap} from "./geomap";
 export {default as GroupTabs} from './group_tabs';
+export {default as CkeditorLib} from './ckeditor';
