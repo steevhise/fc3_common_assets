@@ -222,13 +222,13 @@ server.register([
             });
             server.route({
                 method: 'GET',
-                path: '/trumbowyg/{param*}',
+                path: '/ckeditor/{param*}',
                 config: {
                     tags: ['exclude', 'js']
                 },
                 handler: {
                     directory: {
-                        path: './public/assets/trumbowyg',
+                        path: './node_modules/ckeditor',
                         listing: true
                     }
                 }
