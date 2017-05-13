@@ -5,4 +5,5 @@ export {default as HamburgerMenu} from "./hamburger_menu";
 export {default as GroupHamburgerMenu} from "./group_hamburger_menu";
 export {ReplyItem as ReplyItem} from "./replies";
 export {default as HomeTabs} from './home_tabs';
+export {default as GeoMap} from "./geomap";
 export {default as GroupTabs} from './group_tabs';

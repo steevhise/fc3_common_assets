@@ -23,6 +23,9 @@
     <div class="tabs-panel" id="group_contact">
     </div>
     <div class="tabs-panel is-active" id="group_info">
+      <div class="row">
+      {{ group.description|safe }}
+      </div>
       {% include '../partials/in_body_banner_row.html'%}
     </div>
   </div>

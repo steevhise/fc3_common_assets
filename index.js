@@ -1,26 +1,12 @@
+/**
+ * It's the Freecycle 3.0 main web application! w00t!
+ */
 
-
-// var Boom = require('boom');
 const Hapi = require('hapi');
-const path = require('path');
+const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
-const Swig = require('swig-templates');
-const Moment = require('moment');
-
-// var longjohn = require('longjohn');     // only for development!!  (stack traces) - not sure if this ever worked.
-
-// swig filters
-Swig.setFilter('mdate', (date, format) => {
-
-    return Moment(date, 'ddd MMM D YYYY H:mm:ss').format(format);
-});
-
-Swig.setFilter('mreldate', (date) => {
-
-    return Moment(date, 'ddd MMM D YYYY H:mm:ss').fromNow();
-});
 
 // sass config
 const sassOptions = {
@@ -37,8 +23,8 @@ const sassOptions = {
 const server = new Hapi.Server({
     cache: {
         engine: require('catbox-memory'),
-        name: 'catmem',
-        segment: 'auth'
+        name: 'freecycleMain',
+        partition: 'freecycle-app'
     },
     connections: {
         router: {
@@ -67,9 +53,12 @@ server.decorate('server', 'schema', schema);      // access via server.schema
 
 // our object stuff. is this the best way?
 import { postClassFunc } from '@freecycle/common-hapi-plugins/lib/freecycle-post';
+import { userClassFunc } from  '@freecycle/common-hapi-plugins/lib/freecycle-user';
 
 const Post = postClassFunc(server);
+const User = userClassFunc(server);
 server.decorate('server', 'Post', Post);        // access via server.Post
+server.decorate('server', 'User', User);        // access via server.User
 
 // setup connection
 server.connection({ port: process.env.PORT || 8000 });
@@ -111,6 +100,9 @@ server.register([
                 ]
             }
         }
+    },
+    {
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
     },
     {
         register: require('hapi-named-routes')
@@ -242,22 +234,31 @@ server.register([
                 }
             });
 
-            // this shows up in all views. right now just for info about credentialed current authenticated user.
+            // this shows up in all views.
             const defaultContext = function (request) {
+
+                // data about current route.
+                const routeData = {
+                    id: request.route.settings.id,
+                    auth: request.route.settings.auth
+                };
+
+                //  info about credentialed current authenticated user.
                 console.log('global context', request.auth.credentials);
-                return { session: request.auth.credentials };
+                return { session: request.auth.credentials, route: routeData };
             };
 
             server.views({
                 engines: {
-                    html: Swig
+                    html: server.plugins['hapi-swig-extensions'].swig
                 },
                 context: defaultContext,
-                path: path.join(__dirname, '../src/views'),
-                layoutPath: path.join(__dirname, '../src/views/layout')
+                path: Path.join(__dirname, '../src/views'),
+                layoutPath: Path.join(__dirname, '../src/views/layout')
             });
 
             server.start((err) => {
+
                 if (err) {
                     console.error('server startup error', err);
                 }
