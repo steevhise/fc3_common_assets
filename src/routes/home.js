@@ -1,4 +1,5 @@
 const Hoek = require('hoek');
+// const Purdy = require('purdy');
 
 const friends = [
     {
@@ -121,11 +122,14 @@ const findMyPosts = function (req, next) {
 
         // otherwise...
         currentUser = result;
-        currentUser.getPosts('open', (err, result2) => {
+
+        return currentUser.getPosts('open', (err, result2) => {      // getPosts() returns an array
 
             Hoek.assert(!err, err);
-            myPostIDs = result2.posts;   // this is an array of post ids.
+            myPostIDs = result2;
+
             const myPosts = [];   // the array of post objects.
+            // console.log('post IDs: ', myPostIDs);
 
             // now make a Post object for each id.
             myPostIDs.forEach((p, i) => {
@@ -133,6 +137,7 @@ const findMyPosts = function (req, next) {
                 let post;
                 myPosts[i] = new Promise((resolve, reject) => {
 
+                  // TODO: obvs this is part-fake data
                     new req.server.Post(p.post_id, (err, result3) => {
 
                         Hoek.assert(!err, err);
@@ -203,11 +208,12 @@ module.exports = [
         method: 'GET',
         path: '/home/my-friends',
         config: {
-            id: 'MyFriends',
+            id: 'home_myfriends',
             description: 'The logged in user\'s friends list.',
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'
@@ -248,7 +254,7 @@ module.exports = [
         method: 'GET',
         path: '/home/my-groups',
         config: {
-            id: 'My Groups',
+            id: 'home_mygroups',
             description: 'The logged in user\'s Groups.',
             auth:  { mode: 'required' }
         },
@@ -270,7 +276,7 @@ module.exports = [
         method: 'GET',
         path: '/home/my-posts',
         config: {
-            id: 'My Posts',
+            id: 'home_myposts',
             description: 'Posts created by the logged in user.',
             auth:  { mode: 'required' }
         },
@@ -282,7 +288,7 @@ module.exports = [
             ];
 
             let userPosts;
-            findMyPosts(request, (err, result) => {
+            userPosts = findMyPosts(request, (err, result) => {
 
                 Hoek.assert(!err, err);
                 userPosts = result;
@@ -305,11 +311,12 @@ module.exports = [
         method: 'GET',
         path: '/home/my-replies',
         config: {
-            id: 'MyReplies',
+            id: 'home_myreplies',
             description: 'The logged in user\'s replies list.',
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one',
                 'two'

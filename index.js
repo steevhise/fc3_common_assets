@@ -1,26 +1,12 @@
+/**
+ * It's the Freecycle 3.0 main web application! w00t!
+ */
 
-
-// var Boom = require('boom');
 const Hapi = require('hapi');
-const path = require('path');
+const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
-const Swig = require('swig-templates');
-const Moment = require('moment');
-
-// var longjohn = require('longjohn');     // only for development!!  (stack traces) - not sure if this ever worked.
-
-// swig filters
-Swig.setFilter('mdate', (date, format) => {
-
-    return Moment(date, 'ddd MMM D YYYY H:mm:ss').format(format);
-});
-
-Swig.setFilter('mreldate', (date) => {
-
-    return Moment(date, 'ddd MMM D YYYY H:mm:ss').fromNow();
-});
 
 // sass config
 const sassOptions = {
@@ -37,8 +23,8 @@ const sassOptions = {
 const server = new Hapi.Server({
     cache: {
         engine: require('catbox-memory'),
-        name: 'catmem',
-        segment: 'auth'
+        name: 'freecycleMain',
+        partition: 'freecycle-app'
     },
     connections: {
         router: {
@@ -114,6 +100,9 @@ server.register([
                 ]
             }
         }
+    },
+    {
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
     },
     {
         register: require('hapi-named-routes')
@@ -233,13 +222,13 @@ server.register([
             });
             server.route({
                 method: 'GET',
-                path: '/trumbowyg/{param*}',
+                path: '/ckeditor/{param*}',
                 config: {
                     tags: ['exclude', 'js']
                 },
                 handler: {
                     directory: {
-                        path: './public/assets/trumbowyg',
+                        path: './node_modules/ckeditor',
                         listing: true
                     }
                 }
@@ -261,14 +250,15 @@ server.register([
 
             server.views({
                 engines: {
-                    html: Swig
+                    html: server.plugins['hapi-swig-extensions'].swig
                 },
                 context: defaultContext,
-                path: path.join(__dirname, '../src/views'),
-                layoutPath: path.join(__dirname, '../src/views/layout')
+                path: Path.join(__dirname, '../src/views'),
+                layoutPath: Path.join(__dirname, '../src/views/layout')
             });
 
             server.start((err) => {
+
                 if (err) {
                     console.error('server startup error', err);
                 }
