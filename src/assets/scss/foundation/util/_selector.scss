@@ -26,7 +26,8 @@
     tel
     time
     url
-    color;
+    color
+    file;
 
   @if not has-value($types) {
     $types: $all-types;
