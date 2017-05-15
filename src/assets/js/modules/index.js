@@ -8,3 +8,4 @@ export {default as HomeTabs} from './home_tabs';
 export {default as GeoMap} from "./geomap";
 export {default as GroupTabs} from './group_tabs';
 export {default as CkeditorLib} from './ckeditor';
+export {default as PostEditNew} from './post_edit_new';
