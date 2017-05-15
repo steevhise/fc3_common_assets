@@ -1,5 +1,6 @@
 {#
     TODO: Post Edit
+    - example /home/edit_post/17696015
     - data will be passed from route.
     - check that required fields are not editable by disabling those fields.
     - ensure post save method filter's out changes that should not be made such as ,
@@ -19,34 +20,11 @@
         </div>
         <hr class="section-divider" />
         <div class="row">
-            <form class="columns large-10 large-offset-1">
+            <form class="columns large-10 large-offset-1" id="post_edit">
                 <div class="form-group">
                     <label>Select type of Post</label>
-                    <div class="button-bar">
-                        <button class="active">
-                            <div class="post-list-item-category-icon icon-container">
-                                {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
-                                <span class="text-offer">Offer</span>
-                            </div>
-                        </button>
-                        <button>
-                            <div class="post-list-item-category-icon icon-container">
-                                {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
-                                <span class="text-lend">Lend</span>
-                            </div>
-                        </button>
-                        <button>
-                            <div class="post-list-item-category-icon icon-container">
-                                {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
-                                <span class="text-borrow">Borrow</span>
-                            </div>
-                        </button>
-                        <button>
-                            <div class="post-list-item-category-icon icon-container">
-                                {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
-                                <span class="text-wanted">Wanted</span>
-                            </div>
-                        </button>
+                    <div class="button-bar" data-post-buttongroup>
+                        {% include "../partials/post_types.html" with {postTypes: ['Offer', 'Lend', 'Borrow', 'Wanted'], disabled: true} only %}
                     </div>
                 </div>
                 <div class="form-group">
@@ -55,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label>Upload a Picture</label>
-                    <input type="text"/>
+                    <input type="file" />
                 </div>
                 <div class="form-group">
                     <label>Post to Local Group</label>
@@ -66,9 +44,13 @@
                     <div class="input-with-icon">
                         <input class="input-with-icon" type="search" placeholder="{{label}}"/>
                         <span class="icon search-icon">
-                {% include '../icons/search.html' %}
-          </span>
+                            {% include '../icons/search.html' %}
+                      </span>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="textarea" id="post_new_description" data-ckeditor />
                 </div>
                 <div class="form-group">
                     <label>Tags</label>
@@ -78,7 +60,7 @@
                     <input type="checkbox" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
                 </div>
                 <div class="form-group text-center">
-                    <button type="submit" role="submit" class="btn-default btn-wide">Post Item</button>
+                    <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>
                 </div>
             </form>
         </div>
