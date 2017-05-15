@@ -434,7 +434,7 @@ module.exports = [
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
-            const inBodoyAds = [
+            const inBodyAds = [
                 'one', 'two'
             ];
             reply.view('./home/post_edit', {
