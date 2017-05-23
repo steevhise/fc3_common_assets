@@ -8,8 +8,6 @@
 {% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="/trumbowyg/ui/trumbowyg.min.css">
-
 
     <h2>Static Pages Administration</h2>
 <p></p>
@@ -38,7 +36,7 @@
 
         <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
 
-    <textarea id="trumbo" placeholder="enter the text of your page here."></textarea>
+    <textarea data-ckeditor id="editor" placeholder="enter the text of your page here."></textarea>
         <div class="form-group text-center">
             <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
             <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
@@ -54,42 +52,12 @@
 {% include '../partials/footer.html' %}
 
 {% block extra_scripts %}
-
-    <script src="/trumbowyg/trumbowyg.min.js" ></script>
-    <script src="/trumbowyg/plugins/upload/trumbowyg.upload.js" ></script>
+  {% parent %}
 
 <script>
     // document.addEventListener('DOMContentLoaded', function() {
 
     $(document).ready(function() {
-        $('#trumbo').trumbowyg( {
-            removeformatPasted: true,
-            autogrow: true,
-            btnsDef: {
-                // Create a new dropdown
-                image: {
-                    dropdown: ['insertImage', 'upload'],
-                    ico: 'insertImage'
-                }
-            },
-            btns: [
-                ['viewHTML'],
-                ['formatting'],
-                'btnGrp-semantic',
-                ['superscript', 'subscript'],
-                ['link'],
-                 'image',
-                // 'btnGrp-justify',
-                'btnGrp-lists',
-                ['horizontalRule'],
-                ['removeformat'],
-                ['fullscreen']
-            ],
-            plugins: [
-                'upload',
-            ]
-        });
-
         $("#pageselect").select2({
             placeholder: "Select a page to edit",
             //width: "80%",
