@@ -2,31 +2,6 @@
 const Hoek = require('hoek');
 const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
 
-const user = {
-  avatar_url: "http://lorempixel.com/150/150/people/8",
-  name: "Nathan Puente",
-  username: 'npuente',
-  description: "I'm a business-owener and entrepreneur in Tuscon.",
-  thumbsup: 100,
-  groups: [
-    {
-      name: 'Tucson',
-      state: 'AZ',
-    },
-    {
-      name: 'Marana',
-      state: 'AZ',
-    },
-    {
-      name: 'Vail',
-      state: 'AZ',
-    },
-    {
-      name: 'Oro Valley',
-      state: 'AZ',
-    }
-]};
-
 const friends = [
     {
         avatar_url: 'http://lorempixel.com/150/150/people/1',
@@ -64,6 +39,31 @@ const friends = [
         username: 'ronnnnnnnny'
     }
 ];
+
+const user = {
+  avatar_url: "http://lorempixel.com/150/150/people/8",
+  name: "Nathan Puente",
+  username: 'npuente',
+  description: "I'm a business-owener and entrepreneur in Tuscon.",
+  thumbsup: 100,
+  groups: [
+    {
+      name: 'Tucson',
+      state: 'AZ',
+    },
+    {
+      name: 'Marana',
+      state: 'AZ',
+    },
+    {
+      name: 'Vail',
+      state: 'AZ',
+    },
+    {
+      name: 'Oro Valley',
+      state: 'AZ',
+    }
+]};
 
 // dummy footer items
 const footerMenuItems = [
