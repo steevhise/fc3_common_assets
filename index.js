@@ -1,5 +1,5 @@
 /**
- * It's the Freecycle 3.0 main web application! w00t!
+ * It's the Freecycle 3.0 main web application! w00t!  hurrah!
  */
 
 const Hapi = require('hapi');
