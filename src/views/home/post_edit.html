@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group">
                     <label>Post title</label>
-                    <input type="text"/>
+                    <input type="text" value="{{post.post_subject}}"/>
                 </div>
                 <div class="form-group">
                     <label>Upload a Picture</label>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <input type="textarea" id="post_new_description" data-ckeditor />
+                    <input type="textarea" id="post_new_description" data-ckeditor value="{{post.post_description}}" />
                 </div>
                 <div class="form-group">
                     <label>Tags</label>

@@ -437,10 +437,18 @@ module.exports = [
             const inBodyAds = [
                 'one', 'two'
             ];
-            reply.view('./home/post_edit', {
-                inBodyAds,
-                title: 'Edit A Post',
-                footerMenuItems
+
+            // retrieve data for post edit
+            const postId = Number(request.params.postId);
+            new request.server.Post(postId, (err, post) => {
+
+                Hoek.assert(!err, 'Post Edit: Problem getting post.');
+                reply.view('./home/post_edit', {
+                    inBodyAds,
+                    title: 'Edit A Post',
+                    footerMenuItems,
+                    post
+                });
             });
         }
     }
