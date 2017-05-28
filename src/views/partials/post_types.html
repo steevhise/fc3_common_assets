@@ -1,8 +1,10 @@
 
 {% set postTypes = postTypes %}
+
 {% for postType in postTypes %}
     {% set postTypeLower = postType.toLowerCase() %}
-    <button data-post-typebutton class="{% if loop.first %}active{% endif %}" >
+    {% set isActive = postType.toLowerCase() == selected.toLowerCase() ? true : false %}
+    <button data-post-typebutton class="{% if isActive %}active{% endif %}" {% if disabled %} disabled {% endif %}>
         <div class="post-list-item-category-icon icon-container">
             {% include '../icons/chevron.html' with {className:'icon-chevron-' + postTypeLower} only %}
             <span class="text-offer">{{postType}}</span>
