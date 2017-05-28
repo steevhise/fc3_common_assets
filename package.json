@@ -51,6 +51,7 @@
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
+    "dev:watch" : "concurrently --kill-others \"npm run watch:javascript\" \"npm run dev\"",
     "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
@@ -63,6 +64,7 @@
     "eslint-plugin-hapi": "^4.0.0",
     "lab": "^11.0.1",
     "longjohn": "^0.2.11",
-    "snazzy": "*"
+    "snazzy": "*",
+    "concurrently" : "^3.4.0"
   }
 }
