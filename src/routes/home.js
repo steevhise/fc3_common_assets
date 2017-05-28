@@ -202,6 +202,37 @@ const posts = [
         post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
     }];
 
+/**
+ * A Graphql Query that returns a specific post.
+ * @param {string} server the server context
+ * @param {number} postId the postId we would like to query
+ */
+const queryPost = (server, postId) => {
+    const query = `{
+        post(post_id:${postId}){
+            post_id
+            user_id
+            group_id
+            post_subject
+            post_description
+            post_location
+            postType {
+                post_type_name
+            }
+        }
+    }`;
+
+    return server.graphql(server.schema, query)
+        .then((queryResults) => {
+            console.log(queryResults)
+            return queryResults.data.post;
+        })
+        .catch((error) => {
+            console.error(`Query getPost: ${error}`);
+            throw error;
+        });
+};
+
 // route definitions
 module.exports = [
     {
@@ -438,14 +469,14 @@ module.exports = [
                 'one', 'two'
             ];
 
+            //TODO: Add Authentication, to only allow owner to edit the field.
             // retrieve data for post edit
             const postId = Number(request.params.postId);
-            new request.server.Post(postId, (err, post) => {
-
-                Hoek.assert(!err, 'Post Edit: Problem getting post.');
+            queryPost(request.server, postId)
+            .then((post) => {
                 reply.view('./home/post_edit', {
                     inBodyAds,
-                    title: 'Edit A Post',
+                    title : `Edit Post : ${post.post_id}`,
                     footerMenuItems,
                     post
                 });
