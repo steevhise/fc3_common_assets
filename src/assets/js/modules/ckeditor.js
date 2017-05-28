@@ -13,8 +13,10 @@ export default class CkeditorClass {
 	}
 
   init() {
-    $.getScript('/ckeditor/ckeditor.js', ()=> {
+    $.getScript('/ckeditor/ckeditor.js', () => {
           CKEDITOR.replace(this.instance);
+          // set the content of the editor if it has a value.
+          CKEDITOR.instances[this.instance.id].setData(this.$element.val());
       });
   }
 }
