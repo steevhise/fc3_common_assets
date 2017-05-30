@@ -1,4 +1,7 @@
-body[data-fc-route="user"] .profile {
+@import "../variables";
+
+#{$user} {
+  .profile {
     text-align: center;
     padding-top: 1.875em;
     max-width: 80%;
@@ -6,36 +9,36 @@ body[data-fc-route="user"] .profile {
     margin-right: auto;
   }
 
-body[data-fc-route="user"] .profile .avatar {
+  .profile .avatar {
     background-color: $light-gray;
     border-radius: 50% 50% 50% 50%;
     height: 100px;
     padding: 4px;
   }
 
-body[data-fc-route="user"] .profile h2 {
+  .profile h2 {
     font-size: 1.875em;
     font-weight: normal;
     margin-bottom: 0px;
   }
 
-body[data-fc-route="user"] .profile .section-title-small {
+  .profile .section-title-small {
     margin-top: 0;
     margin-bottom: 2rem;
   }
 
-body[data-fc-route="user"] .profile .thumbsup {
+  .profile .thumbsup {
     font-size: 0.625em;
     color: map_get($freecycle-palette,primary);
   }
 
-body[data-fc-route="user"] .profile .thumbsup svg {
+  .profile .thumbsup svg {
     top: 3px;
     position: relative;
     fill: currentColor;
   }
 
-body[data-fc-route="user"] .section-divider {
+  .section-divider {
     margin: 0.5rem 2rem 1rem 2rem;
 
     @media #{$medium-up} {
@@ -43,7 +46,7 @@ body[data-fc-route="user"] .section-divider {
     }
   }
 
-body[data-fc-route="user"] .profile-actions {
+  .profile-actions {
     font-size: 0.625em;
     font-weight: bold;
     text-align: center;
@@ -52,21 +55,21 @@ body[data-fc-route="user"] .profile-actions {
     color: $dark-gray;
   }
 
-body[data-fc-route="user"] .profile-actions span.icon:first-of-type {
+  .profile-actions span.icon:first-of-type {
     margin-right: 30px;
   }
 
-body[data-fc-route="user"] .profile-actions span.icon svg {
+  .profile-actions span.icon svg {
     margin-bottom: -3px;
     fill: currentColor;
   }
 
-body[data-fc-route="user"] .row.user-details {
+  .row.user-details {
     padding-bottom: 5rem;
     position: relative;
   }
 
-body[data-fc-route="user"] .post-grid-item {
+  .post-grid-item {
     /* only two columns on the mockup, so make them wider */
     width: 100%;
     @media #{$medium-up} {
@@ -82,21 +85,22 @@ body[data-fc-route="user"] .post-grid-item {
     margin-bottom: 0.375rem;
   }
 
-body[data-fc-route="user"] .tabs {
+  .tabs {
     padding: 0rem 2rem;
     @media #{$medium-up} {
       padding: 0rem;
     }
   }
 
-body[data-fc-route="user"] .tabs-content {
+  .tabs-content {
     background: $body-background;
   }
 
-body[data-fc-route="user"] .tabs-panel {
+  .tabs-panel {
     padding-top: 0px;
   }
 
-body[data-fc-route="user"] .in-body-banner-ad {
+  .in-body-banner-ad {
     margin-top: 2.500em;
   }
+}
