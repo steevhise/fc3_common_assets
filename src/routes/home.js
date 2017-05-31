@@ -1,4 +1,6 @@
+const Boom = require('boom');
 const Hoek = require('hoek');
+
 // const Purdy = require('purdy');
 
 const friends = [
@@ -224,7 +226,7 @@ const queryPost = (server, postId) => {
 
     return server.graphql(server.schema, query)
         .then((queryResults) => {
-            console.log(queryResults)
+            console.log(queryResults);
             return queryResults.data.post;
         })
         .catch((error) => {
@@ -462,15 +464,40 @@ module.exports = [
         config: {
             id: 'home_post_edit',
             description: 'Edit a post',
-            auth:  { mode: 'required' }
+            auth:  { mode: 'required' },
+            plugins: { 'hapiAuthorization': { aclQuery: (id, request, cb) => {
+
+                const userId = request.auth.credentials.id;
+                request.log('authorization', 'user is ' + userId);
+                // only allow edit of own posts.
+                const postId = Number(request.params.postId);
+
+                // get the post and see if post author is same as current user
+                // TODO: i'd like this to be scoped such that we can re-use this data in the handler below rather than query the post again.
+                new request.server.Post(postId, (err, post) => {
+
+                    Hoek.assert(!err, 'Probem getting Post!');
+
+                    if (post.user_id === userId) {
+                        // allowed
+                        cb(null, true);
+                    }
+                    else {
+                        // not allowed
+                        request.log('authorization', 'post author id is ' + post.user_id + ' but current user is ' + userId);
+                        cb(Boom.forbidden(), true);
+                        // TODO: right now this just pops up a rude error page. later we want to just redirect to the post detail page.
+                    }
+                });
+            } } }
         },
         handler: function (request, reply) {
+
             const inBodyAds = [
                 'one', 'two'
             ];
 
-            //TODO: Add Authentication, to only allow owner to edit the field.
-            // retrieve data for post edit
+            // retrieve data for post edit  TODO: see above, we should be only querying post once... not sure how to scope it though.
             const postId = Number(request.params.postId);
             queryPost(request.server, postId)
             .then((post) => {
