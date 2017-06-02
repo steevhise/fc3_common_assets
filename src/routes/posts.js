@@ -90,5 +90,38 @@ module.exports = [
                 });
             });
         }
+    },
+    {
+        method: 'GET',
+        path: '/posts/images/{postImageId}',
+        config: {
+            id: 'direct url to post image',
+            description: 'a single post image, e.g. /posts/images/4090134'
+        },
+        handler: function (request, reply) {
+
+            const id = Number(request.params.postImageId);
+
+            // grab the image and return content-type header and data
+
+            request.server.Post.getImageById({ id }, (err, image) => {
+
+                Hoek.assert(!err, 'something is wrong: ' + err);
+
+                if (image.data.length > 0) {
+                    console.log(image.data);
+                    console.log('image size: ' + image.data.length);
+                    console.log('image mime: ' + image.mime_type);
+                    const data = new Buffer.from(image.data, 'ascii');    // it's in the db as ASCII? weird.
+                    const size = Buffer.byteLength(data);
+                    console.log('byte length: ' + size);
+                    reply(data).bytes(size).type(image.mime_type).header('Content-Disposition','inline');
+                }
+                else {
+                    reply(Boom.notFound('post image ' + id + ' does not exist.'));
+                }
+            });
+        }
+
     }
 ];
