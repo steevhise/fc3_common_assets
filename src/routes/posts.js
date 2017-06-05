@@ -93,28 +93,29 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/posts/images/{postImageId}',
+        path: '/posts/images/{postImageId}/{thumb?}',
         config: {
             id: 'direct url to post image',
-            description: 'a single post image, e.g. /posts/images/4090134'
+            description: 'a single post image, e.g. /posts/images/4090134 - or /posts/images/4090116/thumb'
         },
         handler: function (request, reply) {
 
             const id = Number(request.params.postImageId);
+            const thumb = request.params.thumb;
 
             // grab the image and return content-type header and data
 
-            request.server.Post.getImageById({ id }, (err, image) => {
+            request.server.Post.getImageById({ id, thumb }, (err, image) => {
 
                 Hoek.assert(!err, 'something is wrong: ' + err);
 
                 if (image.data.length > 0) {
-                    console.log(image.data);
+                    // console.log(image.data);
                     console.log('image size: ' + image.data.length);
-                    console.log('image mime: ' + image.mime_type);
+                    // console.log('image mime: ' + image.mime_type);
                     const data = new Buffer.from(image.data, 'ascii');    // it's in the db as ASCII? weird.
                     const size = Buffer.byteLength(data);
-                    console.log('byte length: ' + size);
+                    console.log('image byte length: ' + size);
                     reply(data).bytes(size).type(image.mime_type).header('Content-Disposition','inline');
                 }
                 else {
