@@ -1,6 +1,6 @@
 {
   "name": "fc3_main",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "lib/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
@@ -25,9 +25,9 @@
     "graphql": "0.5.0",
     "graphql-relay": "^0.4.2",
     "hapi": "^14.2.0",
-    "hapi-authorization": "^3.0.2",
+    "hapi-authorization": "^3.0.3",
     "hapi-cache-buster": "~0.4.0",
-    "hapi-error": "^1.0.4",
+    "hapi-error": "^1.7.0",
     "hapi-named-routes": "~0.3.0",
     "hapi-plug-routes": "^1.0.2",
     "hapi-sass": "^2.1.0",
@@ -51,6 +51,7 @@
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
+    "dev:watch" : "concurrently --kill-others \"npm run watch:javascript\" \"npm run dev\"",
     "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
@@ -63,6 +64,7 @@
     "eslint-plugin-hapi": "^4.0.0",
     "lab": "^11.0.1",
     "longjohn": "^0.2.11",
-    "snazzy": "*"
+    "snazzy": "*",
+    "concurrently" : "^3.4.0"
   }
 }

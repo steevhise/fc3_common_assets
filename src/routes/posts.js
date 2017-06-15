@@ -1,6 +1,7 @@
 
 
 const Hoek = require('hoek');
+const Boom = require('boom');
 
 // dummy footer items
 const footerMenuItems = [
@@ -90,5 +91,43 @@ module.exports = [
                 });
             });
         }
+    },
+    {
+        method: 'GET',
+        path: '/posts/images/{postImageId}/{thumb?}',
+        config: {
+            id: 'direct url to post image',
+            description: 'a single post image, e.g. /posts/images/4090134 - or /posts/images/4090116/thumb'
+        },
+        handler: function (request, reply) {
+
+            const id = Number(request.params.postImageId);
+            const thumb = request.params.thumb;
+
+            // grab the image and return content-type header and data
+
+            try {
+                request.server.Post.getImageById({ id, thumb }, (err, image) => {
+
+                    Hoek.assert(!err, 'something is wrong: ' + err);
+                    if ((image !== null) && image.data && (image.data.length > 0)) {
+                        const data = new Buffer.from(image.data, 'ascii');    // it's in the db as ASCII. yeah. weird.
+                        const size = Buffer.byteLength(data);
+                        console.log('image byte length: ' + size);
+                        reply(data).bytes(size).type(image.mime_type).header('Content-Disposition', 'inline');
+                    }
+                    else {
+                        const error = Boom.create(499, 'post image ' + id + ' does not exist.');
+                        return reply(error);
+                    }
+                });
+            }
+            catch (e) {
+                const error = Boom.create(499, 'post image ' + id + ' does not exist.');
+                request.log('get-image', e);
+                return reply(error);
+            }
+        }
+
     }
 ];

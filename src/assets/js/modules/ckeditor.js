@@ -10,11 +10,15 @@ export default class CkeditorClass {
 
       // init function must be called last.
       this.init();
-	}
+    }
 
   init() {
-    $.getScript('/ckeditor/ckeditor.js', ()=> {
-          CKEDITOR.replace(this.instance);
+    $.getScript('/ckeditor/ckeditor.js', () => {
+        CKEDITOR.replace(this.instance);
+
+        // set the content of the editor if it has a value.
+        let rawValue = String.raw`${this.$element.val()}`;
+        CKEDITOR.instances[this.instance.id].setData(rawValue);
       });
   }
 }

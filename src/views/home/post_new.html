@@ -1,0 +1,67 @@
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+  {% include '../partials/header.html' with {loggedIn:false} %}
+{% endblock %}
+
+{% block content %}
+  <div class="new_post row">
+    <div class="row">
+      <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+    </div>
+    <hr class="section-divider" />
+    <div class="row">
+      <form class="columns large-10 large-offset-1">
+        <div class="form-group">
+          <label>Select type of Post</label>
+          <div class="button-bar" data-post-buttongroup>
+            {% include "../partials/post_types.html" with {postTypes: ['Offer', 'Lend', 'Borrow', 'Wanted']} only %}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Post title</label>
+          <input type="text"/>
+        </div>
+        <div class="form-group">
+          <label>Upload a Picture</label>
+          <input type="file" />
+        </div>
+        <div class="form-group">
+          <label>Post to Local Group</label>
+          <div class="input-with-icon">
+            <input type="text"/>
+            <span class="iconcenter">
+                {% include '../icons/map_pin.html' %}
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nearest Crossroads</label>
+          <div class="input-with-icon">
+            <input class="input-with-icon" type="search" placeholder="{{label}}"/>
+            <span class="iconcenter">
+                {% include '../icons/map_compass.html' %}
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="textarea" id="post_new_description" data-ckeditor />
+        </div>
+        <div class="form-group">
+          <label>Tags</label>
+          <input type="text" placeholder="..."/>
+        </div>
+        <div class="form-group text-center terms-conditions">
+          <input type="checkbox" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
+        </div>
+        <div class="form-group text-center">
+          <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>
+        </div>
+      </form>
+    </div>
+    <hr class="section-divider" />
+  </div>
+  {% include '../partials/in_body_banner_row.html'%}
+
+{% endblock %}
