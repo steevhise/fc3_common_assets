@@ -1,6 +1,7 @@
 
 
 const Hoek = require('hoek');
+const Boom = require('boom');
 
 // dummy footer items
 const footerMenuItems = [
@@ -105,23 +106,27 @@ module.exports = [
 
             // grab the image and return content-type header and data
 
-            request.server.Post.getImageById({ id, thumb }, (err, image) => {
+            try {
+                request.server.Post.getImageById({ id, thumb }, (err, image) => {
 
-                Hoek.assert(!err, 'something is wrong: ' + err);
-
-                if (image.data.length > 0) {
-                    // console.log(image.data);
-                    console.log('image size: ' + image.data.length);
-                    // console.log('image mime: ' + image.mime_type);
-                    const data = new Buffer.from(image.data, 'ascii');    // it's in the db as ASCII? weird.
-                    const size = Buffer.byteLength(data);
-                    console.log('image byte length: ' + size);
-                    reply(data).bytes(size).type(image.mime_type).header('Content-Disposition','inline');
-                }
-                else {
-                    reply(Boom.notFound('post image ' + id + ' does not exist.'));
-                }
-            });
+                    Hoek.assert(!err, 'something is wrong: ' + err);
+                    if ((image !== null) && image.data && (image.data.length > 0)) {
+                        const data = new Buffer.from(image.data, 'ascii');    // it's in the db as ASCII. yeah. weird.
+                        const size = Buffer.byteLength(data);
+                        console.log('image byte length: ' + size);
+                        reply(data).bytes(size).type(image.mime_type).header('Content-Disposition', 'inline');
+                    }
+                    else {
+                        const error = Boom.create(499, 'post image ' + id + ' does not exist.');
+                        return reply(error);
+                    }
+                });
+            }
+            catch (e) {
+                const error = Boom.create(499, 'post image ' + id + ' does not exist.');
+                request.log('get-image', e);
+                return reply(error);
+            }
         }
 
     }
