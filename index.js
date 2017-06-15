@@ -71,7 +71,12 @@ server.connection({ port: process.env.PORT || 8000 });
 // register plugins
 server.register([
     Inert,
-    HapiError,
+    {
+        register: HapiError,
+        config: { statusCodes: {
+            499: { message: 'Please Login to view that page' },
+        } }
+    },
     {
         register: HapiSass,
         options: sassOptions

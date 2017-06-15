@@ -27,7 +27,7 @@
     "hapi": "^14.2.0",
     "hapi-authorization": "^3.0.3",
     "hapi-cache-buster": "~0.4.0",
-    "hapi-error": "^1.0.4",
+    "hapi-error": "^1.7.0",
     "hapi-named-routes": "~0.3.0",
     "hapi-plug-routes": "^1.0.2",
     "hapi-sass": "^2.1.0",
