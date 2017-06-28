@@ -1,4 +1,4 @@
-export { default as VueInit } from './vue_init';
+export { VueInit, EventBus } from './vue_init';
 export {default as ItemList} from "./item_list";
 export {default as ColorPalette} from "./color_palette";
 export {default as TagList} from "./tag_list";

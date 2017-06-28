@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { EventBus } from '../components/EventBus';
 
 // components
 import Test from '../components/Test.vue';
@@ -14,4 +15,4 @@ const VueInit = new Vue({
     }
 });
 
-export default VueInit;
+export { VueInit, EventBus };
