@@ -10,6 +10,9 @@ module.exports = {
     module: {
         rules:[
             {
+                test: /\.(vue)$/, exclude: /(node_modules)/, loader: 'vue-loader'
+            },
+            {
                 test: /\.(js)$/, exclude: /(node_modules)/, loader: 'babel-loader',
                 options: {
                     presets: ['es2015'],
@@ -17,6 +20,11 @@ module.exports = {
                 }
             }
         ]
+    },
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js'
+        }
     },
     plugins: [
         new Webpack.LoaderOptionsPlugin({
