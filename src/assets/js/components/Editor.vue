@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { EventBus } from './EventBus';
 let inc = 0;
 let CKEDITOR_BASEPATH = '/ckeditor/';
 let defaultConfig = {

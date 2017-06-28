@@ -4,6 +4,7 @@ import { EventBus } from '../components/EventBus';
 // components
 import Test from '../components/Test.vue';
 import Editor from '../components/Editor.vue';
+import FormButton from '../components/FormButton.vue';
 
 // instantiate vue
 const VueInit = new Vue({
@@ -11,7 +12,8 @@ const VueInit = new Vue({
     // register components
     components: {
         'fc-test': Test,
-        'fc-editor': Editor
+        'fc-editor': Editor,
+        'fc-formbutton': FormButton
     }
 });
 

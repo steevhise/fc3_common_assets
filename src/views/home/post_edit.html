@@ -20,7 +20,7 @@
         </div>
         <hr class="section-divider" />
         <div class="row">
-            <form class="columns large-10 large-offset-1" id="post_edit">
+            <form class="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form" >
                 <div class="form-group">
                     <label>Select type of Post</label>
                     <div class="button-bar" data-post-buttongroup>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group">
                     <label>Post title</label>
-                    <input type="text" value="{{post.post_subject}}"/>
+                    <input name="post_subject" type="text" value="{{post.post_subject}}"/>
                 </div>
                 <div class="form-group">
                     <label>Upload a Picture</label>
@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label>Post to Local Group</label>
                     <div class="input-with-icon">
-                        <input type="text" value="{{post.group.group_name}}"/>
+                        <input type="text" name="group_name" value="{{post.group.group_name}}"/>
                         <span class="iconcenter">
                             {% include '../icons/map_pin.html' %}
                         </span>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <input type="textarea" id="post_new_description" data-ckeditor value="{{post.post_description|safe}}" />
+                    <fc-editor name="post_description" value="{{ post.post_description|safe }}"></fc-editor>
                 </div>
                 <div class="form-group">
                     <label>Tags</label>
@@ -65,7 +65,8 @@
                     <input type="checkbox" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
                 </div>
                 <div class="form-group text-center">
-                    <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>
+                    {#<button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>#}
+                    <fc-formbutton type="submit" role="submit" className="btn-default btn-wide" text="Post Item"></fc-formbutton>
                 </div>
             </form>
         </div>
