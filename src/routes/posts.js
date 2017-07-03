@@ -111,13 +111,14 @@ module.exports = [
 
                     Hoek.assert(!err, 'something is wrong: ' + err);
                     if ((image !== null) && image.data && (image.data.length > 0)) {
-                        const data = new Buffer.from(image.data, 'ascii');    // it's in the db as ASCII. yeah. weird.
+                        const data = new Buffer.from(image.data, 'latin1');    // after much trial and error this is what works..
                         const size = Buffer.byteLength(data);
                         console.log('image byte length: ' + size);
                         reply(data).bytes(size).type(image.mime_type).header('Content-Disposition', 'inline');
                     }
                     else {
                         const error = Boom.create(499, 'post image ' + id + ' does not exist.');
+                        request.log('get-image', e);
                         return reply(error);
                     }
                 });

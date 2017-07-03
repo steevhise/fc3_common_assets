@@ -74,7 +74,7 @@ server.register([
     {
         register: HapiError,
         config: { statusCodes: {
-            499: { message: 'Please Login to view that page' },
+            499: { message: 'Please Login to view that page' }
         } }
     },
     {
