@@ -6,8 +6,6 @@
 .npmrc
 .tern-project
 .vscode
-Dockerfile
-docker-compose.yml
 jsconfig.json
 lib/index.js
 node_modules/
