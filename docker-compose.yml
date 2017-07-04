@@ -1,0 +1,19 @@
+version: '3'
+services:
+  fc_main:
+    container_name: 'fc-main'
+    ports:
+      - '3000:3000'
+      - '8000:8000'
+    tty: true
+    stdin_open: true
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    volumes: 
+      - './:/src'
+      #NOTE: uncomment the line below to link your local plugins folder to the cotnainer to develop in the container.
+      #- '../common-hapi-plugins:/node_modules/@freecycle/common-hapi-plugins'
+    hostname: 'dev.freecycle.org'
+    extra_hosts:
+      - 'dev.freecycle.org:127.0.0.1'
