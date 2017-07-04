@@ -43,6 +43,10 @@
                 $.each($(target).serializeArray(), function() {
                     self.results[this.name] = this.value;
                 });
+                this.handleData('postSave', this.results);
+            },
+            handleData(method, data) {
+                $.post(`/actions?method=${method}&data=${JSON.stringify(data)}`);
             }
         }
     }
