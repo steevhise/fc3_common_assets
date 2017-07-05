@@ -12,12 +12,12 @@ Make sure you have node and npm, and then:
     @f:registry=https://registry.npmjs.org/ 
     ```
 
-3. Make sure you have an account on the registry (ask Steev). 
-4. Login with `npm login`. Now you can use npm as usual and everything will load via npm.freecycle.org (you can also browse and log in to [npm.freecycle.org](http://npm.freecycle.org) to see what packages we have). 
+3. Make sure you have an account on our npm registry (ask Steev). 
+4. Login to the registry with `npm login`. Now you can use npm as usual and everything will load via npm.freecycle.org (you can also browse and log in to [npm.freecycle.org](http://npm.freecycle.org) to see what packages we have). 
 5. `npm install` 
 6. `npm run build`
-7. `npm run build:trumbowyg` (this installs the wysiwyg page editor)
-8. For the cookies and authentication to work right, you need spoof your local environment to be a freecycle.org host. Usually this is done by adding a localhost alias to your /etc/hosts file like *mymachine.freecycle.org*.
+7. `npm run build:javascript` 
+8. For the cookies and authentication to work right, you need to spoof your local environment to be a freecycle.org host. Usually this is done by adding a localhost alias to your /etc/hosts file like *mymachine.freecycle.org*.
  
 ### To Run 
  
@@ -32,7 +32,7 @@ Make sure you have node and npm, and then:
  
 ### Coding/Architecture Guidelines 
 * reusable plugins and modules that we want to use in other apps (like ModTools, Group Admin, etc) should be put in the `@freecycle/common-hapi-plugins` npm.
-The repo for that is at gitolite@devserver.freecycle.org:common-hapi-plugins
+The repo for that is at `gitolite@devserver.freecycle.org:common-hapi-plugins`
 Within that there is now a directory `plugins/` and a directory `modules/` please put things in appropriate place.
 * `src/packages/` is for other code of ours (our unpackaged internal hapi plugins, etc) not contained in the above package or in `src/routes/`, etc 
 * Please keep routes and views organized by section of site: Home, Groups, etc. any js file in the routes dir will get included. 
@@ -53,10 +53,13 @@ You can auto-fix many easy things in code to conform to the style by running `np
  
  
 ### Backend Esoterica:
-* now the GraphQL query wrapper is a regular module not a hapi plugin.  
+GraphQL and Sequelize are used for the Data Access Layer.
+
+GraphQL queries should go through the graphql-wrapper query wrapper module.  
 use it like so:  
-`var WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');`
-`WGQL.GraphQLWrapper(server, query, datawanted, function(err, result)  { whatever callback stuff... });`
-where datawanted is a result property you're looking for, like *user.user_id*.
+```const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');`
+WGQL.GraphQLWrapper(server, query, datawanted, function(err, result)  { whatever callback stuff... });```
+  <br>Where `datawanted` is a result property you're looking for, like *user.user_id*.
 It will return (null, null) for nothing found, (null, queryResult.data) for found data, and (err, null) for errors.
-... Does this really save any code boilerplate though? Still have to catch errors. hmm.
+... You do still have to catch errors, but this takes care of some.
+
