@@ -51,20 +51,20 @@
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
-    "dev:watch" : "concurrently --kill-others \"npm run watch:javascript\" \"npm run dev\"",
+    "dev:watch": "concurrently --kill-others \"npm run watch:javascript\" \"npm run dev\"",
     "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",
   "license": "UNLICENSED",
   "devDependencies": {
-    "code": "^3.0.2",
+    "code": "^4.1.0",
     "eslint": "^3.15.0",
     "eslint-config-hapi": "^10.0.0",
     "eslint-plugin-hapi": "^4.0.0",
     "lab": "^14.1.0",
     "longjohn": "^0.2.11",
     "snazzy": "*",
-    "concurrently" : "^3.4.0"
+    "concurrently": "^3.4.0"
   }
 }
