@@ -1,5 +1,7 @@
 <template>
-    <button :type="type" :role="submit" :class="className" @click.prevent="handleClick" >{{text}}</button>
+    <button :type="type" :role="submit" :class="classname" @click.prevent="handleClick" >
+        <slot>Form Button</slot>
+    </button>
 </template>
 
 <script>
@@ -14,7 +16,7 @@
                 type: String,
                 default: () => `submit`
             },
-            className: {
+            classname: {
                 type: String,
                 default: () => `btn-default btn-wide`
             },
