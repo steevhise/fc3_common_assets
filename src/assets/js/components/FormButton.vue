@@ -5,7 +5,11 @@
 </template>
 
 <script>
+    import Test from './Test.vue';
     export default {
+        components: {
+            
+        },
         name : 'fc-formbutton',
         props: {
             type: {
@@ -31,24 +35,26 @@
         },
         data() {
             return {
-                results: {}
+                results: {},
+                target: {},
+                formData: {}
             }
         },
         mounted() {
-
+            this.target = this.$parent.$refs.post_edit_form;
         },
         methods: {
             // TODO: Finish Writing Actions Route, and post the data to the action where we will handle the mutation.
             handleClick(e) {
-                let target = this.$parent.$refs.post_edit_form;
                 let self = this;
-                $.each($(target).serializeArray(), function() {
+                $.each($(this.target).serializeArray(), function() {
                     self.results[this.name] = this.value;
                 });
                 this.handleData('postSave', this.results);
             },
             handleData(method, data) {
-                $.post(`/actions?method=${method}&data=${JSON.stringify(data)}`);
+                $(this.target).attr('action', `/actions?method=${method}&data=${JSON.stringify(data)}`);
+                $(this.target).submit();
             }
         }
     }
