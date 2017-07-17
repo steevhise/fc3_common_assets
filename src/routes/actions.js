@@ -1,43 +1,27 @@
 const Hoek = require('hoek');
 const gql = require('graphql-tag');
 
-// NOTE: This will probably move to a class, placing here for testing purposes.
-
-// const mutatePost = (server, postId) => {
-//     const mutation = gql`
-//         mutation postMutation {
-//             updatePostById(id: postId) {
-//                 post_subject
-//             }
-//         }
-//     `;
-// };
-
 // route definitions
 module.exports = [
     {
-        method: 'POST',
-        path: '/actions', // this path will contain two query param options ?command={postEditNew}&data={mutation|query data}
+        method: '*',
+        path: '/actions',
         config: {
             id: 'actions',
             description: 'the actions route',
-            auth:  { mode: 'required' }
-            /* plugins: { 'auth-cookie-freecycle': {
+            auth:  false
+            /*plugins: { 'auth-cookie-freecycle': {
                 redirectTo: false,
                 redirectOnTry: false
-            }} */
+            }}*/
         },
         handler: function (request, reply) {
-            const data = JSON.stringify(request.params.data);
-            const method = JSON.stringify(request.params.method);
-            console.log(method);
-            console.log(data);
-            // request.log('debug', 'about to look up post ' + postId);
-            console.log(request.params);
+            const postData = JSON.stringify(request.payload);
 
+            //NOTE: this is the old logic that works for a post view. assistance is needed for saving a post.
             // new request.server.Post(postId, (err, post) => {
             //
-            //     Hoek.assert(!err, 'Probem getting Post!');
+            //     Hoek.assert(!err, 'Problem getting Post!');
             //     console.log('returned from Post constructor:');
             //     console.log(post);
             //
