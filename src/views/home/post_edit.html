@@ -20,7 +20,9 @@
         </div>
         <hr class="section-divider" />
         <div class="row">
-            <form class="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form" >
+            <fc-form method="POST" classname="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form">
+                <input type="hidden" name="crumb" value="{{crumb}}"/>
+                <input type="hidden" name="post_id" value="{{ post.post_id }}"/>
                 <div class="form-group">
                     <label>Select type of Post</label>
                     <div class="button-bar" data-post-buttongroup>
@@ -65,10 +67,9 @@
                     <input type="checkbox" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
                 </div>
                 <div class="form-group text-center">
-                    {#<button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>#}
-                    <fc-formbutton type="submit" role="submit" classname="btn-default btn-wide">Post Item</fc-formbutton>
+                    <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>
                 </div>
-            </form>
+            </fc-form>
         </div>
         <hr class="section-divider" />
     </div>
