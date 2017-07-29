@@ -24,23 +24,24 @@ module.exports = [
                 post_id: request.payload.post_id,
                 post_subject: request.payload.post_subject,
                 post_description : request.payload.post_description
-            };  // etc etc
+            };
 
-            new request.server.Post(postId, (err, post) => {
+            post = new request.server.Post(postId, (err, result) => {
                 Hoek.assert(!err, 'Problem getting Post!');
+                post = result;
+            });
 
-                Object.assign(post, input);    // or use Hoek.merge? Hoek.clone?
+            Object.assign(post, input);    // or use Hoek.merge? Hoek.clone?
 
-                post.save((err, post) => {
-                    Hoek.assert(!err, 'post did not save!' + err);
-                    console.log('saved post id is: ' + post.post_id);
+            let newPost = post.save((err, post) => {
+                Hoek.assert(!err, 'post did not save!' + err);
+                console.log('saved post id is: ' + post.post_id); 
+            });
 
-                    // now return stuff to the browser (vue component?)
-                    reply.view(`/home/edit_post/${post.post_id}`, {
-                        post,
-                        title: `Edit Post : ${post.post_id}`,
-                    });
-                });
+            reply.redirect(`/home/edit_post/${post.post_id}`, {
+                post: newPost,
+                title: `Edit Post : ${post.post_id}`,
+                msg : `Post ${post.post_id} was saved successfully.`
             });
         }
     }
