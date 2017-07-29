@@ -25,6 +25,7 @@
     "google-maps": "^3.2.1",
     "graphql": "^0.10.3",
     "graphql-relay": "^0.5.2",
+    "graphql-tag": "^2.4.2",
     "hapi": "^16.4.3",
     "hapi-authorization": "^3.0.3",
     "hapi-cache-buster": "~0.4.0",
@@ -55,8 +56,8 @@
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
-    "dev:watch": "concurrently --kill-others \"npm run watch:javascript\" \"npm run dev\"",
-    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
+    "dev:watch": "npm run watch:javascript | npm run dev",
+    "dev": "npm run build & nodemon --inspect=0.0.0.0:9229 -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",
@@ -68,7 +69,6 @@
     "eslint-plugin-hapi": "^4.0.0",
     "lab": "^14.1.0",
     "longjohn": "^0.2.11",
-    "snazzy": "*",
-    "concurrently": "^3.4.0"
+    "snazzy": "*"
   }
 }
