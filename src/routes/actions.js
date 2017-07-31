@@ -23,7 +23,8 @@ module.exports = [
             const input = {
                 post_id: request.payload.post_id,
                 post_subject: request.payload.post_subject,
-                post_description : request.payload.post_description
+                post_description: request.payload.post_description,
+                post_location: request.payload.post_location
             };
 
             post = new request.server.Post(postId, (err, result) => {
