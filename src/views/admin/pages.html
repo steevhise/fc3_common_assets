@@ -33,26 +33,37 @@
                             {%  endfor %}
                         </select>
                     </div>
+                    <div class="columns medium-6">
+                        <div class="row">
+                            <div class="columns medium-6">Author: {{ page.author.username }}</div>
+                            <div class="columns medium-6">Created: {{ page.date_created }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="columns medium-12">Date last edited: {{ page.date_last_modified }} by {{ page.last_editor.username }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"><br></div>
+                <div class="row">
                     <div class="columns medium-6 small-12">
                         <label for="title">Title:</label>
                         <input id="title" type="text" size=32 name="title" value="{{ page.title }}" placeholder="title">
                     </div>
+                    <div class="columns medium-6 small-12">
+                        <label for="path">Path: <code>/pages/</code> </label>
+                        <input id="path" type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'">
+                    </div>
                 </div>
                 <div class="row">
-                    <ul>
-                        <li>Author: {{page.author.username}}</li>
-                        <li>Created: {{page.date_created}}</li>
-                        <li>Date last edited: {{ page.date_last_modified }} by {{ page.last_editor.username }}</li>
-                    </ul>
-                </div>
-                
-                <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
-                <div class="row">
-                    <fc-editor placeholder="enter the text of your page here."></fc-editor>
-                </div>
-                <div class="form-group text-center">
-                    <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
-                    <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
+                    <div class="columns medium-12">
+                        <fc-editor placeholder="enter the text of your page here."></fc-editor>
+                    </div>
+                    <div class="columns medium-12">
+                        <div class="form-group text-center">
+                            <button type="submit" role="submit" class="btn-default btn-sm">Save</button>
+                            <button type="submit" role="preview" class="btn-offer btn-sm">Preview</button>
+                        </div>
+                    </div>
                 </div>
             </fc-form>
         </div>

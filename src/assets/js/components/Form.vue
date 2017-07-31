@@ -1,5 +1,4 @@
 <template>
-    
     <form :method="method" :action="action" :id="id" v-on:submit.prevent="handleSubmit" @change="getFormData">
         <slot></slot>
         <!-- <div v-if="message" id="message">{{message}}</div> -->
@@ -16,7 +15,7 @@ export default {
         },
         action: {
             type: String,
-            default: () => `/actions/`
+            default: () => ``
         }
     },
     data() {
