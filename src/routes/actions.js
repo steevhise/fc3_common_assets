@@ -41,7 +41,7 @@ module.exports = [
             reply.redirect(`/home/edit_post/${post.post_id}`, {
                 post: newPost,
                 title: `Edit Post : ${post.post_id}`,
-                msg : `Post ${post.post_id} was saved successfully.`
+                message : `Post ${post.post_id} was saved successfully.`
             });
         }
     }

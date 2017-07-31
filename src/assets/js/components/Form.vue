@@ -1,7 +1,10 @@
 <template>
-    <form :method="method" :action="action" :classname="classname" :id="id" v-on:submit.prevent="handleSubmit" @change="getFormData" >
-        <slot></slot>
-    </form>
+    <div>
+        <div v-if="message" id="message" >{{message}}</div>
+        <form :method="method" :action="action" :classname="classname" :id="id" v-on:submit.prevent="handleSubmit" @change="getFormData" >
+            <slot></slot>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -23,7 +26,7 @@
         },
         data() {
             return {
-                message: {},
+                message: null,
                 formData: {}
             }
         },
@@ -42,7 +45,6 @@
                 });
             },
             handleSubmit(event) {
-                console.log(event);
                 if (event) {
                     this.$el.submit((err, res)=> {
                         if (err) {
@@ -56,3 +58,15 @@
         }
     }
 </script>
+
+<style>
+    #message {
+        background-color: #34b233;
+        text-align: center;
+        color: white;
+        vertical-align: middle;
+        margin:0 auto;
+        position: relative;
+        top:50%;
+    }
+</style>
