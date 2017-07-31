@@ -57,7 +57,7 @@
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
     "dev:watch": "npm run watch:javascript | npm run dev",
-    "dev": "npm run build & nodemon --inspect=0.0.0.0:9229 -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
+    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",
