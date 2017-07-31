@@ -9,16 +9,18 @@
 
 {% block content %}
 
-    <h2>Static Pages Administration</h2>
-<p></p>
-<div style="width: 70%; background-color: darkseagreen; padding:20px;">
-    <div style="width:90%;">
-        <form method="post">
-            <input type="hidden" name="crumb" value="{{crumb}}"/>
-            <div id="pages">
-                Select an existing Page to edit, or create a new one.
-                <label>Existing Pages:</label>
-                <select title="page" name="pageselect" id="pageselect">
+<div class="container" >
+    <div class="row text-center">
+        <h2 class="page-title">Static Pages Administration</h2>
+    </div>
+    <div class="row bg-white">
+        <div class="columns medium-12">
+            <form method="post">
+                <input type="hidden" name="crumb" value="{{crumb}}" />
+                <div id="pages">
+                    Select an existing Page to edit, or create a new one.
+                    <label>Existing Pages:</label>
+                    <select title="page" name="pageselect" id="pageselect">
                     <option value="" selected></option>
                     {%  for page in pages %}
                         {% if page.path %}
@@ -26,24 +28,20 @@
                         {% endif %}
                     {%  endfor %}
                 </select>
-            </div>
+                </div>
 
-        <label>title:<input type="text" size=32 name="title" value="{{ page.title }}" placeholder="title"></label>
-        <span>author: {{ page.author.username }}</span>
-        <div>Created: {{ page.date_created }}</div>
-        <span>Date last edited: {{ page.date_last_modified }}  by {{ page.last_editor.username }}</span>
-
-
-        <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
-
-    
-    <fc-editor placeholder="enter the text of your page here." ></fc-editor>
-        <div class="form-group text-center">
-            <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
-            <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
+                <label>title:<input type="text" size=32 name="title" value="{{ page.title }}" placeholder="title"></label>
+                <span>author: {{ page.author.username }}</span>
+                <div>Created: {{ page.date_created }}</div>
+                <span>Date last edited: {{ page.date_last_modified }}  by {{ page.last_editor.username }}</span>
+                <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
+                <fc-editor placeholder="enter the text of your page here."></fc-editor>
+                <div class="form-group text-center">
+                    <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
+                    <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
+                </div>
+            </form>
         </div>
-
-        </form>
     </div>
 </div>
 
