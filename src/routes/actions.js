@@ -19,30 +19,32 @@ module.exports = [
             // first determine the "command", right?
 
             // then massage the fields being input, into the object. for example:
-            const postId = Number(request.payload.post_id);
+            const postId = Number(request.payload.post_id);  // schema requires a number not a string
             const input = {
-                post_id: request.payload.post_id,
+                post_id: postId,
                 post_subject: request.payload.post_subject,
                 post_description: request.payload.post_description,
                 post_location: request.payload.post_location
             };
 
-            post = new request.server.Post(postId, (err, result) => {
+            // NOTE this is asynchronous, so it should wrap everything else.
+            let post = new request.server.Post(postId, (err, result) => {
+
                 Hoek.assert(!err, 'Problem getting Post!');
                 post = result;
-            });
+                Object.assign(post, input);    // or use Hoek.merge? Hoek.clone?
+                post.save((err, savedPostId) => {    // NOTE to Ryan: note that save method returns just a post id. not an object.
 
-            Object.assign(post, input);    // or use Hoek.merge? Hoek.clone?
+                    Hoek.assert(!err, 'post did not save!' + err);
+                    console.log('saved post id is: ' + savedPostId);
 
-            let newPost = post.save((err, post) => {
-                Hoek.assert(!err, 'post did not save!' + err);
-                console.log('saved post id is: ' + post.post_id); 
-            });
-
-            reply.redirect(`/home/edit_post/${post.post_id}`, {
-                post: newPost,
-                title: `Edit Post : ${post.post_id}`,
-                message : `Post ${post.post_id} was saved successfully.`
+                    // redirect needs to be inside this because the save() is asynchronous.
+                    reply.redirect(`/home/edit_post/${post.post_id}`, {
+                        postId: savedPostId,    // RYAN:  not sure if this data gets transmitted in a redirect... i dont' think so.
+                        title: `Edit Post : ${post.post_id}`,
+                        message : `Post ${post.post_id} was saved successfully.`
+                    });
+                });
             });
         }
     }

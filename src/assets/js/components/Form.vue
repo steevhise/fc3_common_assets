@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="message" id="message" >{{message}}</div>
-        <form :method="method" :action="action" :classname="classname" :id="id" v-on:submit.prevent="handleSubmit" @change="getFormData" >
+        <form :method="method" :action="action" :classname="classname" :id="id"  @change="getFormData" >
             <slot></slot>
         </form>
     </div>
@@ -43,7 +43,7 @@
                 $.each($(this.$el).serializeArray(), (index, element) => {
                     this.formData[element.name] = element.value;
                 });
-            },
+            }/*,
             handleSubmit(event) {
                 if (event) {
                     this.$el.submit((err, res)=> {
@@ -54,7 +54,7 @@
                         }
                     });
                 }
-            }
+            }*/
         }
     }
 </script>
