@@ -9,40 +9,64 @@
 
 {% block content %}
 
-    <h2>Static Pages Administration</h2>
-<p></p>
-<div style="width: 70%; background-color: darkseagreen; padding:20px;">
-    <div style="width:90%;">
-        <form method="post">
-            <input type="hidden" name="crumb" value="{{crumb}}"/>
-            <div id="pages">
-                Select an existing Page to edit, or create a new one.
-                <label>Existing Pages:</label>
-                <select title="page" name="pageselect" id="pageselect">
-                    <option value="" selected></option>
-                    {%  for page in pages %}
-                        {% if page.path %}
-                            <option value="{{ page.page_id }}" >{{ page.title }} (/pages/{{ page.path }})</option>
-                        {% endif %}
-                    {%  endfor %}
-                </select>
-            </div>
+<div class="container" >
+    <div class="row text-center">
+        <h2 class="page-title">Static Pages Administration</h2>
+    </div>
+    <div class="row bg-white">
+        <div class="columns medium-12">
+            <fc-form method="post">
+                <input type="hidden" name="crumb" value="{{crumb}}" />
 
-        <label>title:<input type="text" size=32 name="title" value="{{ page.title }}" placeholder="title"></label>
-        <span>author: {{ page.author.username }}</span>
-        <div>Created: {{ page.date_created }}</div>
-        <span>Date last edited: {{ page.date_last_modified }}  by {{ page.last_editor.username }}</span>
-
-
-        <label>Path: <code>/pages/</code><input type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'"></label>
-
-    <textarea data-ckeditor id="editor" placeholder="enter the text of your page here."></textarea>
-        <div class="form-group text-center">
-            <button type="submit" role="submit" class="btn-default btn-wide">Save</button>
-            <button type="submit" role="preview" class="btn-offer btn-wide">Preview</button>
+                <div class="row text-center container">
+                    <p class="subtitle">Select an existing Page to edit, or create a new one.</p>
+                </div>
+                <div class="row">
+                    <div class="columns medium-6 small-12">
+                        <label for="pageselect">Existing Pages:</label>
+                        <select title="page" name="pageselect" id="pageselect" value="{{page.title}}">
+                            <option value="" selected></option>
+                            {%  for page in pages %}
+                                {% if page.path %}
+                                    <option value="{{ page.page_id }}" >{{ page.title }} (/pages/{{ page.path }})</option>
+                                {% endif %}
+                            {%  endfor %}
+                        </select>
+                    </div>
+                    <div class="columns medium-6">
+                        <div class="row">
+                            <div class="columns medium-6">Author: {{ page.author.username }}</div>
+                            <div class="columns medium-6">Created: {{ page.date_created }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="columns medium-12">Date last edited: {{ page.date_last_modified }} by {{ page.last_editor.username }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"><br></div>
+                <div class="row">
+                    <div class="columns medium-6 small-12">
+                        <label for="title">Title:</label>
+                        <input id="title" type="text" size=32 name="title" value="{{ page.title }}" placeholder="title">
+                    </div>
+                    <div class="columns medium-6 small-12">
+                        <label for="path">Path: <code>/pages/</code> </label>
+                        <input id="path" type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns medium-12">
+                        <fc-editor placeholder="enter the text of your page here."></fc-editor>
+                    </div>
+                    <div class="columns medium-12">
+                        <div class="form-group text-center">
+                            <button type="submit" role="submit" class="btn-default btn-sm">Save</button>
+                            <button type="submit" role="preview" class="btn-offer btn-sm">Preview</button>
+                        </div>
+                    </div>
+                </div>
+            </fc-form>
         </div>
-
-        </form>
     </div>
 </div>
 
