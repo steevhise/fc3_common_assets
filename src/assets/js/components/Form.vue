@@ -15,7 +15,7 @@ export default {
         },
         action: {
             type: String,
-            default: () => ``
+            default: () => `/actions/`
         }
     },
     data() {
