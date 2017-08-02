@@ -1,5 +1,5 @@
 <template>
-    <form :method="method" :action="action" :id="id" v-on:submit.prevent="handleSubmit" @change="getFormData">
+    <form :method="method" :action="action" :id="id" @change="getFormData">
         <slot></slot>
         <!-- <div v-if="message" id="message">{{message}}</div> -->
     </form>
