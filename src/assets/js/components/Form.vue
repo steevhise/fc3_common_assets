@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <div v-if="message" id="message" >{{message}}</div>
-        <form :method="method" :action="action" :classname="classname" :id="id"  @change="getFormData" >
-            <slot></slot>
-        </form>
-    </div>
+    <form :method="method" :action="action" :classname="classname" :id="id" v-on:change="getFormData" @submit.prevent="handleSubmit">
+        <div v-if="message" id="message">{{message}}</div>
+        <slot></slot>
+    </form>
 </template>
 
 <script>
@@ -22,12 +20,14 @@
             action: {
                 type: String,
                 default: () => `/actions/`
-            }
+            },
+            data: {}
         },
         data() {
             return {
                 message: null,
-                formData: {}
+                formData: {},
+                resultData: {}
             }
         },
         created() {
@@ -36,25 +36,29 @@
           });
         },
         mounted() {
-            
+            // $(this.$children.form).on('change', this.getFormData());
         },
         methods: {
             getFormData() {
                 $.each($(this.$el).serializeArray(), (index, element) => {
                     this.formData[element.name] = element.value;
                 });
-            }/*,
+            },
             handleSubmit(event) {
+                event.preventDefault();
+                this.getFormData();
                 if (event) {
-                    this.$el.submit((err, res)=> {
+                    $.post(this.action, this.formData, (err, response) => {
                         if (err) {
                             console.log(err);
+                            this.message = err;
                         } else {
+                            this.message = res.message;
                             console.log(res);
                         }
-                    });
+                    })
                 }
-            }*/
+            }
         }
     }
 </script>
