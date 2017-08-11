@@ -39,12 +39,17 @@ module.exports = [
                     console.log('saved post id is: ' + savedPostId);
 
                     // redirect needs to be inside this because the save() is asynchronous.
-                    reply.redirect(`/home/edit_post/${post.post_id}`, {
+                    reply.redirect(`/home/edit_post/${savedPostId}`, {
                         postId: savedPostId,    // RYAN:  not sure if this data gets transmitted in a redirect... i dont' think so.
-                        title: `Edit Post : ${post.post_id}`,
-                        message : `Post ${post.post_id} was saved successfully.`
+                        title: `Edit Post : ${savedPostId}`,
+                        message : `Post ${savedPostId} was saved successfully.`
                     });
                 });
+            });
+            reply.response({
+                postId: postId,    // RYAN:  not sure if this data gets transmitted in a redirect... i dont' think so.
+                title: `Edit Post : ${postId}`,
+                message : `Post ${postId} was saved successfully.`
             });
         }
     }

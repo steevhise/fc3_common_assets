@@ -1,11 +1,11 @@
 <template>
     <form :method="method" :action="action" :classname="classname" :id="id" v-on:change="getFormData" @submit.prevent="handleSubmit">
-        <div v-if="message" id="message">{{message}}</div>
         <slot></slot>
     </form>
 </template>
 
 <script>
+    import { EventBus as bus } from './EventBus';
     export default {
         name : 'fc-form',
         props: {
@@ -31,12 +31,10 @@
             }
         },
         created() {
-          this.$on('formUpdated', (data) => {
-              this.getFormData();
-          });
+          bus.$emit('alert', 'hello world')
         },
         mounted() {
-            // $(this.$children.form).on('change', this.getFormData());
+            
         },
         methods: {
             getFormData() {
@@ -53,7 +51,10 @@
                             console.log(err);
                             this.message = err;
                         } else {
-                            this.message = res.message;
+                            bus.$emit('alert', {
+                                level: 'info',
+                                message: res.message
+                            });
                             console.log(res);
                         }
                     })
