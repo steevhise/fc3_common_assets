@@ -12,6 +12,9 @@ module.exports = [
             id: 'actions',
             description: 'the actions route',
             auth: { mode: 'required' },
+            
+            //TODO: @steev , thought I had this working before, but it looks like i'm still missing a few things. 
+            //TODO: leaving this alone for now to see if you can get authentication in place.
             plugins: {
                 // 'hapiAuthorization': { aclQuery: (id, request, cb) => {
                 //     const userId = request.auth.credentials.id;
