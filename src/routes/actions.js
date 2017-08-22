@@ -12,24 +12,27 @@ module.exports = [
             id: 'actions',
             description: 'the actions route',
             auth: { mode: 'required' },
-            
-            //TODO: @steev , thought I had this working before, but it looks like i'm still missing a few things. 
-            //TODO: leaving this alone for now to see if you can get authentication in place.
+
+            // auth seems to work now and doesn't screw up data saving in handler.
             plugins: {
-                // 'hapiAuthorization': { aclQuery: (id, request, cb) => {
-                //     const userId = request.auth.credentials.id;
-                //     const postId = Number(request.params.postId);
-                //     new request.server.Post(postId, (err, post) => {
-                //         Hoek.assert(!err, 'Problem getting post!');
-                //         if (post.user_id === userId) {
-                //             // allowed
-                //             cb(null, true);
-                //         } else {
-                //             request.log('authorization', `post author id is ${post.user_id} but current user is ${userId}`);
-                //             cb(Boom.forbidden(), true);
-                //         }
-                //     });
-                // }}
+                'hapiAuthorization': { aclQuery: (id, request, cb) => {
+
+                    const userId = request.auth.credentials.id;
+                    const postId = Number(request.payload.post_id);
+                    console.log('auth routine found postId: ' + postId);
+                    new request.server.Post(postId, (err, post) => {
+
+                        Hoek.assert(!err, 'Problem getting post!');
+                        if (post.user_id === userId) {
+                            // allowed
+                            cb(null, true);
+                        }
+                        else {
+                            request.log('authorization', `post author id is ${post.user_id} but current user is ${userId}`);
+                            cb(Boom.forbidden(), true);
+                        }
+                    });
+                } }
             }
         },
         handler: function (request, reply) {
@@ -42,15 +45,17 @@ module.exports = [
                 // and gracefully do something with the users' request.
                 try {
                     ActionModels[command](request, reply);
-                } catch(error) {
+                }
+                catch (error) {
                     Hoek.assert(!error, 'Problem with command!');
                 }
-            } else {
+            }
+            else {
                 // this should never hit because we are handling the command properly,
                 // however this is left in place as a catch all if all else fails.
                 reply.response({
                     message: 'Error please provide a valid command.'
-                })
+                });
             }
         }
     }
