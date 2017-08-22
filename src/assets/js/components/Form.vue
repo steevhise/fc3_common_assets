@@ -1,6 +1,6 @@
 <template>
-    <form :method="method" :action="action" :classname="classname" :id="id" v-on:change="getFormData" @submit.prevent="handleSubmit">
-        <slot></slot>
+    <form :method="method" :action="action" :id="id" @change="serializeData()" @submit.prevent="handleSubmit()">
+        <slot :formData="formData" ></slot>
     </form>
 </template>
 
@@ -13,10 +13,6 @@
                 type: String,
                 default: () => `POST`
             },
-            classname: {
-                type: String,
-                default: () => `btn-default btn-wide`
-            },
             action: {
                 type: String,
                 default: () => `/actions/`
@@ -25,53 +21,25 @@
         },
         data() {
             return {
-                message: null,
-                formData: {},
-                resultData: {}
+                formData: JSON.parse(this.data) || {},
+                serializedData: null
             }
         },
-        created() {
-          bus.$emit('alert', 'hello world')
-        },
         mounted() {
-            
+            // as soon as the component loads we want to proceed and serialize the existing data.
+            this.serializeData();
         },
         methods: {
-            getFormData() {
-                $.each($(this.$el).serializeArray(), (index, element) => {
-                    this.formData[element.name] = element.value;
-                });
+            serializeData() {
+                this.serializedData = $(this.$el).serialize();
             },
             handleSubmit(event) {
-                event.preventDefault();
-                this.getFormData();
-                if (event) {
-                    $.post(this.action, this.formData, (err, response) => {
-                        if (err) {
-                            console.log(err);
-                            this.message = err;
-                        } else {
-                            bus.$emit('alert', {
-                                level: 'info',
-                                message: res.message
-                            });
-                            console.log(res);
-                        }
-                    })
-                }
+                $.post(this.action, this.serializedData).done(function(data) {
+                    bus.$emit('alert', { level : 'success', message : data.message });
+                }).fail(function(error) {
+                    bus.$emit('alert', { level : 'alert', message : `${error.status} \n ${error.statusText}` });
+                })
             }
         }
     }
 </script>
-
-<style>
-    #message {
-        background-color: #34b233;
-        text-align: center;
-        color: white;
-        vertical-align: middle;
-        margin:0 auto;
-        position: relative;
-        top:50%;
-    }
-</style>
