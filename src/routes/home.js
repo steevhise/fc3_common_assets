@@ -215,6 +215,9 @@ const queryPost = (server, postId) => {
             post_id
             user_id
             group_id
+            group {
+                group_name
+            }
             post_subject
             post_description
             post_location
