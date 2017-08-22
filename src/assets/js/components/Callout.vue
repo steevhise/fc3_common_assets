@@ -1,31 +1,33 @@
 <template>
-    <div v-if="isVisible" :class="`callout ${this.level}`" data-closable="slide-out-right">
-        <h5>Notice!</h5>
-        <p>{{message}}</p>
-    </div>
+    <transition name="fade" :duration="timer">
+        <div id="callout" v-if="isVisible" :class="`callout ${this.level}`" data-closable="slide-out-right">
+            <h5 v-if="header">{{header}}</h5>
+            <p>{{message}}</p>
+        </div>
+    </transition>
 </template>
 
 <script>
     import {EventBus as bus} from './EventBus';
+
     export default {
         data() {
             return {
                 isVisible: false,
-                timer: 5000,
+                timer: 5000, // time in ms
                 message: null,
-                level: 'primary'
+                level: 'primary', // secondary, success, info, warning, alert
+                header: null
             }
         },
         created() {
             bus.$on('alert', (data) => {
-                console.log(data);
                 this.init(data);
             });
         },
         methods: {
             init(data) {
-                this.level = data.level;
-                this.message = data.message;
+                Object.assign(this, data);
                 this.isVisible = true;
                 setTimeout(() => {
                     this.isVisible = false;
@@ -34,3 +36,18 @@
         }
     }
 </script>
+
+<style scoped>
+    #callout {
+        position: fixed;
+        z-index:10;
+        top: 10px;
+        right: 10px;
+    }
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .6s
+    }
+    .fade-enter, .fade-leave-to {
+      opacity: 0
+    }
+</style>
