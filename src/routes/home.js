@@ -239,6 +239,25 @@ const queryPost = (server, postId) => {
 module.exports = [
     {
         method: 'GET',
+        path: '/home/alerts',
+        config: {
+            id: 'home_alerts',
+            description: 'The logged in user\'s alerts page.',
+            auth:  { mode: 'required' }
+        },
+        handler: function (request, reply) {
+            const inBodyAds = [
+                'one', 'two'
+            ];
+            reply.view('./home/alerts', {
+                inBodyAds,
+                title: 'Alerts',
+                footerMenuItems
+            });
+        }
+    },
+    {
+        method: 'GET',
         path: '/home/my-friends',
         config: {
             id: 'home_myfriends',
