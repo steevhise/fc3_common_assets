@@ -1,0 +1,38 @@
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+  {% include '../partials/header.html'%}
+{% endblock %}
+
+{% block content %}
+  <div class="alerts row">
+    <div class="row">
+      <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+    </div>
+    <hr class="section-divider" />
+    <div class="row">
+      <form class="columns large-10 large-offset-1">
+        <h3>New Alert</h3>
+        <div class="form-group">
+          <label>Search Term</label>
+          <input type="text"/>
+          <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Create Alert</button>
+        </div>
+      </form>
+    </div>
+    <hr class="section-divider" />
+    <div class="row">
+      <h3>Existing Alerts</h3>
+      <!-- Dynamically render based on user alerts -->
+      <div class="column">
+        
+      </div>
+      <div class="column">
+        
+      </div>
+      <div class="column">
+        
+      </div>
+    </div>
+  </div>
+{% endblock %}
