@@ -5,3 +5,24 @@
     font-size: 0.75rem;
   }
 }
+
+// home/alerts
+.alert_title {
+  background: white;
+  p {
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+  }
+  .alert_results {
+    font-size: 12px;
+  }
+}
+
+.alert_close {
+  // border-right: 1px solid gray;
+}
+
+.alert_name {
+  // border-right: 1px solid gray;
+}

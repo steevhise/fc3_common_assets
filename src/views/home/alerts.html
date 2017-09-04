@@ -11,7 +11,7 @@
     </div>
     <hr class="section-divider" />
     <div class="row">
-      <form class="columns large-10 large-offset-1">
+      <form class="columns large-10">
         <h3>New Alert</h3>
         <div class="form-group">
           <label>Search Term</label>
@@ -24,14 +24,36 @@
     <div class="row">
       <h3>Existing Alerts</h3>
       <!-- Dynamically render based on user alerts -->
-      <div class="column">
-        
+      <div class="alerts_existing column large-4" data-alert-id="alert.id">
+        <div class="alert_title">
+          <p class="alert_close large-1">
+            <a href="">x</a>
+          </p>
+          <p class="alert_name large-8">Alert Name</p>
+          <p class="alert_results large-2">No Results</p>
+        </div>
       </div>
-      <div class="column">
-        
+      <div class="alerts_existing column large-4" data-alert-id="alert.id">
+        <div class="alert_title">
+          <p class="alert_close large-1">
+            <a href="">x</a>
+          </p>
+          <p class="alert_name large-8">Alert Name</p>
+          <p class="alert_results large-2">
+            <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+          </p>
+        </div>
       </div>
-      <div class="column">
-        
+      <div class="alerts_existing column large-4" data-alert-id="alert.id">
+        <div class="alert_title">
+          <p class="alert_close large-1">
+            <a href="">x</a>
+          </p>
+          <p class="alert_name large-8">Alert Name</p>
+          <p class="alert_results large-2">
+            <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
