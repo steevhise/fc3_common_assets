@@ -252,6 +252,7 @@ module.exports = [
             reply.view('./home/alerts', {
                 inBodyAds,
                 title: 'Alerts',
+                posts,
                 footerMenuItems
             });
         }

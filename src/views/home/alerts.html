@@ -11,12 +11,12 @@
     </div>
     <hr class="section-divider" />
     <div class="row">
-      <form class="columns large-10">
+      <form class="large-12 alert_new-alert">
         <h3>New Alert</h3>
         <div class="form-group">
           <label>Search Term</label>
-          <input type="text"/>
-          <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Create Alert</button>
+          <input type="text" class="large-8"/>
+          <button type="submit" role="submit" data-fc-submitpost class="btn-default large-2">Create Alert</button>
         </div>
       </form>
     </div>
@@ -24,7 +24,7 @@
     <div class="row">
       <h3>Existing Alerts</h3>
       <!-- Dynamically render based on user alerts -->
-      <div class="alerts_existing column large-4" data-alert-id="alert.id">
+      <div class="alerts_existing column large-4" data-alert-id="1">
         <div class="alert_title">
           <p class="alert_close large-1">
             <a href="">x</a>
@@ -33,7 +33,7 @@
           <p class="alert_results large-2">No Results</p>
         </div>
       </div>
-      <div class="alerts_existing column large-4" data-alert-id="alert.id">
+      <div class="alerts_existing column large-4" data-alert-id="2">
         <div class="alert_title">
           <p class="alert_close large-1">
             <a href="">x</a>
@@ -44,7 +44,7 @@
           </p>
         </div>
       </div>
-      <div class="alerts_existing column large-4" data-alert-id="alert.id">
+      <div class="alerts_existing column large-4" data-alert-id="3">
         <div class="alert_title">
           <p class="alert_close large-1">
             <a href="">x</a>
@@ -56,5 +56,13 @@
         </div>
       </div>
     </div>
+    <hr class="section-divider" />
+    <div class="row">
+      {% for post in posts %}
+      {% include '../partials/post_grid_item.html' with post %}
+      {% endfor %}
+    </div>
+    <hr class="section-divider" />
   </div>
+  {% include '../partials/in_body_banner_row.html'%}
 {% endblock %}

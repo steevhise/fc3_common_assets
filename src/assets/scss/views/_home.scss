@@ -16,13 +16,15 @@
   }
   .alert_results {
     font-size: 12px;
+    text-align: right;
   }
 }
 
-.alert_close {
-  // border-right: 1px solid gray;
-}
-
-.alert_name {
-  // border-right: 1px solid gray;
+.alert_new-alert {
+  h3,
+  .form-group label,
+  input,
+  button {
+    display: inline-block;
+  }
 }
