@@ -25,29 +25,21 @@
       <h3>Existing Alerts</h3>
       <!-- TODO: switch out post data for alert result data -->
       {% for alert in alerts %}
-        {% if alert.alert_results.length %}
-          <div class="alerts_existing column large-4" data-alert-id="1">
-            <div class="alert_title">
-              <p class="alert_close large-1">
-                <a href="">x</a>
-              </p>
-              <p class="alert_name large-8">Alert Name</p>
-              <p class="alert_results large-2">
-                <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
-              </p>
-            </div>
+        <div class="alerts_existing column large-4" data-alert-id="{{loop.index}}">
+          <div class="alert_title">
+            <p class="alert_close large-1">
+              <a href="">x</a>
+            </p>
+            <p class="alert_name large-8">{{alert.alert_name}}</p>
+            {% if alert.alert_results.length %}
+            <p class="alert_results large-2">
+              <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+            {% else %}
+            <p class="alert_results large-2">No Results</p>
+            {% endif %}
+            </p>
           </div>
-          {% else %}
-          <div class="alerts_existing column large-4" data-alert-id="1">
-            <div class="alert_title">
-              <p class="alert_close large-1">
-                <a href="">x</a>
-              </p>
-              <p class="alert_name large-8">Alert Name</p>
-              <p class="alert_results large-2">No Results</p>
-            </div>
-          </div>
-        {% endif %}
+        </div>        
       {% endfor %}
     </div>
     <hr class="section-divider" />
