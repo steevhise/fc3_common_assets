@@ -23,43 +23,31 @@
     <hr class="section-divider" />
     <div class="row">
       <h3>Existing Alerts</h3>
-      <!-- Dynamically render based on user alerts -->
-      <div class="alerts_existing column large-4" data-alert-id="1">
-        <div class="alert_title">
-          <p class="alert_close large-1">
-            <a href="">x</a>
-          </p>
-          <p class="alert_name large-8">Alert Name</p>
-          <p class="alert_results large-2">No Results</p>
-        </div>
-      </div>
-      <div class="alerts_existing column large-4" data-alert-id="2">
-        <div class="alert_title">
-          <p class="alert_close large-1">
-            <a href="">x</a>
-          </p>
-          <p class="alert_name large-8">Alert Name</p>
-          <p class="alert_results large-2">
-            <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
-          </p>
-        </div>
-      </div>
-      <div class="alerts_existing column large-4" data-alert-id="3">
-        <div class="alert_title">
-          <p class="alert_close large-1">
-            <a href="">x</a>
-          </p>
-          <p class="alert_name large-8">Alert Name</p>
-          <p class="alert_results large-2">
-            <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
-          </p>
-        </div>
-      </div>
-    </div>
-    <hr class="section-divider" />
-    <div class="row">
-      {% for post in posts %}
-      {% include '../partials/post_grid_item.html' with post %}
+      <!-- TODO: switch out post data for alert result data -->
+      {% for alert in alerts %}
+        {% if alert.alert_results.length %}
+          <div class="alerts_existing column large-4" data-alert-id="1">
+            <div class="alert_title">
+              <p class="alert_close large-1">
+                <a href="">x</a>
+              </p>
+              <p class="alert_name large-8">Alert Name</p>
+              <p class="alert_results large-2">
+                <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
+              </p>
+            </div>
+          </div>
+          {% else %}
+          <div class="alerts_existing column large-4" data-alert-id="1">
+            <div class="alert_title">
+              <p class="alert_close large-1">
+                <a href="">x</a>
+              </p>
+              <p class="alert_name large-8">Alert Name</p>
+              <p class="alert_results large-2">No Results</p>
+            </div>
+          </div>
+        {% endif %}
       {% endfor %}
     </div>
     <hr class="section-divider" />

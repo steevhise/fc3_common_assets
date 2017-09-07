@@ -5,7 +5,7 @@ export class AlertItem {
   }
   
   logIt = (id) => {
-    console.log('alerts.js placeholder action', id);
+    console.log('alerts.js placeholder action', id);    
   }
 }
 
