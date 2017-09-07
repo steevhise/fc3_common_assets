@@ -7,6 +7,10 @@
 }
 
 // home/alerts
+.alerts_existing:last-child:not(:first-child) {
+  float: left;
+}
+
 .alert_title {
   background: white;
   margin-bottom: 20px;
