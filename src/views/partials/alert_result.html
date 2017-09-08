@@ -1,10 +1,5 @@
-<div class="alert_result-item column card large-4">
-  {% for alert in alert.alert_results %}
-    <div class="card-divider">
-      {{alert.post_subject}}
-    </div>
-    <div class="card-section">
-      {% include './post_grid_item.html' with alert %}
-    </div>
-  {% endfor %}
+{% for post in alert.alert_results %}
+<div class="alert_result-item column card large-4" id="alert_result-item">
+  {% include './post_grid_item.html' with post %}
 </div>
+{% endfor %}
