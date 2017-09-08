@@ -23,7 +23,6 @@
     <hr class="section-divider" />
     <div class="row">
       <h3>Existing Alerts</h3>
-      <!-- TODO: switch out post data for alert result data -->
       {% for alert in alerts %}
         <div class="alerts_existing column large-4" data-alert-id="{{loop.index}}">
           <div class="alert_title">
@@ -42,11 +41,9 @@
         </div>
         {% if alert.alert_results.length %}
           <div class="alert_result" data-result-id={{loop.index}}>
-            {% for alertItem in alert.alert_results %}
-              {% include '../partials/alert_result.html' with alert.alert_results %}
-            {% endfor %}
+            {% include '../partials/alert_result.html' with alert.alert_results %}
+            <hr class="section-divider" />  
           </div>  
-          <hr class="section-divider" />    
         {% endif %}  
       {% endfor %}
     </div>
