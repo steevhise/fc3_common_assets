@@ -1,11 +1,14 @@
 export class AlertItem {
   constructor(id) {
     this.$alertItem = $(`.alerts_existing[data-alert-id=${id}]`);
-    this.$alertItem.on('click', ()=> this.logIt(id));
+    this.$alertItem.on('click', ()=> {
+      const { $alertItem } = this;
+      $alertItem.toggleClass('show_result');
+    });
   }
   
   logIt = (id) => {
-    console.log('alerts.js placeholder action', id);    
+    // console.log('alerts.js placeholder action', id);    
   }
 }
 

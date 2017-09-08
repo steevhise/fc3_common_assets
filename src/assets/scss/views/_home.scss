@@ -14,12 +14,13 @@
 .alert_title {
   background: white;
   margin-bottom: 20px;
+  display: none;
   p {
     display: inline-block;
     margin-bottom: 0;
     text-align: center;
   }
-  .alert_results {
+  .alert_result-count {
     font-size: 12px;
     text-align: right;
   }
@@ -37,3 +38,10 @@
 .alert_name {
   text-transform: capitalize;
 }
+
+// .alert_result-item {
+//   display: none;
+//   &.show_result {
+//     display: block;
+//   }
+// }
