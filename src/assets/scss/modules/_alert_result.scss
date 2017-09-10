@@ -6,13 +6,20 @@
   float: left;
 }
 
-#alert_result-item .post-grid-item {
-  width: 100%;
-  margin-right: 0;
-  margin-left: 0;
+#alert_result-item {
+  .post-grid-item {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 
 .alert_result-divider {
-  //TODO: find a better way to separate these sections?
   opacity: 0;
+}
+
+@media(max-width:1024px) {
+  #alert_result-item .post-grid-item {
+    margin-right: 0.25rem;
+  }
 }

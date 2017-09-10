@@ -31,16 +31,16 @@
               <p class="alert_time text-lighten">{{alert.alert_time}}</p>
             </div>
             {% if alert.alert_results.length %}
-              <div class="message-arrow alert_result large-2 small-3">
+              <div class="message-arrow alert_result-count large-2 small-3">
                 {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
               </div>
             {% else %}
-              <p class="alert_result large-2 small-3">No Results</p>
+              <p class="alert_result-count large-2 small-3">No Results</p>
             {% endif %}
           </div>
         </div>
         {% if alert.alert_results.length %}
-          <div class="alert_result" data-result-id={{loop.index}}>
+          <div class="alert_result large-12" data-result-id={{loop.index}}>
             {% include '../partials/alert_result.html' with alert.alert_results %}
             <hr class="alert_result-divider" />  
           </div>  
