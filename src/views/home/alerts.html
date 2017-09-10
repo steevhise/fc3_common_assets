@@ -5,15 +5,14 @@
 {% endblock %}
 
 {% block content %}
-  <div class="alerts row">
+  <div class="alerts row column">
     <div class="row">
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
     </div>
-    <hr class="section-divider" />
-    <div class="row">
+    <div class="row column">
       <form class="large-12 alert_new-alert">
         <h3>New Alert</h3>
-        <div class="form-group">
+        <div class="form-group column">
           <label>Search Term</label>
           <input type="text" class="large-8"/>
           <button type="submit" role="submit" data-fc-submitpost class="btn-default large-2">Create Alert</button>
@@ -21,21 +20,21 @@
       </form>
     </div>
     <hr class="section-divider" />
-    <div class="row">
+    <div class="row column">
       <h3>Existing Alerts</h3>
       {% for alert in alerts %}
         <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
           <div class="alert_title">
-            <p class="alert_close large-1">
+            <p class="alert_close large-1 small-1">
               <a href="">x</a>
             </p>
-            <h4 class="alert_name large-8">{{alert.alert_name}}</h4>
+            <h4 class="alert_name large-8 small-7">{{alert.alert_name}}</h4>
             {% if alert.alert_results.length %}
-              <div class="message-arrow alert_result large-2">
+              <div class="message-arrow alert_result large-2 small-3">
                 {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
               </div>
             {% else %}
-              <p class="alert_result large-2">No Results</p>
+              <p class="alert_result large-2 small-3">No Results</p>
             {% endif %}
           </div>
         </div>

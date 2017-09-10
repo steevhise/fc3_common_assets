@@ -7,6 +7,12 @@
 }
 
 // home/alerts
+.alerts {
+  .section-divider {
+    height: 2px;
+    margin: 3rem 0;
+  }
+}
 .alerts_existing:last-child:not(:first-child) {
   float: left;
 }
@@ -33,6 +39,10 @@
   input,
   button {
     display: inline-block;
+  }
+  
+  .form-group label {
+    margin-top: 0;
   }
 }
 
