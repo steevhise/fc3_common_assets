@@ -26,10 +26,17 @@
     margin-bottom: 0;
     text-align: center;
   }
+  .alert_close {
+    cursor: pointer;
+    color: #34b233;
+    font-weight: bold;
+  }
   .alert_result {
     font-size: 12px;
     text-align: right;
-    // float: right;
+  }
+  .text-lighten {
+    font-size: 16px;
   }
 }
 
@@ -49,9 +56,21 @@
 .alert_name {
   text-transform: capitalize;
   display: inline-block;
+  h4,
+  p {
+    display: inline-block;
+  }
+  .alert_time {
+    padding-left: 10px;
+  }
 }
 
 .alerts_existing .message-arrow {
   display: inline-block;
   cursor: pointer;
+  &.open {
+    .icon-message-arrow {
+      transform: rotate(90deg);
+    }
+  }
 }

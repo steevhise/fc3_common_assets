@@ -208,6 +208,7 @@ const posts = [
 const alerts = [
   {
     alert_name: 'furniture',
+    alert_time: '2 hours ago',
     alert_results: [
       {
           post_subject: 'Sofa Loveseat',
@@ -230,10 +231,12 @@ const alerts = [
   },
   {
     alert_name: 'dresser',
+    alert_time: '2 days ago',
     alert_results: []
   },
   {
     alert_name: 'computer',
+    alert_time: '3 weeks ago',
     alert_results: [
       {
         post_subject: 'Computer Monitor',
@@ -248,6 +251,7 @@ const alerts = [
   },
   {
     alert_name: 'headphones',
+    alert_time: '2 months ago',
     alert_results: []
   }
 ];

@@ -25,10 +25,13 @@
       {% for alert in alerts %}
         <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
           <div class="alert_title">
-            <p class="alert_close large-1 small-1">
-              <a href="">x</a>
-            </p>
-            <h4 class="alert_name large-8 small-7">{{alert.alert_name}}</h4>
+            <p class="alert_close large-1 small-1">x</p>
+            <div class="alert_name large-8 small-6">
+              <h4>{{alert.alert_name}}</h4>
+              <p class="alert_time text-lighten">{{alert.alert_time}}</p>
+            </div>
+            
+            
             {% if alert.alert_results.length %}
               <div class="message-arrow alert_result large-2 small-3">
                 {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
