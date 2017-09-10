@@ -1,5 +1,5 @@
 .alert_result {
-  // display: none;
+  display: none;
 }
 
 .alert_result-item:last-child:not(:first-child) {
@@ -8,4 +8,9 @@
 
 #alert_result-item .post-grid-item {
   width: 100%;
+}
+
+.alert_result-divider {
+  //TODO: find a better way to separate these sections?
+  opacity: 0;
 }

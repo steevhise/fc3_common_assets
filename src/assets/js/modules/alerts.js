@@ -1,14 +1,15 @@
 export class AlertItem {
   constructor(id) {
-    this.$alertItem = $(`.alerts_existing[data-alert-id=${id}]`);
-    this.$alertItem.on('click', ()=> {
-      const { $alertItem } = this;
-      $alertItem.toggleClass('show_result');
+    this.$openAlert = $(`.alerts_existing[data-alert-id=${id}] .alert_title .alert_result`);
+    
+    this.$openAlert.on('click', (event)=> {
+      event.preventDefault();
+      this.showResult(id);
     });
   }
   
-  logIt = (id) => {
-    // console.log('alerts.js placeholder action', id);    
+  showResult = (id) => {
+    $(`.alert_result[data-result-id=${id}]`).toggle();
   }
 }
 

@@ -24,25 +24,25 @@
     <div class="row">
       <h3>Existing Alerts</h3>
       {% for alert in alerts %}
-        <div class="alerts_existing column large-4" data-alert-id="{{loop.index}}">
+        <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
           <div class="alert_title">
             <p class="alert_close large-1">
               <a href="">x</a>
             </p>
-            <p class="alert_name large-8">{{alert.alert_name}}</p>
+            <h4 class="alert_name large-8">{{alert.alert_name}}</h4>
             {% if alert.alert_results.length %}
-            <p class="alert_result-count large-2">
-              <a href=""><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></a>
-            </p>
+              <div class="message-arrow alert_result large-2">
+                {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
+              </div>
             {% else %}
-            <p class="alert_result-count large-2">No Results</p>
+              <p class="alert_result large-2">No Results</p>
             {% endif %}
           </div>
         </div>
         {% if alert.alert_results.length %}
           <div class="alert_result" data-result-id={{loop.index}}>
             {% include '../partials/alert_result.html' with alert.alert_results %}
-            <hr class="section-divider" />  
+            <hr class="alert_result-divider" />  
           </div>  
         {% endif %}  
       {% endfor %}
