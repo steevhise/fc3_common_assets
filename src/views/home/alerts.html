@@ -30,8 +30,6 @@
               <h4>{{alert.alert_name}}</h4>
               <p class="alert_time text-lighten">{{alert.alert_time}}</p>
             </div>
-            
-            
             {% if alert.alert_results.length %}
               <div class="message-arrow alert_result large-2 small-3">
                 {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
