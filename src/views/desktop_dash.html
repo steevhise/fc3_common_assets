@@ -4,12 +4,21 @@
 {% include './partials/header.html'  %}
 {% endblock %}
 
+{#NOTE: setting links to pass to the secondary nav partial.#}
+{% set  links = [
+{ id : "desktop-dash", href : "/desktop-dash", text : "Dashboard" },
+{ id : "my-replies", href : "/home/my-replies", text : "My Replies" },
+{ id : "my-posts", href : "/home/my-posts", text : "My Posts" },
+{ id : "my-friends", href : "/home/my-friends", text : "My Friends" },
+{ id : "my-groups", href : "/home/my-groups", text : "My Groups" }
+]%}
+
 {% block content %}
 
 <div class="horizontal_tabs">
   <!--  tabs  -->
   <ul class="tabs" id="h-example-tabs" data-tab data-update-history="true" data-options="deep_linking:true">
-    {% include './partials/home_tabs.html' %}
+    {% include './partials/secondary_tabs.html' with { links: links } %}
   </ul>
 
   <!--  tabs-content  -->
