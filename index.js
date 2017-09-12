@@ -7,6 +7,7 @@ const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
+const Oppsy = require('oppsy');
 
 // sass config
 const sassOptions = {
@@ -42,6 +43,35 @@ const server = new Hapi.Server({
     }
 });
 
+// setup connection
+server.connection({ port: process.env.PORT || 8000 });
+
+// opps data collection
+const oppsy = new Oppsy(server);
+
+// collecting that data with StatsD..
+const hapiStatsdConfig = {
+    // prefix: 'dev',
+    host: server.info.host
+};
+
+server.register({ register: require('hapi-statsd'), options: hapiStatsdConfig }, (err) => {
+
+    if (err) {
+        console.log('error', 'Failed loading plugin: hapi-statsd');
+    }
+});
+
+oppsy.on('ops', (data) => {
+
+    // console.log(data.osload[0]);  // or whatever.
+    // console.log(data.psmem);
+    // console.log(data.psup);
+    // send to StatsD  - add whatever else we want.
+    server.statsd.gauge('system.cpu.load', data.osload[0]);
+    server.statsd.gauge('psmem.heapUsed', data.psmem.heapUsed);
+});
+
 // database stuff
 import { graphql } from 'graphql';
 import schema from '@freecycle/freecycle_graphql_schema';
@@ -59,9 +89,6 @@ const Post = postClassFunc(server);
 const User = userClassFunc(server);
 server.decorate('server', 'Post', Post);        // access via server.Post
 server.decorate('server', 'User', User);        // access via server.User
-
-// setup connection
-server.connection({ port: process.env.PORT || 8000 });
 
 // extra logging, too raw though and redundant with the Good logging.
 /* server.on('request', (request, event, tags) => {
@@ -91,7 +118,7 @@ server.register([
         register: require('good'),
         options: {
             ops: {
-                interval: 600000
+                interval: 60000
             },
             reporters: {
                 myConsoleReporter:
@@ -269,6 +296,8 @@ server.register([
                 }
                 else {
                     console.log('Server running at:', server.info.uri);
+                    console.log(server.info);
+                    oppsy.start(5000);  // start collecting ops data every N seconds.
                 }
             });
         });
