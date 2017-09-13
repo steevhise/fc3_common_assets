@@ -13,10 +13,6 @@
     {% endblock %}
 </head>
 <body data-fc-route="{{ route.id|lower }}" >
-{% if session %}
-    you are {{ session.username }}
-    {% set loggedIn = true %}
-{% endif %}
 {% block header %}
 {% endblock %}
 <div class="content-container">
