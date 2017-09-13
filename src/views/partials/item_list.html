@@ -6,22 +6,12 @@
                 {% if filterType === 'circle' %}
                 {% include './circle_type_filter_list.html' %}
                 {% else %}
-                {% include './listing_type_filter_list.html' %}
+                {% include './group_dropdown.html' %}
                 {% endif %}
             </div>
             <div class="item-list-header-controls">
                 {% if showFilterSelectors %}
-                <select class="group-dropdown">
-                    <option>Tucson</option>
-                    <option>Sierra Vista</option>
-                    <option>Benson</option>
-                </select>
-                <select class="type-dropdown">
-                    <option><span class="text-borrow">Borrow</span></option>
-                    <option><span class="text-lend">Lend</span></option>
-                    <option><span class="text-wanted">Wanted</span></option>
-                    <option><span class="text-offer">Offer</span></option>
-                </select>
+                {% include './listing_type_filter_list.html' %}
                 {% endif %}
                 <label class="text-lighten item-list-header-controls-label">View: </label>
                 <ul class="item-list-header-controls-list">

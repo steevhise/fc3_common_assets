@@ -58,6 +58,18 @@ The Item list is the container and list of items for trade
   flex: 1;
   justify-content: space-between;
   margin-bottom: 1rem;
+  
+  select {
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-right: 0;
+    font-family: $header-font-family;
+    font-size: rem-calc(12px);
+    padding-left: rem-calc(12px);
+    width: 50%;
+    border: 2px solid $body-background;
+  }
+  
   @media #{$medium-up} {
     margin-bottom: 0rem;
   }
