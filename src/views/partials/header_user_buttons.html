@@ -2,11 +2,11 @@
   <ul class="header-user-buttons-list header-user-buttons-list-left">
 
     <li class="header-user-button">
-      {% include '../icons/user.html' %}
+      <a href="/user/{{ session.username }}">{% include '../icons/user.html' %}</a>
     </li>
 
-    <li class="header-user-button">
-      {% include '../icons/settings.html' %}
+    <li class="header-user-button"> <!--TODO: real path -->
+      <a href="{{ path.home_editprofile }}">{% include '../icons/settings.html' %}</a>
     </li>
 
   </ul>
@@ -14,12 +14,12 @@
   <ul class="header-user-buttons-list header-user-buttons-list-right">
 
     <li class="header-user-button">
-      {% include '../icons/moderate.html' %}
+      <a href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}</a>
       <span>3</span>
     </li>
 
     <li class="header-user-button">
-      {% include '../icons/alert.html' %}
+      <a href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}</a>
       <span>2</span>
     </li>
 
