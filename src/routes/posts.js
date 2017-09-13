@@ -96,7 +96,7 @@ module.exports = [
         method: 'GET',
         path: '/posts/images/{postImageId}/{thumb?}',
         config: {
-            id: 'direct url to post image',
+            id: 'post_images',
             description: 'a single post image, e.g. /posts/images/4090134 - or /posts/images/4090116/thumb'
         },
         handler: function (request, reply) {

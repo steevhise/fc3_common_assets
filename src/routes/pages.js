@@ -67,18 +67,19 @@ const user = {
 
 // dummy footer items
 const footerMenuItems = [
-    'Local Groups',
-    'Merchandise',
-    'Donate',
-    'Privacy',
-    'About',
-    'Sponsors',
-    'Volunteer',
-    'Terms',
-    'News',
-    'Help',
-    'Contact',
-    'Wiki'];
+    { name : "Local Groups", path : "/" },
+    { name : "Merchandise", path : "/" },
+    { name : "Donate", path : "/" },
+    { name : "Privacy", path : "/" },
+    { name : "About", path : "/" },
+    { name : "Sponsors", path : "/" },
+    { name : "Volunteer", path : "/" },
+    { name : "Terms", path : "/" },
+    { name : "News", path : "/" },
+    { name : "Help", path : "/" },
+    { name : "Contact", path : "/" },
+    { name : "Wiki", path : "/" }
+];
 
 // dummy post data
 const posts = [
