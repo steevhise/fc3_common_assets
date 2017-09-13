@@ -413,6 +413,7 @@ module.exports = [
                     inBodyAds,
                     title: 'My Posts',
                     showFilterSelectors: true,
+                    showCityDropdown: true,
                     posts: userPosts,
                     postAction: 'Manage',
                     footerMenuItems

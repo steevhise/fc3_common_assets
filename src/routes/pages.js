@@ -335,6 +335,7 @@ module.exports = [
                 }
               ],
               showFilterSelectors: true,
+              showCityDropdown: true,
               filterType: 'circle',
               friends: friends,
               inBodyAds: inBodyAds,
