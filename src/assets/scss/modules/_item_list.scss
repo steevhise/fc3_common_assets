@@ -139,6 +139,9 @@ The Item list is the container and list of items for trade
 .item-list-subheader {
   display: flex; 
   flex-direction: row;
+  @media #{$small-only} {
+    display: unset;
+  }
 }
 
 /**Tag list**/
@@ -148,10 +151,16 @@ The Item list is the container and list of items for trade
   padding: rem-calc(20px);
   margin-bottom: rem-calc(6px);
   width: 100%;
+  @media #{$small-only} {
+    width: 100%;
+  }
 }
 
 .item-list-dropdown + .item-list-tags {
   width: 75%;
+  @media #{$small-only} {
+    width: 100%;
+  }
 }
 
 /**City Dropdown**/
@@ -160,6 +169,13 @@ The Item list is the container and list of items for trade
   padding: 1.25rem 0 0 1.25rem;
   margin-bottom: 0.375rem;
   background: $white;
+  @media #{$small-only} {
+    width: 100%;
+    padding: 1.25rem;
+    .group-dropdown {
+      margin: 0;
+    }
+  }
 }
 
 /**Items list**/
