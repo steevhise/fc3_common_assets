@@ -129,7 +129,7 @@ module.exports = [
                     // title: "Post #" + post_id,
                 footerMenuItems,
                 group,
-                showFilterSelectors: true,
+                // showFilterSelectors: true,
                 posts: group.posts,
                 groups: localGroups
             });

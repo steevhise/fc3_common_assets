@@ -8,6 +8,8 @@
                 {% endif %}
                 {% if showCityDropdown %}
                 {% include './group_dropdown.html' %}
+                {% else %}
+                {% include './listing_type_filter_list.html' %}
                 {% endif %}
             </div>
             <div class="item-list-header-controls">
@@ -25,6 +27,9 @@
         </div>
         <!-- tag row -->
         <div class="item-list-tags">
+            {% if showDashboard %}
+            {% include './group_dropdown.html' %}
+            {% endif %}
             {% include './tag_list.html' %}
         </div>
         <!-- Items list -->
