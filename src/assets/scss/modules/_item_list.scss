@@ -147,6 +147,10 @@ The Item list is the container and list of items for trade
   background: $white;
   padding: rem-calc(20px);
   margin-bottom: rem-calc(6px);
+  width: 100%;
+}
+
+.item-list-dropdown + .item-list-tags {
   width: 75%;
 }
 
