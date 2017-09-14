@@ -135,12 +135,27 @@ The Item list is the container and list of items for trade
   padding-right: 1rem;
 }
 
+/** Container for Tag List and City Dropdown **/ 
+.item-list-subheader {
+  display: flex; 
+  flex-direction: row;
+}
+
 /**Tag list**/
 .item-list-tags {
   min-height: 60px;
   background: $white;
   padding: rem-calc(20px);
   margin-bottom: rem-calc(6px);
+  flex: 8;
+}
+
+/**City Dropdown**/
+.item-list-dropdown {
+  flex: 2;
+  padding: 1.25rem 0 0 1.25rem;
+  margin-bottom: 0.375rem;
+  background: $white;
 }
 
 /**Items list**/

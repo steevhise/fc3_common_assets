@@ -5,15 +5,14 @@
             <div class="item-list-header-filter">
                 {% if filterType === 'circle' %}
                 {% include './circle_type_filter_list.html' %}
-                {% endif %}
-                {% if showCityDropdown %}
-                {% include './group_dropdown.html' %}
-                {% else %}
+                {% elseif isGroup %}
                 {% include './listing_type_filter_list.html' %}
+                {% else %}
+                {% include './group_dropdown.html' %}
                 {% endif %}
             </div>
             <div class="item-list-header-controls">
-                {% if showFilterSelectors %}
+                {% if showFilterSelectors && !isGroup %}
                 {% include './listing_type_filter_list.html' %}
                 {% endif %}
                 <label class="text-lighten item-list-header-controls-label">View: </label>
@@ -26,12 +25,17 @@
             </div>
         </div>
         <!-- tag row -->
-        <div class="item-list-tags">
-            {% if showDashboard %}
-            {% include './group_dropdown.html' %}
-            {% endif %}
-            {% include './tag_list.html' %}
+        <div class="item-list-subheader">        
+          {% if showDashboard %}
+          <div class="item-list-dropdown">
+              {% include './group_dropdown.html' %}
+          </div>
+          {% endif %}
+          <div class="item-list-tags">
+              {% include './tag_list.html' %}
+          </div>
         </div>
+        
         <!-- Items list -->
         <div class="item-list-items">
             <div class="item-grid-view" style="display: none">

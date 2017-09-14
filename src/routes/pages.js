@@ -334,7 +334,7 @@ module.exports = [
                   ]
                 }
               ],
-              // showFilterSelectors: true,
+              showFilterSelectors: true,
               showDashboard: true,
               filterType: 'circle',
               friends: friends,
