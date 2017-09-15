@@ -12,7 +12,8 @@ class ItemList {
         // the current state
         this.state = {
             currentView: 'list',
-            currentFilters: ['offer', 'lend', 'borrow', 'wanted']
+            currentFilters: ['offer', 'lend', 'borrow', 'wanted'],
+            defaultOptions: ['offer', 'lend', 'borrow', 'wanted']
         };
 
         //setup child references
@@ -78,9 +79,11 @@ class ItemList {
      */
     onFilterItemClick = ( toggledValue ) => {
         let {currentFilters} = this.state;
+        let {defaultOptions} = this.state;
         let currentIdx = ~currentFilters.indexOf(toggledValue);
         // remove it from the array or add it back
         if ( currentIdx ) {
+            currentFilters = [...defaultOptions];
             currentFilters = currentFilters.filter(i => i !== toggledValue);
         } else {
             currentFilters = [...currentFilters, toggledValue];
