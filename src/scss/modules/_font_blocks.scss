@@ -1,0 +1,76 @@
+.four-icon-grid {
+  width: 66%;
+  display: flex;
+  flex-flow: row wrap;
+  text-align: center;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 auto;
+
+  @include breakpoint(321px) {
+    width: 50%;
+  }
+
+  @include breakpoint(medium) {
+    max-width: 575px;
+    margin: 0 auto;
+  }
+
+  .item-list-header-filter-icon {
+    margin-bottom: 1rem;
+  }
+}
+
+.section-divider {
+  background: $medium-gray;
+  border: none;
+  height: 2px;
+  margin: 3rem 0;
+}
+
+.section-divider:nth-of-type(1) {
+  margin: 4rem 0 5rem;
+}
+.section-divider:nth-of-type(2) {
+}
+
+body[data-fc-route="home"] .section-divider,.home .section-divider:nth-of-type(1), body[data-fc-route="home"] .section-divider:nth-of-type(2) {
+  margin: 1.25rem auto;
+}
+
+.font-block {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+
+  p {
+    font-size: rem-calc(20px);
+    line-height: rem-calc(30px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    @include breakpoint(large) {
+      font-size: rem-calc(30px);
+      line-height: rem-calc(40px);
+    }
+  }
+}
+
+.roboto p {
+  font-family: $body-font-family;
+}
+
+.roboto-bold p {
+  font-family: $body-font-family;
+  font-weight: bold;
+}
+
+.roboto-slab p {
+  font-family: $header-font-family;
+
+}
+
+.roboto-slab-bold p {
+  font-family: $header-font-family;
+  font-weight: bold;
+}

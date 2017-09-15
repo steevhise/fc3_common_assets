@@ -1,0 +1,187 @@
+
+#static-wrapper {
+  padding: 100px;
+}
+
+@import "../variables";
+
+#{$home} {
+  .banner-movie-inner {
+    margin-bottom: 1.5rem;
+    margin-top: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+
+    @include breakpoint(large) {
+      margin-top: 0.75rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .recent-list-inner {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+
+    @include breakpoint(large) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .post-grid-item {
+    @extend .post-grid-item;
+    @media #{$medium-up} {
+      width: calc(50% - 0.5rem);
+    }
+    @media #{$large-up} {
+      width: calc(33.3333% - 0.5rem);
+    }
+
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+  }
+
+  .recent-grid-view .post-grid-item:nth-child(3) {
+    @include breakpoint(large) {
+      margin-left: 0;
+    }
+  }
+  .recent-grid-view .post-grid-item:nth-last-child(1) {
+    @include breakpoint(large) {
+      margin-right: 0;
+    }
+  }
+
+  .nearby-groups-browse-all {
+    margin-top: 15px;
+
+    @include breakpoint(large) {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .recent-list-load-more {
+    display: none;
+  }
+
+  .section-title-small {
+    @include heading-text();
+    color: $dark-gray;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .row .nearby-groups {
+    margin-bottom: 0;
+  }
+
+  .nearby-groups-label {
+    margin-right: 0;
+
+    @include breakpoint(large) {
+      margin-right: 3.750rem;
+    }
+  }
+
+  .row.section-divider {
+    margin: 1.25rem;
+
+    @include breakpoint(large) {
+      margin: 1.25rem auto;
+    }
+  }
+
+  .mission {
+    margin-bottom: 0.188em
+  }
+
+  .mission .mission-inner {
+    padding: 1.250rem;
+    margin: 1.25rem;
+    margin-bottom: 0.125rem;
+
+    @include breakpoint(large) {
+      padding: 3.75rem 3.75rem 3.438rem 3.75rem;
+      margin: 0;
+    }
+  }
+
+  .mission h4 {
+    color: map-get($freecycle-palette,primary-darken);
+    margin-bottom: 1.563em;
+    font-size: 1.5rem;
+
+    @include breakpoint(large) {
+      font-size: 1.125rem;
+    }
+  }
+
+  .mission p {
+    margin-bottom: 0;
+  }
+
+  .mission small {
+    vertical-align: super;
+    color: #258025;
+    font-size: 40%;
+    font-weight: bold;
+  }
+
+  .ads {
+    @include breakpoint(large) {
+      padding-right: 0;
+    }
+  }
+
+  .in-body-banner-ad {
+    margin: 0 auto 0.125rem auto;
+    @include breakpoint(large) {
+      float: right;
+    }
+  }
+
+  .metrics {
+    margin-bottom: 1.250rem;
+    @include breakpoint(large) {
+      margin-bottom: 6.250rem;
+    }
+  }
+
+  .metrics .metric {
+    text-align: center;
+  }
+
+  .metrics .metric h4 {
+    padding: 3.75rem 0 0.75rem 0;
+    border-bottom: 1px solid $light-gray;
+    font-size: xx-large;
+  }
+
+  .metrics .metric small {
+    text-transform: uppercase;
+    color: map-get($freecycle-palette,primary-darken);
+  }
+
+  .mission-subtext {
+    padding: 2.500rem 0rem;
+    text-align: center;
+
+    @include breakpoint(large) {
+      padding: 3.750rem 0rem;
+    }
+  }
+
+  .mission-subtext p {
+    font-family: "Roboto Slab", serif;
+    font-size: 0.625rem;
+    font-weight: bold;
+    letter-spacing: 1.25px;
+    text-transform: uppercase;
+    margin-bottom: 0.3125rem;
+  }
+
+  .mission-subtext button {
+    margin-top: 1.500rem;
+  }
+}

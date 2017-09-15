@@ -1,0 +1,73 @@
+.nearby-groups {
+  height: auto;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-direction: column;
+  justify-content: center;
+
+  @include breakpoint(large) {
+    flex-direction: row;
+    height: 45px;
+  }
+}
+
+.nearby-groups-label {
+  flex: 0;
+  color: $black;
+  font-size: rem-calc(20px);
+  margin-right: 1rem;
+  white-space: nowrap;
+}
+
+.nearby-groups-buttons {
+  flex: 1;
+  text-align: center;
+  width: 76%;
+
+  @include breakpoint(large) {
+    text-align: left;
+    width: auto;
+  }
+}
+
+.nearby-groups-button {
+  @include heading-text();
+  padding: 0.875rem 1.1rem;
+  margin: 10px;
+
+  @include breakpoint(large) {
+    margin: 0;
+    margin-right: 20px;
+  }
+}
+
+.nearby-groups-browse-all {
+  display: flex;
+  position: relative;
+  top: -5px;
+  margin-top: 0.5rem;
+
+  /*    TODO: refactor this icon, it's commonly re-used   */
+  .map-pin-icon svg {
+    @include icon();
+    fill: $black;
+    line-height: 0.5rem;
+    width: 1.25rem;
+
+    @include breakpoint(large) {
+      margin-left: 0.5rem;
+    }
+  }
+
+  @include breakpoint(large) {
+    align-self: flex-end;
+    margin: 0;
+  }
+}
+
+.nearby-groups-browse-all-label {
+  @include heading-text();
+  flex: 1;
+  margin-left: 0.75rem;
+}

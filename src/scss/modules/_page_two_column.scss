@@ -1,0 +1,56 @@
+$active-tab-arrow-width: 26px;
+
+.page-tabs-nav {
+  @include tabsReset();
+
+  .tabs-title {
+    border-top: 2px solid $medium-gray;
+    position: relative;
+
+    @include breakpoint(medium) {
+      &.is-active:after {
+        position: absolute;
+        top: 0;
+        right: -$active-tab-arrow-width;
+        width: $active-tab-arrow-width;
+        content: '';
+        border-left: $active-tab-arrow-width solid $white;
+        border-top: $active-tab-arrow-width solid transparent;
+        border-bottom: $active-tab-arrow-width solid transparent;
+      }
+    }
+  }
+
+  .tabs-title:last-of-type {
+    border-bottom: 2px solid $medium-gray;
+  }
+}
+
+.page-tabs-panels {
+  padding: 1.5rem 1rem;
+  
+  @include breakpoint(medium) {
+    padding: 0;
+  }
+}
+
+.page-tabs-panel {
+  .section-title-small {
+    margin: 1.25rem 0 1.5rem;
+  }
+
+  @include breakpoint(medium) {
+    padding: 2rem;
+  }
+
+  @include breakpoint(large) {
+    padding: 3.75rem;
+  }
+}
+
+.page-tabs-panel-image {
+  margin-bottom: 35px;
+  min-height: 335px;
+  width: 100%;
+}
+

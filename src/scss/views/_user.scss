@@ -1,0 +1,106 @@
+@import "../variables";
+
+#{$user} {
+  .profile {
+    text-align: center;
+    padding-top: 1.875em;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .profile .avatar {
+    background-color: $light-gray;
+    border-radius: 50% 50% 50% 50%;
+    height: 100px;
+    padding: 4px;
+  }
+
+  .profile h2 {
+    font-size: 1.875em;
+    font-weight: normal;
+    margin-bottom: 0px;
+  }
+
+  .profile .section-title-small {
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+
+  .profile .thumbsup {
+    font-size: 0.625em;
+    color: map_get($freecycle-palette,primary);
+  }
+
+  .profile .thumbsup svg {
+    top: 3px;
+    position: relative;
+    fill: currentColor;
+  }
+
+  .section-divider {
+    margin: 0.5rem 2rem 1rem 2rem;
+
+    @media #{$medium-up} {
+      margin: 0.5rem 0rem 1rem 0rem;
+    }
+  }
+
+  .profile-actions {
+    font-size: 0.625em;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 43px;
+    color: $dark-gray;
+  }
+
+  .profile-actions span.icon:first-of-type {
+    margin-right: 30px;
+  }
+
+  .profile-actions span.icon svg {
+    margin-bottom: -3px;
+    fill: currentColor;
+  }
+
+  .row.user-details {
+    padding-bottom: 5rem;
+    position: relative;
+  }
+
+  .post-grid-item {
+    /* only two columns on the mockup, so make them wider */
+    width: 100%;
+    @media #{$medium-up} {
+      width: calc(50% - 0.75rem);
+    }
+    @media #{$large-up} {
+      width: calc(50% - 0.75rem);
+    }
+
+  /* so that the grid items align to the top, move the margin to the bottom */
+    margin-top: 0px;
+    margin-right: 0.375rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .tabs {
+    padding: 0rem 2rem;
+    @media #{$medium-up} {
+      padding: 0rem;
+    }
+  }
+
+  .tabs-content {
+    background: $body-background;
+  }
+
+  .tabs-panel {
+    padding-top: 0px;
+  }
+
+  .in-body-banner-ad {
+    margin-top: 2.500em;
+  }
+}

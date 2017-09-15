@@ -1,0 +1,25 @@
+.alert_result {
+  display: none;
+}
+
+.alert_result-item:last-child:not(:first-child) {
+  float: left;
+}
+
+#alert_result-item {
+  .post-grid-item {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+.alert_result-divider {
+  opacity: 0;
+}
+
+@media(max-width:1024px) {
+  #alert_result-item .post-grid-item {
+    margin-right: 0.25rem;
+  }
+}
