@@ -73,6 +73,36 @@ class ItemList {
         this.$borrowFilter.click(this.onFilterItemClick.bind(this, 'borrow'));
         this.$wantedFilter.click(this.onFilterItemClick.bind(this, 'wanted'));
     };
+    
+    /**
+     * Filter the displayed results by search term
+     * @param searchTerm
+     */
+    filterResults = ( searchTerm ) => {
+      const gridItems = this.$itemGrid;
+      const listItems = this.$itemList;
+      let gridFiltered = this.$itemGrid.children();
+      let listFiltered = this.$itemList.children();
+      
+      $('.post-grid-item').hide();
+      $('.post-list-item').hide();
+      
+      gridFiltered = gridFiltered.filter((i, item) => {
+        return item.className === "post-grid-item";
+      });
+      
+      gridFiltered.each((i, item) => {
+        var results = $(item).find(`span.text-${searchTerm}`).parent().parent().parent().parent().show();
+      });
+      
+      listFiltered = listFiltered.filter((i, item) => {
+        return item.className === "post-list-item";
+      });
+      
+      listFiltered.each((i, item) => {
+        var results = $(item).find(`span.text-${searchTerm}`).parent().parent().parent().parent().parent().show();
+      });
+    };
     /**
      * Event handler for toggling a filter item
      * @param toggledValue
@@ -90,6 +120,7 @@ class ItemList {
         }
         //set the new state
         this.setState({ currentFilters });
+        this.filterResults(toggledValue);
     };
     /**
      * Event handler for clicking on a view item
