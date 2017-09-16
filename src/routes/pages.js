@@ -82,42 +82,6 @@ const footerMenuItems = [
 
 // dummy post data
 const posts = [
-  {
-      post_subject: 'Sofa Loveseat',
-      group: { group_name: 'Tucson, AZ' },
-      post_date: 'Thu Mar 23 2017 02:15:00 GMT',
-      post_id: 52058864,
-      postType: { post_type_name: 'WANTED' },
-      image: 'http://lorempixel.com/350/150/nightlife',
-      post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
-  {
-      post_subject: 'Sofa Loveseat',
-      group: { group_name: 'Tucson, AZ' },
-      post_date: 'Thu Mar 23 2017 02:15:00 GMT',
-      post_id: 52058864,
-      postType: { post_type_name: 'LEND' },
-      image: 'http://lorempixel.com/350/150/nightlife',
-      post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
-  {
-      post_subject: 'Sofa Loveseat',
-      group: { group_name: 'Tucson, AZ' },
-      post_date: 'Thu Mar 23 2017 02:15:00 GMT',
-      post_id: 52058864,
-      postType: { post_type_name: 'WANTED' },
-      image: 'http://lorempixel.com/350/150/nightlife',
-      post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
-  {
-      post_subject: 'Sofa Loveseat',
-      group: { group_name: 'Tucson, AZ' },
-      post_date: 'Thu Mar 23 2017 02:15:00 GMT',
-      post_id: 52058864,
-      postType: { post_type_name: 'OFFER' },
-      image: 'http://lorempixel.com/350/150/nightlife',
-      post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
     {
         post_subject: 'Sofa Loveseat',
         group: { group_name: 'Tucson, AZ' },
