@@ -78,11 +78,21 @@ class ItemList {
      * Filter the displayed results by search term
      * @param searchTerm
      */
+    handleFilters = ( searchTerm, filterStatus ) => {
+      switch(filterStatus) {
+        case 'filter' : 
+          this.filterResults(searchTerm); 
+          break;
+        case 'reset' : 
+          this.resetResults(searchTerm); 
+          break;
+      }
+    };
+    
     filterResults = ( searchTerm ) => {
-      const gridItems = this.$itemGrid;
-      const listItems = this.$itemList;
       let gridFiltered = this.$itemGrid.children();
       let listFiltered = this.$itemList.children();
+      let { currentView } = this.state;
       
       $('.post-grid-item').hide();
       $('.post-list-item').hide();
@@ -92,7 +102,9 @@ class ItemList {
       });
       
       gridFiltered.each((i, item) => {
-        var results = $(item).find(`span.text-${searchTerm}`).parent().parent().parent().parent().show();
+        console.log('updated 6')
+         $(item).find(`span.text-${searchTerm}`).parents('.post-grid-item').show();
+         this.setupMasonry();
       });
       
       listFiltered = listFiltered.filter((i, item) => {
@@ -100,8 +112,14 @@ class ItemList {
       });
       
       listFiltered.each((i, item) => {
-        var results = $(item).find(`span.text-${searchTerm}`).parent().parent().parent().parent().parent().show();
+        var results = $(item).find(`span.text-${searchTerm}`).parents('.post-list-item').show();
       });
+    };
+    
+    resetResults = () => {
+      this.$itemGrid.children().show();
+      this.$itemList.children().show();
+      this.setupMasonry();
     };
     /**
      * Event handler for toggling a filter item
@@ -111,16 +129,19 @@ class ItemList {
         let {currentFilters} = this.state;
         let {defaultOptions} = this.state;
         let currentIdx = ~currentFilters.indexOf(toggledValue);
+        let filterStatus;
         // remove it from the array or add it back
         if ( currentIdx ) {
             currentFilters = [...defaultOptions];
             currentFilters = currentFilters.filter(i => i !== toggledValue);
+            filterStatus = 'filter';
         } else {
             currentFilters = [...currentFilters, toggledValue];
+            filterStatus = 'reset';
         }
         //set the new state
         this.setState({ currentFilters });
-        this.filterResults(toggledValue);
+        this.handleFilters(toggledValue, filterStatus);
     };
     /**
      * Event handler for clicking on a view item
