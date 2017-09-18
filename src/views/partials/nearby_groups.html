@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="nearby-groups">
+        <span class="nearby-groups-label">Nearby groups...</span>
+
+        <!--  nearby location groups  -->
+        <span class="nearby-groups-buttons">
+            {% for key,val in groups %}
+                <button class="btn-default nearby-groups-button">{{val}}</button>
+            {% endfor %}
+        </span>
+
+        <span class="nearby-groups-browse-all">
+            <span class="map-pin-icon">
+                {% include '../icons/map_pin.html' %}
+            </span>
+
+            <span class="nearby-groups-browse-all-label">browse all groups ></span>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="recent-list">
+    <div class="recent-list-inner row">
+        <!-- Header row and controls -->
+        <h3 class="section-title-small">Recent items near you</h3>
+        <!-- Items list -->
+        <div class="recent-list-items">
+            <div class="recent-grid-view">
+                <div class="grid-sizer"></div>
+                <div class="gutter-sizer"></div>
+                {% for post in posts %}
+                {% include './post_grid_item.html' with post %}
+                {% endfor %}
+            </div>
+            <div class="recent-list-load-more">
+                <button class="btn-action">Load More</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="post-list-item">
+    <div class="post-list-item-photo">
+        {% if post.files_post_images[0] %}
+        <img width=128 src="/posts/images/{{post.files_post_images[0].post_image_id}}/thumb">
+        {% endif %}
+    </div>
+    <div class="post-list-item-content">
+        <div class="post-list-item-content-header">
+            <div class="post-list-item-header-left">
+                <div class="post-list-item-category-icon">
+                    {% if post.postType.post_type_name === 'OFFER'  %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+                    <span class="text-offer">Offer</span>
+                    {% elseif post.postType.post_type_name === 'LEND' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
+                    <span class="text-lend">Lend</span>
+                    {% elseif post.postType.post_type_name === 'BORROW' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
+                    <span class="text-borrow">Borrow</span>
+                    {% elseif post.postType.post_type_name === 'WANTED' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+                    <span class="text-wanted">Wanted</span>
+                    {% endif %}
+                </div>
+                <div class="post-list-item-header-icon">
+                    {% include '../icons/map_pin.html' %}
+                    <span>{{post.group.group_name}}</span>
+                </div>
+            </div>
+            <div class="post-list-item-header-right">
+                <span class="text-lighten">{{ post.post_date | mreldate }}</span>
+                {% if post.category === 'offer'  %}
+                    <button class="btn-offer">{{ postAction|default('Reply') }}</button>
+                {% elseif post.category === 'lend' %}
+                    <button class="btn-lend">{{ postAction|default('Reply') }}</button>
+                {% elseif post.category === 'borrow' %}
+                    <button class="btn-borrow">{{ postAction|default('Reply') }}</button>
+                {% elseif post.category === 'wanted' %}
+                    <button class="btn-wanted">{{ postAction|default('Reply') }}</button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="post-list-item-content-description">
+            <h4><a href="{{ path.posts_detail }}{{ post.post_id }}">{{post.post_subject}}</a></h4>
+            <p class="paragraph-small">{{post.post_description|raw}}</p>
+        </div>
+    </div>
+</div>

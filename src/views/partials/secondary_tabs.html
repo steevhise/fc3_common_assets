@@ -1,0 +1,6 @@
+<ul class="tabs" id="h-example-tabs" data-tab data-options="deep_linking:true">
+	{% for link in links %}
+		<li class="tabs-title"><a id="{{ link.id }}" href="{{ link.href }}">{{ link.text }}</a></li>
+	{% endfor %}
+</ul>
+

@@ -1,11 +1,25 @@
 const Path = require('path');
 const Webpack = require('webpack');
 
+/*const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const extractSass = new ExtractTextPlugin({
+    filename: '[name].[contenthash].css',
+    disable: process.env.NODE_ENV === 'development'
+});*/
+
 module.exports = {
-    entry: './src/js/main.js',
+    context: Path.resolve(__dirname, './src/'),
+    entry: {
+        js: './js/main.js',
+        images: 'images' //,
+        // css: './scss'  //,
+      //partials: 'views/partials',
+      //icons: 'views/icons'
+    },
     output: {
-        filename: 'main.bundle.js',
-        path: Path.resolve(__dirname, 'public/assets/js')
+        filename: 'js/main.bundle.js',
+        path: Path.resolve(__dirname, 'public/assets')
     },
     module: {
         rules:[
@@ -18,7 +32,35 @@ module.exports = {
                     presets: ['es2015'],
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
-            }
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                exclude: /(node_modules)/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            // name: [path][name].[ext],
+                            outputPath: 'images/'
+                        }
+                    }
+                ]
+            } //,
+            /*{
+                test: /\.scss$/,
+                exclude: /(node_modules)/,
+                use: extractSass.extract({
+                    use: [{
+                        loader: 'css-loader'
+                    }, {
+                        loader: 'sass-loader'
+                    }],
+              // use style-loader in development
+                    fallback: 'style-loader'
+                })
+            }*/
+
+
         ]
     },
     resolve: {
@@ -35,6 +77,7 @@ module.exports = {
             compress: {
                 warnings: false
             }
-        })
+        })   //,
+        // extractSass
     ]
 };

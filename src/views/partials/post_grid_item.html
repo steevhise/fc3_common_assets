@@ -1,0 +1,52 @@
+<div class="post-grid-item">
+    <div class="post-grid-item-inner">
+        <div class="post-grid-item-header">
+            <div class="post-grid-item-header-left">
+                <div class="post-grid-item-category-icon">
+                    {% if post.postType.post_type_name === 'OFFER'  %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+                    <span class="text-offer">Offer</span>
+                    {% elseif post.postType.post_type_name === 'LEND' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
+                    <span class="text-lend">Lend</span>
+                    {% elseif post.postType.post_type_name === 'BORROW' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
+                    <span class="text-borrow">Borrow</span>
+                    {% elseif post.postType.post_type_name === 'WANTED' %}
+                    {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+                    <span class="text-wanted">Wanted</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="post-grid-item-header-right">
+                <div class="post-grid-item-header-icon">
+                    {% include '../icons/map_pin.html' %}
+                    <span>{{post.location}}</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="post-grid-item-photo">
+            <img src="{{post.image}}"/>
+        </div>
+        <div class="post-grid-item-content">
+            <h4>{{post.post_subject}}</h4>
+        </div>
+        <div class="post-grid-item-footer">
+            <div class="post-grid-item-header-left">
+                <span class="text-lighten">{{ post.post_date | mreldate }}</span>
+            </div>
+            <div class="post-grid-item-header-right"> <!--  TODO: not sure how to make this real.  -->
+                {% if post.postType.post_type_name === 'offer'  %}
+                <button class="btn-offer">{{ postAction|default('Reply') }}</button>
+                {% elseif post.postType.post_type_name === 'lend' %}
+                <button class="btn-lend">{{ postAction|default('Reply') }}</button>
+                {% elseif post.postType.post_type_name === 'borrow' %}
+                <button class="btn-borrow">{{ postAction|default('Reply') }}</button>
+                {% elseif post.postType.post_type_name === 'wanted' %}
+                <button class="btn-wanted">{{ postAction|default('Reply') }}</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
