@@ -336,6 +336,7 @@ module.exports = [
                 }
               ],
               showFilterSelectors: true,
+              showDashboard: true,
               filterType: 'circle',
               friends: friends,
               inBodyAds: inBodyAds,
