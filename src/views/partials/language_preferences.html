@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="medium-12 columns form-group">
+    <label for="lang-prefs">Language Preferences
+      <select class="language-prefs" name="lang-prefs" multiple="multiple">
+        {% for language in languageOptions %}
+          {% if userData.languagePrefs.includes(language) %}
+            <option value="{{loop.index}}" selected="selected">{{language}}</option>
+          {% else %}
+            <option value="{{loop.index}}" >{{language}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </label>
+  </div>  
+</div>
