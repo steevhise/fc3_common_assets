@@ -87,7 +87,12 @@
           <div class="medium-12 columns form-group">
             <label for="default-loc">Default Location
               <!-- SELECT2 PLACEHOLDER-->
-              <input type="text" name="default-loc"/>
+              <div class="input-group edit-profile_group">
+                <input type="text" class="input-group-field" name="default-loc"/>
+                <div class="input-group-button">
+                  <input type="button" class="btn btn-default" name="phone" value="Locate" />
+                </div> 
+              </div>
             </label>
           </div>  
         </div>
@@ -99,6 +104,7 @@
             </label>
           </div>  
         </div>
+        <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
     </div>

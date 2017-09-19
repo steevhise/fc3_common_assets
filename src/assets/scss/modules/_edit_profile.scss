@@ -9,3 +9,8 @@
     border: none;
   }
 }
+
+.btn-fb {
+  @extend .btn-wanted;
+  border: none;
+}
