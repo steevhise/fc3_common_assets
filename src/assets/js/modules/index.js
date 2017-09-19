@@ -11,3 +11,4 @@ export {default as GeoMap} from "./geomap";
 export {default as GroupTabs} from './group_tabs';
 export {default as PostEditNew} from './post_edit_new';
 export {default as LanguageSelect} from "./language_select";
+export {default as DefaultLocation} from "./default_location";

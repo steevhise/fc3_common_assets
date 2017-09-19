@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="medium-12 columns form-group">
+    <label for="home-group">Home Group
+      <select class="default-location" name="home-group">
+        {% for group in userData.userGroups %}
+          {% if userData.homeGroup.group_name === group %}
+            <option value="{{loop.index}}" selected="selected">{{group}}</option>
+          {% else %}
+            <option value="{{loop.index}}" >{{group}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </label>
+  </div>  
+</div>

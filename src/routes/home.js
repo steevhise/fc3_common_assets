@@ -621,7 +621,7 @@ module.exports = [
                 tagline: 'Yes, that\'s my real name.',
                 phone: '520-555-3829',
                 languagePrefs: ['English', 'Esperanto'],
-                userGroups: ['Tucson', 'Oro Valley', 'Marana'],
+                userGroups: ['Tucson, AZ', 'Oro Valley, AZ', 'Marana, AZ'],
                 homeGroup: { group_name: 'Tucson, AZ' },
                 defaultLocation: 'Tucson',
                 notificationPref: 1,
