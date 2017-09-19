@@ -619,6 +619,7 @@ module.exports = [
                 firstName: 'Jim',
                 lastName: 'Shue',
                 tagline: 'Yes, that\'s my real name.',
+                email: 'jim@domain.com',
                 phone: '520-555-3829',
                 languagePrefs: ['English', 'Esperanto'],
                 userGroups: ['Tucson, AZ', 'Oro Valley, AZ', 'Marana, AZ'],

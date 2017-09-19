@@ -21,14 +21,21 @@
         <div class="row">
           <div class="medium-6 columns form-group">
             <label for="first">First Name
-              <input type="text" name="first"/>
+              <input type="text" name="first" value="{{userData.firstName}}"/>
             </label>
           </div>
           <div class="medium-6 columns form-group">
             <label for="last">Last Name
-              <input type="text" name="last"/>
+              <input type="text" name="last" value="{{userData.lastName}}"/>
             </label>
           </div>  
+        </div>
+        <div class="row">
+          <div class="medium-12 columns form-group">
+            <label for="tagline">Tagline
+              <input type="text" name="tagline" value="{{userData.tagline}}"/>
+            </label>
+          </div> 
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
@@ -47,9 +54,8 @@
         <div class="row">
           <div class="medium-12 columns form-group">
             <label for="email-address">Email Address</label>
-            <div class="input-group edit-profile_group">
-              
-              <input type="text" class="input-group-field" name="email-address"/>
+            <div class="input-group edit-profile_group">    
+              <input type="email" class="input-group-field" name="email-address" value="{{userData.email}}"/>
               <div class="input-group-button">
                 <input type="button" class="btn btn-default" name="email" value="Send Verification" />
               </div>
@@ -60,7 +66,7 @@
           <div class="medium-12 columns form-group">
             <label for="phone-number">Phone Number</label>
             <div class="input-group edit-profile_group">
-              <input type="text" class="input-group-field" name="phone-number"/>
+              <input type="tel" class="input-group-field" name="phone-number" value="{{userData.phone}}"/>
               <div class="input-group-button">
                 <input type="button" class="btn btn-default" name="phone" value="Test SMS Confirm" />
               </div>  
