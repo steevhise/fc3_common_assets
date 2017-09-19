@@ -623,7 +623,7 @@ module.exports = [
                 languagePrefs: ['English', 'Esperanto'],
                 userGroups: ['Tucson, AZ', 'Oro Valley, AZ', 'Marana, AZ'],
                 homeGroup: { group_name: 'Tucson, AZ' },
-                defaultLocation: 'Tucson',
+                defaultLocation: 'Tucson, AZ',
                 notificationPref: 1,
                 currentPic: null
             };

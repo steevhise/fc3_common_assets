@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="medium-12 columns form-group">
+    <label for="notice-settings">Notification Settings
+      <select class="select-notice-settings" name="notice-settings">
+        {% for option in notificationOptions %}
+          {% if loop.index === userData.notificationPref %}
+            <option value="{{loop.index}}" selected="selected">{{option.type}}</option>
+          {% else %}
+            <option value="{{loop.index}}" >{{option.type}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </label>
+  </div>  
+</div>
