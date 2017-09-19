@@ -1,7 +1,11 @@
 //override foundation defaults
-.edit-profile_group{
+.edit-profile {
+  text-align: center;
+  
   .input-group-button input {
     padding: .85rem;
+  }
+  .btn-default {
     border: none;
   }
 }
