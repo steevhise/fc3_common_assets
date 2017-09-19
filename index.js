@@ -84,9 +84,15 @@ server.register([
     {
         register: require('vision')
     },
-    {
-        register: require('crumb')                  // security against CRSF attacks.
-    },
+  /*  {
+        register: require('crumb'),                  // security against CRSF attacks.
+        options: {
+            cookieOptions: {            // TODO: this broke, maybe bug in Crumb?
+                isSecure: false,
+                isHttpOnly: true
+            }
+        }
+    },*/
     {
         register: require('good'),
         options: {

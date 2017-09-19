@@ -1,4 +1,6 @@
-
+/**
+ * note this is kind of "miscellaneous" routes module. anything that doesnt fit into home, groups, posts, or admin, basically.
+ */
 const Hoek = require('hoek');
 const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
 
@@ -41,44 +43,44 @@ const friends = [
 ];
 
 const user = {
-  avatar_url: "http://lorempixel.com/150/150/people/8",
-  name: "Nathan Puente",
-  username: 'npuente',
-  description: "I'm a business-owener and entrepreneur in Tuscon.",
-  thumbsup: 100,
-  groups: [
-    {
-      name: 'Tucson',
-      state: 'AZ',
-    },
-    {
-      name: 'Marana',
-      state: 'AZ',
-    },
-    {
-      name: 'Vail',
-      state: 'AZ',
-    },
-    {
-      name: 'Oro Valley',
-      state: 'AZ',
-    }
-]};
+    avatar_url: 'http://lorempixel.com/150/150/people/8',
+    name: 'Nathan Puente',
+    username: 'npuente',
+    description: 'I\'m a business-owener and entrepreneur in Tuscon.',
+    thumbsup: 100,
+    groups: [
+        {
+            name: 'Tucson',
+            state: 'AZ'
+        },
+        {
+            name: 'Marana',
+            state: 'AZ'
+        },
+        {
+            name: 'Vail',
+            state: 'AZ'
+        },
+        {
+            name: 'Oro Valley',
+            state: 'AZ'
+        }
+    ] };
 
 // dummy footer items
 const footerMenuItems = [
-    { name : "Local Groups", path : "/" },
-    { name : "Merchandise", path : "/" },
-    { name : "Donate", path : "/" },
-    { name : "Privacy", path : "/" },
-    { name : "About", path : "/" },
-    { name : "Sponsors", path : "/" },
-    { name : "Volunteer", path : "/" },
-    { name : "Terms", path : "/" },
-    { name : "News", path : "/" },
-    { name : "Help", path : "/" },
-    { name : "Contact", path : "/" },
-    { name : "Wiki", path : "/" }
+    { name : 'Local Groups', path : '/' },
+    { name : 'Merchandise', path : '/' },
+    { name : 'Donate', path : '/' },
+    { name : 'Privacy', path : '/' },
+    { name : 'About', path : '/' },
+    { name : 'Sponsors', path : '/' },
+    { name : 'Volunteer', path : '/' },
+    { name : 'Terms', path : '/' },
+    { name : 'News', path : '/' },
+    { name : 'Help', path : '/' },
+    { name : 'Contact', path : '/' },
+    { name : 'Wiki', path : '/' }
 ];
 
 // dummy post data
@@ -129,6 +131,7 @@ const posts = [
 // internal functions
 
 const _loginHandler = function (request, reply) {
+    console.log('crumb: ' + request.plugins.crumb);
 
     let msg = null;
   // if credentials are passed in from form...
@@ -136,10 +139,12 @@ const _loginHandler = function (request, reply) {
         const user = request.payload.user;
         const pw = request.payload.password;
 
+        console.log(request.payload.crumb);
+
         request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
 
             Hoek.assert(!err, 'loginUser ERROR: ' + err);
-      // console.log('userID found after login:', userId);
+            console.log('userID found after login:', userId);
             if (userId) {
                 reply.setCookie(Number(userId), (err, cookieContent) => {
 
@@ -253,126 +258,126 @@ module.exports = [
               // 'hapiAuthorization': {role: '1'}
               // you don't have to have any special privs to see your own dashboard, but this is how you do it.
             }
-          },
-          handler: function (request, reply) {
+        },
+        handler: function (request, reply) {
             const inBodyAds = [
-              "one",
-              "two"
+                'one',
+                'two'
             ];
 
             reply.view('desktop_dash', {
-              messageSets: [
-                {
-                  messageHeader: "My Replies",
-                  messages: [
+                messageSets: [
                     {
-                      title: "Kid Clothes",
-                      image: "http://lorempixel.com/250/250",
-                      category: "offer",
-                      type: "Reply",
-                      time: '10 Minutes Ago',
-                      id: 1
+                        messageHeader: 'My Replies',
+                        messages: [
+                            {
+                                title: 'Kid Clothes',
+                                image: 'http://lorempixel.com/250/250',
+                                category: 'offer',
+                                type: 'Reply',
+                                time: '10 Minutes Ago',
+                                id: 1
+                            },
+                            {
+                                title: 'Acrylic Paints',
+                                image: 'http://lorempixel.com/250/250',
+                                category: 'offer',
+                                type: 'Reply',
+                                time: '15 Minutes Ago',
+                                id: 2
+                            }
+                        ]
                     },
                     {
-                      title: "Acrylic Paints",
-                      image: "http://lorempixel.com/250/250",
-                      category: "offer",
-                      type: "Reply",
-                      time: '15 Minutes Ago',
-                      id: 2
+                        messageHeader: 'Replies to My Posts',
+                        messages: [
+                            {
+                                title: 'Vaccum Cleaner with a very long title',
+                                category: 'wanted',
+                                image: 'http://lorempixel.com/250/250',
+                                type: 'PostReply',
+                                time: '15 Minutes Ago',
+                                notification: '7 unread replies',
+                                id: 3
+                            },
+                            {
+                                title: 'Canon 560 Printer',
+                                category: 'lend',
+                                image: 'http://lorempixel.com/250/250',
+                                type: 'PostReply',
+                                time: '15 Minutes Ago',
+                                notification: '15 unread replies',
+                                id: 5
+                            },
+                            {
+                                title: 'Patio Furniture',
+                                category: 'offer',
+                                image: 'http://lorempixel.com/250/250',
+                                type: 'PostReply',
+                                time: '15 Minutes Ago',
+                                notification: '1 unread reply',
+                                id: 6
+                            }
+                        ]
+                    },
+                    {
+                        messageHeader: 'Chat With Friends',
+                        messages: [
+                            {
+                                title: 'Deron Beal',
+                                image: 'http://lorempixel.com/250/250',
+                                type: 'ChatMessage',
+                                time: '1 Week Ago',
+                                id: 7
+                            },
+                            {
+                                title: 'Steev Hise',
+                                image: 'http://lorempixel.com/250/250',
+                                type: 'ChatMessage',
+                                time: '2 Weeks Ago',
+                                id: 8
+                            }
+                        ]
                     }
-                  ]
-                },
-                {
-                  messageHeader: "Replies to My Posts",
-                  messages: [
-                    {
-                      title: "Vaccum Cleaner with a very long title",
-                      category: "wanted",
-                      image: "http://lorempixel.com/250/250",
-                      type: "PostReply",
-                      time: '15 Minutes Ago',
-                      notification: "7 unread replies",
-                      id: 3
-                    },
-                    {
-                      title: "Canon 560 Printer",
-                      category: "lend",
-                      image: "http://lorempixel.com/250/250",
-                      type: "PostReply",
-                      time: '15 Minutes Ago',
-                      notification: "15 unread replies",
-                      id: 5
-                    },
-                    {
-                      title: "Patio Furniture",
-                      category: "offer",
-                      image: "http://lorempixel.com/250/250",
-                      type: "PostReply",
-                      time: '15 Minutes Ago',
-                      notification: "1 unread reply",
-                      id: 6
-                    }
-                  ]
-                },
-                {
-                  messageHeader: "Chat With Friends",
-                  messages: [
-                    {
-                      title: "Deron Beal",
-                      image: "http://lorempixel.com/250/250",
-                      type: "ChatMessage",
-                      time: '1 Week Ago',
-                      id: 7
-                    },
-                    {
-                      title: "Steev Hise",
-                      image: "http://lorempixel.com/250/250",
-                      type: "ChatMessage",
-                      time: '2 Weeks Ago',
-                      id: 8
-                    }
-                  ]
-                }
-              ],
-              showFilterSelectors: true,
-              showDashboard: true,
-              filterType: 'circle',
-              friends: friends,
-              inBodyAds: inBodyAds,
-              title: "Desktop Dash",
-              footerMenuItems: footerMenuItems,
-              posts: posts
+                ],
+                showFilterSelectors: true,
+                showDashboard: true,
+                filterType: 'circle',
+                friends,
+                inBodyAds,
+                title: 'Desktop Dash',
+                footerMenuItems,
+                posts
             });
         }
     },
     {
-      method: 'GET',
-      path: '/user/{username}',
-      config: {
-        id: 'user',
-        description: "The user's profile, viewed by others.",
-        plugins: {
+        method: 'GET',
+        path: '/user/{username}',
+        config: {
+            id: 'user',
+            description: 'The user\'s profile, viewed by others.',
+            plugins: {
           // 'hapiAuthorization': {role: '1'}
           // you don't have to have any special privs to see your own dashboard, but this is how you do it.
-        }
-      },
-      handler: function (request, reply) {
-        const inBodyAds = [
-          "one",
-          "two"
-        ];
+            }
+        },
+        handler: function (request, reply) {
+            const inBodyAds = [
+                'one',
+                'two'
+            ];
 
-        reply.view('user', {
-          user: user,
-          showFilterSelectors: false,
-          filterType: 'circle',
-          inBodyAds: inBodyAds,
-          title: "User Profile",
-          footerMenuItems: footerMenuItems,
-          posts: posts
-        });
-      }
+            reply.view('user', {
+                user,
+                showFilterSelectors: false,
+                filterType: 'circle',
+                inBodyAds,
+                title: 'User Profile',
+                footerMenuItems,
+                posts
+            });
+        }
     },
     {
         method: 'GET',
@@ -449,7 +454,17 @@ module.exports = [
         config: {
             id: 'pages_login',
             description: 'login on this page',
-            auth: false
+            auth: false,
+            plugins: {
+                // route specific options
+                crumb: {
+                    source: 'payload',
+                    cookieOptions: {
+                        isSecure: false,
+                        isHttpOnly: true
+                    }
+                }
+            }
         },
         handler: _loginHandler
     },
