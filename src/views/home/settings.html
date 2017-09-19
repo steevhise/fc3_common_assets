@@ -1,1 +1,81 @@
-<h1>Settings Page</h1>
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+{% include '../partials/header.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="horizontal_tabs">
+  <!--  tabs  -->
+  <ul class="tabs" id="h-example-tabs" data-tab data-update-history="true" data-options="deep_linking:true">
+    {% include '../partials/home_tabs.html' %}
+  </ul>
+
+  <!--  tabs-content  -->
+  <div class="tabs-content" data-tabs-content="h-example-tabs">
+    <div class="tabs-panel is-active" id="dashboard">
+      <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+      <form class="edit-profile">
+        <div class="row">
+          <div class="medium-6 columns form-group">
+            <label for="first">First Name
+              <input type="text" name="first"/>
+            </label>
+          </div>
+          <div class="medium-6 columns form-group">
+            <label for="last">Last Name
+              <input type="text" name="last"/>
+            </label>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="medium-12 columns form-group">
+            <label for="new-pass">New Password
+              <input type="password" name="new-pass"/>
+            </label>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="medium-12 columns form-group">
+            <label for="new-pass-confirm">Confirm New Password
+              <input type="password" name="new-pass-confirm"/>
+            </label>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="medium-12 columns form-group">
+            <label for="email-address">Email Address</label>
+            <div class="input-group edit-profile_group">
+              
+              <input type="text" class="input-group-field" name="email-address"/>
+              <div class="input-group-button">
+                <input type="button" class="btn btn-default" name="email" value="Send Verification Email" />
+              </div>
+            </div>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="medium-12 columns form-group">
+            <label for="phone-number">Phone Number</label>
+            <div class="input-group edit-profile_group">
+              <input type="text" class="input-group-field" name="phone-number"/>
+              <div class="input-group-button">
+                <input type="button" class="btn btn-default" name="phone" value="Test SMS Confirm" />
+              </div>  
+            </div>
+          </div>  
+        </div>
+      </form>
+    </div>
+    <div class="tabs-panel" id="myreplies"></div>
+    <div class="tabs-panel" id="myposts"></div>
+    <div class="tabs-panel" id="myfriends"></div>
+    <div class="tabs-panel" id="mygroups"></div>
+  </div>
+  {% include '../partials/in_body_banner_row.html'%}
+</div>
+
+
+{% endblock %}
