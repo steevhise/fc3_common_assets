@@ -18,10 +18,15 @@
   .input-group-button input {
     padding: .89rem;
   }
+  
   .btn-default {
     border: none;
   }
   
+  .btn-verification {
+    padding: 0.89rem;
+    margin: 1rem 0 0 0;
+  }
   // overriding select2 styles to match site
   span.select2-selection.select2-selection--single,
   span#select2-home-group-9u-container {
