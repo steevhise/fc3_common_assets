@@ -1,25 +1,26 @@
 const Path = require('path');
 const Webpack = require('webpack');
 
-/*const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
     filename: '[name].[contenthash].css',
     disable: process.env.NODE_ENV === 'development'
-});*/
+});
 
 module.exports = {
     context: Path.resolve(__dirname, './src/'),
-    entry: {
-        js: './js/main.js',
-        images: 'images' //,
+    entry:  './js/main.js',
+      /*{
+        js: 'js/main.js',
+        images: 'images/' //,
         // css: './scss'  //,
-      //partials: 'views/partials',
-      //icons: 'views/icons'
-    },
+        // partials: 'views/partials',
+        // icons: 'views/icons'
+    },*/
     output: {
         filename: 'js/main.bundle.js',
-        path: Path.resolve(__dirname, 'public/assets')
+        path: Path.resolve(__dirname, 'public/assets/')
     },
     module: {
         rules:[
@@ -38,20 +39,25 @@ module.exports = {
                 exclude: /(node_modules)/,
                 use: [
                     {
+                        //loader: 'file-loader?name=/images/[name].[ext]'//,
                         loader: 'file-loader',
                         options: {
-                            // name: [path][name].[ext],
+                            name: '[name].[ext]',
                             outputPath: 'images/'
                         }
                     }
                 ]
-            } //,
-            /*{
+            }/*,
+            {
                 test: /\.scss$/,
                 exclude: /(node_modules)/,
                 use: extractSass.extract({
                     use: [{
-                        loader: 'css-loader'
+                        loader: 'css-loader',
+                      options: {
+                        name: 'main.css',
+                        outputPath: 'css/'
+                      }
                     }, {
                         loader: 'sass-loader'
                     }],
@@ -77,7 +83,7 @@ module.exports = {
             compress: {
                 warnings: false
             }
-        })   //,
-        // extractSass
+        }),
+        //extractSass
     ]
 };
