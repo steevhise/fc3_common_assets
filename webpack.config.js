@@ -4,22 +4,17 @@ const Webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
-    filename: '[name].[contenthash].css',
-    disable: process.env.NODE_ENV === 'development'
+    filename: 'css/main.css',
+    allChunks: true
+    // disable: process.env.NODE_ENV === 'development'
 });
 
 module.exports = {
     context: Path.resolve(__dirname, './src/'),
-    entry:  './js/main.js',
-      /*{
-        js: 'js/main.js',
-        images: 'images/' //,
-        // css: './scss'  //,
-        // partials: 'views/partials',
-        // icons: 'views/icons'
-    },*/
+    entry: ['./js/main.js'],
     output: {
         filename: 'js/main.bundle.js',
+        //filename: '[path]/main.bundle.[name]',
         path: Path.resolve(__dirname, 'public/assets/')
     },
     module: {
@@ -34,12 +29,11 @@ module.exports = {
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
             },
-            {
+            {    // we're just copying images into the right place
                 test: /\.(png|jpg|gif)$/,
                 exclude: /(node_modules)/,
                 use: [
                     {
-                        //loader: 'file-loader?name=/images/[name].[ext]'//,
                         loader: 'file-loader',
                         options: {
                             name: '[name].[ext]',
@@ -47,26 +41,45 @@ module.exports = {
                         }
                     }
                 ]
-            }/*,
-            {
-                test: /\.scss$/,
+            },
+            {     // copying template partials into the right place.
+                test: /\.*partials\/.*\.html$/,
                 exclude: /(node_modules)/,
-                use: extractSass.extract({
-                    use: [{
-                        loader: 'css-loader',
-                      options: {
-                        name: 'main.css',
-                        outputPath: 'css/'
-                      }
-                    }, {
-                        loader: 'sass-loader'
-                    }],
-              // use style-loader in development
-                    fallback: 'style-loader'
-                })
-            }*/
-
-
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: '../../dist/views/partials/'
+                        }
+                    }
+                ]
+            },
+          // TODO: icons copy
+            { // sass / scss loader for webpack
+                test: /\.(sass|scss)$/,
+                exclude: /(node_modules)/,
+              /*  loader: ExtractTextPlugin.extract({ use: [{
+                    loader: 'css-loader',
+                    options: {
+                        options: { minimize: false }
+                    } }, {
+                        loader: 'sass-loader',
+                        options: {
+                            minimize: false
+                        }
+                    }]
+                })*/     // can't get this to work so just copy the scss files for hapi-sass to deal with
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: '../../dist/scss/'
+                        }
+                    }
+                ]
+            }
         ]
     },
     resolve: {
@@ -74,6 +87,7 @@ module.exports = {
             'vue$': 'vue/dist/vue.esm.js'
         }
     },
+    externals: 'fc3Images',
     plugins: [
         new Webpack.LoaderOptionsPlugin({
             minimize: true
@@ -84,6 +98,6 @@ module.exports = {
                 warnings: false
             }
         }),
-        //extractSass
+        extractSass
     ]
 };

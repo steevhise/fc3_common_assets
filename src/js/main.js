@@ -8,7 +8,13 @@ global.jQuery = $;
 require('foundation-sites/dist/js/foundation.min.js');
 
 //  loading of images for webpack asset management
-require.context("../images");
+var fc3Images = require.context('../images');
+
+// move template partials into right place.
+var fc3Partials = require.context('../views/partials');
+
+require.context('../scss');
+
 
 $(document).ready(function($) {
 	$(document).foundation();

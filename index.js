@@ -6,13 +6,13 @@ const Hapi = require('hapi');
 const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
-const HapiError = require('hapi-error');
+// const HapiError = require('hapi-error');
 
 // sass config  // TODO: if we use webpack to compile our sass, we don't need this.
 const sassOptions = {
-    src: './src/assets/scss',
+    src: './src/scss',
     dest: './public/assets/css',
-    force: true,
+    force: false,
     debug: true,
     routePath: '/css/{file}.css',
     outputStyle: 'nested',
@@ -24,7 +24,7 @@ const server = new Hapi.Server({
     connections: {
         router: {
             isCaseSensitive: false,
-            stripTrailingSlash: true
+            stripTrailingSlash: false
         }
     }
 });
@@ -35,9 +35,6 @@ server.connection({ port: process.env.PORT || 8000 });
 // register plugins
 server.register([
     Inert,
-    {
-        register: HapiError,
-    },
     {
         register: HapiSass,
         options: sassOptions
@@ -66,9 +63,6 @@ server.register([
     },
     {
         register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
-    },
-    {
-        register: require('hapi-named-routes')
     }
 
 ], (registerError) => {
@@ -90,7 +84,7 @@ server.route({
     },
     handler: {
         directory: {
-            path: './public/assets/images',
+            path: './public/assets/images/',
             listing: true
         }
     }
