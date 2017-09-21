@@ -1,3 +1,4 @@
+/** * Note: this file is provided by the fc3_common_assets package */
 <template>
     <form :method="method" :action="action" :id="id" @change="getFormData">
         <slot></slot>

@@ -1,3 +1,6 @@
+/**
+* Note: this file is provided by the fc3_common_assets package
+ */
 import Vue from 'vue';
 import { EventBus } from '../components/EventBus';
 

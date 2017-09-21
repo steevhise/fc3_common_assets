@@ -1,3 +1,6 @@
+/**
+* Note: this file is provided by the fc3_common_assets package
+ */
 export class ReplyItem {
   constructor(id) {
     this.$replyItem = $(`.message-reply-list-item[data-message-id=${id}]`);

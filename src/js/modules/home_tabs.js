@@ -1,3 +1,6 @@
+/**
+* Note: this file is provided by the fc3_common_assets package
+ */
 document.addEventListener("DOMContentLoaded", ()=> {
 	// define tabRoot to ensure strict scoping
 	const tabRoot = $('#h-example-tabs');

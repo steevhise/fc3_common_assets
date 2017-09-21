@@ -133,12 +133,22 @@ server.route({
     }
 });
 
+server.route({
+  method: 'GET',
+  path: '/test',
+  handler:  (request,reply) => {
+    reply.view('test', {
+      title: 'test page'
+    });
+  }
+});
+
 server.views({
     engines: {
         html: server.plugins['hapi-swig-extensions'].swig
     },
-    path: Path.join(__dirname, '../src/views'),
-    layoutPath: Path.join(__dirname, '../src/views/layout')
+    path: Path.join(__dirname, './src/views'),
+    layoutPath: Path.join(__dirname, './src/views/layout')
 });
 
 server.start((err) => {

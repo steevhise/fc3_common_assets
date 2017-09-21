@@ -1,3 +1,4 @@
+/** * Note: this file is provided by the fc3_common_assets package */
 <template>
     <button :type="type" :role="submit" :class="classname" @click.prevent="handleClick" >
         <slot>Form Button</slot>

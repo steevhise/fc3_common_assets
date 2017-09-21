@@ -1,4 +1,7 @@
 /**
+* Note: this file is provided by the fc3_common_assets package
+ */
+/**
  * A simple method that grabs all post type buttons,
  * and allows us to determine whether or not it is active.
  * 

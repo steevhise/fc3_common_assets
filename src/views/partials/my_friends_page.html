@@ -1,9 +1,0 @@
-<div class="row">
-  <h4 class="text-center page-sub-title">My Friends</h4>
-  {% include './in_page_search.html' with {label:'Search Friends'} %}
-  <div class="friends-cards">
-    {% for friend in friends %}
-    {% include './friend_card.html' with friend %}
-    {% endfor %}
-  </div>
-</div>

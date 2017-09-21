@@ -1,3 +1,6 @@
+/**
+* Note: this file is provided by the fc3_common_assets package
+ */
 export class AlertItem {
   constructor(id) {
     this.$deleteAlert = $(`.alerts_existing[data-alert-id=${id}] .alert_close`);

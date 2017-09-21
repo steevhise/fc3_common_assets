@@ -4,6 +4,8 @@
   "description": "Freecycle 3.0 Common stuff like images, styles, js, partials",
   "main": "index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_common_assets",
+  "author": "The Freecycle Network",
+  "license": "UNLICENSED",
   "engines": {
     "node": "6.9.x"
   },
@@ -40,20 +42,18 @@
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
-    "build:assets": "webpack --config webpack.config.js --colors",
+    "build": "webpack --config webpack.config.js --colors",
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
-    "serve": "npm run build:javascript && npm run build && node ./index.js",
-    "start": "npm run watch:javascript & npm run dev & npm run browsersync",
-    "dev:watch": "npm run watch:javascript | npm run dev",
-    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./index.js",
-    "test": "lab --reporter spec --recursive --timeout 20s"
+    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./index.js"
   },
-  "author": "The Freecycle Network",
-  "license": "UNLICENSED",
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",
     "eslint": "^3.15.0",
     "eslint-config-hapi": "^10.1.0",
     "eslint-plugin-hapi": "^4.0.0"
-  }
+  },
+  "files": [
+    "src",
+    "webpack.config.js"
+  ]
 }
