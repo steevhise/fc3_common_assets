@@ -41,7 +41,7 @@
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
     "watch:javascript": "webpack --config webpack.config.js --colors --watch",
-    "build:javascript": "webpack --config webpack.config.js",
+    "build:javascript": "webpack --config webpack.config.js --colors",
     "build": "babel index.js  -d lib",
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build:javascript && npm run build && node ./lib/index.js",

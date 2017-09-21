@@ -12,7 +12,8 @@ class ItemList {
         // the current state
         this.state = {
             currentView: 'list',
-            currentFilters: ['offer', 'lend', 'borrow', 'wanted']
+            currentFilters: ['offer', 'lend', 'borrow', 'wanted'],
+            defaultOptions: ['offer', 'lend', 'borrow', 'wanted']
         };
 
         //setup child references
@@ -72,22 +73,77 @@ class ItemList {
         this.$borrowFilter.click(this.onFilterItemClick.bind(this, 'borrow'));
         this.$wantedFilter.click(this.onFilterItemClick.bind(this, 'wanted'));
     };
+    
     /**
      * Event handler for toggling a filter item
      * @param toggledValue
      */
     onFilterItemClick = ( toggledValue ) => {
         let {currentFilters} = this.state;
+        let {defaultOptions} = this.state;
         let currentIdx = ~currentFilters.indexOf(toggledValue);
+        let filterStatus;
         // remove it from the array or add it back
         if ( currentIdx ) {
+            currentFilters = [...defaultOptions];
             currentFilters = currentFilters.filter(i => i !== toggledValue);
+            filterStatus = 'filter';
         } else {
             currentFilters = [...currentFilters, toggledValue];
+            filterStatus = 'reset';
         }
         //set the new state
         this.setState({ currentFilters });
+        //call filter handler and specify if list is being filtered or unfiltered
+        this.handleFilters(toggledValue, filterStatus);
     };
+    
+    /**
+     * Dispatch filter or reset function
+     * @param filterStatus
+     */
+    handleFilters = ( searchTerm, filterStatus ) => {
+      switch(filterStatus) {
+        case 'filter' : 
+          this.filterResults(searchTerm); 
+          break;
+        case 'reset' : 
+          this.resetResults(); 
+          break;
+      }
+    };
+    
+    filterResults = ( searchTerm ) => {
+      let filterGrid = this.$itemGrid.children();
+      let fitlerList = this.$itemList.children();
+      let { currentView } = this.state;
+      
+      //hide all page results
+      $('.post-grid-item').hide();
+      $('.post-list-item').hide();
+      
+      //show only matching results across views
+      filterGrid.each((i, item) => {
+         if (item.className === 'post-grid-item') {
+           $(item).find(`span.text-${searchTerm}`).parents('.post-grid-item').show();
+           this.setupMasonry();
+         }
+      });
+      
+      fitlerList.each((i, item) => {
+        if (item.className === 'post-list-item') {
+          var results = $(item).find(`span.text-${searchTerm}`).parents('.post-list-item').show();
+        }
+      });
+    };
+    
+    resetResults = () => {
+      // show unfiltered items across views
+      this.$itemGrid.children().show();
+      this.$itemList.children().show();
+      this.setupMasonry();
+    };
+    
     /**
      * Event handler for clicking on a view item
      */
