@@ -556,6 +556,20 @@ module.exports = [
                 pages: results
             });
         }
+    },
+    {
+      method: 'GET',
+      path: '/startagroup',
+      config: {
+        id: 'start_a_group',
+        auth: { mode: 'required' },
+        description: 'Apply to start a new group'
+      },
+      handler: function (request, reply) {
+        reply.view('start_a_group', {
+          title: 'Start a Group'
+        });
+      }
     }
 
 ];

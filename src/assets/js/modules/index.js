@@ -10,3 +10,4 @@ export {default as HomeTabs} from './home_tabs';
 export {default as GeoMap} from "./geomap";
 export {default as GroupTabs} from './group_tabs';
 export {default as PostEditNew} from './post_edit_new';
+export {default as StartAGroup} from './start_a_group';
