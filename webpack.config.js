@@ -1,5 +1,6 @@
 const Path = require('path');
 const Webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -28,57 +29,6 @@ module.exports = {
                     presets: ['es2015'],
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
-            },
-            {    // we're just copying images into the right place
-                test: /\.(png|jpg|gif)$/,
-                exclude: /(node_modules)/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'images/'
-                        }
-                    }
-                ]
-            },
-            {     // copying template partials into the right place.
-                test: /\.*partials\/.*\.html$/,
-                exclude: /(node_modules)/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: '../../dist/views/partials/'
-                        }
-                    }
-                ]
-            },
-          // TODO: icons copy
-            { // sass / scss loader for webpack
-                test: /\.(sass|scss)$/,
-                exclude: /(node_modules)/,
-              /*  loader: ExtractTextPlugin.extract({ use: [{
-                    loader: 'css-loader',
-                    options: {
-                        options: { minimize: false }
-                    } }, {
-                        loader: 'sass-loader',
-                        options: {
-                            minimize: false
-                        }
-                    }]
-                })*/     // can't get this to work so just copy the scss files for hapi-sass to deal with
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: '../../dist/scss/'
-                        }
-                    }
-                ]
             }
         ]
     },
@@ -87,7 +37,6 @@ module.exports = {
             'vue$': 'vue/dist/vue.esm.js'
         }
     },
-    externals: 'fc3Images',
     plugins: [
         new Webpack.LoaderOptionsPlugin({
             minimize: true
@@ -98,6 +47,13 @@ module.exports = {
                 warnings: false
             }
         }),
-        extractSass
+        new CopyWebpackPlugin([
+          { from: 'images', to: './images' },
+          { from: 'scss', to: '../../build/scss' },
+          { from: 'views', to: '../../build/views' }     // partials and icons
+        ], {
+            copyUnmodified: true,
+            debug: 'warning'
+        })
     ]
 };
