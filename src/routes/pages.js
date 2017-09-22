@@ -1,6 +1,7 @@
-
 const Hoek = require('hoek');
 const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
+const countries = require('../assets/js/modules/countries');
+const regions = require('../assets/js/modules/regions');
 
 const friends = [
     {
@@ -566,8 +567,10 @@ module.exports = [
         description: 'Apply to start a new group'
       },
       handler: function (request, reply) {
+        
         reply.view('start_a_group', {
-          title: 'Start a Group'
+          title: 'Start a Group',
+          countries
         });
       }
     }

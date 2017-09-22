@@ -1,0 +1,8 @@
+<label for="count" class="dynamic-form">
+  Enter the country this group would be located in
+</label>
+<select class="start-group country-dropdown" name="count" data-width="100%">
+  {% for country in countries %}
+    <option value="{{country.countryShortCode}}">{{country.countryName}}</option>
+  {% endfor %}
+</select>
