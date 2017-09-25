@@ -1,6 +1,7 @@
 //override foundation defaults
 .edit-profile {
   text-align: center;
+
   input {
     text-transform: uppercase;
     font-weight: bold;
@@ -27,6 +28,17 @@
     padding: 0.89rem;
     margin: 1rem 0 0 0;
   }
+  
+  .default-location {
+    position: relative;
+    
+    .default-location-locate {
+      position: absolute;
+      margin-top: -48px;
+      right: 1.5rem;
+    }
+  }
+  
   // overriding select2 styles to match site
   span.select2-selection.select2-selection--single,
   span#select2-home-group-9u-container {
@@ -38,6 +50,11 @@
   
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #14261a;
+  }
+  
+  .select2-selection__rendered {
+    text-align: center !important;
+    display: block !important;
   }
 }
 
