@@ -1,7 +1,25 @@
-//override foundation defaults
+.profile-pic {
+  display: block;
+  text-align: center;
+  
+  img {
+    border-radius: 50%;
+  }
+  
+  .upload-pic {
+    display: none;
+  }
+  
+  &:hover {
+    .upload-pic {
+      display: inline;
+    }
+  }  
+}
+
 .edit-profile {
   text-align: center;
-
+  
   input {
     text-transform: uppercase;
     font-weight: bold;
