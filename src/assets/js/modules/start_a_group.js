@@ -13,9 +13,16 @@ document.addEventListener("DOMContentLoaded", ()=> {
       $('.start-group .region-dropdown').select2();
       // empty incase another country was clicked in error 
       $('.start-group .region-dropdown').empty();
+      // show label
+      $('.region-dropdown-label').show();
       
       localRegions.forEach(item => {
         $('.start-group .region-dropdown').append(`<option value="${item.shortCode}">${item.name}</option>`);
       });
+    });
+    
+    $('.start-group .region-dropdown').on('select2:select', function(e) {
+      // show the rest of the form fields
+      $('.dynamic-form').show();
     });
 });
