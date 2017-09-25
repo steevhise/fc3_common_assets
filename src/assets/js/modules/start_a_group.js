@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", ()=> {
       const localRegions = regions[id];
       
       // init the region dropdown
-      $('.start-group .region-dropdown').select2();
+      $('.start-group .region-dropdown').select2({
+        placeholder: 'Select a region...'
+      });
       // empty incase another country was clicked in error 
       $('.start-group .region-dropdown').empty();
       // show label
