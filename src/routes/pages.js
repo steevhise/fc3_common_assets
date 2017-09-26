@@ -591,6 +591,63 @@ module.exports = [
                 countries
             });
         }
+      },
+      {
+        path: '/find-groups',
+        config: {
+            id: 'find_groups',
+            description: 'Search for groups.'
+        },
+        handler: function (request, reply) {
+            const groupList = [
+              {
+                name: 'Chandler',
+                state: 'AZ',
+                distance: 0
+              },
+              {
+                name: 'Ahwatukee',
+                state: 'AZ',
+                distance: 15
+              },
+              {
+                name: 'Peoria',
+                state: 'AZ',
+                distance: 40
+              },
+              {
+                name: 'Tucson',
+                state: 'AZ',
+                distance: 100
+              },
+              {
+                name: 'Dewey-Humboldt',
+                state: 'AZ',
+                distance: 107
+              },
+              {
+                name: 'Lake Havasu City',
+                state: 'AZ',
+                distance: 225
+              }
+            ];
+            const groupMap = {
+              settings: {
+                'height' : '400',
+                'width': '100%'
+              },
+              markers: [
+                  { 'lat' : 32.5, 'lng' : -110.09, 'description' : 'Tucson', 'icon' : 'group' },
+                  { 'lat' : 32.0, 'lng' : -111.09, 'description' : 'Oro Valley', 'icon' : 'user' },
+                  { 'lat' : 31.5, 'lng' : -110.09, 'description' : 'Green Valley', 'icon' : 'post' }
+              ]
+            };
+            reply.view('find-groups', {
+              title: 'Find Groups',
+              groupList,
+              groupMap,
+              footerMenuItems
+            });
+        }
     }
-
 ];

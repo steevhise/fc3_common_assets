@@ -1,0 +1,52 @@
+{% extends './layout/layout.html' %}
+
+{% block header %}
+  {% include './partials/header.html' %}
+{% endblock %}
+
+{% block content %}
+<h2 class="post-header-title text-center">{{title}}</h2>
+<div class="row">
+  <div class="item-list-header small-centered large-12 column">
+    <div class="item-list-header-controls find-groups-header-controls">
+        <label class="text-lighten item-list-header-controls-label">View: </label>
+        <ul class="item-list-header-controls-list tabs" id="find-groups_detail" data-tabs>
+            <li class="item-list-header-filter-icon item-list-grid-view tabs-title is-active">
+              <a href="#find-groups_list">{% include './icons/list.html' %} <span>List</span></a>
+            </li>
+            <li class="item-list-header-filter-icon item-list-list-view tabs-title">
+                <a href="#find-groups_map">{% include './icons/map_compass.html' %} <span>Map</span></a>
+            </li>
+        </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row tabs-content small-centered large-12 column" data-tabs-content="find-groups_detail">  
+  <div id="find-groups_list" class="table-example row tabs-panel is-active">
+    {% include './partials/in_page_search.html' with {label:'Search Groups'} %}
+    <table>
+      <thead>
+      <tr>
+        <th>Group Name</th>
+        <th>State</th>
+        <th>Distance</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for group in groupList %}
+        <tr>
+          <td><h4>{{group.name}}</h4></td>
+          <td>{{group.state}}</td>
+          <td>{{group.distance}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <div id="find-groups_map" class="table-example row tabs-panel">
+    <!-- {% include "./partials/geomap.html" with geomap %} -->
+  </div>
+</div>
+{% endblock %}
