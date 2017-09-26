@@ -626,7 +626,7 @@ module.exports = [
                 homeGroup: { group_name: 'Tucson, AZ' },
                 defaultLocation: 'Tucson, AZ',
                 notificationPref: 1,
-                currentPic: null
+                currentPic: "http://lorempixel.com/250/250/nightlife"
             };
             reply.view('./home/settings', {
                 languageOptions,
