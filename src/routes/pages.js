@@ -603,15 +603,18 @@ module.exports = [
                 'width': '100%'
               },
               markers: [
-                  { 'lat' : 32.5, 'lng' : -110.09, 'description' : 'Tucson', 'icon' : 'group' },
-                  { 'lat' : 32.0, 'lng' : -111.09, 'description' : 'Oro Valley', 'icon' : 'user' },
-                  { 'lat' : 31.5, 'lng' : -110.09, 'description' : 'Green Valley', 'icon' : 'post' }
+                  { 'lat' : 33.306329, 'lng' : -111.840852, 'description' : 'Chandler', 'icon' : 'group' },
+                  { 'lat' : 33.342573, 'lng' : -111.983492, 'description' : 'Ahwaktukee', 'icon' : 'user' },
+                  { 'lat' : 33.581569, 'lng' : -112.240584, 'description' : 'Peoria', 'icon' : 'post' },
+                  { 'lat' : 32.218476, 'lng' : -110.905825, 'description' : 'Tucson', 'icon' : 'post' },
+                  { 'lat' : 34.505731, 'lng' : -112.242147, 'description' : 'Dewey-Humboldt', 'icon' : 'post' },
+                  { 'lat' : 34.482473, 'lng' : -114.322985, 'description' : 'Lake Havasu City', 'icon' : 'post' }
               ]
             };
             reply.view('find-groups', {
               title: 'Find Groups',
               groupList,
-              groupMap,
+              geomap: groupMap,
               footerMenuItems
             });
         }
