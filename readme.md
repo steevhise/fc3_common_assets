@@ -43,12 +43,12 @@ You can auto-fix many easy things in code to conform to the style by running `np
 ### Frontend
 * Foundation, JQuery, SASS, blah blah blah.
 * templating engine is swig-templates. docs for that are at http://node-swig.github.io/swig-templates/
+* Note that now all common assets and templates are provided by the `@freecycle/fc3_common_assets` module. install that and then run `npm run build:javascript` and 
+scss will be copied into `./build/`, common view files will go into `./src/views/common/` Templates and front-end js that are specific to this application still go in `./src/` 
  
 ### Stuff there's no mockups of (?): 
  
-- [ ] Login/signup (?) 
-- [ ] edit profile/settings 
-- [ ] pretty much all of ModTools and GroupAdmin
+- [ ] pretty much all of ModTools and GroupAdmin  (separate app)
 - what else?
  
  
@@ -62,4 +62,3 @@ WGQL.GraphQLWrapper(server, query, datawanted, function(err, result)  { whatever
   <br>Where `datawanted` is a result property you're looking for, like *user.user_id*.
 It will return (null, null) for nothing found, (null, queryResult.data) for found data, and (err, null) for errors.
 ... You do still have to catch errors, but this takes care of some.
-

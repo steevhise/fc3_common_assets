@@ -1,6 +1,6 @@
 {
   "name": "fc3_main",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "lib/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@freecycle/common-hapi-plugins": "^0.1.10",
+    "@freecycle/fc3_common_assets": "0.0.1",
     "@freecycle/freecycle_graphql_schema": "^0.2.3",
     "@freecycle/freecycle_node_dal": ">=0.1.8",
     "babel-loader": "^6.2.4",
@@ -18,6 +19,7 @@
     "boom": "^5.2.0",
     "browser-sync": "^2.18.13",
     "ckeditor": "^4.7.2",
+    "copy-webpack-plugin": "^4.0.1",
     "crumb": "^6.0.3",
     "css-loader": "^0.28.7",
     "foundation-sites": "^6.4.3",
@@ -47,7 +49,7 @@
     "vue": "^2.4.2",
     "vue-loader": "12.2.2",
     "vue-template-compiler": "^2.4.2",
-    "webpack": "2.7.0"
+    "webpack": "3.6.0"
   },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",

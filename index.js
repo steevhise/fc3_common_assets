@@ -11,6 +11,7 @@ const HapiError = require('hapi-error');
 // sass config
 const sassOptions = {
     src: './src/assets/scss',
+    includePaths: './build',
     dest: './public/assets/css',
     force: true,
     debug: true,
@@ -113,7 +114,10 @@ server.register([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
+        options: {
+            includeDir: Path.join(__dirname, '../build/views')      // where our common template partials and icons live
+        }
     },
     {
         register: require('hapi-named-routes')
@@ -263,8 +267,12 @@ server.register([
                 engines: {
                     html: server.plugins['hapi-swig-extensions'].swig
                 },
+                isCached: false,
                 context: defaultContext,
-                path: Path.join(__dirname, '../src/views'),
+                relativeTo: Path.join(__dirname, './'),    // should be ./lib/../
+                allowInsecureAccess: true,
+                // Note: this below is only path for local view files. Common assets get found by custom template loader!
+                path:  '../src/views',
                 layoutPath: Path.join(__dirname, '../src/views/layout')
             });
 
