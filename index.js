@@ -107,7 +107,10 @@ server.register([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
+        options: {
+            includeDir: Path.join(__dirname, '../build/views')      // where our common template partials and icons live
+        }
     },
     {
         register: require('hapi-named-routes')
