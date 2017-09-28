@@ -1,6 +1,8 @@
 <div class="post-list-item">
     <div class="post-list-item-photo">
-        <img src="{{post.image}}"/>
+        {% if post.files_post_images[0] %}
+        <img width=128 src="/posts/images/{{post.files_post_images[0].post_image_id}}/thumb">
+        {% endif %}
     </div>
     <div class="post-list-item-content">
         <div class="post-list-item-content-header">
@@ -39,8 +41,8 @@
             </div>
         </div>
         <div class="post-list-item-content-description">
-            <h4><a href="/posts/{{ post.post_id }}">{{post.post_subject}}</a></h4>
-            <p class="paragraph-small">{{post.post_description}}</p>
+            <h4><a href="{{ path.posts_detail }}{{ post.post_id }}">{{post.post_subject}}</a></h4>
+            <p class="paragraph-small">{{post.post_description|raw}}</p>
         </div>
     </div>
 </div>

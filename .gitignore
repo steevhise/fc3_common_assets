@@ -1,6 +1,7 @@
 # made this alphabetical - smh
-.DS_store
-*/.DS_store
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
 .editorconfig
 .idea
 .npmrc

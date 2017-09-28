@@ -1,0 +1,53 @@
+{% extends '../layout/layout.html' %}
+
+{% block header %}
+  {% include '../partials/header.html'%}
+{% endblock %}
+
+{% block content %}
+  <div class="alerts row column">
+    <div class="row">
+      <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+    </div>
+    <div class="row column">
+      <form class="large-12 alert_new-alert">
+        <h3>New Alert</h3>
+        <div class="form-group column">
+          <label>Search Term</label>
+          <input type="text" class="large-8"/>
+          <button type="submit" role="submit" data-fc-submitpost class="btn-default large-2">Create Alert</button>
+        </div>
+      </form>
+    </div>
+    <hr class="section-divider" />
+    <div class="row column">
+      <h3>Existing Alerts</h3>
+      {% for alert in alerts %}
+        <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
+          <div class="alert_title">
+            <p class="alert_close large-1 small-1">x</p>
+            <div class="alert_name large-8 small-6">
+              <h4>{{alert.alert_name}}</h4>
+              <p class="alert_time text-lighten">{{alert.alert_time}}</p>
+            </div>
+            {% if alert.alert_results.length %}
+              <div class="message-arrow alert_result-count large-2 small-3">
+                {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
+              </div>
+            {% else %}
+              <p class="alert_result-count large-2 small-3">No Results</p>
+            {% endif %}
+          </div>
+        </div>
+        {% if alert.alert_results.length %}
+          <div class="alert_result large-12" data-result-id={{loop.index}}>
+            {% include '../partials/alert_result.html' with alert.alert_results %}
+            <hr class="alert_result-divider" />  
+          </div>  
+        {% endif %}  
+      {% endfor %}
+    </div>
+    <hr class="section-divider" />
+  </div>
+  {% include '../partials/in_body_banner_row.html'%}
+{% endblock %}

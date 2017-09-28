@@ -1,5 +1,5 @@
 /**
- * It's the Freecycle 3.0 main web application! w00t!
+ * It's the Freecycle 3.0 main web application! w00t!  hurrah!
  */
 
 const Hapi = require('hapi');
@@ -71,7 +71,12 @@ server.connection({ port: process.env.PORT || 8000 });
 // register plugins
 server.register([
     Inert,
-    HapiError,
+    {
+        register: HapiError,
+        config: { statusCodes: {
+            499: { message: 'Please Login to view that page' }
+        } }
+    },
     {
         register: HapiSass,
         options: sassOptions
@@ -79,9 +84,15 @@ server.register([
     {
         register: require('vision')
     },
-    {
-        register: require('crumb')                  // security against CRSF attacks.
-    },
+  /*  {
+        register: require('crumb'),                  // security against CRSF attacks.
+        options: {
+            cookieOptions: {            // TODO: this broke, maybe bug in Crumb?
+                isSecure: false,
+                isHttpOnly: true
+            }
+        }
+    },*/
     {
         register: require('good'),
         options: {

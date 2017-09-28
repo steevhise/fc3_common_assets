@@ -12,11 +12,7 @@
         <link rel="stylesheet" href="/css/main.css">
     {% endblock %}
 </head>
-<body class="groups" data-fc-route="{{ route.id|lower }}" >
-{% if session %}
-    you are {{ session.username }}
-    {% set loggedIn = true %}
-{% endif %}
+<body data-fc-route="{{ route.id|lower }}" >
 {% block header %}
 {% endblock %}
 <div class="content-container">

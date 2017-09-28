@@ -1,5 +1,5 @@
 <div class="header-logo">
-    {% include '../icons/logo.html' %}
+    <a href="/">{% include '../icons/logo.html' %}</a>
     {% include './hamburger_menu.html' %}
 </div>
 
@@ -12,6 +12,6 @@
 
     <span class="heading-with-icon header-user-icon">
         {% include '../icons/user.html' %}
-        <a href="{{ path.login }}">Login</a>
+        <a href="{{ path.pages_login }}">Login</a>
     </span>
 </div>

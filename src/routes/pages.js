@@ -1,5 +1,6 @@
-
-
+/**
+ * note this is kind of "miscellaneous" routes module. anything that doesnt fit into home, groups, posts, or admin, basically.
+ */
 const Hoek = require('hoek');
 const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
 
@@ -41,20 +42,46 @@ const friends = [
     }
 ];
 
+const user = {
+    avatar_url: 'http://lorempixel.com/150/150/people/8',
+    name: 'Nathan Puente',
+    username: 'npuente',
+    description: 'I\'m a business-owener and entrepreneur in Tuscon.',
+    thumbsup: 100,
+    groups: [
+        {
+            name: 'Tucson',
+            state: 'AZ'
+        },
+        {
+            name: 'Marana',
+            state: 'AZ'
+        },
+        {
+            name: 'Vail',
+            state: 'AZ'
+        },
+        {
+            name: 'Oro Valley',
+            state: 'AZ'
+        }
+    ] };
+
 // dummy footer items
 const footerMenuItems = [
-    'Local Groups',
-    'Merchandise',
-    'Donate',
-    'Privacy',
-    'About',
-    'Sponsors',
-    'Volunteer',
-    'Terms',
-    'News',
-    'Help',
-    'Contact',
-    'Wiki'];
+    { name : 'Local Groups', path : '/' },
+    { name : 'Merchandise', path : '/' },
+    { name : 'Donate', path : '/' },
+    { name : 'Privacy', path : '/' },
+    { name : 'About', path : '/' },
+    { name : 'Sponsors', path : '/' },
+    { name : 'Volunteer', path : '/' },
+    { name : 'Terms', path : '/' },
+    { name : 'News', path : '/' },
+    { name : 'Help', path : '/' },
+    { name : 'Contact', path : '/' },
+    { name : 'Wiki', path : '/' }
+];
 
 // dummy post data
 const posts = [
@@ -104,6 +131,7 @@ const posts = [
 // internal functions
 
 const _loginHandler = function (request, reply) {
+    console.log('crumb: ' + request.plugins.crumb);
 
     let msg = null;
   // if credentials are passed in from form...
@@ -111,10 +139,12 @@ const _loginHandler = function (request, reply) {
         const user = request.payload.user;
         const pw = request.payload.password;
 
+        console.log(request.payload.crumb);
+
         request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
 
             Hoek.assert(!err, 'loginUser ERROR: ' + err);
-      // console.log('userID found after login:', userId);
+            console.log('userID found after login:', userId);
             if (userId) {
                 reply.setCookie(Number(userId), (err, cookieContent) => {
 
@@ -225,12 +255,11 @@ module.exports = [
             id: 'pages_dashboard',
             auth: { mode: 'required' },
             plugins: {
-        // 'hapiAuthorization': {role: '1'}
-        // you don't have to have any special privs to see your own dashboard, but this is how you do it.
+              // 'hapiAuthorization': {role: '1'}
+              // you don't have to have any special privs to see your own dashboard, but this is how you do it.
             }
         },
         handler: function (request, reply) {
-
             const inBodyAds = [
                 'one',
                 'two'
@@ -312,10 +341,39 @@ module.exports = [
                     }
                 ],
                 showFilterSelectors: true,
+                showDashboard: true,
                 filterType: 'circle',
                 friends,
                 inBodyAds,
                 title: 'Desktop Dash',
+                footerMenuItems,
+                posts
+            });
+        }
+    },
+    {
+        method: 'GET',
+        path: '/user/{username}',
+        config: {
+            id: 'user',
+            description: 'The user\'s profile, viewed by others.',
+            plugins: {
+          // 'hapiAuthorization': {role: '1'}
+          // you don't have to have any special privs to see your own dashboard, but this is how you do it.
+            }
+        },
+        handler: function (request, reply) {
+            const inBodyAds = [
+                'one',
+                'two'
+            ];
+
+            reply.view('user', {
+                user,
+                showFilterSelectors: false,
+                filterType: 'circle',
+                inBodyAds,
+                title: 'User Profile',
                 footerMenuItems,
                 posts
             });
@@ -396,7 +454,17 @@ module.exports = [
         config: {
             id: 'pages_login',
             description: 'login on this page',
-            auth: false
+            auth: false,
+            plugins: {
+                // route specific options
+                crumb: {
+                    source: 'payload',
+                    cookieOptions: {
+                        isSecure: false,
+                        isHttpOnly: true
+                    }
+                }
+            }
         },
         handler: _loginHandler
     },
@@ -508,4 +576,3 @@ module.exports = [
     }
 
 ];
-
