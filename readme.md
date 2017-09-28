@@ -65,3 +65,7 @@ WGQL.GraphQLWrapper(server, query, datawanted, function(err, result)  { whatever
   <br>Where `datawanted` is a result property you're looking for, like *user.user_id*.
 It will return (null, null) for nothing found, (null, queryResult.data) for found data, and (err, null) for errors.
 ... You do still have to catch errors, but this takes care of some.
+
+### Ops Monitoring
+Application will now send out some ops statistics to a statd server running on local host. if there is none, no worries.
+To set one up, you need the statsd npm and the "statsd-zabbix-backend" npm - the statd server will flush to our Zabbix server periodically.
