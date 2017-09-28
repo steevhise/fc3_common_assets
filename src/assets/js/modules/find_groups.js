@@ -22,6 +22,8 @@ export class FindGroups {
   }
 }
 
-document.addEventListener('DOMContentLoaded', ()=> {
-  const findGroupMap = new FindGroups('#find-groups_map');
-});
+if (window.location.href.match('find-groups')) {
+  document.addEventListener('DOMContentLoaded', ()=> {
+    const findGroupMap = new FindGroups('#find-groups_map');
+  });
+}

@@ -6,6 +6,7 @@
 
 {% block content %}
 <h2 class="post-header-title text-center">{{title}}</h2>
+{% include './partials/in_page_search.html' with {label:'Search Groups'} %}
 <div class="row">
   <div class="item-list-header small-centered large-12 column">
     <div class="item-list-header-controls find-groups-header-controls">
@@ -28,7 +29,6 @@
   </div>
   
   <div id="find-groups_list" class="table-example row tabs-panel">
-    {% include './partials/in_page_search.html' with {label:'Search Groups'} %}
     <table>
       <thead>
       <tr>
