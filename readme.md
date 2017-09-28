@@ -36,7 +36,7 @@ The repo for that is at `gitolite@devserver.freecycle.org:common-hapi-plugins`
 Within that there is now a directory `plugins/` and a directory `modules/` please put things in appropriate place.
 * `src/packages/` is for other code of ours (our unpackaged internal hapi plugins, etc) not contained in the above package or in `src/routes/`, etc 
 * Please keep routes and views organized by section of site: Home, Groups, etc. any js file in the routes dir will get included. 
-* We are now trying to conform to the [hapi](https://github.com/continuationlabs/eslint-config-hapi) coding style. 
+* We are now trying, for back-end code at least, to conform to the [hapi](https://github.com/continuationlabs/eslint-config-hapi) coding style. 
 To lint your code for this standard, use `npm run lint`.  We will "fix" these things gradually.
 You can auto-fix many easy things in code to conform to the style by running `npm run lintfix`.  
  
@@ -44,7 +44,10 @@ You can auto-fix many easy things in code to conform to the style by running `np
 * Foundation, JQuery, SASS, blah blah blah.
 * templating engine is swig-templates. docs for that are at http://node-swig.github.io/swig-templates/
 * Note that now all common assets and templates are provided by the `@freecycle/fc3_common_assets` module. install that and then run `npm run build:javascript` and 
-scss will be copied into `./build/`, common view files will go into `./src/views/common/` Templates and front-end js that are specific to this application still go in `./src/` 
+scss will be copied into `./build/scss`, common view files (partials and icons) will go into `./build/views`. Templates and front-end javascript that are specific to this application still go in `./src/` .
+Common files will have a little comment at the top now to remind you where the file comes from.  If you introduce a new file into the common-assets package,
+please follow this practice.
+The git url for common assets repo is `gitolite@devserver.freecycle.org:fc3_common_assets`
  
 ### Stuff there's no mockups of (?): 
  
