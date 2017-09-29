@@ -1,6 +1,11 @@
 export class FindGroups {
   constructor() {
     this.location();
+    this.attachListeners();
+  }
+  
+  attachListeners = () => {
+    // placeholder for search listener
   }
   
   location = () => {
