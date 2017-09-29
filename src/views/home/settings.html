@@ -17,6 +17,9 @@
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="dashboard">
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+      <div class="profile-pic">
+        <img src="{{userData.currentPic}}" alt="Current profile image"/>
+      </div>
       <form class="edit-profile">
         <div class="row">
           <div class="medium-6 columns form-group">
@@ -34,6 +37,13 @@
           <div class="medium-12 columns form-group">
             <label for="tagline">Tagline
               <input type="text" name="tagline" value="{{userData.tagline}}"/>
+            </label>
+          </div> 
+        </div>
+        <div class="row">
+          <div class="medium-12 columns form-group">
+            <label class="upload-pic" for="upload">Upload a New Image
+              <input type="file" name="upload"/>
             </label>
           </div> 
         </div>
@@ -71,12 +81,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class="row">
-            
-        </div> -->
         {% include '../partials/language_preferences.html' %}
-        {% include '../partials/home_group.html' %}
-        {% include '../partials/default_location.html' %}
+        <div class="row">
+          {% include '../partials/home_group.html' %}
+          {% include '../partials/default_location.html' %}
+        </div>
         {% include '../partials/notification_prefs.html' %}
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
