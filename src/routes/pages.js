@@ -593,6 +593,7 @@ module.exports = [
         }
       },
       {
+        method: 'GET',
         path: '/find-groups',
         config: {
             id: 'find_groups',
