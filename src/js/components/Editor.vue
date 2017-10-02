@@ -1,4 +1,4 @@
-/** * Note: this file is provided by the fc3_common_assets package */
+ <!--Note: this file is provided by the fc3_common_assets package */-->
 <template>
     <div class="ckeditor">
         <textarea :name="name" :id="id" :value="value" :types="types" :config="config" :placeholder="placeholder" ></textarea>

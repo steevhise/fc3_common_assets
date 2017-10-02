@@ -1,67 +1,46 @@
-/** * Note: this file is provided by the fc3_common_assets package */
+<!--Note: this file is provided by the fc3_common_assets package */-->
 <template>
-    <form :method="method" :action="action" :id="id" @change="getFormData">
-        <slot></slot>
-        <!-- <div v-if="message" id="message">{{message}}</div> -->
+    <form :method="method" :action="action" :id="id" @change="serializeData()" @submit.prevent="handleSubmit()">
+        <slot :formData="formData" ></slot>
     </form>
 </template>
 
 <script>
-export default {
-    name: 'fc-form',
-    props: {
-        method: {
-            type: String,
-            default: () => `POST`
+    import { EventBus as bus } from './EventBus';
+    export default {
+        name : 'fc-form',
+        props: {
+            method: {
+                type: String,
+                default: () => `POST`
+            },
+            action: {
+                type: String,
+                default: () => `/actions/`
+            },
+            data: {}
         },
-        action: {
-            type: String,
-            default: () => `/actions/`
-        }
-    },
-    data() {
-        return {
-            message: null,
-            formData: {}
-        }
-    },
-    created() {
-        this.$on('formUpdated', (data) => {
-            this.getFormData();
-        });
-    },
-    mounted() {
-
-    },
-    methods: {
-        getFormData() {
-            $.each($(this.$el).serializeArray(), (index, element) => {
-                this.formData[element.name] = element.value;
-            });
+        data() {
+            return {
+                formData: JSON.parse(this.data) || {},
+                serializedData: null
+            }
         },
-        handleSubmit(event) {
-            if (event) {
-                this.$el.submit((err, res) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log(res);
-                    }
-                });
+        mounted() {
+            // as soon as the component loads we want to proceed and serialize the existing data.
+            this.serializeData();
+        },
+        methods: {
+            serializeData() {
+                this.serializedData = $(this.$el).serialize();
+            },
+            handleSubmit(event) {
+                $.post(this.action, this.serializedData).done(function(data) {
+                    bus.$emit('alert', { level : 'success', message : data.message });
+                }).fail(function(error) {
+                    bus.$emit('alert', { level : 'alert', message : `${error.status} \n ${error.statusText}` });
+                })
             }
         }
     }
-}
 </script>
-
-<style>
-#message {
-    background-color: #34b233;
-    text-align: center;
-    color: white;
-    vertical-align: middle;
-    margin: 0 auto;
-    position: relative;
-    top: 50%;
-}
-</style>

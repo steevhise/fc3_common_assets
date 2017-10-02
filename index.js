@@ -11,7 +11,7 @@ const Inert = require('inert');
 // sass config  // TODO: if we use webpack to compile our sass, we don't need this.
 const sassOptions = {
     src: './src/scss',
-    includePaths: './dist',
+    includePaths: './build',
     dest: './public/assets/css',
     force: false,
     debug: true,

@@ -1,6 +1,3 @@
-/**
-* Note: this file is provided by the fc3_common_assets package
- */
 import Vue from 'vue';
 import { EventBus } from '../components/EventBus';
 
@@ -9,6 +6,7 @@ import Test from '../components/Test.vue';
 import Editor from '../components/Editor.vue';
 import FormButton from '../components/FormButton.vue';
 import Form from '../components/Form.vue';
+import Callout from '../components/Callout.vue';
 
 // instantiate vue
 const VueInit = new Vue({
@@ -18,7 +16,8 @@ const VueInit = new Vue({
         'fc-test': Test,
         'fc-editor': Editor,
         'fc-formbutton': FormButton,
-        'fc-form': Form
+        'fc-form': Form,
+        'fc-callout': Callout
     }
 });
 
