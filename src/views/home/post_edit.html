@@ -3,7 +3,7 @@
     - example /home/edit_post/17696015
     - data will be passed from route.
     - check that required fields are not editable by disabling those fields.
-    - ensure post save method filter's out changes that should not be made such as ,
+    - ensure post save method filters out changes that should not be made such as ,
     changing the post type.
 #}
 
@@ -20,55 +20,59 @@
         </div>
         <hr class="section-divider" />
         <div class="row">
-            <fc-form method="POST" classname="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form">
-                <input type="hidden" name="crumb" value="{{crumb}}"/>
-                <input type="hidden" name="post_id" value="{{ post.post_id }}"/>
-                <div class="form-group">
-                    <label>Select type of Post</label>
-                    <div class="button-bar" data-post-buttongroup>
-                        {% include "../partials/post_types.html" with {postTypes: ['Offer', 'Lend', 'Borrow', 'Wanted'], disabled: true, selected: post.postType.post_type_name} only %}
+            <fc-form  method="POST" class="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form" data='{ "post" : {{post|json}}, "crumb" : "{{crumb}}", "isValid" : false }'>
+                <template scope="{formData}">
+                    <input type="hidden" name="crumb" v-model="formData.crumb" value="{{crumb}}"/>
+                    <input type="hidden" name="post_id" value="{{ post.post_id }}"/>
+                    <input type="hidden" name="command" value="post_edit" />
+
+                    <div class="form-group">
+                        <label>Select type of Post</label>
+                        <div class="button-bar" data-post-buttongroup>
+                            {% include "../partials/post_types.html" with {postTypes: ['Offer', 'Lend', 'Borrow', 'Wanted'], disabled: true, selected: post.postType.post_type_name} only %}
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Post title</label>
-                    <input name="post_subject" type="text" value="{{post.post_subject}}"/>
-                </div>
-                <div class="form-group">
-                    <label>Upload a Picture</label>
-                    <input type="file" />
-                </div>
-                <div class="form-group">
-                    <label>Post to Local Group</label>
-                    <div class="input-with-icon">
-                        <input type="text" name="group_name" value="{{post.group.group_name}}"/>
-                        <span class="iconcenter">
-                            {% include '../icons/map_pin.html' %}
-                        </span>
+                    <div class="form-group">
+                        <label>Post title</label>
+                        <input name="post_subject" type="text" v-model="formData.post.post_subject"/>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Nearest Crossroads</label>
-                    <div class="input-with-icon">
-                        <input class="input-with-icon" type="search" placeholder="{{label}}"/>
-                        <span class="iconcenter">
-                            {% include '../icons/map_compass.html' %}
-                        </span>
+                    <div class="form-group">
+                        <label>Upload a Picture</label> {# TODO: Upload and save image using hapi server post.saveImage.... #}
+                        <input type="file" />
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <fc-editor name="post_description" value="{{ post.post_description|safe }}"></fc-editor>
-                </div>
-                <div class="form-group">
-                    <label>Tags</label>
-                    <input type="text" placeholder="..."/>
-                </div>
-                <div class="form-group text-center terms-conditions">
-                    <input type="checkbox" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
-                </div>
-                <div class="form-group text-center">
-                    <button type="submit" role="submit" data-fc-submitpost class="btn-default btn-wide">Post Item</button>
-                </div>
+                    <div class="form-group">
+                        <label>Post to Local Group</label>
+                        <div class="input-with-icon">
+                            <input type="text" name="group_name" v-model="formData.post.group.group_name"/>
+                            <span class="iconcenter">
+                                {% include '../icons/map_pin.html' %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nearest Crossroads</label>
+                        <div class="input-with-icon">
+                            <input class="input-with-icon" type="search" placeholder="{{label}}"/>
+                            <span class="iconcenter">
+                                {% include '../icons/map_compass.html' %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <fc-editor name="post_description" v-model="formData.post.post_description"></fc-editor>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" placeholder="..."/>
+                    </div>
+                    <div class="form-group text-center terms-conditions">
+                        <input type="checkbox" v-model="formData.isValid" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" role="submit" v-if="formData.isValid" class="btn-default btn-wide">Post Item</button>
+                    </div>
+                </template>
             </fc-form>
         </div>
         <hr class="section-divider" />
