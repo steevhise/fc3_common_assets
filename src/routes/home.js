@@ -267,7 +267,7 @@ const alerts = [
 /**
  * A Graphql Query that returns a specific post.
  * @param {string} server the server context
- * @param {number} postId the postId we would like to query
+ * @param {number} postId the postId we would like to query   TODO: this should be replaced with new Post object construction.
  */
 const queryPost = (server, postId) => {
     const query = `{

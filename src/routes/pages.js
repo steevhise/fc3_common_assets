@@ -228,7 +228,7 @@ module.exports = [
             reply.view('index', { friends, title: 'The Styleguide', footerMenuItems, posts });
         }
     },
-    {
+  /*  { // old, ryan added /home/new_post instead.
         method: 'GET',
         path: '/submit-post',
         config: {
@@ -248,7 +248,7 @@ module.exports = [
                 footerMenuItems
             });
         }
-    },
+    },*/
     {
         method: 'GET',
         path: '/desktop-dash',
