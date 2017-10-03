@@ -555,6 +555,11 @@ module.exports = [
                     if (table.path === '/pages/{pagePath}') {
                     }
 
+                    // auto-generated route created by hapi-sass, doesn't need to be listed.
+                    if (table.path === '/css/{file}.css') {
+                        continue;
+                    }
+
                     // exclude a route by adding a tag 'exclude' in the config.
                     if (table.public.settings.tags) {
                         i = table.public.settings.tags.indexOf('exclude');
