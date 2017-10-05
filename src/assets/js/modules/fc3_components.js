@@ -14,7 +14,7 @@ Vue.component('fc-login', {
             <input type="hidden" name="crumb" value="{{ crumb }}"/>
             <div class="container">
                 <div class="medium-6 columns float-left">
-                    <label>Uername/Email
+                    <label>Username/Email
                         <input type="text" name="user" placeholder="username or email address">
                     </label>
                 </div>
@@ -52,7 +52,7 @@ Vue.component('fc-modal', {
     `,
     props: {
         text: { default: 'Button' },
-        target: { default: '' },
+        target: { default: 'loginForm' },
         login: { default: false },
         modaltext: { default: '' }
     },
