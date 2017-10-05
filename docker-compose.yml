@@ -14,7 +14,7 @@ services:
           - NODE_ENV=development
     volumes: 
       - './:/src'
-      #NOTE: uncomment the line below to link your local plugins folder to the cotnainer to develop in the container.
+      #NOTE: uncomment the line below to link your local plugins folder to the container to develop in the container.
       #- '../common-hapi-plugins:/node_modules/@freecycle/common-hapi-plugins'
     hostname: 'dev.freecycle.org'
     extra_hosts:
