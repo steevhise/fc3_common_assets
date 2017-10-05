@@ -67,5 +67,5 @@ It will return (null, null) for nothing found, (null, queryResult.data) for foun
 ... You do still have to catch errors, but this takes care of some.
 
 ### Ops Monitoring
-Application will now send out some ops statistics to a statd server running on local host. if there is none, no worries.
-To set one up, you need the statsd npm and the "statsd-zabbix-backend" npm - the statd server will flush to our Zabbix server periodically.
+Application will now send out some ops statistics to a statsd server running on local host. if there is none, no worries.
+To set one up, you need the statsd npm and the "statsd-zabbix-backend" npm ( see the freecycle fork on github for now, it hasn't been merged into origin) - the statd server will flush to our Zabbix server periodically.
