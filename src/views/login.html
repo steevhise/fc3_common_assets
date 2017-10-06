@@ -31,8 +31,9 @@
     #}
     {% set mycustomvar = 'This is a custom variable set for the test. This variable is then passed through the content prop on the fc-modal component in test 3.' %}
     <div id="test" class="row">
-        <fc-modal id="1" text="Test Login 1" type="login"></fc-modal><br/>
-        <fc-modal id="2" text="Test Custom 2" type="custom" content="<h1>Testing a Simple Modal</h1><br/><p>This modal can handle raw html</p>" ></fc-modal> <br/>
+       <fc-modal id="1" text="Test Login modal box" type="login"></fc-modal><br/>
+
+       <!-- <fc-modal id="2" text="Test Custom 2" type="custom" content="<h1>Testing a Simple Modal</h1><br/><p>This modal can handle raw html</p>" ></fc-modal> <br/>
         <fc-modal id="3" text="Test Custom With Swig Data 3" type="custom" content="<h1>This content contains swig template data. </h1> <br/> Title: {{ title }} <br/> SwigVariable: {{ mycustomvar }}"></fc-modal> <br/>
         <fc-modal id="4" text="Test Wrapper 4">
             <h1>Congratulations!</h1>
@@ -40,7 +41,7 @@
                 This content is directly within the body of the modal,
                 and therefore the component consumes this content as the modal body.
             </p>
-        </fc-modal>
+        </fc-modal> -->
     </div>
 
 {% endblock %}
