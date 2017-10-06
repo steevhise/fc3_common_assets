@@ -1,0 +1,29 @@
+.find-groups {
+  .find-groups-select {
+    display: none; // hide unless user enters a country or state
+  }
+  
+  span.select2.select2-container.select2-container--default {
+    width: 40% !important; 
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+    height: 2.4375rem;
+  }
+  
+  .select2-container--default .select2-selection--single {
+    border-radius: 30px;
+  }
+  
+  .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 25px;
+  }
+}
+
+.find-groups-header-controls {
+  justify-content: center;
+}
+
+#find-groups_detail {
+  border: none;
+}
