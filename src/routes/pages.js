@@ -646,9 +646,16 @@ module.exports = [
                   { 'lat' : 34.482473, 'lng' : -114.322985, 'description' : 'Lake Havasu City', 'icon' : 'post' }
               ]
             };
+            const inBodyAds = [
+                'one',
+                'two'
+            ];
             reply.view('find-groups', {
               title: 'Find Groups',
               groupList,
+              inBodyAds,
+              countries,
+              regions,
               geomap: groupMap,
               footerMenuItems
             });

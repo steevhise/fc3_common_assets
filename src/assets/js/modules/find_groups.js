@@ -1,13 +1,27 @@
-export class FindGroups {
+const countries = require('./countries');
+const regions = require('./regions');
+
+class FindGroups {
   constructor(map) {
-    this.location();
+    this.init();
   }
   
   attachListeners = () => {
-    // placeholder for search listener
+    $(document).on('submit', '.find-groups-search .in-page-search form',  e => {
+      e.preventDefault();
+      e.stopPropagation();
+      /*
+        TODO: take in search term. If it's a country or state, then display a select2 with regions within. If it's a city, show matching groups within a 50 (?) mile radius
+        
+        $('.find-groups-select').show();
+        $('.find-groups-select').select2({
+          placeholder: 'Search by city, state or country...'
+        });
+      */
+    });
   }
   
-  location = () => {
+  init = () => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationError);
     } else {
@@ -24,30 +38,11 @@ export class FindGroups {
     // if unable to get location, input will come from search box
     this.attachListeners();
     
-    const mapDiv = document.getElementById('find-groups_map');
-    const geocoder = new google.maps.Geocoder();
-    const address = "Phoenix, Arizona";
-    let map,
-        matchingLocations;
-        
-    geocoder.geocode({ address }, (results, status) => {
-      map = new google.maps.Map(mapDiv, {
-        center: results[0].geometry.location,
-        zoom: 8,
-      });
-    });
     /*
-    <div
-      id="geomap"
-      data-geomap
-      data-geomap-markers=`${matchingLocations}`
-      data-geomap-settings='{"height":"400","width":"100%"}'>
-    </div>
-    
-    { 'lat' : 32.5, 'lng' : -110.09, 'description' : 'Tucson', 'icon' : 'group' }
-    */ 
-    $('#find-groups_map').empty();
-    $('#find-groups_map').append(/*map goes here*/);
+    TODO: use Maps API to create a new map
+     $('#find-groups_map').empty();
+     $('#find-groups_map').append(re-rendered map goes here);
+    */
   }
 }
 
@@ -56,3 +51,5 @@ if (window.location.href.match('find-groups')) {
     const findGroupMap = new FindGroups('#find-groups_map');
   });
 }
+
+export default "FINDGROUPS";
