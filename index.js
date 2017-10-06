@@ -7,10 +7,12 @@ const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
+const Oppsy = require('oppsy');
 
 // sass config
 const sassOptions = {
     src: './src/assets/scss',
+    includePaths: './build',
     dest: './public/assets/css',
     force: true,
     debug: true,
@@ -42,6 +44,35 @@ const server = new Hapi.Server({
     }
 });
 
+// setup connection
+server.connection({ port: process.env.PORT || 8000 });
+
+// opps data collection
+const oppsy = new Oppsy(server);
+
+// collecting that data with StatsD..
+const hapiStatsdConfig = {
+    // prefix: 'dev',
+    host: server.info.host
+};
+
+server.register({ register: require('hapi-statsd'), options: hapiStatsdConfig }, (err) => {
+
+    if (err) {
+        console.log('error', 'Failed loading plugin: hapi-statsd');
+    }
+});
+
+oppsy.on('ops', (data) => {
+
+    // console.log(data.osload[0]);  // or whatever.
+    // console.log(data.psmem);
+    // console.log(data.psup);
+    // send to StatsD  - add whatever else we want.
+    server.statsd.gauge('system.cpu.load', data.osload[0]);
+    server.statsd.gauge('psmem.heapUsed', data.psmem.heapUsed);
+});
+
 // database stuff
 import { graphql } from 'graphql';
 import schema from '@freecycle/freecycle_graphql_schema';
@@ -59,9 +90,6 @@ const Post = postClassFunc(server);
 const User = userClassFunc(server);
 server.decorate('server', 'Post', Post);        // access via server.Post
 server.decorate('server', 'User', User);        // access via server.User
-
-// setup connection
-server.connection({ port: process.env.PORT || 8000 });
 
 // extra logging, too raw though and redundant with the Good logging.
 /* server.on('request', (request, event, tags) => {
@@ -97,7 +125,7 @@ server.register([
         register: require('good'),
         options: {
             ops: {
-                interval: 600000
+                interval: 60000
             },
             reporters: {
                 myConsoleReporter:
@@ -113,7 +141,10 @@ server.register([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
+        options: {
+            includeDir: Path.join(__dirname, '../build/views')      // where our common template partials and icons live
+        }
     },
     {
         register: require('hapi-named-routes')
@@ -173,7 +204,10 @@ server.register([
         server.register([
             {
                 // auth strategy (above) seems to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
-                register: require('hapi-plug-routes')
+                register: require('hapi-plug-routes'),
+                options: {
+                    directory: '/src/routes/'    // this is the default but it's clearer to be explicit.
+                }
             },
             {
                 register: require('hapi-authorization'),
@@ -263,8 +297,12 @@ server.register([
                 engines: {
                     html: server.plugins['hapi-swig-extensions'].swig
                 },
+                isCached: false,
                 context: defaultContext,
-                path: Path.join(__dirname, '../src/views'),
+                relativeTo: Path.join(__dirname, './'),    // should be ./lib/../
+                allowInsecureAccess: true,
+                // Note: this below is only path for local view files. Common assets get found by custom template loader!
+                path:  '../src/views',
                 layoutPath: Path.join(__dirname, '../src/views/layout')
             });
 
@@ -275,6 +313,8 @@ server.register([
                 }
                 else {
                     console.log('Server running at:', server.info.uri);
+                    console.log(server.info);
+                    oppsy.start(5000);  // start collecting ops data every N seconds.
                 }
             });
         });

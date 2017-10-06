@@ -1,0 +1,6 @@
+<select class="find-groups-select" name="search-groups" data-width="100%">
+  <option></option>
+  {% for region in regions %}
+    <option value="{{region.shortCode}}">{{region.name}}</option>
+  {% endfor %}
+</select>

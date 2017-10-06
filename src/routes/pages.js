@@ -3,6 +3,8 @@
  */
 const Hoek = require('hoek');
 const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
+const countries = require('../assets/js/modules/countries');
+const regions = require('../assets/js/modules/regions');
 
 const friends = [
     {
@@ -226,7 +228,7 @@ module.exports = [
             reply.view('index', { friends, title: 'The Styleguide', footerMenuItems, posts });
         }
     },
-    {
+  /*  { // old, ryan added /home/new_post instead.
         method: 'GET',
         path: '/submit-post',
         config: {
@@ -246,7 +248,7 @@ module.exports = [
                 footerMenuItems
             });
         }
-    },
+    },*/
     {
         method: 'GET',
         path: '/desktop-dash',
@@ -553,6 +555,11 @@ module.exports = [
                     if (table.path === '/pages/{pagePath}') {
                     }
 
+                    // auto-generated route created by hapi-sass, doesn't need to be listed.
+                    if (table.path === '/css/{file}.css') {
+                        continue;
+                    }
+
                     // exclude a route by adding a tag 'exclude' in the config.
                     if (table.public.settings.tags) {
                         i = table.public.settings.tags.indexOf('exclude');
@@ -573,6 +580,90 @@ module.exports = [
                 pages: results
             });
         }
-    }
+    },
+    {
+        method: 'GET',
+        path: '/startagroup',
+        config: {
+            id: 'start_a_group',
+            auth: { mode: 'required' },
+            description: 'Apply to start a new group'
+        },
+        handler: function (request, reply) {
 
+            reply.view('start_a_group', {
+                title: 'Start a Group',
+                countries
+            });
+        }
+      },
+      {
+        method: 'GET',
+        path: '/find-groups',
+        config: {
+            id: 'find_groups',
+            description: 'Search for groups.'
+        },
+        handler: function (request, reply) {
+            const groupList = [
+              {
+                name: 'Chandler',
+                state: 'AZ',
+                distance: 0
+              },
+              {
+                name: 'Ahwatukee',
+                state: 'AZ',
+                distance: 15
+              },
+              {
+                name: 'Peoria',
+                state: 'AZ',
+                distance: 40
+              },
+              {
+                name: 'Tucson',
+                state: 'AZ',
+                distance: 100
+              },
+              {
+                name: 'Dewey-Humboldt',
+                state: 'AZ',
+                distance: 107
+              },
+              {
+                name: 'Lake Havasu City',
+                state: 'AZ',
+                distance: 225
+              }
+            ];
+            const groupMap = {
+              settings: {
+                'height' : '400',
+                'width': '100%'
+              },
+              markers: [
+                  { 'lat' : 33.306329, 'lng' : -111.840852, 'description' : 'Chandler', 'icon' : 'group' },
+                  { 'lat' : 33.342573, 'lng' : -111.983492, 'description' : 'Ahwaktukee', 'icon' : 'user' },
+                  { 'lat' : 33.581569, 'lng' : -112.240584, 'description' : 'Peoria', 'icon' : 'post' },
+                  { 'lat' : 32.218476, 'lng' : -110.905825, 'description' : 'Tucson', 'icon' : 'post' },
+                  { 'lat' : 34.505731, 'lng' : -112.242147, 'description' : 'Dewey-Humboldt', 'icon' : 'post' },
+                  { 'lat' : 34.482473, 'lng' : -114.322985, 'description' : 'Lake Havasu City', 'icon' : 'post' }
+              ]
+            };
+            const inBodyAds = [
+                'one',
+                'two'
+            ];
+            reply.view('find-groups', {
+              title: 'Find Groups',
+              groupList,
+              inBodyAds,
+              countries,
+              regions,
+              geomap: groupMap,
+              footerMenuItems
+            });
+        }
+    }
 ];

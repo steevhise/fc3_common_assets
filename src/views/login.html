@@ -1,22 +1,47 @@
 {% extends './layout/layout.html' %}
 
 {% block header %}
-  {% include './partials/header.html' %}
+    {% include './partials/header.html' %}
 {% endblock %}
 
 {% block content %}
-  {% if msg %}
-    <p class="callout alert">{{ msg }}</p>
-  {% endif %}
-  <form method="POST">
-    <input type="hidden" name="crumb" value="{{crumb}}"/>
-    <input type="text" name="user" placeholder="username or email address">
-    <input type="password" name="password" placeholder="password">
-    <input type="submit" value="Log in">
-    <p>
-      Or <a href="{{ path.pages_fblogin }}">login via Facebook</a>.
-    </p>
+    {% if msg %}
+        <p class="callout alert">{{ msg }}</p>
+    {% endif %}
+    <div class="row">
+        <div class="row">
+            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+        </div>
+        <div class="row">
+            <fc-login></fc-login> {#NOTE: see src/assets/modules/fc3_components fc-login#}
+        </div>
+    </div>
+    {#
+        TODO: Tests for @steev, don't forget to remove these.
+        You can also pass a class for the button.
+        class="btn btn-primary" is the default if you don't pass one.
 
-  </form>
+        @props text, type, content
+
+        [tests]
+        - #0 Test type = null defaults to wrapping the nested content.
+        - #1 Test type = login Form Login Modal
+        - #2 Test type = custom, requires text prop, for raw html
+        - #3 Test type = custom, using data from swig.
+    #}
+    {% set mycustomvar = 'This is a custom variable set for the test. This variable is then passed through the content prop on the fc-modal component in test 3.' %}
+    <div id="test" class="row">
+       <fc-modal id="1" text="Test Login modal box" type="login"></fc-modal><br/>
+
+       <!-- <fc-modal id="2" text="Test Custom 2" type="custom" content="<h1>Testing a Simple Modal</h1><br/><p>This modal can handle raw html</p>" ></fc-modal> <br/>
+        <fc-modal id="3" text="Test Custom With Swig Data 3" type="custom" content="<h1>This content contains swig template data. </h1> <br/> Title: {{ title }} <br/> SwigVariable: {{ mycustomvar }}"></fc-modal> <br/>
+        <fc-modal id="4" text="Test Wrapper 4">
+            <h1>Congratulations!</h1>
+            <p>
+                This content is directly within the body of the modal,
+                and therefore the component consumes this content as the modal body.
+            </p>
+        </fc-modal> -->
+    </div>
 
 {% endblock %}

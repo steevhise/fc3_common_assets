@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
   fc_main:
     container_name: 'fc-main'
@@ -10,10 +10,15 @@ services:
     build: 
       dockerfile: Dockerfile
       context: .
+      args:
+          - NODE_ENV=development
     volumes: 
       - './:/src'
-      #NOTE: uncomment the line below to link your local plugins folder to the cotnainer to develop in the container.
+      #NOTE: uncomment the line below to link your local plugins folder to the container to develop in the container.
       #- '../common-hapi-plugins:/node_modules/@freecycle/common-hapi-plugins'
     hostname: 'dev.freecycle.org'
     extra_hosts:
       - 'dev.freecycle.org:127.0.0.1'
+    environment:
+      - NODE_ENV=development
+    command: npm run dev:watch

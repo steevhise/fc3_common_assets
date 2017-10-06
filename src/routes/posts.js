@@ -18,41 +18,6 @@ const footerMenuItems = [
     'Contact',
     'Wiki'];
 
-// dummy post data
-/* const posts = [
-  {
-    title: 'Sofa Loveseat',
-    location: 'Tucson, AZ',
-    time: '15 minutes ago',
-    category: 'wanted',
-    image: 'http://lorempixel.com/350/150/nightlife',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
-  {
-    title: 'Twin Bed Mattress',
-    location: 'Tucson, AZ',
-    time: '15 minutes ago',
-    category: 'offer',
-    image: 'http://lorempixel.com/350/400/food',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
-  {
-    title: 'Computer Monitor',
-    location: 'Tucson, AZ',
-    time: '15 minutes ago',
-    category: 'borrow',
-    image: 'http://lorempixel.com/350/500/city',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  },
-  {
-    title: 'Nail Gun',
-    location: 'Tucson, AZ',
-    time: '15 minutes ago',
-    category: 'lend',
-    image: 'http://lorempixel.com/350/250/sports',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-  }]; */
-
 // route definitions
 module.exports = [
     {

@@ -1,0 +1,30 @@
+{% extends './layout/layout.html' %}
+
+{% block header %}
+  {% include './partials/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="start-group row">
+  <div class="row">
+    <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+  </div>
+  <div class="row">
+    <form>
+      {% include './partials/country_dropdown.html' %}
+      {% include './partials/region_dropdown.html' %}
+      <label for="city" class="dynamic-form">
+        Enter the city, town or county you'd like to create a new group in.
+      </label>
+      <input type="text" name="city" class="dynamic-form"/>
+      <label for="comment" class="dynamic-form">
+        Why should a new group be created here?
+      </label>
+      <textarea name="comment" class="dynamic-form"></textarea>
+    </form>
+  </div>
+  <div class="row start-group-button">
+    <input type="button" value="Submit" class="dynamic-form"/>
+  </div>
+</div>
+{% endblock %}
