@@ -42,24 +42,28 @@ Vue.component('fc-login', {
 Vue.component('fc-modal', {
     template: `
         <div id="fc-modal">
-            <button class="btn btn-default" :data-open="target">{{text}}</button>
-            <div class="reveal" :id="target" data-reveal>
-                <fc-login v-if="login"></fc-login>
-                <div v-else-if="modaltext" v-html="modaltext"></div>
+            <button class="btn btn-default" :data-open="getTarget">{{text}}</button>
+            <div class="reveal" :id="getTarget" data-reveal>
+                <fc-login v-if="this.type == 'login'"></fc-login>
+                <div v-else-if="this.type == 'custom'" v-html="content"></div>
                 <slot v-pre v-else></slot>
             </div>
         </div>
     `,
     props: {
         text: { default: 'Button' },
-        target: { default: 'loginForm' },
-        login: { default: false },
-        modaltext: { default: '' }
+        content: { default: '' },
+        type: { default: '' }
     },
     data() {
         return {
 
         };
+    },
+    computed: {
+        getTarget() {
+            return `modal-${this._uid}`;
+        }
     }
 });
 
