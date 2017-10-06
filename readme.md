@@ -48,12 +48,15 @@ scss will be copied into `./build/scss`, common view files (partials and icons) 
 Common files will have a little comment at the top now to remind you where the file comes from.  If you introduce a new file into the common-assets package,
 please follow this practice.
 The git url for common assets repo is `gitolite@devserver.freecycle.org:fc3_common_assets`
- 
-### Stuff there's no mockups of (?): 
- 
-- [ ] pretty much all of ModTools and GroupAdmin  (separate app)
-- what else?
- 
+
+* **Vue components:**  more detailed docs are coming. But know for now that there are a few: 
+    * fc-login   - login form
+    * fc-modal   - for modal popup box
+    * fc-form
+    * fc-editor  - ckeditor text box
+    * fc-callout - error or info messages.
+
+
  
 ### Backend Esoterica:
 GraphQL and Sequelize are used for the Data Access Layer.

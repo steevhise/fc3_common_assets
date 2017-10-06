@@ -13,6 +13,7 @@
     {% endblock %}
 </head>
 <body data-fc-route="{{ route.id|lower }}" >
+<div id="vue-root">
 {% block header %}
 {% endblock %}
 <div class="content-container">
@@ -36,5 +37,6 @@
 <script src="/js/main.bundle.js" ></script>
 
 {% endblock %}
+</div>
 </body>
 </html>
