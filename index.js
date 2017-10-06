@@ -204,7 +204,10 @@ server.register([
         server.register([
             {
                 // auth strategy (above) seems to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
-                register: require('hapi-plug-routes')
+                register: require('hapi-plug-routes'),
+                options: {
+                    directory: '/src/routes/'    // this is the default but it's clearer to be explicit.
+                }
             },
             {
                 register: require('hapi-authorization'),
