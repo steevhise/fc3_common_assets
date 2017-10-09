@@ -212,6 +212,9 @@ const _facebookLoginHandler = function (request, reply) {
     });
 };
 
+const _signupHandler = function (request, reply) {
+
+};
 
 
 // route definitions
@@ -469,6 +472,25 @@ module.exports = [
             }
         },
         handler: _loginHandler
+    },
+    {
+      method: '*',
+      path: '/signup',
+      config: {
+          id: 'pages_signup',
+          description: 'signup on this page',
+          auth: false,
+          plugins: {
+              crumb: {
+                  source: 'payload',
+                  cookieOptions: {
+                      isSecure: false,
+                      isHttpOnly: true
+                  }
+              }
+          }
+      },
+        handler: _signupHandler
     },
 
     {
