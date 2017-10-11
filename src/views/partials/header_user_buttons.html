@@ -1,4 +1,3 @@
-{# Note: This file is provided by the fc3_common_assets  package #}
 <div class="header-user-buttons">
   <ul class="header-user-buttons-list header-user-buttons-list-left">
 
@@ -6,8 +5,8 @@
       <a href="/user/{{ session.username }}">{% include '../icons/user.html' %}</a>
     </li>
 
-    <li class="header-user-button"> <!--TODO: real path -->
-      <a href="{{ path.home_editprofile }}">{% include '../icons/settings.html' %}</a>
+    <li class="header-user-button">
+      <a href="{{ path.home_settings }}">{% include '../icons/settings.html' %}</a>
     </li>
 
   </ul>
@@ -15,18 +14,18 @@
   <ul class="header-user-buttons-list header-user-buttons-list-right">
 
     <li class="header-user-button">
-      <a href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}</a>
-      <span>3</span>
+      <a href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}
+      <span>3</span></a>
     </li>
 
     <li class="header-user-button">
-      <a href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}</a>
-      <span>2</span>
+      <a href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}
+      <span>2</span></a>
     </li>
 
     <li class="header-user-button">
-      {% include '../icons/messages.html' %}
-      <span>7</span>
+      <a href="{{ path.home_myreplies }}">{% include '../icons/messages.html' %}
+      <span>7</span></a>
     </li>
 
   </ul>
