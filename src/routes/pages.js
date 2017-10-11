@@ -359,9 +359,9 @@ module.exports = [
         config: {
             id: 'user',
             description: 'The user\'s profile, viewed by others.',
+            auth: { mode: 'optional' },   // TODO: why won't default mode work?
             plugins: {
           // 'hapiAuthorization': {role: '1'}
-          // you don't have to have any special privs to see your own dashboard, but this is how you do it.
             }
         },
         handler: function (request, reply) {
@@ -370,6 +370,8 @@ module.exports = [
                 'two'
             ];
 
+            console.log('!!!!auth mode: ' + request.auth.mode);
+            //console.log(request.route.settings);
             reply.view('user', {
                 user,
                 showFilterSelectors: false,
