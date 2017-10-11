@@ -1,6 +1,6 @@
 {
   "name": "@freecycle/fc3_common_assets",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Freecycle 3.0 Common stuff like images, styles, js, partials",
   "main": "index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_common_assets",
