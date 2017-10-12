@@ -83,65 +83,83 @@ Vue.component('fc-signup', {
                 <div class="medium-8 columns last">
                     <div data-tabs-content="signup-tabs" class="tabs-content column  vertical page-tabs-panels">
                         <div id="panel1v" class="tabs-panel page-tabs-panel is-active" role="tabpanel" aria-labelledby="panel1v-label">
-                            <form method="POST" id="signupForm" v-pre >
-                                <input type="hidden" name="crumb" value="{{ crumb }}"/>
-                                <div class="container">
-                                    <div class="medium-6 columns float-left">
-                                        <label>Username
-                                            <input type="text" name="user" placeholder="username">
-                                        </label>
+                            <div class="container">
+                                <form method="POST" id="signupForm" v-pre >
+                                    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+                                    <div class="container">
+                                        <div class="medium-6 columns float-left">
+                                            <label>Username
+                                                <input type="text" name="user" placeholder="username">
+                                            </label>
+                                        </div>
+                                        <div class="medium-6 columns float-left">
+                                            <label>Email
+                                                <input type="email" name="email" placeholder="email">
+                                            </label>
+                                        </div>
+                                        <div class="medium-6 cell columns float-left">
+                                            <label>Password
+                                                <input type="password" name="password" placeholder="password">
+                                            </label>
+                                        </div>
+                                        <div class="medium-6 cell columns float-left">
+                                            <label>Confirm Password
+                                                <input type="password" name="confpassword" placeholder="confirm password">
+                                            </label>
+                                        </div>
+                                        <!-- captcha here -->
+                                        <div class="medium-12 columns align-center-middle ">
+                                            <input class="btn btn-default" type="submit" value="Sign Up">
+                                                Or <a href="/fb_login"><i class="fa fa-facebook"></i> Login via Facebook</a>.
+                                            <!-- TODO: the link should be a swig tag: {{ path.pages_fblogin }} but it's not working at the moment-->
+                                        </div>
                                     </div>
-                                    <div class="medium-6 columns float-left">
-                                        <label>Email
-                                            <input type="email" name="email" placeholder="email">
-                                        </label>
-                                    </div>
-                                    <div class="medium-6 cell columns float-left">
-                                        <label>Password
-                                            <input type="password" name="password" placeholder="password">
-                                        </label>
-                                    </div>
-                                    <div class="medium-6 cell columns float-left">
-                                        <label>Confirm Password
-                                            <input type="password" name="confpassword" placeholder="confirm password">
-                                        </label>
-                                    </div>
-                                    <!-- captcha here -->
-                                    <div class="medium-12 columns align-center-middle ">
-                                        <input class="btn btn-default" type="submit" value="Sign Up">
-                                            Or <a href="/fb_login"><i class="fa fa-facebook"></i> Login via Facebook</a>.
-                                        <!-- TODO: the link should be a swig tag: {{ path.pages_fblogin }} but it's not working at the moment-->
-                                    </div>
-                                </div>
-                            </form>
-                            <p>&nbsp;</p>
+                                </form>
+                            </div>
+                            
                         </div>
                         <div id="panel2v" class="tabs-panel page-tabs-panel" role="tabpanel" aria-labelledby="panel2v-label" aria-hidden="true">
-                            <form method="POST" id="confirmationStep" v-pre>
-                                <p>
-                                    Thank you for registering. <br/>
-                                    To complete the registration process please check your email for verification.
-                                </p>
-                                <div class="medium-6 columns float-left">
-                                    <label>Additonal Info Stub 1
-                                        <input type="text" name="adi1" placeholder="adi1">
-                                    </label>
-                                </div><div class="medium-6 columns float-left">
-                                    <label>Additonal Info Stub 2
-                                        <input type="text" name="adi2" placeholder="adi2">
-                                    </label>
-                                </div><div class="medium-6 columns float-left">
-                                    <label>Additonal Info Stub 3
-                                        <input type="text" name="adi2" placeholder="adi3">
-                                    </label>
-                                </div>
-                            </form>
-                            <p>&nbsp;</p>
+                            <div class="container">
+                                <form method="POST" id="confirmationStep" v-pre>
+                                    <p>
+                                        Thank you for registering. <br/>
+                                        To complete the registration process please check your email for verification.
+                                    </p>
+                                    <div class="medium-6 columns float-left">
+                                        <label>Additonal Info Stub 1
+                                            <input type="text" name="adi1" placeholder="adi1">
+                                        </label>
+                                    </div>
+                                    <div class="medium-6 columns float-left">
+                                        <label>Additonal Info Stub 2
+                                            <input type="text" name="adi2" placeholder="adi2">
+                                        </label>
+                                    </div>
+                                    <div class="medium-6 columns float-left">
+                                        <label>Additonal Info Stub 3
+                                            <input type="text" name="adi2" placeholder="adi3">
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            
                         </div>
                         <div id="panel3v" class="tabs-panel page-tabs-panel" role="tabpanel" aria-labelledby="panel3v-label" aria-hidden="true">
-                            <p>
-                                In Progress ...
-                            </p>
+                            <div class="container">
+                                <p>
+                                    What next? Click on button below to connect with friends, join a group, or update your profile.
+                                </p>
+                                <div class="medium-4 columns float-left">
+                                    <a class="btn btn-lend" href="/home/my-groups/">Find A Group</a>
+                                </div>
+                                <div class="medium-4 columns float-left">
+                                    <a class="btn btn-wanted" href="/home/my-friends/">Find A Friend</a>
+                                </div>
+                                <div class="medium-4 columns float-left">
+                                    <a class="btn btn-borrow">Update Profile</a> <!-- TODO: pass current user to component in order to get to their profile. -->
+                                </div>
+                            </div>
+                            
                             <!--
                                 TODO: 
                                 - complete / test step 3
