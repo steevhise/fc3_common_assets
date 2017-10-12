@@ -213,7 +213,45 @@ const _facebookLoginHandler = function (request, reply) {
 };
 
 const _signupHandler = function (request, reply) {
-
+    let msg = null;
+    // if credentials are passed in from form...
+    if (request.payload && request.payload.user && request.payload.password) {
+        // const user = request.payload.user;
+        // const pw = request.payload.password;
+        //
+        // console.log(request.payload.crumb);
+        //
+        // request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
+        //
+        //     Hoek.assert(!err, 'loginUser ERROR: ' + err);
+        //     console.log('userID found after login:', userId);
+        //     if (userId) {
+        //         reply.setCookie(Number(userId), (err, cookieContent) => {
+        //
+        //             Hoek.assert(!err, 'Error: ' + err);
+        //
+        //             // or success
+        //             reply.state('MyFreecycle', cookieContent);
+        //             request.log('debug', 'ok we gave out the cookie', cookieContent);
+        //             reply.redirect('/desktop-dash').temporary(true);
+        //         });
+        //     }
+        //     else {
+        //         // bad login.
+        //         msg = 'invalid username/email or password.';
+        //         reply.view('login', {
+        //             title: 'Login Required',
+        //             msg
+        //         });
+        //     }
+        // });
+    }
+    else {
+        reply.view('signup', {
+            title: 'Signup for Freecycle',
+            msg
+        });
+    }
 };
 
 
