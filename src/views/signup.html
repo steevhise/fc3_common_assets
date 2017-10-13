@@ -1,0 +1,23 @@
+{#
+    TODO: Create <fc-signup> component.
+#}
+
+{% extends './layout/layout.html' %}
+
+{% block header %}
+    {% include './partials/header.html' %}
+{% endblock %}
+
+{% block content %}
+    {% if msg %}
+        <p class="callout alert">{{ msg }}</p>
+    {% endif %}
+    <div class="row">
+        <div class="row">
+            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+        </div>
+        <div class="row">
+            <fc-signup></fc-signup>
+        </div>
+    </div>
+{% endblock %}
