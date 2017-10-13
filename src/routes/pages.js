@@ -215,6 +215,7 @@ const _facebookLoginHandler = function (request, reply) {
 const _signupHandler = function (request, reply) {
     let msg = null;
     // if credentials are passed in from form...
+    //     TODO: if user is already logged in, redirect them to their dashboard....
     if (request.payload && request.payload.user && request.payload.password) {
         // const user = request.payload.user;
         // const pw = request.payload.password;
