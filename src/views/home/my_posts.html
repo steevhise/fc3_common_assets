@@ -1,25 +1,17 @@
 {% extends '../layout/layout.html' %}
 
-{% block header %}
-{% include '../partials/header.html' %}
-{% endblock %}
-
-
 {% block content %}
 {% parent %}
 <div class="horizontal_tabs">
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="dashboard">
-      {% include '../partials/item_list.html'%}
     </div>
     <div class="tabs-panel" id="myreplies">
     </div>
     <div class="tabs-panel is-active" id="myposts">
       <div class="row">
-        {% for post in posts %}
-        {% include '../partials/post_list_item.html' with post %}
-        {% endfor %}
+        {% include '../partials/item_list.html'%}
       </div>
     </div>
     <div class="tabs-panel" id="myfriends">
