@@ -1,8 +1,11 @@
-@charset 'utf-8';
+/* this file is provided by fc3_common_assets package */
+@charset "utf-8";
 
 @import 'settings';
 @import 'foundation/foundation';
+@import '../../src/assets/scss/main.scss';   // this includes our local app styles
 
+// foundation stuff.
 @include foundation-global-styles;
 @include foundation-grid;
 @include foundation-typography;
@@ -47,42 +50,33 @@
 @import "typography";
 @import "variables";
 
-//custom components
-@import "components/icon";
+//custom components  - alphabetized. try to keep in order please.
 @import "components/button";
 @import "components/button_bar";
 @import "components/chevron";
-@import "components/table";
+@import "components/icon";
 @import "components/page_sub_title";
-//custom modules
-@import "modules/submit_post";
-@import "modules/forms";
-@import "modules/item_list";
-@import "modules/social_list";
-@import "modules/header";
-@import "modules/footer";
-@import "modules/in_page_ribbon";
-@import "modules/font_blocks";
+@import "components/table";
+
+//custom modules  - alphabetized.
 @import "modules/button_palette";
 @import "modules/color_palette";
-@import "modules/post_header";
-@import "modules/post_grid_item";
-@import "modules/post_list_item";
+@import "modules/font_blocks";
+@import "modules/footer";
+@import "modules/forms";
+@import "modules/hamburger_menu";
+@import "modules/header";
+@import "modules/_header_user_buttons";
 @import "modules/horizontal_tabs";
 @import "modules/nearby_groups";
-@import "modules/tag_list";
-@import "modules/in_body_ad";
-@import "modules/message_reply_list";
-@import "modules/_friend_card";
-@import "modules/left_column_body_ad";
-@import "modules/alert_result";
+@import "modules/post_grid_item";
+@import "modules/post_header";
+@import "modules/post_list_item";
+@import "modules/social_list";
+
 // custom page templates
 @import "modules/page_two_column";
-// custom views
-@import "views/style_guide";
-@import "views/my_groups";
+
+// custom views - not much is common of these.
 @import "views/posts";
-@import "views/static-pages";
-@import "views/groups";
-@import "views/home";
 @import "views/user";

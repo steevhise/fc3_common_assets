@@ -1,3 +1,4 @@
+/* note: this file is provided by the fc3_common_assets package */
 
 @function palette($key) {
   @if map-has-key($freecycle-palette, $key) {

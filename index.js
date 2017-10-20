@@ -10,10 +10,10 @@ const Inert = require('inert');
 
 // sass config  // TODO: if we use webpack to compile our sass, we don't need this.
 const sassOptions = {
-    src: './src/scss',
-    includePaths: './build',
+    src: './build/scss',
+    //includePaths: './build',
     dest: './public/assets/css',
-    force: false,
+    force: true,
     debug: true,
     routePath: '/css/{file}.css',
     outputStyle: 'nested',
@@ -137,6 +137,7 @@ server.route({
   method: 'GET',
   path: '/test',
   handler:  (request,reply) => {
+      console.log('test page...');
     reply.view('test', {
       title: 'test page'
     });
