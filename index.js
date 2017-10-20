@@ -11,8 +11,8 @@ const Oppsy = require('oppsy');
 
 // sass config
 const sassOptions = {
-    src: './src/assets/scss',
-    includePaths: './build',
+    src: './build/scss',
+    includePaths: './src/assets/scss',
     dest: './public/assets/css',
     force: true,
     debug: true,
