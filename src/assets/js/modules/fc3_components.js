@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import VueCustomElement from 'vue-custom-element';
+Vue.use(VueCustomElement);
 
 /**
  * TODO
@@ -9,10 +11,10 @@ import Vue from 'vue';
  * - pass swig data to component via prop
  */
 
-Vue.component('fc-login', {
+Vue.customElement('fc-login', {
     template: `
         <form method="POST" id="loginForm" v-pre >
-            <input type="hidden" name="crumb" value="{{ crumb }}"/>
+            <input type="hidden" name="crumb" :value="{{ crumb }}"/>
             <div class="container">
                 <div class="medium-6 columns float-left">
                     <label>Username/Email
@@ -41,7 +43,7 @@ Vue.component('fc-login', {
     }
 });
 
-Vue.component('fc-modal', {
+Vue.customElement('fc-modal', {
     template: `
         <div id="fc-modal">
             <button class="btn btn-default" :data-open="getTarget">{{text}}</button>
@@ -69,7 +71,7 @@ Vue.component('fc-modal', {
     }
 });
 
-Vue.component('fc-signup', {
+Vue.customElement('fc-signup', {
     template: `
         <div id="signup-wrapper">
             <div class="row collapse">
@@ -85,7 +87,7 @@ Vue.component('fc-signup', {
                         <div id="panel1v" class="tabs-panel page-tabs-panel is-active" role="tabpanel" aria-labelledby="panel1v-label">
                             <div class="container">
                                 <form method="POST" id="signupForm" v-pre >
-                                    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+                                    <input type="hidden" name="crumb" :value="{{ crumb }}"/>
                                     <div class="container">
                                         <div class="medium-6 columns float-left">
                                             <label>Username

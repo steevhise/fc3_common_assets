@@ -1,5 +1,5 @@
 import "./modules";
-import '../../../node_modules/@freecycle/fc3_common_assets/src/js/modules'
+import '../../../node_modules/@freecycle/fc3_common_assets/src/js/modules';
 
 // jQuery
 var $ = require('jquery');
