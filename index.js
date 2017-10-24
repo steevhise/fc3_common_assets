@@ -73,6 +73,8 @@ oppsy.on('ops', (data) => {
     server.statsd.gauge('psmem.heapUsed', data.psmem.heapUsed);
 });
 
+// TODO: use this to catch PM2 restart signals:  https://github.com/roylines/hapi-graceful-pm2
+
 // database stuff
 import { graphql } from 'graphql';
 import schema from '@freecycle/freecycle_graphql_schema';
