@@ -5,7 +5,8 @@ import $ from 'jquery';
 import gmap from 'google-maps';
 
 // default values that must be available to all map instances
-gmap.KEY = 'AIzaSyAF77Fi1J3JmCKUHxEGaGRDVit5E_CTAmQ';
+gmap.KEY = 'AIzaSyAyYZ8PZI2VaG6pPyP9kWEpebj_pDPWnhs';
+gmap.CLIENT = 'gme-thefreecyclenetwork';    // use this instead of api key, supposedly better reporting options.
 gmap.LIBRARIES = ['places'];
 
 /**

@@ -3,7 +3,6 @@
 
 @import 'settings';
 @import 'foundation/foundation';
-@import '../../src/assets/scss/main.scss';   // this includes our local app styles
 
 // foundation stuff.
 @include foundation-global-styles;
@@ -49,6 +48,8 @@
 @import "reset";
 @import "typography";
 @import "variables";
+
+@import '../../src/assets/scss/main.scss';   // this includes our local app styles - this has to go after we import the above common stuff.
 
 //custom components  - alphabetized. try to keep in order please.
 @import "components/button";
