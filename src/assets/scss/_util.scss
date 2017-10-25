@@ -1,9 +1,0 @@
-
-@function palette($key) {
-  @if map-has-key($freecycle-palette, $key) {
-    @return map-get($freecycle-palette, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $freecycle-palette";
-  @return null;
-}

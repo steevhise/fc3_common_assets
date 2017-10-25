@@ -1,13 +1,13 @@
 /* local style stuff specific to this site. */
 
 //custom components  - alphabetical order please
-// everything that was here moved to common
+// everything that was common here is moved to common
 
 //custom modules
 @import "modules/alert_result";
 @import "modules/edit_profile";
 @import "modules/friend_card";
-@import "modules/_header_banner_ad";
+@import "modules/header_banner_ad";
 @import "modules/header_logged_out";
 @import "modules/in_body_ad";
 @import "modules/in_page_ribbon";

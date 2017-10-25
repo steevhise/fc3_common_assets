@@ -30,7 +30,7 @@ const server = new Hapi.Server({
     } }
 );
 
-server.connection({ port: process.env.PORT || 8000 });
+server.connection({ port: process.env.PORT || 9000 });
 
 server.decorate('server', 'context', Context);   // access via server.context
 server.decorate('server', 'graphql', graphql);   // access via server.graphql
@@ -158,13 +158,13 @@ server.start((err) => {
                     console.error('group id: ' + id);
 
                     // save the modified group
-                    group.save((err,result2) => {
+/*                    group.save((err,result2) => {
 
                         Hoek.assert(!err, err);
                         console.error('group ' + result2 + ' saved.');
                         Promise.resolve(result2);
 
-                    });   // we don't care if the loop goes on while the save is still happening...
+                    });*/   // we don't care if the loop goes on while the save is still happening...
 
                     queries++;
 
