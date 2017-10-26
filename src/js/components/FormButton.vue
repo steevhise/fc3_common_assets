@@ -8,10 +8,10 @@
 <script>
     import Test from './Test.vue';
     export default {
+        name : 'fc-formbutton',
         components: {
             
         },
-        name : 'fc-formbutton',
         props: {
             type: {
                 type: String,
