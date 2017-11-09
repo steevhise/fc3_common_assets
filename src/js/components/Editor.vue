@@ -30,6 +30,7 @@ let defaultConfig = {
 };
 
 export default {
+    name : 'fc-editor',
     props: {
         name: {
             type: String,

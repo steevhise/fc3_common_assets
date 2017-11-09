@@ -11,6 +11,7 @@
     import {EventBus as bus} from './EventBus';
 
     export default {
+        name : 'fc-callout',
         data() {
             return {
                 isVisible: false,
