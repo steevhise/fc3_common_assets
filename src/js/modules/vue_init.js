@@ -1,4 +1,7 @@
 import Vue from 'vue';
+Vue.config.silent = true; // silence logs / warnings since we are using custom elements.
+
+import 'document-register-element/build/document-register-element';
 import VueCustomElement from 'vue-custom-element';
 import { EventBus } from '../components/EventBus';
 
