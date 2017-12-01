@@ -38,7 +38,7 @@
         <hr class="section-divider" />
         <div class="row">
             <fc-form  method="POST" class="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form" data='{ "post" : {{post|json}}, "crumb" : "{{crumb}}", "isValid" : false }'>
-                <template scope="{formData}">
+                <div vue-slot="formBody" scope="{formData}">
                     <input type="hidden" name="crumb" v-model="formData.crumb" value="{{crumb}}"/>
                     <input type="hidden" name="post_id" value="{{ post.post_id }}"/>
                     <input type="hidden" name="command" value="post_edit" />
@@ -89,7 +89,7 @@
                     <div class="form-group text-center">
                         <button type="submit" role="submit" v-if="formData.isValid" class="btn-default btn-wide">Post Item</button>
                     </div>
-                </template>
+                </div>
             </fc-form>
         </div>
         <hr class="section-divider" />
