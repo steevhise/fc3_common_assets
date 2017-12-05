@@ -7,7 +7,7 @@ const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
-const Oppsy = require('oppsy');
+const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
 
 // sass config
 const sassOptions = {
@@ -56,6 +56,7 @@ const hapiStatsdConfig = {
     host: server.info.host
 };
 
+// TODO: this is still yet to be ported to hapi 17
 server.register({ register: require('hapi-statsd'), options: hapiStatsdConfig }, (err) => {
 
     if (err) {
@@ -102,17 +103,17 @@ server.decorate('server', 'User', User);        // access via server.User
 server.register([
     Inert,
     {
-        register: HapiError,
+        register: HapiError,                // TODO: not ported to hapi 17
         config: { statusCodes: {
             499: { message: 'Please Login to view that page' }
         } }
     },
     {
-        register: HapiSass,
+        register: HapiSass,         // TODO: not ported to hapi 17
         options: sassOptions
     },
     {
-        register: require('vision')
+        register: require('vision')     // ported.
     },
   /*  {
         register: require('crumb'),                  // security against CRSF attacks.
@@ -124,7 +125,7 @@ server.register([
         }
     },*/
     {
-        register: require('good'),
+        register: require('good'),          // TODO: still not ported to hapi 17
         options: {
             ops: {
                 interval: 60000
@@ -149,7 +150,7 @@ server.register([
         }
     },
     {
-        register: require('hapi-named-routes')
+        register: require('hapi-named-routes')   // TODO: not ported to hapi 17!
     },
     {
         register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle'),
@@ -181,7 +182,7 @@ server.register([
             register: require('@freecycle/common-hapi-plugins/plugins/freecycle-login')
         },
         {
-            register: require('bell')
+            register: require('bell')     // new version for hapi 17 just released!
         }
 
     ], (registerError2) => {
@@ -206,13 +207,13 @@ server.register([
         server.register([
             {
                 // auth strategy (above) seems to need to go before routes. according to https://github.com/toymachiner62/hapi-authorization
-                register: require('hapi-plug-routes'),
+                register: require('hapi-plug-routes'),          // TODO: not ported to hapi 17
                 options: {
                     directory: '/src/routes/'    // this is the default but it's clearer to be explicit.
                 }
             },
             {
-                register: require('hapi-authorization'),
+                register: require('hapi-authorization'),       // TODO: not ported to hapi 17
                 options: {
                     // roles: [...server.privileges.keys()]     // this will be a list of all the privilege ids, if we pre-define them.
                     roles: false   // by default no roles are required.
