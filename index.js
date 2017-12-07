@@ -21,10 +21,19 @@ const sassOptions = {
     srcExtension: 'scss'
 };
 
+// read config so we have info for Redis cache server
+
+
 // basic server
 const server = new Hapi.Server({
-    cache: {
+/*    cache: {
         engine: require('catbox-memory'),
+        name: 'freecycleMain',
+        partition: 'freecycle-app'
+    },*/
+    cache: {
+        engine: require('catbox-redis'),
+        // database: '0',
         name: 'freecycleMain',
         partition: 'freecycle-app'
     },
@@ -170,7 +179,7 @@ server.register([
     }
 
     // store user info that we can get to from anywhere.
-    server.app.cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
+    server.app.cache = server.cache({ cache: 'freecycleMain', segment: 'sessions', shared: true, expiresIn: 3 * 24 * 60 * 60 * 1000 });
 
     // register auth strategy now that we've loaded the auth  plugin.
     server.auth.strategy('session', 'cookie', 'try', server.plugins['auth-cookie-freecycle'].strategy);

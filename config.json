@@ -9,6 +9,9 @@
     "define": {
       "charset": "utf8"
     },
+    "redis": {
+      "host": "localhost"
+    },
     "replication": {
       "badConnectionWindow": 300000,
       "replicationThresholdInSeconds": 5
