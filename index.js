@@ -21,8 +21,12 @@ const sassOptions = {
     srcExtension: 'scss'
 };
 
-// read config so we have info for Redis cache server
+// database stuff
+import { graphql } from 'graphql';
+import schema from '@freecycle/freecycle_graphql_schema';
+import { Context, Config } from '@freecycle/freecycle_node_dal';
 
+const redisConfig = Config.sequelizeDbConfig.redis;
 
 // basic server
 const server = new Hapi.Server({
@@ -33,6 +37,8 @@ const server = new Hapi.Server({
     },*/
     cache: {
         engine: require('catbox-redis'),
+        host: redisConfig.host || 'localhost',
+        // can also take port, password
         // database: '0',
         name: 'freecycleMain',
         partition: 'freecycle-app'
@@ -85,11 +91,8 @@ oppsy.on('ops', (data) => {
 
 // TODO: use this to catch PM2 restart signals:  https://github.com/roylines/hapi-graceful-pm2
 
-// database stuff
-import { graphql } from 'graphql';
-import schema from '@freecycle/freecycle_graphql_schema';
-import { Context } from '@freecycle/freecycle_node_dal';
 
+// decorate the server with the data layer stuff we imported above
 server.decorate('server', 'context', Context);   // access via server.context
 server.decorate('server', 'graphql', graphql);   // access via server.graphql
 server.decorate('server', 'schema', schema);      // access via server.schema
