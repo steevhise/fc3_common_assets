@@ -1,9 +1,5 @@
 {% extends '../layout/layout.html' %}
 
-{% block header %}
-  {% include '../partials/header.html'%}
-{% endblock %}
-
 {% block content %}
   {% parent %}
   <div class="alerts row column">
@@ -43,9 +39,9 @@
         {% if alert.alert_results.length %}
           <div class="alert_result large-12" data-result-id={{loop.index}}>
             {% include '../partials/alert_result.html' with alert.alert_results %}
-            <hr class="alert_result-divider" />  
-          </div>  
-        {% endif %}  
+            <hr class="alert_result-divider" />
+          </div>
+        {% endif %}
       {% endfor %}
     </div>
     <hr class="section-divider" />

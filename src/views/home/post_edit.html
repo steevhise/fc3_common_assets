@@ -9,10 +9,6 @@
 
 {% extends '../layout/layout.html' %}
 
-{% block header %}
-    {% include '../partials/header.html' with {loggedIn:false} %}
-{% endblock %}
-
 {% block content %}
     {% parent %}
     <div class="new_post row">

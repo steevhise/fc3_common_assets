@@ -4,10 +4,6 @@
 
 {% extends './layout/layout.html' %}
 
-{% block header %}
-    {% include './partials/header.html' %}
-{% endblock %}
-
 {% block content %}
     {% if msg %}
         <p class="callout alert">{{ msg }}</p>

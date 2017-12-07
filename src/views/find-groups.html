@@ -1,9 +1,5 @@
 {% extends './layout/layout.html' %}
 
-{% block header %}
-  {% include './partials/header.html' %}
-{% endblock %}
-
 {% block content %}
 <div class="find-groups">
   <div class="row">
@@ -31,11 +27,11 @@
     </div>
   </div>
 
-  <div class="row tabs-content small-centered large-12 column" data-tabs-content="find-groups_detail">  
+  <div class="row tabs-content small-centered large-12 column" data-tabs-content="find-groups_detail">
     <div id="find-groups_map" class="table-example row tabs-panel is-active">
       {% include "./partials/geomap.html" with geomap %}
     </div>
-    
+
     <div id="find-groups_list" class="table-example row tabs-panel">
       <table>
         <thead>

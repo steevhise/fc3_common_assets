@@ -1,10 +1,5 @@
 {% extends '../layout/layout.html' %}
 
-{% block header %}
-{% include '../partials/header.html' %}
-{% endblock %}
-
-
 {% block content %}
 
 <div class="horizontal_tabs">
@@ -31,46 +26,46 @@
             <label for="last">Last Name
               <input type="text" name="last" value="{{userData.lastName}}"/>
             </label>
-          </div>  
+          </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
             <label for="tagline">Tagline
               <input type="text" name="tagline" value="{{userData.tagline}}"/>
             </label>
-          </div> 
+          </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
             <label class="upload-pic" for="upload">Upload a New Image
               <input type="file" name="upload"/>
             </label>
-          </div> 
+          </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
             <label for="new-pass">New Password
               <input type="password" name="new-pass"/>
             </label>
-          </div>  
+          </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
             <label for="new-pass-confirm">Confirm New Password
               <input type="password" name="new-pass-confirm"/>
             </label>
-          </div>  
+          </div>
         </div>
         <div class="row">
           <div class="medium-6 columns form-group">
             <label for="email-address">Email Address</label>
-            <div class="input-group edit-profile_group">    
+            <div class="input-group edit-profile_group">
               <input type="email" class="input-group-field" name="email-address" value="{{userData.email}}"/>
               <!-- <div class="input-group-button"> -->
                 <input type="button" class="btn btn-default btn-verification" name="email" value="Send Verification" />
               <!-- </div> -->
             </div>
-          </div>  
+          </div>
           <div class="medium-6 columns form-group">
             <label for="phone-number">Phone Number</label>
             <div class="input-group edit-profile_group">

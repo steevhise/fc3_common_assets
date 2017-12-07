@@ -15,6 +15,9 @@
 <body data-fc-route="{{ route.id|lower }}" >
 <div id="vue-root">
 {% block header %}
+    {% block header %}
+    {% include '../partials/header.html'%}
+    {% endblock %}
 {% endblock %}
 <div class="content-container">
     <fc-callout></fc-callout>
