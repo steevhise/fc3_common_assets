@@ -17,8 +17,15 @@ services:
       #NOTE: uncomment the line below to link your local plugins folder to the container to develop in the container.
       #- '../common-hapi-plugins:/node_modules/@freecycle/common-hapi-plugins'
     hostname: 'dev.freecycle.org'
+    depends_on:
+      - 'redis'
     extra_hosts:
       - 'dev.freecycle.org:127.0.0.1'
     environment:
       - NODE_ENV=development
     command: npm run dev:watch
+  redis:
+    container_name: 'fc-redis'
+    ports:
+      - '6379:6379'
+    image: redis
