@@ -104,11 +104,13 @@ module.exports = [
         path: '/group/{unique_group_name}',
         config: {
             id: 'groups_main',
-            description: 'a group page, for example try /group/freecycle'
-            /*plugins: { 'auth-cookie-freecycle': {
-             redirectTo: false,
-             redirectOnTry: false
-             }}*/
+            description: 'a group page, for example try /group/freecycle',
+            auth: {},
+            plugins: {
+                'auth-cookie-freecycle': {
+                    redirectTo: false
+                }
+            }
         },
         handler: function (request, reply) {
 
