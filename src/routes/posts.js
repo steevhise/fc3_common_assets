@@ -25,13 +25,7 @@ module.exports = [
         path: '/posts/{postId}',
         config: {
             id: 'posts_detail',
-            description: 'an individual post.  use a number, like /posts/123454',
-            auth: {},
-            plugins: {
-                'auth-cookie-freecycle': {
-                    redirectTo: false
-                }
-            }
+            description: 'an individual post.  use a number, like /posts/123454'
         },
         handler: function (request, reply) {
 

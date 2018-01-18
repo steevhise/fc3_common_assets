@@ -7,7 +7,7 @@ const Path = require('path');
 const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 const HapiError = require('hapi-error');
-const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
+const Oppsy = require('oppsy');
 
 // sass config
 const sassOptions = {
@@ -49,7 +49,6 @@ const server = new Hapi.Server({
             stripTrailingSlash: true
         },
         routes: {
-            auth: false,    // default to no auth needed anywhere.
             validate: {
                 options: {
                     allowUnknown: true
@@ -181,12 +180,24 @@ server.register([
         throw (registerError);
     }
 
+    server.ext('onPreAuth', (request, reply) => {
+
+        // Bypass auth for CSS route.
+        // It's a hack until we can adjust hapi-sass to create a handler-type rather than a fully-configured route.
+        if (request.route.path === sassOptions.routePath) {
+            request.auth.credentials = 'bypass';
+        }
+
+        return reply.continue();
+    });
+
     // store user info that we can get to from anywhere.
     server.app.cache = server.cache({ cache: 'freecycleMain', segment: 'sessions', shared: true, expiresIn: 3 * 24 * 60 * 60 * 1000 });
 
-    // register auth strategy now that we've loaded the auth  plugin.
-    server.auth.strategy('session', 'cookie', 'try', server.plugins['auth-cookie-freecycle'].strategy);
-    console.log(server.plugins['auth-cookie-freecycle'].strategy);
+    // register auth strategy now that we've loaded the auth plugin.
+    server.auth.strategy('session', 'cookie', 'try', Object.assign({}, server.plugins['auth-cookie-freecycle'].strategy, {
+        redirectOnTry: false
+    }));
 
     // register even more plugins
     server.register([
@@ -243,7 +254,8 @@ server.register([
                 method: 'GET',
                 path: '/images/{param*}',
                 config: {
-                    tags: ['exclude']
+                    tags: ['exclude'],
+                    auth: false
                 },
                 handler: {
                     directory: {
@@ -256,7 +268,8 @@ server.register([
                 method: 'GET',
                 path: '/font/{param*}',
                 config: {
-                    tags: ['exclude']
+                    tags: ['exclude'],
+                    auth: false
                 },
                 handler: {
                     directory: {
@@ -271,7 +284,8 @@ server.register([
                 config: {
                     id: 'js',
                     description: 'directory where Front-end javascript code goes',
-                    tags: ['js', 'exclude']
+                    tags: ['js', 'exclude'],
+                    auth: false
                 },
                 handler: {
                     directory: {
@@ -284,7 +298,8 @@ server.register([
                 method: 'GET',
                 path: '/ckeditor/{param*}',
                 config: {
-                    tags: ['exclude', 'js']
+                    tags: ['exclude', 'js'],
+                    auth: false
                 },
                 handler: {
                     directory: {
