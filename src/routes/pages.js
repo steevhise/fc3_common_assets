@@ -400,11 +400,7 @@ module.exports = [
         path: '/user/{username}',
         config: {
             id: 'user',
-            description: 'The user\'s profile, viewed by others.',
-            auth: { mode: 'optional' },   // TODO: why won't default mode work?
-            plugins: {
-          // 'hapiAuthorization': {role: '1'}
-            }
+            description: 'The user\'s profile, viewed by others.'
         },
         handler: function (request, reply) {
             const inBodyAds = [
@@ -515,22 +511,22 @@ module.exports = [
         handler: _loginHandler
     },
     {
-      method: '*',
-      path: '/signup',
-      config: {
-          id: 'pages_signup',
-          description: 'signup on this page',
-          auth: false,
-          plugins: {
-              crumb: {
-                  source: 'payload',
-                  cookieOptions: {
-                      isSecure: false,
-                      isHttpOnly: true
-                  }
-              }
-          }
-      },
+        method: '*',
+        path: '/signup',
+        config: {
+            id: 'pages_signup',
+            description: 'signup on this page',
+            auth: false,
+            plugins: {
+                crumb: {
+                    source: 'payload',
+                    cookieOptions: {
+                        isSecure: false,
+                        isHttpOnly: true
+                    }
+                }
+            }
+        },
         handler: _signupHandler
     },
 
