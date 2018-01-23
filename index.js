@@ -21,7 +21,7 @@ const sassOptions = {
     srcExtension: 'scss'
 };
 
-// database stuff
+// database stuff  TODO: change to use require.
 import { graphql } from 'graphql';
 import schema from '@freecycle/freecycle_graphql_schema';
 import { Context, Config } from '@freecycle/freecycle_node_dal';
@@ -97,9 +97,9 @@ server.decorate('server', 'context', Context);   // access via server.context
 server.decorate('server', 'graphql', graphql);   // access via server.graphql
 server.decorate('server', 'schema', schema);      // access via server.schema
 
-// our object stuff. is this the best way?
-import { postClassFunc } from '@freecycle/common-hapi-plugins/lib/freecycle-post';
-import { userClassFunc } from  '@freecycle/common-hapi-plugins/lib/freecycle-user';
+// our object stuff. TODO: change to use require.
+import { postClassFunc } from '@freecycle/common-hapi-plugins/modules/freecycle-post';
+import { userClassFunc } from  '@freecycle/common-hapi-plugins/modules/freecycle-user';
 
 const Post = postClassFunc(server);
 const User = userClassFunc(server);
