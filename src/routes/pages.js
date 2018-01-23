@@ -2,7 +2,7 @@
  * note this is kind of "miscellaneous" routes module. anything that doesnt fit into home, groups, posts, or admin, basically.
  */
 const Hoek = require('hoek');
-const WGQL = require('@freecycle/common-hapi-plugins/lib/graphql-wrapper');
+const WGQL = require('@freecycle/common-hapi-plugins/modules/graphql-wrapper');
 const countries = require('../assets/js/modules/countries');
 const regions = require('../assets/js/modules/regions');
 
@@ -562,8 +562,7 @@ module.exports = [
         path: '/home',
         config: {
             id: 'pages_home',
-            description: 'Front Door for logged-out users',
-            auth: false
+            description: 'Front Door for logged-out users'
         },
         handler: function (request, reply) {
 
