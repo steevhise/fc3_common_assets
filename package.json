@@ -2,7 +2,7 @@
   "name": "fc3_main",
   "version": "0.1.0",
   "description": "The new Freecycle site - Freecycle 3.0!",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
   "engines": {
     "node": "6.9.x"
