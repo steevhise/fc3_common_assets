@@ -21,14 +21,6 @@ module.exports = [
         }
     },
     {
-        register: require('hapi-error'),        // TODO: not ported to hapi 17 - replace with our own code
-        options: {
-            statusCodes: {
-                499: { message: 'Please login to view that page' }
-            }
-        }
-    },
-    {
         // TODO: this should be turned into regular module with function that returns the swig object instead of server.exposing it.
         register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
         options: {

@@ -8,7 +8,8 @@ module.exports = [
         method: 'GET',
         path: '/images/{param*}',
         config: {
-            tags: ['exclude']
+            tags: ['exclude'],
+            auth: false
         },
         handler: {
             directory: {
@@ -21,7 +22,8 @@ module.exports = [
         method: 'GET',
         path: '/font/{param*}',
         config: {
-            tags: ['exclude']
+            tags: ['exclude'],
+            auth: false
         },
         handler: {
             directory: {
@@ -36,7 +38,8 @@ module.exports = [
         config: {
             id: 'js',
             description: 'directory where Front-end javascript code goes',
-            tags: ['js', 'exclude']
+            tags: ['js', 'exclude'],
+            auth: false
         },
         handler: {
             directory: {
@@ -49,7 +52,8 @@ module.exports = [
         method: 'GET',
         path: '/ckeditor/{param*}',
         config: {
-            tags: ['exclude', 'js']
+            tags: ['exclude', 'js'],
+            auth: false
         },
         handler: {
             directory: {

@@ -21,6 +21,12 @@ exports.register = Util.callbackify((server, options) => {
     ))
     .then(() => {
 
+        // declare some server extensions
+        server.ext(combine(
+            require('./extensions/preauth.js'),
+            require('./extensions/errors.js')
+        ));
+
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({
             cache: 'freecycleMain',
@@ -30,7 +36,9 @@ exports.register = Util.callbackify((server, options) => {
         });
 
         // TODO pull auth-cookie-freecycle strategy config up into fc3_main
-        server.auth.strategy('session', 'cookie', 'try', server.plugins['auth-cookie-freecycle'].strategy);
+        server.auth.strategy('session', 'cookie', 'try', Object.assign({}, server.plugins['auth-cookie-freecycle'].strategy, {
+            redirectOnTry: false
+        }));
 
         // Declare an authentication strategy using the bell scheme for Facebook login
         // with the name of the provider, cookie encryption password,
