@@ -22,7 +22,6 @@ exports.deployment = (start) => {
                 stripTrailingSlash: true
             },
             routes: {
-                auth: false,
                 validate: {
                     options: {
                         allowUnknown: true
