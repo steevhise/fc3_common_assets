@@ -10,9 +10,9 @@ exports.deployment = (start) => {
 
     // basic server
     const server = new Hapi.Server({
-        cache: {
+        cache: {         // TODO: can we test for presence of Redis server first and give a more kind error before server start?
             engine: require('catbox-redis'),                            // TODO catbox-memory for development
-            host: Config.sequelizeDbConfig.redis.host || 'localhost',
+            host: Config.sequelizeDbConfig.redis.host || 'localhost',   // TODO: should be set in app-level config
             name: 'freecycleMain',
             partition: 'freecycle-app'
         },
@@ -107,4 +107,4 @@ if (!module.parent) {
         console.error(err);
         process.exit(1);
     });
-};
+}

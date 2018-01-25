@@ -1,5 +1,3 @@
-'use strict';
-
 const Path = require('path');
 
 // Build absolute path relative to project
@@ -8,9 +6,9 @@ const rel = (path) => Path.resolve(__dirname, '../../', path);
 module.exports = [
     require('inert'),
     require('vision'),
-    require('hapi-named-routes'),               // TODO: not ported to hapi 17
+    require('hapi-named-routes'),               // TODO: not ported to hapi 17 - replace with internal code
     {
-        register: require('hapi-sass'),         // TODO: not ported to hapi 17
+        register: require('hapi-sass'),         // TODO: not ported to hapi 17 - replacing with webpack config
         options: {
             src: rel('build/scss'),
             includePaths: rel('src/assets/scss'),
@@ -23,7 +21,7 @@ module.exports = [
         }
     },
     {
-        register: require('hapi-error'),        // TODO: not ported to hapi 17
+        register: require('hapi-error'),        // TODO: not ported to hapi 17 - replace with our own code
         options: {
             statusCodes: {
                 499: { message: 'Please login to view that page' }
@@ -31,6 +29,7 @@ module.exports = [
         }
     },
     {
+        // TODO: this should be turned into regular module with function that returns the swig object instead of server.exposing it.
         register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
         options: {
             includeDir: rel('build/views')

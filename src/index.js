@@ -1,11 +1,9 @@
-'use strict';
-
 const Util = require('util');
 const Graphql = require('graphql');
 const { default: Schema } = require('@freecycle/freecycle_graphql_schema');
 const { Context } = require('@freecycle/freecycle_node_dal');
-const FCPost = require('@freecycle/common-hapi-plugins/lib/freecycle-post');
-const FCUser = require( '@freecycle/common-hapi-plugins/lib/freecycle-user');
+const FCPost = require('@freecycle/common-hapi-plugins/modules/freecycle-post');
+const FCUser = require( '@freecycle/common-hapi-plugins/modules/freecycle-user');
 
 exports.register = Util.callbackify((server, options) => {
 

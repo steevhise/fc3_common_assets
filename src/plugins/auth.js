@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = [
     require('bell'),
     require('@freecycle/common-hapi-plugins/plugins/freecycle-login'),
