@@ -1,3 +1,5 @@
+const Debug = require('debug')('freecycle:fc3_main:error-extension');
+
 module.exports = {
     type: 'onPreResponse',
     method: (request,reply) => {
@@ -8,19 +10,27 @@ module.exports = {
             return reply.continue();
         }
 
+        // Some default error messages if we don't receive a custom one.
+        const statusCodes = {
+            401: 'Please Login to view that page',
+            400: 'Sorry, we do not have that page.',
+            404: 'Sorry, that page is not available.',
+            499: 'Image does not exist.'
+        };
+
         const { statusCode } = response.output;
-        const { message } = response.output.payload;
+        let { message } = response.output.payload;
 
-        // TODO: hapi-error plugin had option to pass in default messages for status codes.
-        /*statusCodes: {
-            499: { message: 'Please login to view that page' }
-      401: { message: 'Please Login to view that page' },
-      400: { message: 'Sorry, we do not have that page.' },
-      404: { message: 'Sorry, that page is not available.' }
-    }
-        }*/
+        if (!message) {
+            message = statusCodes[statusCode];
+        }
 
-        return reply.view('./error_template', { statusCode, message }).code(statusCode);
+        Debug('error message: ', message);
+        Debug('status code: ', statusCode);
+
+        // TODO: we could pass other things to the template too, like  errorTitle, moreInfo..
+
+        return reply.view('./error_template', { statusCode, errorMessage: message }).code(statusCode);
     }
 };
 

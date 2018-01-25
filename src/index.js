@@ -62,7 +62,8 @@ exports.register = Util.callbackify((server, options) => {
             require('./routes/home'),
             require('./routes/pages'),
             require('./routes/posts'),
-            require('./routes/static')
+            require('./routes/static'),
+            require('./routes/test')
         ));
     });
 });
