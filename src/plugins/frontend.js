@@ -6,7 +6,7 @@ const rel = (path) => Path.resolve(__dirname, '../../', path);
 module.exports = [
     require('inert'),
     require('vision'),
-    require('hapi-named-routes'),               // TODO: not ported to hapi 17?
+    require('hapi-named-routes'),
     {
         register: require('hapi-sass'),         // TODO: not ported to hapi 17 - replacing with webpack config
         options: {
