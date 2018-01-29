@@ -33,4 +33,3 @@ module.exports = {
         return reply.view('./error_template', { statusCode, errorMessage: message }).code(statusCode);
     }
 };
-
