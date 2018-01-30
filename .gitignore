@@ -14,3 +14,5 @@ npm-debug.log
 public/assets/css/
 public/assets/js/
 public/assets/trumbowyg/
+build/
+public/

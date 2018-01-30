@@ -11,3 +11,5 @@ Recommended: have webpack copy sass and html files into a top-level "build" dire
 configure your template engine and sass-processor to look there
 as well as the usual `./src` location.  
 (Or possibly move your local files into `build` as well.)
+
+Tip: When using webpack, if the build script complains about node-sass not supporting your OS. simply run `npm rebuild node-sass`
