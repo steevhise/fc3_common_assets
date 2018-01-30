@@ -4,21 +4,8 @@
 
 const Hapi = require('hapi');
 const Path = require('path');
-const HapiSass = require('hapi-sass');
 const Inert = require('inert');
 // const HapiError = require('hapi-error');
-
-// sass config  // TODO: if we use webpack to compile our sass, we don't need this.
-const sassOptions = {
-    src: './build/scss',
-    //includePaths: './build',
-    dest: './public/assets/css',
-    force: true,
-    debug: true,
-    routePath: '/css/{file}.css',
-    outputStyle: 'nested',
-    srcExtension: 'scss'
-};
 
 // basic server
 const server = new Hapi.Server({
@@ -36,10 +23,6 @@ server.connection({ port: process.env.PORT || 8000 });
 // register plugins
 server.register([
     Inert,
-    {
-        register: HapiSass,
-        options: sassOptions
-    },
     {
         register: require('vision')
     },
@@ -119,6 +102,23 @@ server.route({
         }
     }
 });
+
+server.route({
+    method: 'GET',
+    path: '/css/{param*}',
+    config: {
+        id: 'css',
+        description: 'directory where Compiled CSS code goes',
+        tags: ['css', 'exclude']
+    },
+    handler: {
+        directory: {
+            path: './public/assets/css',
+            listing: true
+        }
+    }
+});
+
 server.route({
     method: 'GET',
     path: '/ckeditor/{param*}',
