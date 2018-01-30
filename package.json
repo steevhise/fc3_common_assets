@@ -39,6 +39,8 @@
     "vue-loader": "13.5.0",
     "vue-template-compiler": "2.5.3",
     "vue-custom-element": "^1.4.1",
+    "sass-loader": "^6.0.6",
+    "extract-text-webpack-plugin": "^3.0.2",
     "webpack": "3.8.1"
   },
   "scripts": {
@@ -52,8 +54,7 @@
     "copy-webpack-plugin": "^4.2.0",
     "eslint": "^4.10.0",
     "eslint-config-hapi": "^11.1.0",
-    "eslint-plugin-hapi": "^4.1.0",
-    "extract-text-webpack-plugin": "^3.0.2"
+    "eslint-plugin-hapi": "^4.1.0"
   },
   "files": [
     "src",
