@@ -49,8 +49,6 @@
 @import "typography";
 @import "variables";
 
-@import '../../src/assets/scss/main.scss';   // this includes our local app styles - this has to go after we import the above common stuff.
-
 //custom components  - alphabetized. try to keep in order please.
 @import "components/button";
 @import "components/button_bar";
