@@ -50,6 +50,22 @@ module.exports = [
     },
     {
         method: 'GET',
+        path: '/css/{param*}',
+        config: {
+            id: 'css',
+            description: 'directory where Front-end css code goes',
+            tags: ['css', 'exclude'],
+            auth: false
+        },
+        handler: {
+            directory: {
+                path: rel('public/assets/css'),
+                listing: true
+            }
+        }
+    },
+    {
+        method: 'GET',
         path: '/ckeditor/{param*}',
         config: {
             tags: ['exclude', 'js'],
