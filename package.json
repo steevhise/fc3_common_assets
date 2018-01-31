@@ -66,7 +66,7 @@
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
     "serve": "npm run build && node ./server.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
-    "dev:watch": "npm run watch:javascript | npm run dev",
+    "dev:watch": "npm run watch:javascript | npm run serve",
     "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./server.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
