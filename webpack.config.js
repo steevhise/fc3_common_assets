@@ -58,7 +58,7 @@ module.exports = {
             debug: 'warning'
         }),
         new ExtractTextPlugin({
-            filename: 'css/main.css',
+            filename: '../../public/assets/css/main.css',
             disable: false
         })
     ]
