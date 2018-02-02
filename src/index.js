@@ -1,7 +1,4 @@
 const Util = require('util');
-const Graphql = require('graphql');
-const { default: Schema } = require('@freecycle/freecycle_graphql_schema');
-const { Context } = require('@freecycle/freecycle_node_dal');
 const FCPost = require('@freecycle/common-hapi-plugins/modules/freecycle-post');
 const FCUser = require( '@freecycle/common-hapi-plugins/modules/freecycle-user');
 
@@ -9,9 +6,6 @@ exports.register = Util.callbackify((server, options) => {
 
     server.decorate('server', 'Post', FCPost.postClassFunc(server));
     server.decorate('server', 'User', FCUser.userClassFunc(server));
-    server.decorate('server', 'context', Context);
-    server.decorate('server', 'graphql', Graphql.graphql);
-    server.decorate('server', 'schema', Schema);
 
     const combine = (...arrays) => [].concat(...arrays);
 
@@ -69,5 +63,8 @@ exports.register = Util.callbackify((server, options) => {
 });
 
 exports.register.attributes = {
-    pkg: require('../package.json')
+    pkg: require('../package.json'),
+    dependencies: [
+        '@freecycle/freecycle_graphql_schema'
+    ]
 };

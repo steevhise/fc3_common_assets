@@ -8,11 +8,15 @@ const { Config } = require('@freecycle/freecycle_node_dal');
 
 exports.deployment = (start) => {
 
+    const configPath = `${__dirname}/config.json`;
+    const legacyConfigPath = `${__dirname}/config.xml`;
+    const { sequelizeDbConfig } = Config.create(configPath, legacyConfigPath);
+
     // basic server
     const server = new Hapi.Server({
         cache: {         // TODO: can we test for presence of Redis server first and give a more kind error before server start?
             engine: require('catbox-redis'),                            // TODO catbox-memory for development
-            host: Config.sequelizeDbConfig.redis.host || 'localhost',   // TODO: should be set in app-level config
+            host: sequelizeDbConfig.redis.host || 'localhost',   // TODO: should be set in app-level config
             name: 'freecycleMain',
             partition: 'freecycle-app'
         },
@@ -35,6 +39,13 @@ exports.deployment = (start) => {
     server.connection({ port: process.env.PORT || 8000 });
 
     return server.register([
+        {
+            register: require('@freecycle/freecycle_graphql_schema'),
+            options: {
+                configPath,
+                legacyConfigPath
+            }
+        },
         {
             register: require('.'),
             options: {

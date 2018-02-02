@@ -19,8 +19,7 @@ const Hoek = require('hoek');
 import { groupClassFunc } from '../../../node_modules/@freecycle/common-hapi-plugins/lib/freecycle-group.js';
 
 import { Context } from '../../../node_modules/@freecycle/freecycle_node_dal';
-import { graphql } from '../../../node_modules/graphql';
-import schema from '../../../node_modules/@freecycle/freecycle_graphql_schema';
+import { GraphQL, schema } from '../../../node_modules/@freecycle/freecycle_graphql_schema';
 
 const server = new Hapi.Server({
     cache: {
@@ -32,8 +31,9 @@ const server = new Hapi.Server({
 
 server.connection({ port: process.env.PORT || 9000 });
 
-server.decorate('server', 'context', Context);   // access via server.context
-server.decorate('server', 'graphql', graphql);   // access via server.graphql
+const base = `${__dirname}/../../..`;
+server.decorate('server', 'context', Context.create(`${base}/config.json`, `${base}/config.xml`));   // access via server.context
+server.decorate('server', 'graphql', GraphQL.graphql);   // access via server.graphql
 server.decorate('server', 'schema', schema);      // access via server.schema
 
 const Group = groupClassFunc(server);
@@ -176,6 +176,3 @@ server.start((err) => {
         console.error('Server running at:', server.info.uri);
     }
 });
-
-
-

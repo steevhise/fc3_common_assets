@@ -1,6 +1,5 @@
 const Hoek = require('hoek');
 const Boom = require('boom');
-const gql = require('graphql-tag');
 const ActionModels = require('../models');
 
 // route definitions
