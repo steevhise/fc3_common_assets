@@ -92,7 +92,7 @@ const myGroups = [
 
 // dummy footer items
 const footerMenuItems = [
-    'Local Groups',
+    'Local Towns',
     'Merchandise',
     'Donate',
     'Privacy',
@@ -369,10 +369,10 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/home/my-groups',
+        path: '/home/my-towns',
         config: {
             id: 'home_mygroups',
-            description: 'The logged in user\'s Groups.',
+            description: 'The logged in user\'s Towns.',
             auth:  { mode: 'required' }
         },
         handler: function (request, reply) {
@@ -383,7 +383,7 @@ module.exports = [
             ];
             reply.view('./home/my_groups', {
                 inBodyAds,
-                title: 'My Groups',
+                title: 'My Towns',
                 myGroups,
                 geomap: myGroupsGeomap,footerMenuItems
             });

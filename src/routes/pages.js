@@ -71,7 +71,7 @@ const user = {
 
 // dummy footer items
 const footerMenuItems = [
-    { name : 'Local Groups', path : '/' },
+    { name : 'Local Towns', path : '/' },
     { name : 'Merchandise', path : '/' },
     { name : 'Donate', path : '/' },
     { name : 'Privacy', path : '/' },
@@ -580,7 +580,7 @@ module.exports = [
                     count: '9,073,808'
                 },
                 {
-                    name: 'Local Groups',
+                    name: 'Local Towns',
                     count: '5,270'
                 },
                 {
@@ -646,26 +646,26 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/startagroup',
+        path: '/startatown',
         config: {
             id: 'start_a_group',
             auth: { mode: 'required' },
-            description: 'Apply to start a new group'
+            description: 'Apply to start a new town'
         },
         handler: function (request, reply) {
 
             reply.view('start_a_group', {
-                title: 'Start a Group',
+                title: 'Start a Town',
                 countries
             });
         }
       },
       {
         method: 'GET',
-        path: '/find-groups',
+        path: '/find-towns',
         config: {
             id: 'find_groups',
-            description: 'Search for groups.'
+            description: 'Search for towns.'
         },
         handler: function (request, reply) {
             const groupList = [
@@ -719,7 +719,7 @@ module.exports = [
                 'two'
             ];
             reply.view('find-groups', {
-              title: 'Find Groups',
+              title: 'Find Towns',
               groupList,
               inBodyAds,
               countries,
