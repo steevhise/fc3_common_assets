@@ -74,10 +74,10 @@
                         <div id="panel3v" class="tabs-panel page-tabs-panel" role="tabpanel" aria-labelledby="panel3v-label" aria-hidden="true">
                             <div class="container">
                                 <p>
-                                    What next? Click on button below to connect with friends, join a group, or update your profile.
+                                    What next? Click on button below to connect with friends, join a town, or update your profile.
                                 </p>
                                 <div class="medium-4 columns float-left">
-                                    <a class="btn btn-lend" href="/home/my-groups/">Find A Group</a>
+                                    <a class="btn btn-lend" href="/home/my-towns/">Find A Town</a>
                                 </div>
                                 <div class="medium-4 columns float-left">
                                     <a class="btn btn-wanted" href="/home/my-friends/">Find A Friend</a>
@@ -90,7 +90,7 @@
                             <!--
                                 TODO: 
                                 - complete / test step 3
-                                - add options to join group
+                                - add options to join town
                                 - add options to find friends
                                 - add options to fill out profile page.
                             -->
