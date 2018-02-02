@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 		case '/home/my-friends':
 			setActiveTab('#my-friends');
 			break;
-		case '/home/my-groups':
+		case '/home/my-towns':
 			setActiveTab('#my-groups');
 			break;
 			
