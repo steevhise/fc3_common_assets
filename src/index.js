@@ -49,16 +49,7 @@ exports.register = Util.callbackify((server, options) => {
         // TODO only has to be called on root to work with hapi-error  - what now here now that we've replaced hapi-error?
         server.root.views(require('./view-manager')(server, options));
 
-        server.route(combine(
-            require('./routes/actions'),
-            require('./routes/admin'),
-            require('./routes/groups'),
-            require('./routes/home'),
-            require('./routes/pages'),
-            require('./routes/posts'),
-            require('./routes/static'),
-            require('./routes/test')
-        ));
+        server.route(require('./routes'));
     });
 });
 
