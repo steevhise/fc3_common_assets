@@ -56,7 +56,7 @@
     "serve": "npm run build && node ./server.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
     "dev:watch": "npm run watch:javascript | npm run dev",
-    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./server.js",
+    "dev": "npm run build & nodemon -e js,html --watch server.js --watch ./src/routes --watch ./src/views --watch .src/packages ./server.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",
