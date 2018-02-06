@@ -46,8 +46,7 @@ exports.register = Util.callbackify((server, options) => {
             providerParams: { display: 'popup' }
         });
 
-        // TODO only has to be called on root to work with hapi-error  - what now here now that we've replaced hapi-error?
-        server.root.views(require('./view-manager')(server, options));
+        server.views(require('./view-manager')(server, options));
 
         server.route(require('./routes'));
     });
