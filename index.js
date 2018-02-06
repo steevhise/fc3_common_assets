@@ -5,7 +5,9 @@
 const Hapi = require('hapi');
 const Path = require('path');
 const Inert = require('inert');
-// const HapiError = require('hapi-error');
+
+// Build absolute path relative to project
+const rel = (path) => Path.resolve(__dirname, '../../', path);
 
 // basic server
 const server = new Hapi.Server({
@@ -38,7 +40,7 @@ server.register([
                     module: 'good-console',
                     args:
                     [{ format: 'YYYY-MM-DD/HH:mm:ssZ', utc: false },
-           { log: '*', response: '*', server: '*', request: '*', ops: 'none' }
+                        { log: '*', response: '*', server: '*', request: '*', ops: 'none' }
                     ]
                 }, 'stdout'
                 ]
@@ -46,7 +48,10 @@ server.register([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
+        options: {
+            includeDir: rel('build/views')
+        }
     }
 
 ], (registerError) => {
@@ -59,7 +64,7 @@ server.register([
 
 
 
-            // static route handlers
+// static route handlers
 server.route({
     method: 'GET',
     path: '/images/{param*}',
@@ -134,14 +139,15 @@ server.route({
 });
 
 server.route({
-  method: 'GET',
-  path: '/test',
-  handler:  (request,reply) => {
-      console.log('test page...');
-    reply.view('test', {
-      title: 'test page'
-    });
-  }
+    method: 'GET',
+    path: '/test',
+    handler:  (request,reply) => {
+
+        console.log('test page...');
+        reply.view('test', {
+            title: 'test page'
+        });
+    }
 });
 
 server.views({
