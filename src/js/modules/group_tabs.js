@@ -14,19 +14,19 @@ document.addEventListener("DOMContentLoaded", ()=> {
 	var path = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("/"));
 
 	switch (path) {
-		case '/group':
+		case '/town':
 			setActiveTab('#group_posts');
 			break;
-		case '/group/guidelines':
+		case '/town/guidelines':
 			setActiveTab('#group_guidelines');
 			break;
-		case '/group/announcements':
+		case '/town/announcements':
 			setActiveTab('#group_announcements');
 			break;
-		case '/group/contact':
+		case '/town/contact':
 			setActiveTab('#group_contact');
 			break;
-		case '/group/info':
+		case '/town/info':
 			setActiveTab('#group_info');
 			break;
 	}
