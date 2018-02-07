@@ -1,10 +1,10 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <ul class="item-list-header-filter-list">
-    <li class="item-list-header-filter-icon item-list-city-circle">
-        {% include '../icons/city_circle.html' with {className:'icon-city-circle'} only %}
-        <span>City Circle</span>
-    </li>
-    <li class="item-list-header-filter-icon item-list-friend-circle">
+    <span>My</span>&nbsp;<li class="item-list-header-filter-icon item-list-city-circle"> <a class="has-tip" title="Show only posts from Groups">
+    {% include "../icons/towns.html" with { height: '20px', width: '20px' } %}
+    <span>Towns</span></a>
+</li>
+    <li class="item-list-header-filter-icon item-list-friend-circle" class="has-tip" title="Show only posts in your Friends Circle">
         {% include '../icons/friend_circle.html' with {className:'icon-friend-circle'} only %}
         <span>Friends Circle</span>
     </li>
