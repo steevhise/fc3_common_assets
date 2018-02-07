@@ -16,10 +16,7 @@ exports.register = Util.callbackify((server, options) => {
     .then(() => {
 
         // declare some server extensions
-        server.ext(combine(
-            require('./extensions/preauth.js'),
-            require('./extensions/errors.js')
-        ));
+        server.ext(require('./extensions/errors.js'));
 
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({
