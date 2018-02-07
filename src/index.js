@@ -16,7 +16,12 @@ exports.register = Util.callbackify((server, options) => {
     .then(() => {
 
         // declare some server extensions
-        server.ext(require('./extensions/errors.js'));
+        server.ext(combine(
+            require('./extensions/errors'),
+            require('./extensions/redirect-on-login')
+        ));
+
+        server.state(...require('./cookies/redirect')(server, options));
 
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({

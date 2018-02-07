@@ -155,7 +155,14 @@ const _loginHandler = function (request, reply) {
                     // or success
                     reply.state('MyFreecycle', cookieContent);
                     request.log('debug', 'ok we gave out the cookie', cookieContent);
-                    reply.redirect('/desktop-dash').temporary(true);
+
+                    const { redirect } = request.state;
+
+                    if (redirect) {
+                        reply.unstate('redirect');
+                    }
+
+                    reply.redirect((redirect && redirect.to) || '/desktop-dash').temporary(true);
                 });
             }
             else {
