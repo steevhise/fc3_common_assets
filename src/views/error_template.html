@@ -6,7 +6,7 @@
   {% endif %}
 {% endif %}
 
-{% if statusCode == 499 %}
+{% if statusCode == 0 %}
   {% set errorMessage = "Sorry, couldn't find that image." %}
   {% set errorTitle = "Image missing" %}
 {% endif %}

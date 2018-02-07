@@ -1,15 +1,15 @@
 {
   "name": "fc3_main",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "The new Freecycle site - Freecycle 3.0!",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": "gitolite@devserver.freecycle.org:fc3_main",
   "engines": {
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.1.13",
-    "@freecycle/fc3_common_assets": ">=0.1.1",
+    "@freecycle/common-hapi-plugins": "0.2.1",
+    "@freecycle/fc3_common_assets": ">=0.1.2",
     "@freecycle/freecycle_graphql_schema": "^0.2.3",
     "@freecycle/freecycle_node_dal": ">=0.1.8",
     "babel-loader": "^6.2.4",
@@ -60,12 +60,12 @@
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
     "watch:javascript": "webpack --config webpack.config.js --colors --watch",
     "build:javascript": "webpack --config webpack.config.js",
-    "build": "babel index.js  -d lib",
+    "build": "npm run build:javascript",
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
-    "serve": "npm run build:javascript && npm run build && node ./lib/index.js",
+    "serve": "npm run build && node ./server.js",
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
     "dev:watch": "npm run watch:javascript | npm run dev",
-    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages lib/index.js",
+    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./server.js",
     "test": "lab --reporter spec --recursive --timeout 20s"
   },
   "author": "The Freecycle Network",

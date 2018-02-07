@@ -58,8 +58,6 @@ The git url for common assets repo is `gitolite@devserver.freecycle.org:fc3_comm
     * fc-editor  - ckeditor text box
     * fc-callout - error or info messages.
 
-
-
 ### Backend Esoterica:
 GraphQL and Sequelize are used for the Data Access Layer.
 
