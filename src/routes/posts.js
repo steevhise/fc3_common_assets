@@ -5,7 +5,7 @@ const Boom = require('boom');
 
 // dummy footer items
 const footerMenuItems = [
-    'Local Groups',
+    'Local Towns',
     'Merchandise',
     'Donate',
     'Privacy',
