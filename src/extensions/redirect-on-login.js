@@ -1,11 +1,32 @@
+const Url = require('url');
+
+const internals = {};
+
 module.exports = {
     type: 'onPreResponse',
     method: (request, reply) => {
 
         const { isAuthenticated, mode } = request.auth;
         const { headers } = request.response;
+        const { path, method } = request;
+        const { referrer, host } = request.info;
 
-        // If the user got booted to /login on an auth'd endpoint,
+        // If the user lands on /login from some other freecycle domain,
+        // remember where they came from.
+
+        console.log(path, method, referrer)
+        if (path === '/login' && method === 'get' && !isAuthenticated && referrer) {
+
+            const { host: referredHost } = Url.parse(referrer);
+
+            // Referred from a different freecycle domain (e.g. modtools)
+
+            if (internals.hostOnFreecycle(referredHost) && (referredHost !== host)) {
+                reply.state('redirect', { to: referrer });
+            }
+        }
+
+        // If the user got redirected to /login on an auth'd endpoint,
         // remember where they were trying to go.
 
         if (headers.location === '/login' && !isAuthenticated && mode === 'required') {
@@ -24,3 +45,5 @@ module.exports = {
         sandbox: 'plugin'
     }
 };
+
+internals.hostOnFreecycle = (host) => (/(?:^|\.)freecycle\.org(?::[\d]{4})?$/).test(host);
