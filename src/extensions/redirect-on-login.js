@@ -45,4 +45,4 @@ module.exports = {
     }
 };
 
-internals.hostOnFreecycle = (host) => (/(?:^|\.)freecycle\.org(?::[\d]{4})?$/).test(host);
+internals.hostOnFreecycle = (host) => (/(?:^|\.)freecycle\.org(?::[\d]{2,4})?$/).test(host);
