@@ -14,7 +14,6 @@ module.exports = {
         // If the user lands on /login from some other freecycle domain,
         // remember where they came from.
 
-        console.log(path, method, referrer)
         if (path === '/login' && method === 'get' && !isAuthenticated && referrer) {
 
             const { host: referredHost } = Url.parse(referrer);
