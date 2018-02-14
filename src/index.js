@@ -10,18 +10,15 @@ exports.register = Util.callbackify((server, options) => {
     const combine = (...arrays) => [].concat(...arrays);
 
     return server.register(combine(
-        require('./plugins/frontend'),
-        require('./plugins/auth')
+        require('./plugins/frontend')(server, options),
+        require('./plugins/auth')(server, options)
     ))
     .then(() => {
 
         // declare some server extensions
         server.ext(combine(
-            require('./extensions/errors'),
-            require('./extensions/redirect-on-login')
+            require('./extensions/errors')
         ));
-
-        server.state(...require('./cookies/redirect')(server, options));
 
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({
