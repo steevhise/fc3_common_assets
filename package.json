@@ -3,7 +3,7 @@
   "version": "0.2.2",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "src/index.js",
-  "repository": "gitolite@devserver.freecycle.org:fc3_main",
+  "repository": "https://github.com/freecycle/fc3_main",
   "engines": {
     "node": "6.9.x"
   },
@@ -61,7 +61,7 @@
     "start": "npm run watch:javascript & npm run dev & npm run browsersync",
     "dev:watch": "npm run watch:javascript | npm run serve",
     "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./server.js",
-    "test": "lab --reporter spec --recursive --timeout 20s"
+    "test": "lab --reporter console -C -c  "
   },
   "author": "The Freecycle Network",
   "license": "UNLICENSED",
