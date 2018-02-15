@@ -3,7 +3,7 @@ const Path = require('path');
 // Build absolute path relative to project
 const rel = (path) => Path.resolve(__dirname, '../../', path);
 
-module.exports = [
+module.exports = () => ([
     require('inert'),
     require('vision'),
     require('hapi-named-routes'),
@@ -14,4 +14,4 @@ module.exports = [
             includeDir: rel('build/views')
         }
     }
-];
+]);

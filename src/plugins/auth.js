@@ -1,6 +1,12 @@
-module.exports = [
+module.exports = (server, options) => ([
     require('bell'),
     require('@freecycle/common-hapi-plugins/plugins/freecycle-login'),
+    {
+        register: require('@freecycle/common-hapi-plugins/plugins/redirect-by-cookie'),
+        options: {
+            isSecure: !options.dev
+        }
+    },
     {
         register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle'),
         options: {
@@ -28,4 +34,4 @@ module.exports = [
           }
       }
       */
-];
+]);
