@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "description": "Freecycle 3.0 Common stuff like images, styles, js, partials",
   "main": "index.js",
-  "repository": "gitolite@devserver.freecycle.org:fc3_common_assets",
+  "repository": "https://github.com/freecycle/fc3_common_assets.git",
   "author": "The Freecycle Network",
   "license": "UNLICENSED",
   "engines": {
