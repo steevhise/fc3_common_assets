@@ -1,6 +1,9 @@
 <template>
 	<div id="fc-help">
-		<p>{{slot}}</p>
+		<slot></slot>
+		<fc-modal id="2" text="Modal" type="custom" >
+			<slot name="trigger">Hello World</slot>
+		</fc-modal>
 	</div>
 </template>
 

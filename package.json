@@ -45,8 +45,9 @@
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
     "build": "webpack --config webpack.config.js --colors",
+    "watch": "webpack --config webpack.config.js --colors --watch",
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
-    "dev": "npm run build & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./index.js"
+    "dev": "npm run watch & nodemon -e js,html --watch index.js --watch ./src/routes --watch ./src/views --watch .src/packages ./index.js"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.2.0",
