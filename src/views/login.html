@@ -10,7 +10,10 @@
     {% endif %}
     <div class="row">
         <div class="row">
-            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+            <h2 class="post-header-title text-center columns large-12">
+                {{ title }}
+                <fc-help>Login Help Text Example</fc-help>
+            </h2>
         </div>
         <div class="row">
             <fc-login></fc-login> {#NOTE: see src/assets/modules/fc3_components fc-login#}
@@ -32,7 +35,6 @@
     {% set mycustomvar = 'This is a custom variable set for the test. This variable is then passed through the content prop on the fc-modal component in test 3.' %}
     <div id="test" class="row">
        <fc-modal id="1" text="Test Login modal box" type="login"></fc-modal><br/>
-
        <!-- <fc-modal id="2" text="Test Custom 2" type="custom" content="<h1>Testing a Simple Modal</h1><br/><p>This modal can handle raw html</p>" ></fc-modal> <br/>
         <fc-modal id="3" text="Test Custom With Swig Data 3" type="custom" content="<h1>This content contains swig template data. </h1> <br/> Title: {{ title }} <br/> SwigVariable: {{ mycustomvar }}"></fc-modal> <br/>
         <fc-modal id="4" text="Test Wrapper 4">
