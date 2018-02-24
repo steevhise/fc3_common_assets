@@ -4,7 +4,8 @@
 		<div class="reveal" :id="getTarget" data-reveal>
 			<h3>Freecycle Help</h3>
 			<slot>Freecycle Help Placeholder</slot>
-			<!--TODO: Add HelpScout Beacon-->
+			<br/>
+			<a href="#" class="fc-help-beacon-trigger" @click.prevent="hsOpen" >Help Scout</a>
 		</div>
 	</span>
 </template>
@@ -25,6 +26,16 @@
 			getTarget() {
 				return `modal-${this._uid}`
 			}
+		},
+		mounted() {
+			
+		},
+		methods: {
+			hsOpen() {
+				if (window.HS) {
+					window.HS.beacon.open();
+				}
+			}
 		}
 	}
 </script>
@@ -34,5 +45,9 @@
 		position:relative;
 		bottom: 0px;
 		right: 5px;
+	}
+	.fc-help-beacon-trigger {
+		float: right;
+		clear: both;
 	}
 </style>
