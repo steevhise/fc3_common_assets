@@ -2,7 +2,7 @@
 	<div id="fc-help">
 		<slot></slot>
 		<fc-modal id="2" text="Modal" type="custom" >
-			<slot name="trigger">Hello World</slot>
+			<slot name="trigger">Button</slot>
 		</fc-modal>
 	</div>
 </template>
