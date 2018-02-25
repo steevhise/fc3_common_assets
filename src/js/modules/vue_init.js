@@ -2,8 +2,8 @@ import Vue from 'vue';
 Vue.config.silent = true; // silence logs / warnings since we are using custom elements.
 
 import 'document-register-element/build/document-register-element';
-import VueCustomElement from 'vue-custom-element';
 import { EventBus } from '../components/EventBus';
+import VueCustomElement from 'vue-custom-element';
 
 // common components
 import Test from '../components/Test.vue';
@@ -12,6 +12,7 @@ import FormButton from '../components/FormButton.vue';
 import Form from '../components/Form.vue';
 import Callout from '../components/Callout.vue';
 import Help from '../components/Help.vue';
+import FeaturedIn from '../components/FeaturedIn.vue';
 
 Vue.use(VueCustomElement);
 
@@ -33,3 +34,4 @@ ComponentLib.registerElement('fc-form', Form);
 ComponentLib.registerElement('fc-callout', Callout);
 ComponentLib.registerElement('fc-editor', Editor);
 ComponentLib.registerElement('fc-help', Help);
+ComponentLib.registerElement('fc-featuredin', FeaturedIn);
