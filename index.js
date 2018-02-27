@@ -4,21 +4,10 @@
 
 const Hapi = require('hapi');
 const Path = require('path');
-const HapiSass = require('hapi-sass');
 const Inert = require('inert');
-// const HapiError = require('hapi-error');
 
-// sass config  // TODO: if we use webpack to compile our sass, we don't need this.
-const sassOptions = {
-    src: './build/scss',
-    //includePaths: './build',
-    dest: './public/assets/css',
-    force: true,
-    debug: true,
-    routePath: '/css/{file}.css',
-    outputStyle: 'nested',
-    srcExtension: 'scss'
-};
+// Build absolute path relative to project
+const rel = (path) => Path.resolve(__dirname, '../../', path);
 
 // basic server
 const server = new Hapi.Server({
@@ -37,10 +26,6 @@ server.connection({ port: process.env.PORT || 8000 });
 server.register([
     Inert,
     {
-        register: HapiSass,
-        options: sassOptions
-    },
-    {
         register: require('vision')
     },
     {
@@ -55,7 +40,7 @@ server.register([
                     module: 'good-console',
                     args:
                     [{ format: 'YYYY-MM-DD/HH:mm:ssZ', utc: false },
-           { log: '*', response: '*', server: '*', request: '*', ops: 'none' }
+                        { log: '*', response: '*', server: '*', request: '*', ops: 'none' }
                     ]
                 }, 'stdout'
                 ]
@@ -63,7 +48,10 @@ server.register([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions')
+        register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
+        options: {
+            includeDir: rel('build/views')
+        }
     }
 
 ], (registerError) => {
@@ -76,7 +64,7 @@ server.register([
 
 
 
-            // static route handlers
+// static route handlers
 server.route({
     method: 'GET',
     path: '/images/{param*}',
@@ -119,6 +107,23 @@ server.route({
         }
     }
 });
+
+server.route({
+    method: 'GET',
+    path: '/css/{param*}',
+    config: {
+        id: 'css',
+        description: 'directory where Compiled CSS code goes',
+        tags: ['css', 'exclude']
+    },
+    handler: {
+        directory: {
+            path: './public/assets/css',
+            listing: true
+        }
+    }
+});
+
 server.route({
     method: 'GET',
     path: '/ckeditor/{param*}',
@@ -134,14 +139,15 @@ server.route({
 });
 
 server.route({
-  method: 'GET',
-  path: '/test',
-  handler:  (request,reply) => {
-      console.log('test page...');
-    reply.view('test', {
-      title: 'test page'
-    });
-  }
+    method: 'GET',
+    path: '/test',
+    handler:  (request,reply) => {
+
+        console.log('test page...');
+        reply.view('test', {
+            title: 'test page'
+        });
+    }
 });
 
 server.views({
