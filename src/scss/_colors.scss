@@ -38,3 +38,8 @@
 .bg-primary-darkest {
   background-color: $black;
 }
+
+.overlay > svg:first-child path {
+  opacity: .5;
+  fill: $dark-gray;
+}
