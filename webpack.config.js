@@ -4,15 +4,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const extractSass = new ExtractTextPlugin({
-    filename: 'css/main.css',
-    allChunks: true
-    // disable: process.env.NODE_ENV === 'development'
-});
-
 module.exports = {
     context: Path.resolve(__dirname, './src/'),
-    entry: ['./js/main.js'],
+    entry: './js/main.js',
     output: {
         filename: 'js/main.bundle.js',
         //filename: '[path]/main.bundle.[name]',
@@ -29,6 +23,12 @@ module.exports = {
                     presets: ['es2015'],
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
+            },
+            {
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    use: ['css-loader', 'sass-loader']
+                })
             }
         ]
     },
@@ -48,12 +48,16 @@ module.exports = {
             }
         }),
         new CopyWebpackPlugin([
-          { from: 'images', to: './images' },
-          { from: 'scss', to: '../../build/scss' },
-          { from: 'views', to: '../../build/views' }     // partials and icons
+            { from: 'images', to: './images' },
+            { from: 'scss', to: '../../build/scss' },
+            { from: 'views', to: '../../build/views' }     // partials and icons
         ], {
             copyUnmodified: true,
             debug: 'warning'
+        }),
+        new ExtractTextPlugin({
+            filename: 'css/main.css',
+            disable: false
         })
     ]
 };

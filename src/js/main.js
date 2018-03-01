@@ -3,6 +3,9 @@
  */
 import "./modules";
 
+// load styles for webpack to bundle and build .css
+import "../scss/main.scss";
+
 // jQuery
 var $ = require('jquery');
 global.jQuery = $;
