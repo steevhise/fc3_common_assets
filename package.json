@@ -39,7 +39,7 @@
     "nodemon": "^1.12.0",
     "oppsy": "^1.0.2",
     "path": "^0.12.7",
-    "require-dir": "^0.3.2",
+    "require-dir": "^1.0.0",
     "sequelize": "^4.22.5",
     "sass-loader": "6.0.6",
     "swig-templates": "^2.0.2",

@@ -15,6 +15,20 @@ module.exports = (server, options) => ({
         route: {
             id: request.route.settings.id,
             auth: request.route.settings.auth
-        }
+        },
+        footerMenuItems: [
+            'Local Towns',
+            'Merchandise',
+            'Donate',
+            'Privacy',
+            'About',
+            'Sponsors',
+            'Volunteer',
+            'Terms',
+            'News',
+            'Help',
+            'Contact',
+            'Wiki'
+        ]
     })
 });
