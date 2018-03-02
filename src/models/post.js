@@ -3,7 +3,7 @@
 const edit = (request, reply) => {
     // then massage the fields being input, into the object. for example:
     const postId = Number(request.payload.post_id);
-    
+
     // input acts as a schema mapper for the post.
     // it will be Object Assigned below based on valid fields in the post
     // NOTE: on the form , for consumption here, we must set the name attribute on the form.
@@ -20,17 +20,21 @@ const edit = (request, reply) => {
     };
 
     // NOTE this is asynchronous, so it should wrap everything else.
-    let post = new request.server.Post(postId, (err, result) => {
+    new request.server.Post(postId, (err, post) => {
 
-        // Hoek.assert(!err, 'Problem getting Post!');
-        post = result;
+        if (err) {
+            return reply(err)
+        }
+
         Object.assign(post, input);
+
         post.save((err, savedPostId) => {
 
-            // Hoek.assert(!err, 'post did not save!' + err);
-            console.log('saved post id is: ' + savedPostId);
+            if (err) {
+                return reply(err)
+            }
 
-            reply.response({
+            reply({
                 postId: postId,
                 title: `Edit Post : ${postId}`,
                 message: `Post ${postId} was saved successfully.`

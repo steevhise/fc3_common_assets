@@ -2,20 +2,19 @@ const Mocks = require('./helpers/mocks');
 
 module.exports = {
     method: 'GET',
-    path: '/town/contact/{unique_group_name}',
+    path: '/town/contact/{uniqueName}',
     config: {
         id: 'groups_contact',
-        description: 'The named town\'s guidelines.'
+        description: 'The named town\'s contact.'
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
-        reply.view('./groups/contact', {
-            inBodyAds,
-            group: Mocks.group
+        reply.view('groups/contact', {
+            group: Mocks.group,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

@@ -3,20 +3,19 @@ module.exports = {
     path: '/home/my-towns',
     config: {
         id: 'home_mygroups',
-        description: 'The logged in user\'s Towns.',
+        description: 'The logged in user\'s towns.',
         auth: { mode: 'required' }
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
-        reply.view('./home/my_groups', {
-            inBodyAds,
+        reply.view('home/my_groups', {
             title: 'My Towns',
             myGroups,
-            geomap: myGroupsGeomap
+            geomap: myGroupsGeomap,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

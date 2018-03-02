@@ -34,10 +34,11 @@ Make sure you have node and npm, and then:
 
 ### Coding/Architecture Guidelines
 * reusable plugins and modules that we want to use in other apps (like ModTools, Group Admin, etc) should be put in the `@freecycle/common-hapi-plugins` npm.
-The repo for that is at `gitolite@devserver.freecycle.org:common-hapi-plugins`
+The repo for that is at `https://github.com/freecycle/common-hapi-plugins`
 Within that there is now a directory `plugins/` and a directory `modules/` please put things in appropriate place.
 * `src/packages/` is for other code of ours (our unpackaged internal hapi plugins, etc) not contained in the above package or in `src/routes/`, etc
 * Please keep routes and views organized by section of site: Home, Groups, etc. any js file in the routes dir will get included.
+* hapi request lifecycle extensions go in `src/extensions/`
 * We are now trying, for back-end code at least, to conform to the [hapi](https://github.com/continuationlabs/eslint-config-hapi) coding style.
 To lint your code for this standard, use `npm run lint`.  We will "fix" these things gradually.
 You can auto-fix many easy things in code to conform to the style by running `npm run lintfix`.

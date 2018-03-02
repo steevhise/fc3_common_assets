@@ -1,54 +1,62 @@
+const Joi = require('joi');
 const Hoek = require('hoek');
 const Boom = require('boom');
 
 module.exports = {
     method: 'GET',
-    path: '/home/edit_post/{postId}',
+    path: '/home/edit-post/{postId}',
     config: {
         id: 'home_post_edit',
         description: 'Edit a post',
         auth:  { mode: 'required' },
+        validate: {
+            params: Joi.object({
+                postId: Joi.number()
+            })
+        },
         plugins: { 'hapiAuthorization': { aclQuery: (id, request, cb) => {
 
             const userId = request.auth.credentials.id;
             request.log('authorization', 'user is ' + userId);
+
             // only allow edit of own posts.
-            const postId = Number(request.params.postId);
+            const { postId } = request.params;
 
             // get the post and see if post author is same as current user
             // TODO: i'd like this to be scoped such that we can re-use this data in the handler below rather than query the post again.
             new request.server.Post(postId, (err, post) => {
 
-                Hoek.assert(!err, 'Probem getting Post!');
+                if (err) {
+                    return cb(err);
+                }
 
-                if (post.user_id === userId) {
-                    // allowed
-                    cb(null, true);
-                }
-                else {
+                if (post.user_id !== userId) {
                     // not allowed
-                    request.log('authorization', 'post author id is ' + post.user_id + ' but current user is ' + userId);
-                    cb(Boom.forbidden(), true);
                     // TODO: right now this just pops up a rude error page. later we want to just redirect to the post detail page.
+
+                    request.log('authorization', 'post author id is ' + post.user_id + ' but current user is ' + userId);
+
+                    return cb(Boom.forbidden());
                 }
+
+                // allowed
+                return cb(null, true);
             });
         } } }
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one', 'two'
-        ];
-
         // retrieve data for post edit  TODO: see above, we should be only querying post once... not sure how to scope it though.
-        const postId = Number(request.params.postId);
-        queryPost(request.server, postId)
-        .then((post) => {
+        const { postId } = request.params;
 
-            reply.view('./home/post_edit', {
-                inBodyAds,
-                title : `Edit Post : ${post.post_id}`,
-                post
+        return queryPost(request.server, postId).then((post) => {
+
+            reply.view('home/post_edit', {
+                title: `Edit Post : ${post.post_id}`,
+                post,
+                inBodyAds: [
+                    'one', 'two'
+                ]
             });
         });
     }
@@ -79,14 +87,12 @@ const queryPost = (server, postId) => {
     }`;
 
     return server.graphql(server.schema, query)
-        .then((queryResults) => {
+        .then(({ data }) => {
 
-            console.log(queryResults);
-            return queryResults.data.post;
-        })
-        .catch((error) => {
+            if (!data || !data.post) {
+                throw Boom.notFound('Post not found');
+            }
 
-            console.error(`Query getPost: ${error}`);
-            throw error;
+            return data.post;
         });
 };

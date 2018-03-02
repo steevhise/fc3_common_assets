@@ -8,12 +8,11 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one', 'two'
-        ];
-        reply.view('./home/post_new', {
-            inBodyAds,
-            title: 'Make A Post'
+        reply.view('home/post_new', {
+            title: 'Make A Post',
+            inBodyAds: [
+                'one', 'two'
+            ]
         });
     }
 };

@@ -10,33 +10,22 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
+        return findMyPosts(request).then((posts) => {
 
-        let userPosts;
-        userPosts = findMyPosts(request, (err, result) => {
+            request.log('my-post', 'in the route - ' + posts);
 
-            if (err) {
-                return reply(err);
-            }
-
-            userPosts = result;
-
-            request.log('my-post', 'in the route - ' + userPosts);
-
-            reply.view('./home/my_posts', {
-                inBodyAds,
+            reply.view('home/my_posts', {
                 title: 'My Posts',
                 showFilterSelectors: true,
                 showCityDropdown: true,
-                posts: userPosts,
-                postAction: 'Manage'
+                posts,
+                postAction: 'Manage',
+                inBodyAds: [
+                    'one',
+                    'two'
+                ]
             });
-            return Promise.resolve();
         });
-
     }
 };
 
@@ -46,56 +35,39 @@ module.exports = {
  * @param req  request object
  * @param next {function}  callback
  */
-const findMyPosts = function (req, next) {
+const findMyPosts = function (request) {
 
-    let myPostIDs;   // the array of post ids.
-    let currentUser;
-    new req.server.User(Number(req.auth.credentials.id), (err, result) => {
+    const { postService, Post } = request.server;
+    const userId = Number(request.auth.credentials.id);
 
-        if (err) {
-            return next(err);
-        }
+    const getPostEntities = (p) => {
 
-        if (!result) {
-            return next(new Error('no user found?'));
-        }
+        return new Promise((resolve, reject) => {
 
-        // otherwise...
-        currentUser = result;
+            new Post(p.post_id, (err, post) => {
 
-        return currentUser.getPosts('open', (err, result2) => {      // getPosts() returns an array
+                if (err) {
+                    return reject(err);
+                }
 
-            Hoek.assert(!err, err);
-            myPostIDs = result2;
+                post.location = 'Tucson, AZ';
+                post.image = 'http://lorempixel.com/350/150/nightlife';
+                post.category = 'wanted';
 
-            const myPosts = [];   // the array of post objects.
-            // console.log('post IDs: ', myPostIDs);
-
-            // now make a Post object for each id.
-            myPostIDs.forEach((p, i) => {
-
-                let post;
-                myPosts[i] = new Promise((resolve, reject) => {
-
-                  // TODO: obvs this is part-fake data
-                    new req.server.Post(p.post_id, (err, result3) => {
-
-                        Hoek.assert(!err, err);
-                        post = result3;
-                        post.location = 'Tucson, AZ';
-                        post.image = 'http://lorempixel.com/350/150/nightlife';
-                        post.category = 'wanted';
-                        myPosts[i] = post;
-                        resolve(post);
-                    });
-                });
-            });
-
-            return Promise.all(myPosts).then((values) => {
-
-                req.log('findMyPosts-allLoaded', values);
-                return next(null, values);
+                return resolve(post);
             });
         });
+    };
+
+    return postService.byUser(userId, 'open')
+    .then((posts) => {
+
+        return Promise.all(posts.map(getPostEntities));
+    })
+    .then((postEntities) => {
+
+        request.log('findMyPosts-allLoaded', postEntities);
+
+        return postEntities;
     });
 };

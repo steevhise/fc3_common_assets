@@ -8,7 +8,6 @@ module.exports = {
         description: 'login on this page',
         auth: false,
         plugins: {
-            // route specific options
             crumb: {
                 source: 'payload',
                 cookieOptions: {
@@ -20,24 +19,25 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        console.log('crumb: ' + request.plugins.crumb);
-
         let msg = null;
+
         // if credentials are passed in from form...
         if (request.payload && request.payload.user && request.payload.password) {
             const user = request.payload.user;
             const pw = request.payload.password;
 
-            console.log(request.payload.crumb);
-
             request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
 
-                Hoek.assert(!err, 'loginUser ERROR: ' + err);
-                console.log('userID found after login:', userId);
+                if (err) {
+                    return reply(err);
+                }
+
                 if (userId) {
                     reply.setCookie(Number(userId), (err, cookieContent) => {
 
-                        Hoek.assert(!err, 'Error: ' + err);
+                        if (err) {
+                            return reply(err);
+                        }
 
                         // or success
                         reply.state('MyFreecycle', cookieContent);

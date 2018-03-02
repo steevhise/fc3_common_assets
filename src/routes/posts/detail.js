@@ -1,18 +1,21 @@
+const Joi = require('joi');
+
 module.exports = {
     method: 'GET',
     path: '/posts/{postId}',
     config: {
         id: 'posts_detail',
-        description: 'an individual post.  use a number, like /posts/123454'
+        description: 'An individual post.  use a number, like /posts/123454',
+        validate: {
+            params: Joi.object({
+                postId: Joi.number()
+            })
+        }
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
+        const { postId } = request.params;
 
-        const postId = Number(request.params.postId);
         request.log('debug', 'about to look up post ' + postId);
 
         new request.server.Post(postId, (err, post) => {
@@ -23,8 +26,11 @@ module.exports = {
 
             reply.view('posts/post', {
                 showFilterSelectors: true,
-                inBodyAds,
-                post
+                post,
+                inBodyAds: [
+                    'one',
+                    'two'
+                ]
             });
         });
     }

@@ -10,11 +10,6 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
-
         reply.view('desktop_dash', {
             messageSets: [
                 {
@@ -94,9 +89,12 @@ module.exports = {
             showDashboard: true,
             filterType: 'circle',
             friends: Mocks.friends,
-            inBodyAds,
             title: 'Desktop Dash',
-            posts: Mocks.posts
+            posts: Mocks.posts,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

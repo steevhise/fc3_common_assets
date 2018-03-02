@@ -9,11 +9,6 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
-
         const user = {
             avatar_url: 'http://lorempixel.com/150/150/people/8',
             name: 'Nathan Puente',
@@ -40,15 +35,16 @@ module.exports = {
             ]
         };
 
-        console.log('!!!!auth mode: ' + request.auth.mode);
-        //console.log(request.route.settings);
         reply.view('user', {
             user,
             showFilterSelectors: false,
             filterType: 'circle',
-            inBodyAds,
             title: 'User Profile',
-            posts: Mocks.posts
+            posts: Mocks.posts,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

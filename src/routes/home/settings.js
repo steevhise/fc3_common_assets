@@ -9,6 +9,7 @@ module.exports = {
     handler: function (request, reply) {
 
         const languageOptions = ['English', 'Spanish', 'French', 'German', 'Esperanto'];
+
         const notificationOptions = [
             {
                 type: 'Email Digest',
@@ -23,6 +24,7 @@ module.exports = {
                 description: 'Only receive emails for new admin posts'
             }
         ];
+
         const userData = {
             firstName: 'Jim',
             lastName: 'Shue',
@@ -36,7 +38,8 @@ module.exports = {
             notificationPref: 1,
             currentPic: 'http://lorempixel.com/250/250/nightlife'
         };
-        reply.view('./home/settings', {
+
+        reply.view('home/settings', {
             languageOptions,
             notificationOptions,
             userData,

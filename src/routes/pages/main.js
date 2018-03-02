@@ -33,10 +33,10 @@ module.exports = {
                 results.push(table);   // this is an array of {route settings: method: path: etc } hashes.
             }
         }
-  // TODO: the static pages need to return all the actual pages.
 
-  // console.log("---------------------");
-  // TODO: do some error catching, maybe - like what if there's no results?
+        // TODO: the static pages need to return all the actual pages.
+        // TODO: do some error catching, maybe - like what if there's no results?
+
         reply.view('sitemap', {
             title: 'Site Map',
             pages: results

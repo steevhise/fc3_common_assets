@@ -10,14 +10,13 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one', 'two'
-        ];
-        reply.view('./home/alerts', {
-            inBodyAds,
+        reply.view('home/alerts', {
             title: 'Alerts',
             posts: Mocks.posts,
-            alerts
+            alerts,
+            inBodyAds: [
+                'one', 'two'
+            ]
         });
     }
 };
