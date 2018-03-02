@@ -3,8 +3,8 @@ const FCPost = require('@freecycle/common-hapi-plugins/modules/freecycle-post');
 const FCUser = require( '@freecycle/common-hapi-plugins/modules/freecycle-user');
 const FCGroup = require( '@freecycle/common-hapi-plugins/modules/freecycle-group');
 const PostService = require('@freecycle/common-hapi-plugins/services/post');
-const UserService = require( '@freecycle/common-hapi-plugins/services/user');
-const GroupService = require( '@freecycle/common-hapi-plugins/services/group');
+const UserService = require('@freecycle/common-hapi-plugins/services/user');
+const GroupService = require('@freecycle/common-hapi-plugins/services/group');
 
 exports.register = Util.callbackify((server, options) => {
 
