@@ -17,18 +17,18 @@ module.exports = (server, options) => ({
             auth: request.route.settings.auth
         },
         footerMenuItems: [
-            'Local Towns',
-            'Merchandise',
-            'Donate',
-            'Privacy',
-            'About',
-            'Sponsors',
-            'Volunteer',
-            'Terms',
-            'News',
-            'Help',
-            'Contact',
-            'Wiki'
+            { name: 'Local Towns', path: '/' },
+            { name: 'Merchandise', path: '/' },
+            { name: 'Donate', path: '/' },
+            { name: 'Privacy', path: '/' },
+            { name: 'About', path: '/' },
+            { name: 'Sponsors', path: '/' },
+            { name: 'Volunteer', path: '/' },
+            { name: 'Terms', path: '/' },
+            { name: 'News', path: '/' },
+            { name: 'Help', path: '/' },
+            { name: 'Contact', path: '/' },
+            { name: 'Wiki', path: '/' }
         ]
     })
 });

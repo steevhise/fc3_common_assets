@@ -1,6 +1,6 @@
 const Hoek = require('hoek');
 const Boom = require('boom');
-const ActionModels = require('../models');
+const ActionModels = require('../../models');
 
 // route definitions
 module.exports = [

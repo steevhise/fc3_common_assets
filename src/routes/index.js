@@ -21,7 +21,7 @@ const flatten = (routes, obj) => {
     return routes.concat(
         Object.keys(obj)
             .map((filename) => obj[filename])
-            .reduce(flatten, routes)
+            .reduce(flatten, [])
     );
 };
 
