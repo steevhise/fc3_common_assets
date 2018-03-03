@@ -1,7 +1,4 @@
 const Util = require('util');
-const Graphql = require('graphql');
-const { default: Schema } = require('@freecycle/freecycle_graphql_schema');
-const { Context } = require('@freecycle/freecycle_node_dal');
 const FCPost = require('@freecycle/common-hapi-plugins/modules/freecycle-post');
 const FCUser = require( '@freecycle/common-hapi-plugins/modules/freecycle-user');
 
@@ -9,22 +6,18 @@ exports.register = Util.callbackify((server, options) => {
 
     server.decorate('server', 'Post', FCPost.postClassFunc(server));
     server.decorate('server', 'User', FCUser.userClassFunc(server));
-    server.decorate('server', 'context', Context);
-    server.decorate('server', 'graphql', Graphql.graphql);
-    server.decorate('server', 'schema', Schema);
 
     const combine = (...arrays) => [].concat(...arrays);
 
     return server.register(combine(
-        require('./plugins/frontend'),
-        require('./plugins/auth')
+        require('./plugins/frontend')(server, options),
+        require('./plugins/auth')(server, options)
     ))
     .then(() => {
 
         // declare some server extensions
         server.ext(combine(
-            require('./extensions/preauth.js'),
-            require('./extensions/errors.js')
+            require('./extensions/errors')
         ));
 
         // store user info that we can get to from anywhere.
@@ -52,22 +45,15 @@ exports.register = Util.callbackify((server, options) => {
             providerParams: { display: 'popup' }
         });
 
-        // TODO only has to be called on root to work with hapi-error  - what now here now that we've replaced hapi-error?
-        server.root.views(require('./view-manager')(server, options));
+        server.views(require('./view-manager')(server, options));
 
-        server.route(combine(
-            require('./routes/actions'),
-            require('./routes/admin'),
-            require('./routes/groups'),
-            require('./routes/home'),
-            require('./routes/pages'),
-            require('./routes/posts'),
-            require('./routes/static'),
-            require('./routes/test')
-        ));
+        server.route(require('./routes'));
     });
 });
 
 exports.register.attributes = {
-    pkg: require('../package.json')
+    pkg: require('../package.json'),
+    dependencies: [
+        '@freecycle/freecycle_graphql_schema'
+    ]
 };

@@ -1,4 +1,4 @@
 {
     "verbose": true,
-    "exec": "babel index.js -o lib/index.js && node {{filename}}"
+    "exec": "babel server.js -o lib/server.js && node {{filename}}"
 }

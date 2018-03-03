@@ -1,7 +1,7 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: './src/assets/js/main.js',
@@ -24,6 +24,12 @@ module.exports = {
                     presets: ['es2015'],
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
+            },
+            {
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    use: ['css-loader', 'sass-loader']
+                })
             }
         ]
     },
@@ -50,6 +56,10 @@ module.exports = {
         ], {
             copyUnmodified: true,
             debug: 'warning'
+        }),
+        new ExtractTextPlugin({
+            filename: '../../public/assets/css/main.css',
+            disable: false
         })
     ]
 };

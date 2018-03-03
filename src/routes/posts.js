@@ -67,27 +67,33 @@ module.exports = [
 
             // grab the image and return content-type header and data
 
+            const fail = (err) => {
+
+                if (err) {
+                    request.log(['get-image', 'error'], err);
+                }
+
+                return reply(Boom.create(499, `post image ${id} does not exist.`));
+            };
+
             try {
                 request.server.Post.getImageById({ id, thumb }, (err, image) => {
 
-                    Hoek.assert(!err, 'something is wrong: ' + err);
-                    if ((image !== null) && image.data && (image.data.length > 0)) {
-                        const data = new Buffer.from(image.data, 'latin1');    // after much trial and error this is what works..
-                        const size = Buffer.byteLength(data);
-                        console.log('image byte length: ' + size);
-                        reply(data).bytes(size).type(image.mime_type).header('Content-Disposition', 'inline');
+                    if (err) {
+                        return fail(err);
                     }
-                    else {
-                        const error = Boom.create(499, 'post image ' + id + ' does not exist.');
-                        request.log('get-image', e);
-                        return reply(error);
+
+                    if (!image || !image.data) {
+                        return fail();
                     }
+
+                    return reply(image.data)
+                        .type(image.mime_type)
+                        .header('Content-Disposition', 'inline');
                 });
             }
-            catch (e) {
-                const error = Boom.create(499, 'post image ' + id + ' does not exist.');
-                request.log('get-image', e);
-                return reply(error);
+            catch (err) { // TODO this catch should not be necessary– errors should come from callback
+                return fail(err);
             }
         }
 

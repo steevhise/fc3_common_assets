@@ -3,6 +3,9 @@
 //custom components  - alphabetical order please
 // everything that was common here is moved to common
 
+// importing common sass here rather than importing this modules sass in common. 
+@import "~@freecycle/fc3_common_assets/src/scss/main";
+
 //custom modules
 @import "modules/alert_result";
 @import "modules/edit_profile";

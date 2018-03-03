@@ -2,7 +2,7 @@ const Debug = require('debug')('freecycle:fc3_main:error-extension');
 
 module.exports = {
     type: 'onPreResponse',
-    method: (request,reply) => {
+    method: (request, reply) => {
 
         const { response } = request;
 
@@ -28,9 +28,11 @@ module.exports = {
         Debug('error message: ', message);
         Debug('status code: ', statusCode);
 
+        // Ensure the error is logged even though we know how to handle it
+        request.log('error', request.response);
+
         // TODO: we could pass other things to the template too, like  errorTitle, moreInfo..
 
-        return reply.view('./error_template', { statusCode, errorMessage: message }).code(statusCode);
+        return reply.view('error_template', { statusCode, errorMessage: message }).code(statusCode);
     }
 };
-
