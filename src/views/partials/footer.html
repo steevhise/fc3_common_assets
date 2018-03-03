@@ -1,9 +1,11 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <footer>
+    {% if featuredIn %}
     <div class="row">
         <h3 style="text-align:center;color:#ffffff;" >As featured in:</h3>
         <fc-featuredin></featuredin>
     </div>
+    {% endif %}
     <div class="footer-inner column row">
         <div class="row footer-row">
             <div class="footer-image-row small-12 columns">
