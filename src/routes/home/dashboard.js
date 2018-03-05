@@ -2,10 +2,10 @@ const Mocks = require('./helpers/mocks');
 
 module.exports = {
     method: 'GET',
-    path: '/desktop-dash',
+    path: '/home/dashboard',
     config: {
         description: 'The logged-in user\'s \'home\'.',
-        id: 'pages_dashboard',
+        id: 'home_dashboard',
         auth: { mode: 'required' }
     },
     handler: function (request, reply) {
