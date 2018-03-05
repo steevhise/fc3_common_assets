@@ -74,6 +74,7 @@
     "eslint-config-hapi": "^10.1.0",
     "eslint-plugin-hapi": "^4.0.0",
     "googleplaces": "^0.6.1",
-    "lab": "^14.2.2"
+    "lab": "^14.2.2",
+    "webpack-cli": "^2.0.10"
   }
 }

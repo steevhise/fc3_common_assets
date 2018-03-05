@@ -3,7 +3,7 @@ module.exports = {
     path: '/signup',
     config: {
         id: 'pages_signup',
-        description: 'signup on this page',
+        description: 'Signup on this page',
         auth: false,
         plugins: {
             crumb: {

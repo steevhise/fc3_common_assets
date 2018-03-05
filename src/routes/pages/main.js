@@ -5,13 +5,14 @@ module.exports = {
     path: '/',
     config: {
         id: 'pages_home',
-        description: 'Front Door for logged-out users'
+        description: 'Front door for logged-out users'
     },
     handler: function (request, reply) {
 
         const localGroups = [
             'Tuscon', 'Marana', 'Oro Valley', 'Vail', 'Sanuarita'
         ];
+
         const metrics = [
             {
                 name: 'Members',

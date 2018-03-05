@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const Boom = require('boom');
 
 module.exports = {
@@ -5,12 +6,17 @@ module.exports = {
     path: '/posts/images/{postImageId}/{thumb?}',
     config: {
         id: 'post_images',
-        description: 'a single post image, e.g. /posts/images/4090134 - or /posts/images/4090116/thumb'
+        description: 'A single post image, e.g. /posts/images/4090134 - or /posts/images/4090116/thumb',
+        validate: {
+            params: Joi.object({
+                postImageId: Joi.number(),
+                thumb: Joi.boolean()
+            })
+        }
     },
     handler: function (request, reply) {
 
-        const id = Number(request.params.postImageId);
-        const thumb = request.params.thumb;
+        const { postImageId: id, thumb } = request.params;
 
         // grab the image and return content-type header and data
 

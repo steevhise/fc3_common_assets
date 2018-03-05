@@ -6,7 +6,7 @@ module.exports = {
     path: '/fb_login',          // The callback endpoint registered with the provider
     config: {
         id: 'pages_fblogin',
-        description: 'go here to log in via FB',
+        description: 'Log in via FB',
         auth: 'facebook',
         handler: function (request, reply) {
 
@@ -23,14 +23,15 @@ module.exports = {
             const fbId = request.auth.credentials.profile.id;
 
             request.log('debug', fbId);
-            // return reply.redirect('/desktop-dash');
 
             const query = '{ user_static (where: {facebook_id: ' + fbId + '}) {   facebook_id user_id} } ';
             WGQL.GraphQLWrapper(request.server, query, 'user_static.user_id', (err, result) => {
 
-                Hoek.assert(!err, err);
+                if (err) {
+                    return reply(err);
+                }
+
                 const userId = result.user_static.user_id;
-                console.log('userId ', userId);
 
                 reply.setCookie(Number(userId), (err, cookieContent) => {
 
@@ -38,7 +39,7 @@ module.exports = {
 
                     // or success
                     reply.state('MyFreecycle', cookieContent);
-                    console.log('ok we gave out the cookie after Facebook login', cookieContent);
+
                     return reply.redirect('/desktop-dash');
                 });
             });

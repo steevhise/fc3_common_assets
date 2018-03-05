@@ -18,44 +18,39 @@ module.exports = [
 
                     const userId = request.auth.credentials.id;
                     const postId = Number(request.payload.post_id);
-                    console.log('auth routine found postId: ' + postId);
+
                     new request.server.Post(postId, (err, post) => {
 
-                        Hoek.assert(!err, 'Problem getting post!');
-                        if (post.user_id === userId) {
-                            // allowed
-                            cb(null, true);
+                        if (err) {
+                            return cb(err);
                         }
-                        else {
+
+                        if (post.user_id !== userId) {
                             request.log('authorization', `post author id is ${post.user_id} but current user is ${userId}`);
-                            cb(Boom.forbidden(), true);
+                            return cb(Boom.forbidden());
                         }
+
+                        // allowed
+                        return cb(null, true);
                     });
                 } }
             }
         },
         handler: function (request, reply) {
+
             // determine the command, nullify if the command is undefined
             // NOTE: See the models directory.
             const command = request.payload.command || null;
 
-            if (request.payload.command !== null) {
-                // wrap processing of command in a try catch so that we can handle the exception if there is one
-                // and gracefully do something with the users' request.
-                try {
-                    ActionModels[command](request, reply);
-                }
-                catch (error) {
-                    Hoek.assert(!error, 'Problem with command!');
-                }
-            }
-            else {
+            if (request.payload.command === null) {
                 // this should never hit because we are handling the command properly,
                 // however this is left in place as a catch all if all else fails.
-                reply.response({
+                return reply({
                     message: 'Error please provide a valid command.'
                 });
             }
+
+            return ActionModels[command](request, reply);
         }
     }
 ];

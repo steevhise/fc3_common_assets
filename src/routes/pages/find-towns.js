@@ -42,6 +42,7 @@ module.exports = {
                 distance: 225
             }
         ];
+
         const groupMap = {
             settings: {
                 height: '400',
@@ -56,17 +57,17 @@ module.exports = {
                 { lat : 34.482473, lng : -114.322985, description : 'Lake Havasu City', icon: 'post' }
             ]
         };
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
+
         reply.view('find-groups', {
             title: 'Find Towns',
             groupList,
-            inBodyAds,
             countries: Countries,
             regions: Regions,
-            geomap: groupMap
+            geomap: groupMap,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

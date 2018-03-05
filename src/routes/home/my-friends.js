@@ -10,11 +10,7 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
-        reply.view('./home/my_friends', {
+        reply.view('home/my_friends', {
             messageSets: [
                 {
                     messageHeader: 'Chat With Friends',
@@ -39,9 +35,12 @@ module.exports = {
             showFilterSelectors: true,
             filterType: 'circle',
             friends: Mocks.friends,
-            inBodyAds,
             title: 'My Friends',
-            posts: Mocks.posts
+            posts: Mocks.posts,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

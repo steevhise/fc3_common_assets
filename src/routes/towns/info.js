@@ -2,17 +2,12 @@ const Mocks = require('./helpers/mocks');
 
 module.exports = {
     method: 'GET',
-    path: '/town/info/{unique_group_name}',
+    path: '/town/info/{uniqueName}',
     config: {
         id: 'group_info',
         description: 'The named town\'s information.'
     },
     handler: function (request, reply) {
-
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
 
         const freecycle = {
             copyright:    'The official TFN copyright notice.',
@@ -22,7 +17,7 @@ module.exports = {
             num_members:  'The total number of members in all towns.'
         };
 
-        const description_tokens = {
+        const descriptionTokens = {
             '%%copyright': freecycle.copyright,
             '%%custom_logo': Mocks.group.logo,
             '%%disclaimer': freecycle.disclaimer,
@@ -38,13 +33,16 @@ module.exports = {
 
         group.description = group.description.replace(/%%\w+/g, (all) => {
 
-            return description_tokens[all] || all;
+            return descriptionTokens[all] || all;
         });
 
-        reply.view('./groups/info', {
-            inBodyAds,
-            group: Mocks.group,
-            freecycle
+        reply.view('groups/info', {
+            group,
+            freecycle,
+            inBodyAds: [
+                'one',
+                'two'
+            ]
         });
     }
 };

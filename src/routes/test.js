@@ -6,9 +6,9 @@ module.exports = [
         method: 'GET',
         path: '/test',
         config: {
-            description: 'just a test.',
+            description: 'Just a test.',
             id: 'pages_test',
-            auth: {  mode: 'required' },
+            auth: { mode: 'required' },
             plugins: {
                 // 'hapiAuthorization': {role: '1'}
                 // you don't have to have any special privs to see your own dashboard, but this is how you do it.
@@ -17,7 +17,6 @@ module.exports = [
         handler:  (request, reply) => {
 
             return reply(Boom.create(499, 'testing testing'));
-
         }
     }
 ];

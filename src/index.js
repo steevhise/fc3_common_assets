@@ -1,11 +1,19 @@
 const Util = require('util');
 const FCPost = require('@freecycle/common-hapi-plugins/modules/freecycle-post');
 const FCUser = require( '@freecycle/common-hapi-plugins/modules/freecycle-user');
+const FCGroup = require( '@freecycle/common-hapi-plugins/modules/freecycle-group');
+const PostService = require('@freecycle/common-hapi-plugins/services/post');
+const UserService = require('@freecycle/common-hapi-plugins/services/user');
+const GroupService = require('@freecycle/common-hapi-plugins/services/group');
 
 exports.register = Util.callbackify((server, options) => {
 
     server.decorate('server', 'Post', FCPost.postClassFunc(server));
     server.decorate('server', 'User', FCUser.userClassFunc(server));
+    server.decorate('server', 'Group', FCGroup.groupClassFunc(server));
+    server.decorate('server', 'postService', new PostService(server, { PostEntity: server.Post, UserEntity: server.User }));
+    server.decorate('server', 'userService', new UserService(server, { UserEntity: server.User }));
+    server.decorate('server', 'groupService', new GroupService(server, { GroupEntity: server.Group }));
 
     const combine = (...arrays) => [].concat(...arrays);
 

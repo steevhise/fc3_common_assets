@@ -2,29 +2,28 @@ const Mocks = require('./helpers/mocks');
 
 module.exports = {
     method: 'GET',
-    path: '/town/{unique_group_name}',
+    path: '/town/{uniqueName}',
     config: {
         id: 'groups_main',
-        description: 'a town page, for example try /town/freecycle'
+        description: 'A town page, for example try /town/freecycle'
     },
     handler: function (request, reply) {
 
-        const inBodyAds = [
-            'one',
-            'two'
-        ];
+        const { uniqueName } = request.params;
 
-        const unique_name = request.params.unique_group_name;
-        request.log('debug', 'about to look up group ' + unique_name);
+        request.log('debug', 'about to look up group ' + uniqueName);
 
-        reply.view('./groups/group.html', {
-            inBodyAds,
-            group: Mocks.group,
+        reply.view('groups/group', {
             showFilterSelectors: true,
             isGroup: true,
+            group: Mocks.group,
             posts: Mocks.group.posts,
             groups: [
                 'Tuscon', 'Marana', 'Oro Valley', 'Vail', 'Sanuarita'
+            ],
+            inBodyAds: [
+                'one',
+                'two'
             ]
         });
     }
