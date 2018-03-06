@@ -5,6 +5,7 @@ const FCGroup = require( '@freecycle/common-hapi-plugins/modules/freecycle-group
 const PostService = require('@freecycle/common-hapi-plugins/services/post');
 const UserService = require('@freecycle/common-hapi-plugins/services/user');
 const GroupService = require('@freecycle/common-hapi-plugins/services/group');
+const AuthService = require('@freecycle/common-hapi-plugins/services/auth');
 
 exports.register = Util.callbackify((server, options) => {
 
@@ -14,6 +15,7 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'postService', new PostService(server, { PostEntity: server.Post, UserEntity: server.User }));
     server.decorate('server', 'userService', new UserService(server, { UserEntity: server.User }));
     server.decorate('server', 'groupService', new GroupService(server, { GroupEntity: server.Group }));
+    server.decorate('server', 'authService', new AuthService(server));
 
     const combine = (...arrays) => [].concat(...arrays);
 
@@ -37,9 +39,9 @@ exports.register = Util.callbackify((server, options) => {
         });
 
         // TODO pull auth-cookie-freecycle strategy config up into fc3_main
-        server.auth.strategy('session', 'cookie', 'try', Object.assign({}, server.plugins['auth-cookie-freecycle'].strategy, {
-            redirectOnTry: false
-        }));
+        server.auth.strategy('session', 'cookie-freecycle', 'try', {
+            isSecure: !options.dev
+        });
 
         // Declare an authentication strategy using the bell scheme for Facebook login
         // with the name of the provider, cookie encryption password,

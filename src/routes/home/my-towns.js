@@ -2,7 +2,7 @@ module.exports = {
     method: 'GET',
     path: '/home/my-towns',
     config: {
-        id: 'home_mygroups',
+        id: 'home_mytowns',
         description: 'The logged in user\'s towns.',
         auth: { mode: 'required' }
     },

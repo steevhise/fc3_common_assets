@@ -8,6 +8,7 @@ module.exports = {
         handler: function (request, reply) {
 
             request.cookieAuth.clear();
+
             reply.view('logout', {
                 title: 'Logged out'
             });

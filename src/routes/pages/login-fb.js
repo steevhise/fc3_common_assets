@@ -40,7 +40,7 @@ module.exports = {
                     // or success
                     reply.state('MyFreecycle', cookieContent);
 
-                    return reply.redirect('/desktop-dash');
+                    return reply.redirect('/home/dashboard');
                 });
             });
         }

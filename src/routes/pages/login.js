@@ -19,54 +19,45 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        let msg = null;
+        const { authService } = request.server;
 
         // if credentials are passed in from form...
-        if (request.payload && request.payload.user && request.payload.password) {
-            const user = request.payload.user;
-            const pw = request.payload.password;
+        if (request.payload) {
 
-            request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
+            const { user: username, password } = request.payload;
 
-                if (err) {
-                    return reply(err);
-                }
+            return authService.login(username, password)
+            .then((user) => {
 
-                if (userId) {
-                    reply.setCookie(Number(userId), (err, cookieContent) => {
-
-                        if (err) {
-                            return reply(err);
-                        }
-
-                        // or success
-                        reply.state('MyFreecycle', cookieContent);
-                        request.log('debug', 'ok we gave out the cookie', cookieContent);
-
-                        const { redirect } = request.state;
-
-                        if (redirect) {
-                            reply.unstate('redirect');
-                        }
-
-                        reply.redirect((redirect && redirect.to) || '/desktop-dash').temporary(true);
-                    });
-                }
-                else {
-            // bad login.
-                    msg = 'invalid username/email or password.';
-                    reply.view('login', {
+                if (!user) {
+                    return reply.view('login', {
                         title: 'Login Required',
-                        msg
+                        msg: 'Invalid username/email or password.'
                     });
                 }
+
+                return authService.grantToken(user.user_id, request.info.remoteAddress);
+            })
+            .then(({ user_id, token }) => {
+
+                console.log(request.state.MyFreecycle)
+                request.cookieAuth.set(user_id, token);
+
+                console.log(request.state.MyFreecycle)
+                request.log('debug', 'ok we gave out the cookie', request.state.MyFreecycle);
+
+                const { redirect } = request.state;
+
+                if (redirect) {
+                    reply.unstate('redirect');
+                }
+
+                return reply.redirect((redirect && redirect.to) || '/home/dashboard').temporary(true);
             });
         }
-        else {
-            reply.view('login', {
-                title: 'Login Required',
-                msg
-            });
-        }
+
+        return reply.view('login', {
+            title: 'Login Required'
+        });
     }
 };
