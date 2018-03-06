@@ -40,7 +40,9 @@ exports.register = Util.callbackify((server, options) => {
 
         // TODO pull auth-cookie-freecycle strategy config up into fc3_main
         server.auth.strategy('session', 'cookie-freecycle', 'try', {
-            isSecure: !options.dev
+            isSecure: !options.dev,
+            redirectTo: '/login',
+            redirectOnTry: false    // if mode is 'try' on a public page, don't redirect them if they're not logged in
         });
 
         // Declare an authentication strategy using the bell scheme for Facebook login

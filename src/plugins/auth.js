@@ -1,6 +1,5 @@
 module.exports = (server, options) => ([
     require('bell'),
-    require('@freecycle/common-hapi-plugins/plugins/freecycle-login'),
     {
         register: require('@freecycle/common-hapi-plugins/plugins/redirect-by-cookie'),
         options: {
@@ -8,13 +7,7 @@ module.exports = (server, options) => ([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle'),
-        options: {
-            redirectTo: '/login',
-            redirectOnTry: false,    // if mode is 'try' on a public page, don't redirect them if they're not logged in
-            clearInvalid: true,
-            keepAlive: false
-        }
+        register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle')
     },
     {
         register: require('hapi-authorization'),       // TODO: not ported to hapi 17
