@@ -40,11 +40,9 @@ module.exports = {
             })
             .then(({ user_id, token }) => {
 
-                console.log(request.state.MyFreecycle)
                 request.cookieAuth.set(user_id, token);
 
-                console.log(request.state.MyFreecycle)
-                request.log('debug', 'ok we gave out the cookie', request.state.MyFreecycle);
+                request.log('debug', 'ok we gave out the cookie');
 
                 const { redirect } = request.state;
 
