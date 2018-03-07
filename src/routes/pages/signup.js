@@ -38,7 +38,7 @@ module.exports = {
             //             // or success
             //             reply.state('MyFreecycle', cookieContent);
             //             request.log('debug', 'ok we gave out the cookie', cookieContent);
-            //             reply.redirect('/desktop-dash').temporary(true);
+            //             reply.redirect('/home/dashboard').temporary(true);
             //         });
             //     }
             //     else {
