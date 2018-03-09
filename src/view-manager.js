@@ -1,14 +1,22 @@
 const Path = require('path');
+const SwigExtensions = require('@freecycle/common-hapi-plugins/modules/swig-extensions');
+
+const commonRoot = Path.dirname(require.resolve('@freecycle/fc3_common_assets/package.json'));
+const commonViews = Path.resolve(commonRoot, 'src/views');
 
 module.exports = (server, options) => ({
     engines: {
-        html: server.plugins['hapi-swig-extensions'].swig
+        html: SwigExtensions.create({
+            includeDir: commonViews // For rendering common partials
+        })
     },
-    isCached: !options.dev,       // Cache when not in development
-    allowInsecureAccess: true,    // TODO should ensure this can be set to false
+    isCached: !options.dev,         // Cache when not in development
     // Note: this below is only path for local view files. Common assets get found by custom template loader!
     relativeTo: Path.resolve(__dirname, '..'), // Project root
-    path:  'src/views',
+    path: [
+        'src/views',
+        commonViews                 // For rendering top-level common views
+    ],
     layoutPath: 'src/views/layout',
     context: (request) => ({
         session: request.auth.credentials,
