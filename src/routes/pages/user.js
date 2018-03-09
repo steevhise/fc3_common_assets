@@ -1,4 +1,4 @@
-const Mocks = require('./helpers/mocks');
+const Boom = require('boom');
 
 module.exports = {
     method: 'GET',
@@ -9,42 +9,34 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const user = {
-            avatar_url: 'http://lorempixel.com/150/150/people/8',
-            name: 'Nathan Puente',
-            username: 'npuente',
-            description: 'I\'m a business-owener and entrepreneur in Tuscon.',
-            thumbsup: 100,
-            groups: [
-                {
-                    name: 'Tucson',
-                    state: 'AZ'
-                },
-                {
-                    name: 'Marana',
-                    state: 'AZ'
-                },
-                {
-                    name: 'Vail',
-                    state: 'AZ'
-                },
-                {
-                    name: 'Oro Valley',
-                    state: 'AZ'
-                }
-            ]
-        };
+        const { userService } = request.server;
+        const { username } = request.params;
+        const { credentials, isAuthenticated } = request.auth;
 
-        reply.view('user', {
-            user,
-            showFilterSelectors: false,
-            filterType: 'circle',
-            title: 'User Profile',
-            posts: Mocks.posts,
-            inBodyAds: [
-                'one',
-                'two'
-            ]
+        return userService.fetchProfile({
+            viewerId: isAuthenticated && credentials.id,
+            where: {
+                username
+            }
+        })
+        .then((profile) => {
+
+            if (!profile) {
+                throw Boom.notFound('User not found');
+            }
+
+            return reply({
+                title: 'User Profile',
+                showFilterSelectors: false,
+                filterType: 'circle',
+                inBodyAds: [
+                    'one',
+                    'two'
+                ],
+                data: {
+                    profile
+                }
+            });
         });
     }
 };

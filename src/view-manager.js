@@ -37,6 +37,9 @@ module.exports = (server, options) => ({
             { name: 'Help', path: '/' },
             { name: 'Contact', path: '/' },
             { name: 'Wiki', path: '/' }
-        ]
+        ],
+        consts: {
+            friendStatuses: request.server.userService.friendStatuses
+        }
     })
 });
