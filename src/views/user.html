@@ -7,10 +7,10 @@
     <img class="avatar" src="{{ user.avatar_url }}" />
     <h2>{{ data.profile.name }}</h2>
     <h3 class="section-title-small">{{ data.profile.username }}</h3>
-    <p>{{ user.description }}</p>
+    <p>{{ data.profile.info.about }}</p>
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
-      {{ user.thumbsup }} thumbs up
+      {{ data.profile.info.reputation }} thumbs up
     </h3>
   </div>
 </div>
