@@ -4,16 +4,16 @@
         <div class="post-grid-item-header">
             <div class="post-grid-item-header-left">
                 <div class="post-grid-item-category-icon">
-                    {% if post.postType.post_type_name === 'OFFER'  %}
+                    {% if post.type.name === 'OFFER'  %}
                     {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
                     <span class="text-offer">Offer</span>
-                    {% elseif post.postType.post_type_name === 'LEND' %}
+                    {% elseif post.type.name === 'LEND' %}
                     {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
                     <span class="text-lend">Lend</span>
-                    {% elseif post.postType.post_type_name === 'BORROW' %}
+                    {% elseif post.type.name === 'BORROW' %}
                     {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
                     <span class="text-borrow">Borrow</span>
-                    {% elseif post.postType.post_type_name === 'WANTED' %}
+                    {% elseif post.type.name === 'WANTED' %}
                     {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
                     <span class="text-wanted">Wanted</span>
                     {% endif %}
@@ -35,16 +35,16 @@
         </div>
         <div class="post-grid-item-footer">
             <div class="post-grid-item-header-left">
-                <span class="text-lighten">{{ post.post_date | mreldate }}</span>
+                <span class="text-lighten">{{ post.date | mreldate }}</span>
             </div>
             <div class="post-grid-item-header-right"> <!--  TODO: not sure how to make this real.  -->
-                {% if post.postType.post_type_name === 'offer'  %}
+                {% if post.type.name === 'offer'  %}
                 <button class="btn-offer">{{ postAction|default('Reply') }}</button>
-                {% elseif post.postType.post_type_name === 'lend' %}
+                {% elseif post.type.name === 'lend' %}
                 <button class="btn-lend">{{ postAction|default('Reply') }}</button>
-                {% elseif post.postType.post_type_name === 'borrow' %}
+                {% elseif post.type.name === 'borrow' %}
                 <button class="btn-borrow">{{ postAction|default('Reply') }}</button>
-                {% elseif post.postType.post_type_name === 'wanted' %}
+                {% elseif post.type.name === 'wanted' %}
                 <button class="btn-wanted">{{ postAction|default('Reply') }}</button>
                 {% endif %}
             </div>
