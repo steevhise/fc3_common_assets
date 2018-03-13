@@ -42,8 +42,8 @@
             <div class="item-grid-view container">
               <div class="grid-sizer"></div>
               <div class="gutter-sizer"></div>
-              {% for post in profile.posts %}
-              {% include './partials/post_grid_item.html' with post %}
+              {% for post in data.profile.posts %}
+              {% include './partials/post_grid_item.html' %}
               {% endfor %}
             </div>
         </div>
@@ -59,7 +59,7 @@
               </tr>
               </thead>
               <tbody>
-                {% for group in profile.groups %}
+                {% for group in data.profile.groups %}
                 <tr>
                   <td><h4>{{group.name}}</h4></td>
                   <td>{{group.state}}</td>
