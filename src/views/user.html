@@ -5,8 +5,8 @@
 <div class="row">
   <div class="profile">
     <img class="avatar" src="{{ user.avatar_url }}" />
-    <h2>{{ user.name }}</h2>
-    <h3 class="section-title-small">{{ user.username }}</h3>
+    <h2>{{ data.profile.name }}</h2>
+    <h3 class="section-title-small">{{ data.profile.username }}</h3>
     <p>{{ user.description }}</p>
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
@@ -42,7 +42,7 @@
             <div class="item-grid-view container">
               <div class="grid-sizer"></div>
               <div class="gutter-sizer"></div>
-              {% for post in posts %}
+              {% for post in profile.posts %}
               {% include './partials/post_grid_item.html' with post %}
               {% endfor %}
             </div>
@@ -59,7 +59,7 @@
               </tr>
               </thead>
               <tbody>
-                {% for group in user.groups %}
+                {% for group in profile.groups %}
                 <tr>
                   <td><h4>{{group.name}}</h4></td>
                   <td>{{group.state}}</td>
