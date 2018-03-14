@@ -4,7 +4,8 @@
 
 const Hapi = require('hapi');
 const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
-const { Config } = require('@freecycle/freecycle_node_dal');
+// const { Config } = require('@freecycle/freecycle_node_dal');
+const { Config } = require('@freecycle/common-hapi-plugins/node_modules/@freecycle/freecycle_node_dal');
 
 exports.deployment = (start) => {
 
@@ -40,7 +41,7 @@ exports.deployment = (start) => {
 
     return server.register([
         {
-            register: require('@freecycle/freecycle_graphql_schema'),
+            register: require('@freecycle/common-hapi-plugins/node_modules/@freecycle/freecycle_graphql_schema'),
             options: {
                 configPath,
                 legacyConfigPath
