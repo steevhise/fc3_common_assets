@@ -22,7 +22,7 @@
             <div class="post-grid-item-header-right">
                 <div class="post-grid-item-header-icon">
                     {% include '../icons/map_pin.html' %}
-                    <span>{{post.location}}</span>
+                    <span>{{post.location|title }}</span>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
             <img src="{{post.image}}"/>
         </div>
         <div class="post-grid-item-content">
-            <h4>{{post.post_subject}}</h4>
+            <h4>{{post.subject}}</h4>
         </div>
         <div class="post-grid-item-footer">
             <div class="post-grid-item-header-left">
