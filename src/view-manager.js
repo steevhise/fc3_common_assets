@@ -24,6 +24,9 @@ module.exports = (server, options) => ({
             id: request.route.settings.id,
             auth: request.route.settings.auth
         },
+        errors: []
+            .concat(request.response.source.context.errors || [])
+            .concat(request.app.formValidation || []),
         footerMenuItems: [
             { name: 'Local Towns', path: '/' },
             { name: 'Merchandise', path: '/' },
