@@ -4,13 +4,13 @@
 
 <div class="row">
   <div class="profile">
-    <img class="avatar" src="{{ user.avatar_url }}" />
+    <img class="avatar" src="{{ user.avatar_url }}" />{#TODO: replace with profile image when available.#}
     <h2>{{ data.profile.name }}</h2>
     <h3 class="section-title-small">{{ data.profile.username }}</h3>
     <p>{{ data.profile.info.about }}</p>
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
-      {{ data.profile.info.reputation }} thumbs up
+      {{ data.profile.info.reputation|default(0) }} thumbs up
     </h3>
   </div>
 </div>
@@ -62,7 +62,7 @@
                 {% for group in data.profile.groups %}
                 <tr>
                   <td><h4>{{group.name}}</h4></td>
-                  <td>{{group.state}}</td>
+                  <td>{{group.region.name}}</td>
                 </tr>
               {% endfor %}
               </tbody>
