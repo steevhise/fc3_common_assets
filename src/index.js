@@ -13,7 +13,7 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'User', FCUser.userClassFunc(server));
     server.decorate('server', 'Group', FCGroup.groupClassFunc(server));
     server.decorate('server', 'postService', new PostService(server, { PostEntity: server.Post, UserEntity: server.User }));
-    server.decorate('server', 'userService', new UserService(server, { UserEntity: server.User }));
+    server.decorate('server', 'userService', new UserService(server, { UserEntity: server.User, imagesURL: 'https://images.freecycle.org' }));
     server.decorate('server', 'groupService', new GroupService(server, { GroupEntity: server.Group }));
     server.decorate('server', 'authService', new AuthService(server, { UserEntity: server.User }));
 
