@@ -39,7 +39,13 @@ module.exports = {
                                 allowOnly: 'does not match password'
                             }
                         }
-                    })
+                    }),
+                acceptedTerms: Joi.boolean()
+                    .valid(true)
+                    .falsy('0', 'false', '')
+                    .truthy('1', 'true')
+                    .required()
+                    .label('Terms of service')
             },
             options: {
                 abortEarly: false,
@@ -74,7 +80,7 @@ module.exports = {
         // Below assumes we're POSTing to signup and not auth'd
 
         const { authService } = request.server;
-        const { validation, user, email, password } = request.payload;
+        const { validation, user, email, password, acceptedTerms } = request.payload;
         const fail = (errors) => {
 
             return reply.view('signup', {
@@ -93,7 +99,7 @@ module.exports = {
         return Promise.resolve()
         .then(() => {
 
-            return authService.signup({ username: user, email, password });
+            return authService.signup({ username: user, email, password, acceptedTerms });
         })
         .then((userId) => {
 
@@ -112,7 +118,7 @@ module.exports = {
                 const field = err.fields.username ? 'username' : 'email address';
 
                 return fail([{
-                    type: 'form',
+                    type: 'data',
                     message: `Sorry, that ${field} is already taken`
                 }]);
             }
