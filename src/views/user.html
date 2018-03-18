@@ -28,16 +28,28 @@
         <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
       </div>
       <div class="columns medium-3">
-        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i> Report</button>
+        
+        <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i> Report</button>'>
+            <form> {# TODO: Submit form to block user once endpoint is available. #}
+              <p>Contact a modetrator to report this user {{data.profile.username}}</p>
+              <label for="subject">Subject</label>
+              <input name="subject" type="text">
+              <label for="message">Message</label>
+              <textarea name="message"></textarea>
+              <button class="btn btn-default" type="submit">Submit</button>
+              <input type="hidden" name="moderator" value=""> {# TODO: add the moderator from the user's home group once data is available.#}
+              <input type="hidden" name="user" value="{{data.profile.username}}">
+            </form>
+        </fc-modal>
       </div>
 
       <div class="columns medium-3">
           <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-ban"></i>Block</button>'>
-          <form v-cloak> {# TODO: Submit form to block user once endpoint is available. #}
-            <p @click="console.log('Hello World')">Are you sure you want to block this user {{data.profile.username}}?</p>
-            <button class="btn btn-default" @click="console.log('hello world')">Yes</button>
-            <button class="btn btn-offer">No</button>
-          </form>
+            <form> {# TODO: Submit form to block user once endpoint is available. #}
+              <p>Are you sure you want to block this user {{data.profile.username}}?</p>
+              <button class="btn btn-default">Yes</button>
+              <button class="btn btn-offer">No</button>
+            </form>
         </fc-modal>
       </div>
     </div>
