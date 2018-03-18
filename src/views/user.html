@@ -17,13 +17,36 @@
 <div class="row">
   <hr class="row section-divider"/>
 </div>
+
 <div class="row">
-  <div class="profile-actions">
-    <button class="btn btn-action"><i class="icon fa fa-user-plus"></i> Request friendship</button>
-    <button class="btn btn-action"><i class="icon fa fa-envelope"></i> Message</button>
-    <button class="btn btn-action"><i class="icon fa fa-flag"></i> Report</button>
-    <button class="btn btn-action"><i class="icon fa fa-ban"></i>Block</button>
+  <div class="profile-actions container">
+    <div class="columns medium-8 medium-centered">
+      <div class="columns medium-3">
+        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-user-plus"></i> Request friendship</button>
+      </div>
+      <div class="columns medium-3">
+        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
+      </div>
+      <div class="columns medium-3">
+        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i> Report</button>
+      </div>
+
+      <div class="columns medium-3">
+          <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-ban"></i>Block</button>'>
+          <form v-cloak> {# TODO: Submit form to block user once endpoint is available. #}
+            <p @click="console.log('Hello World')">Are you sure you want to block this user {{data.profile.username}}?</p>
+            <button class="btn btn-default" @click="console.log('hello world')">Yes</button>
+            <button class="btn btn-offer">No</button>
+          </form>
+        </fc-modal>
+      </div>
+    </div>
   </div>
+  
+  <div class="row">
+    <hr class="row section-divider"/>
+  </div>
+
 </div>
 
 <div class="row collapse user-details">
