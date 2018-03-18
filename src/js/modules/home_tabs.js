@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
 	};
 	
 	switch (document.location.pathname) {
-		case '/desktop-dash':
-			setActiveTab('#desktop-dash');
+		case '/home/dashboard':
+			setActiveTab('#dashboard');
 			break;
 		case '/home/my-replies':
 			setActiveTab('#my-replies');
