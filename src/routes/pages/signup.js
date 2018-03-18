@@ -1,10 +1,12 @@
+const RouteHelpers = require('../helpers');
+const Joi = require('joi');
+
 module.exports = {
     method: '*',
     path: '/signup',
     config: {
         id: 'pages_signup',
         description: 'Signup on this page',
-        auth: false,
         plugins: {
             crumb: {
                 source: 'payload',
@@ -13,49 +15,115 @@ module.exports = {
                     isHttpOnly: true
                 }
             }
+        },
+        validate: {
+            failAction: RouteHelpers.formFailAction,
+            payload: {
+                user: Joi.string()
+                    .required()
+                    .label('Username'),
+                email: Joi.string()
+                    .email()
+                    .required()
+                    .label('Email address'),
+                password: Joi.string()
+                    .required()
+                    .label('Password'),
+                confpassword: Joi.string()
+                    .valid(Joi.ref('password'))
+                    .strip()
+                    .required()
+                    .label('Password confirmation').options({
+                        language: {
+                            any: {
+                                allowOnly: 'does not match password'
+                            }
+                        }
+                    }),
+                acceptedTerms: Joi.boolean()
+                    .valid(true)
+                    .falsy('0', 'false', '')
+                    .truthy('1', 'true')
+                    .required()
+                    .label('Terms of service')
+            },
+            options: {
+                abortEarly: false,
+                language: {
+                    key: '{{!label}} field '
+                }
+            }
         }
     },
     handler: function (request, reply) {
 
-        const msg = null;
-        // if credentials are passed in from form...
-        //     TODO: if user is already logged in, redirect them to their dashboard....
-        if (request.payload && request.payload.user && request.payload.password) {
-            // const user = request.payload.user;
-            // const pw = request.payload.password;
-            //
-            // console.log(request.payload.crumb);
-            //
-            // request.server.methods.loginUser(user, pw, request.server, (err, userId) => {   // callback neccessary, i guess.???
-            //
-            //     Hoek.assert(!err, 'loginUser ERROR: ' + err);
-            //     console.log('userID found after login:', userId);
-            //     if (userId) {
-            //         reply.setCookie(Number(userId), (err, cookieContent) => {
-            //
-            //             Hoek.assert(!err, 'Error: ' + err);
-            //
-            //             // or success
-            //             reply.state('MyFreecycle', cookieContent);
-            //             request.log('debug', 'ok we gave out the cookie', cookieContent);
-            //             reply.redirect('/home/dashboard').temporary(true);
-            //         });
-            //     }
-            //     else {
-            //         // bad login.
-            //         msg = 'invalid username/email or password.';
-            //         reply.view('login', {
-            //             title: 'Login Required',
-            //             msg
-            //         });
-            //     }
-            // });
-        }
-        else {
-            reply.view('signup', {
-                title: 'Signup for Freecycle',
-                msg
+        const title = 'Signup for Freecycle';
+
+        if (request.auth.isAuthenticated) {
+            return reply.view('signup', {
+                title,
+                data: {
+                    step2: {}
+                }
             });
         }
+
+        if (!request.payload) {
+            return reply.view('signup', {
+                title,
+                data: {
+                    step1: {}
+                }
+            });
+        }
+
+        // Below assumes we're POSTing to signup and not auth'd
+
+        const { authService } = request.server;
+        const { validation, user, email, password, acceptedTerms } = request.payload;
+        const fail = (errors) => {
+
+            return reply.view('signup', {
+                title,
+                errors: errors || [],
+                data: {
+                    step1: { email, user }
+                }
+            });
+        };
+
+        if (validation) {
+            return fail();
+        }
+
+        return Promise.resolve()
+        .then(() => {
+
+            return authService.signup({ username: user, email, password, acceptedTerms });
+        })
+        .then((userId) => {
+
+            return authService.grantToken(userId, request.info.remoteAddress);
+        })
+        .then(({ user_id: userId, token }) => {
+
+            request.cookieAuth.set(userId, token);
+
+            return reply.redirect(request.url.path).temporary();
+        })
+        .catch((err) => {
+
+            if (err instanceof authService.UserAlreadyExistsError) {
+
+                const field = err.fields.username ? 'username' : 'email address';
+
+                return fail([{
+                    type: 'data',
+                    message: `Sorry, that ${field} is already taken`
+                }]);
+            }
+
+            throw err;
+        });
     }
 };

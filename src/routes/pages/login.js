@@ -1,5 +1,7 @@
 const Hoek = require('hoek');
 
+const internals = {}
+
 module.exports = {
     method: '*',
     path: '/login',
@@ -30,10 +32,7 @@ module.exports = {
             .then((user) => {
 
                 if (!user) {
-                    return reply.view('login', {
-                        title: 'Login Required',
-                        msg: 'Invalid username/email or password.'
-                    });
+                    throw new internals.LoginRequired();
                 }
 
                 return authService.grantToken(user.user_id, request.info.remoteAddress);
@@ -51,6 +50,17 @@ module.exports = {
                 }
 
                 return reply.redirect((redirect && redirect.to) || '/home/dashboard').temporary(true);
+            })
+            .catch((err) => {
+
+                if (err instanceof internals.LoginRequired) {
+                    return reply.view('login', {
+                        title: 'Login Required',
+                        msg: 'Invalid username/email or password.'
+                    });
+                }
+
+                throw err;
             });
         }
 
@@ -59,3 +69,5 @@ module.exports = {
         });
     }
 };
+
+internals.LoginRequired = class LoginRequired extends Error {};
