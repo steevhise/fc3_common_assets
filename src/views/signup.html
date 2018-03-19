@@ -1,19 +1,20 @@
-{#
-    TODO: Create <fc-signup> component.
-#}
-
 {% extends './layout/layout.html' %}
 
 {% block content %}
-    {% if msg %}
-        <p class="callout alert">{{ msg }}</p>
-    {% endif %}
+    {% for error in errors %}
+        <p class="callout alert">{{ error.message }}</p>
+    {% endfor %}
     <div class="row">
         <div class="row">
             <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
         </div>
         <div class="row">
-            <fc-signup></fc-signup>
+            <fc-signup
+                username="{{ data.step1.user|e }}"
+                email="{{ data.step1.email|e }}"
+                step1="{{ !!data.step1 }}"
+                step2="{{ !!data.step2 }}">
+            </fc-signup>
         </div>
     </div>
 {% endblock %}
