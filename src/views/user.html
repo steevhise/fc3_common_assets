@@ -28,7 +28,7 @@
         <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
       </div>
       <div class="columns medium-3">
-        
+
         <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i> Report</button>'>
             <form> {# TODO: Submit form to block user once endpoint is available. #}
               <p>Contact a modetrator to report this user {{data.profile.username}}</p>
@@ -54,7 +54,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="row">
     <hr class="row section-divider"/>
   </div>
@@ -98,8 +98,9 @@
               <tbody>
                 {% for group in data.profile.groups %}
                 <tr>
-                  <td><h4>{{group.name}}</h4></td>
-                  <td>{{group.region.name}}</td>
+                  <td><h4>{{group.group.name}}</h4></td>  <!-- TODO: take out extra "group"  -->
+                  <td>{{group.group.region.name}}</td>
+                  <!-- TODO: <td>{{group.group.country.name}}</td>  ?? -->
                 </tr>
               {% endfor %}
               </tbody>
@@ -112,6 +113,8 @@
   {% include './partials/left_column_banner_row.html'%}
 </div>
 <div>
+
+
 
 
 {% endblock %}
