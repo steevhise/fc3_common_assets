@@ -13,18 +13,18 @@
     <div class="tabs-panel is-active" id="dashboard">
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
       <div class="profile-pic">
-        <img src="{{userData.currentPic}}" alt="Current profile image"/>
+        <img src="{{data.settings.image}}" style="max-width: 50%;" alt="Current profile image"/>
       </div>
       <form class="edit-profile">
         <div class="row">
           <div class="medium-6 columns form-group">
             <label for="first">First Name
-              <input type="text" name="first" value="{{userData.firstName}}"/>
+              <input type="text" name="first" value="{{data.settings.firstName}}"/>
             </label>
           </div>
           <div class="medium-6 columns form-group">
             <label for="last">Last Name
-              <input type="text" name="last" value="{{userData.lastName}}"/>
+              <input type="text" name="last" value="{{data.settings.lastName}}"/>
             </label>
           </div>
         </div>
@@ -59,7 +59,7 @@
           <div class="medium-6 columns form-group">
             <label for="email-address">Email Address</label>
             <div class="input-group edit-profile_group">
-              <input type="email" class="input-group-field" name="email-address" value="{{userData.email}}"/>
+              <input type="email" class="input-group-field" name="email-address" value="{{data.settings.email}}"/>
               <!-- <div class="input-group-button"> -->
                 <input type="button" class="btn btn-default btn-verification" name="email" value="Send Verification" />
               <!-- </div> -->
@@ -68,7 +68,7 @@
           <div class="medium-6 columns form-group">
             <label for="phone-number">Phone Number</label>
             <div class="input-group edit-profile_group">
-              <input type="tel" class="input-group-field" name="phone-number" value="{{userData.phone}}"/>
+              <input type="tel" class="input-group-field" name="phone-number" value="{{data.settings.phone}}"/>
               <!-- <div class="input-group-button"> -->
                 <input type="button" class="btn btn-default btn-verification" name="phone" value="Test SMS Confirm" />
               <!-- </div>   -->
@@ -80,7 +80,7 @@
           {% include '../partials/home_group.html' %}
           {% include '../partials/default_location.html' %}
         </div>
-        {% include '../partials/notification_prefs.html' %}
+        {% include '../partials/notification_prefs.html' with {notificationOptions: data.notificationOptions} %}
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
