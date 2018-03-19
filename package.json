@@ -32,7 +32,7 @@
     "hapi-named-routes": "~0.3.0",
     "hapi-statsd": "^6.0.0",
     "inert": "^4.2.0",
-    "joi": "^11.4.0",
+    "joi": "^10.6.0",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
     "moment": "^2.18.1",

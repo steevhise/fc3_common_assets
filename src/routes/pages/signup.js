@@ -50,7 +50,7 @@ module.exports = {
             options: {
                 abortEarly: false,
                 language: {
-                    key: '{{!label}} field '
+                    key: '{{!key}} field '
                 }
             }
         }

@@ -10,7 +10,7 @@ exports.formFailAction = (request, reply, source, error) => {
     };
 
     request[source] = Object.assign(request[source] || {}, { validation });
-    request.app.formValidation = validation.info;
+    request.app.formValidation = (request.app.formValidation || []).concat(validation.info);
 
     return reply.continue();
 };
