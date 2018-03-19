@@ -31,11 +31,11 @@
             <img src="{{post.image}}"/>
         </div>
         <div class="post-grid-item-content">
-            <h4>{{post.post_subject}}</h4>
+            <h4>{{post.subject}}</h4>
         </div>
         <div class="post-grid-item-footer">
             <div class="post-grid-item-header-left">
-                <span class="text-lighten">{{ post.post_date | mreldate }}</span>
+                <span class="text-lighten">{{ post.date | mreldate }}</span>
             </div>
             <div class="post-grid-item-header-right"> <!--  TODO: not sure how to make this real.  -->
                 {% if post.postType.post_type_name === 'offer'  %}
