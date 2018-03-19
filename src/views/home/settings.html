@@ -18,57 +18,57 @@
       <form class="edit-profile">
         <div class="row">
           <div class="medium-6 columns form-group">
-            <label for="first">First Name
-              <input type="text" name="first" value="{{data.settings.firstName}}"/>
+            <label for="firstName">First Name
+              <input type="text" name="firstName" value="{{data.settings.firstName}}"/>
             </label>
           </div>
           <div class="medium-6 columns form-group">
-            <label for="last">Last Name
-              <input type="text" name="last" value="{{data.settings.lastName}}"/>
+            <label for="lastName">Last Name
+              <input type="text" name="lastName" value="{{data.settings.lastName}}"/>
             </label>
           </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
-            <label for="tagline">Tagline
+            <label for="about">Tagline
               <input type="text" name="about" value="{{data.settings.about}}" />
             </label>
           </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
-            <label class="upload-pic btn btn-default text-white" for="upload">Upload a New Image</label>
-              <input type="file" name="upload" id="upload" class="show-for-sr" />
+            <label class="upload-pic btn btn-default text-white" for="image">Upload a New Image</label>
+              <input type="file" name="image" id="image" class="show-for-sr" />
           </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
-            <label for="new-pass">New Password
-              <input type="password" name="new-pass"/>
+            <label for="password">New Password
+              <input type="password" name="password"/>
             </label>
           </div>
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
-            <label for="new-pass-confirm">Confirm New Password
-              <input type="password" name="new-pass-confirm"/>
+            <label for="confpassword">Confirm New Password
+              <input type="password" name="confpassword"/>
             </label>
           </div>
         </div>
         <div class="row">
           <div class="medium-6 columns form-group">
-            <label for="email-address">Email Address</label>
+            <label for="email">Email Address</label>
             <div class="input-group edit-profile_group">
-              <input type="email" class="input-group-field" name="email-address" value="{{data.settings.email}}"/>
+              <input type="email" class="input-group-field" name="email" value="{{data.settings.email}}"/>
               <!-- <div class="input-group-button"> -->
-                <input type="button" class="btn btn-default btn-verification" name="email" value="Send Verification" />
+                <input type="button" class="btn btn-default btn-verification" name="sendVerification" value="Send Verification" />
               <!-- </div> -->
             </div>
           </div>
           <div class="medium-6 columns form-group">
-            <label for="phone-number">Phone Number</label>
+            <label for="phone">Phone Number</label>
             <div class="input-group edit-profile_group">
-              <input type="tel" class="input-group-field" name="phone-number" value="{{data.settings.phone}}"/>
+              <input type="tel" class="input-group-field" name="phone" value="{{data.settings.phone}}"/>
               <!-- <div class="input-group-button"> -->
                 <input type="button" class="btn btn-default btn-verification" name="phone" value="Test SMS Confirm" />
               <!-- </div>   -->
