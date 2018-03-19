@@ -63,10 +63,11 @@ module.exports = {
                 image: Joi.binary()
                     .label('Profile image'),
                 password: Joi.string()
+                    .empty('')
                     .label('Password'),
                 confpassword: Joi.string()
                     .valid(Joi.ref('password'))
-                    .strip()
+                    .empty('')
                     .label('Password confirmation').options({
                         language: {
                             any: {
@@ -75,11 +76,15 @@ module.exports = {
                         }
                     }),
             })
-                .and('password', 'confpassword'),
+                .and('password', 'confpassword')
+                .empty(null),
             options: {
                 abortEarly: false,
                 language: {
-                    key: '{{!label}} field '
+                    key: '{{!key}} field ',
+                    object: {
+                        and: '!!You must fill-out both the password and password confirmation fields to choose a new password.'
+                    }
                 }
             }
         },
@@ -94,9 +99,7 @@ module.exports = {
 
                 const { authService, userService } = request.server;
                 const { id: userId } = request.auth.credentials;
-                const { image, password, ...settings } = request.payload;
-
-                console.log(settings)
+                const { image, password, confpassword, ...settings } = request.payload;
 
                 return Promise.resolve()
                     .then(() => Object.keys(settings).length && userService.updateSettings(userId, settings))
