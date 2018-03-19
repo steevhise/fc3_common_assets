@@ -8,7 +8,7 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.9",
+    "@freecycle/common-hapi-plugins": "0.2.11",
     "@freecycle/fc3_common_assets": ">=0.2.2",
     "@freecycle/freecycle_graphql_schema": "^0.2.6",
     "@freecycle/freecycle_node_dal": "^0.2.3",
