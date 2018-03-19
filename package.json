@@ -8,7 +8,7 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.9",
+    "@freecycle/common-hapi-plugins": "0.2.11",
     "@freecycle/fc3_common_assets": ">=0.2.2",
     "@freecycle/freecycle_graphql_schema": "^0.2.6",
     "@freecycle/freecycle_node_dal": "^0.2.3",
@@ -32,7 +32,7 @@
     "hapi-named-routes": "~0.3.0",
     "hapi-statsd": "^6.0.0",
     "inert": "^4.2.0",
-    "joi": "^11.4.0",
+    "joi": "^10.6.0",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
     "moment": "^2.18.1",
