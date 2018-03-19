@@ -14,6 +14,10 @@ exports.deployment = (start) => {
 
     // basic server
     const server = new Hapi.Server({
+        debug: {
+            log: ['error'],
+            request: ['error']
+        },
         cache: {         // TODO: can we test for presence of Redis server first and give a more kind error before server start?
             engine: require('catbox-redis'),                            // TODO catbox-memory for development
             host: sequelizeDbConfig.redis.host || 'localhost',   // TODO: should be set in app-level config
