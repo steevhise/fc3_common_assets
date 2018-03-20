@@ -11,6 +11,7 @@
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
       {{ data.profile.info.reputation|default(0) }} thumbs up
+      {# TODO: Verified icon goes here too #}
     </h3>
   </div>
 </div>
@@ -22,22 +23,24 @@
   <div class="profile-actions container">
     <div class="columns medium-8 medium-centered">
       <div class="columns medium-3">
-        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-user-plus"></i> Request friendship</button>
+        {# TODO: use profile.data.friendStatus to display "friend" or "unfriend" button. #}
+        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-user-plus"></i>Friend</button>
       </div>
       <div class="columns medium-3">
         <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
       </div>
       <div class="columns medium-3">
 
-        <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i> Report</button>'>
-            <form> {# TODO: Submit form to block user once endpoint is available. #}
+        {# TODO: of course if this is our own profile page, don't show any of the action buttons #}
+        <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i>Report</button>'>
+            <form method="post"> {# TODO: Submit form to report user once endpoint is available. #}
               <p>Contact a modetrator to report this user {{data.profile.username}}</p>
               <label for="subject">Subject</label>
               <input name="subject" type="text">
               <label for="message">Message</label>
               <textarea name="message"></textarea>
               <button class="btn btn-default" type="submit">Submit</button>
-              <input type="hidden" name="moderator" value=""> {# TODO: add the moderator from the user's home group once data is available.#}
+              <input type="hidden" name="home_group" value="{{data.profile.home_group}}"> {# for lack of better option, we report people to their home group's moderators .#}
               <input type="hidden" name="user" value="{{data.profile.username}}">
             </form>
         </fc-modal>
@@ -45,8 +48,9 @@
 
       <div class="columns medium-3">
           <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-ban"></i>Block</button>'>
-            <form> {# TODO: Submit form to block user once endpoint is available. #}
+            <form method="POST" action="/user/{{data.profile.username}}/friendship">
               <p>Are you sure you want to block this user {{data.profile.username}}?</p>
+              <input type="hidden" name="action" value="block">
               <button class="btn btn-default">Yes</button>
               <button class="btn btn-offer">No</button>
             </form>
@@ -60,6 +64,9 @@
   </div>
 
 </div>
+
+<pre>{{ data.profile|json}}</pre>
+
 
 <div class="row collapse user-details">
   <div class="medium-3 columns">
