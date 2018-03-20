@@ -57,7 +57,7 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const title = 'Signup for Freecycle';
+        const title = 'Sign up for Freecycle';
 
         if (request.auth.isAuthenticated) {
             return reply.view('signup', {

@@ -1,4 +1,4 @@
-$active-tab-arrow-width: 26px;
+$active-tab-arrow-width: 1.6em;
 
 .page-tabs-nav {
   @include tabsReset();
@@ -6,6 +6,10 @@ $active-tab-arrow-width: 26px;
   .tabs-title {
     border-top: 2px solid $medium-gray;
     position: relative;
+
+    &.is-active {
+      background-color: $white;
+    }
 
     @include breakpoint(medium) {
       &.is-active:after {
@@ -28,7 +32,7 @@ $active-tab-arrow-width: 26px;
 
 .page-tabs-panels {
   padding: 1.5rem 1rem;
-  
+
   @include breakpoint(medium) {
     padding: 0;
   }
@@ -53,4 +57,3 @@ $active-tab-arrow-width: 26px;
   min-height: 335px;
   width: 100%;
 }
-
