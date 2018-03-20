@@ -13,10 +13,12 @@
 
   <ul class="header-user-buttons-list header-user-buttons-list-right">
 
+    {# TODO: make this only display if current user is a moderator
     <li class="header-user-button">
       <a data-tooltip class="has-tip" title="Moderator" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}
       <span>3</span></a>
     </li>
+    #}
 
     <li class="header-user-button">
       <a data-tooltip class="has-tip" title="Alerts" href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}
