@@ -11,18 +11,62 @@
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
       {{ data.profile.info.reputation|default(0) }} thumbs up
+      {# TODO: Verified icon goes here too #}
     </h3>
   </div>
 </div>
 <div class="row">
   <hr class="row section-divider"/>
 </div>
+
 <div class="row">
-  <div class="profile-actions">
-    <span class="icon">{% include './icons/users.html' %}Request friendship</span>
-    <span class="icon">{% include './icons/flag.html' %}Report</span>
+  <div class="profile-actions container">
+    <div class="columns medium-8 medium-centered">
+      <div class="columns medium-3">
+        {# TODO: use profile.data.friendStatus to display "friend" or "unfriend" button. #}
+        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-user-plus"></i>Friend</button>
+      </div>
+      <div class="columns medium-3">
+        <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
+      </div>
+      <div class="columns medium-3">
+
+        {# TODO: of course if this is our own profile page, don't show any of the action buttons #}
+        <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i>Report</button>'>
+            <form method="post"> {# TODO: Submit form to report user once endpoint is available. #}
+              <p>Contact a modetrator to report this user {{data.profile.username}}</p>
+              <label for="subject">Subject</label>
+              <input name="subject" type="text">
+              <label for="message">Message</label>
+              <textarea name="message"></textarea>
+              <button class="btn btn-default" type="submit">Submit</button>
+              <input type="hidden" name="home_group" value="{{data.profile.home_group}}"> {# for lack of better option, we report people to their home group's moderators .#}
+              <input type="hidden" name="user" value="{{data.profile.username}}">
+            </form>
+        </fc-modal>
+      </div>
+
+      <div class="columns medium-3">
+          <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-ban"></i>Block</button>'>
+            <form method="POST" action="/user/{{data.profile.username}}/friendship">
+              <p>Are you sure you want to block this user {{data.profile.username}}?</p>
+              <input type="hidden" name="action" value="block">
+              <button class="btn btn-default">Yes</button>
+              <button class="btn btn-offer">No</button>
+            </form>
+        </fc-modal>
+      </div>
+    </div>
   </div>
+
+  <div class="row">
+    <hr class="row section-divider"/>
+  </div>
+
 </div>
+
+<pre>{{ data.profile|json}}</pre>
+
 
 <div class="row collapse user-details">
   <div class="medium-3 columns">
@@ -61,8 +105,9 @@
               <tbody>
                 {% for group in data.profile.groups %}
                 <tr>
-                  <td><h4>{{group.name}}</h4></td>
-                  <td>{{group.region.name}}</td>
+                  <td><h4>{{group.group.name}}</h4></td>  <!-- TODO: take out extra "group"  -->
+                  <td>{{group.group.region.name}}</td>
+                  <!-- TODO: <td>{{group.group.country.name}}</td>  ?? -->
                 </tr>
               {% endfor %}
               </tbody>
@@ -75,6 +120,8 @@
   {% include './partials/left_column_banner_row.html'%}
 </div>
 <div>
+
+
 
 
 {% endblock %}

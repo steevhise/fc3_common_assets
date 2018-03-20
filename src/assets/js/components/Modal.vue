@@ -1,6 +1,7 @@
 <template>
 	<div id="fc-modal">
-		<button class="btn btn-default" :data-open="getTarget">{{text}}</button>
+		<button v-if="!customTrigger" class="btn btn-default" :data-open="getTarget">{{text}}</button>
+		<div v-if="customTrigger" :data-open="getTarget" v-html="customTrigger"></div>
 		<div class="reveal" :id="getTarget" data-reveal>
 			<fc-login v-if="this.type == 'login'"></fc-login>
 			<div v-else-if="this.type == 'custom'" v-html="content"></div>
@@ -15,7 +16,8 @@
 		props: {
 			text: { default: "Button" },
 			content: { default: "" },
-			type: { default: "" }
+			type: { default: "" },
+			customTrigger: { default: "" }
 		},
 		data() {
 			return {};

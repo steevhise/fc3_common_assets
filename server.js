@@ -4,6 +4,7 @@
 
 const Hapi = require('hapi');
 const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
+// const { Config } = require('@freecycle/freecycle_node_dal');
 const { Config } = require('@freecycle/freecycle_node_dal');
 
 exports.deployment = (start) => {
