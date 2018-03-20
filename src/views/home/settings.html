@@ -11,11 +11,16 @@
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="dashboard">
+      <div>
+        {% for error in errors %}
+          <p class="callout alert">{{ error.message }}</p>
+        {% endfor %}
+      </div>
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
       <div class="profile-pic">
         <img src="{{data.settings.image}}" style="max-width: 50%;" alt="Current profile image"/>
       </div>
-      <form class="edit-profile" method="post">
+      <form class="edit-profile" method="post" enctype="multipart/form-data">
         <div class="row">
           <div class="medium-6 columns form-group">
             <label for="firstName">First Name

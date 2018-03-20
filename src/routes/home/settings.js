@@ -16,6 +16,7 @@ module.exports = {
 
                 // TODO ensure error is about image size and not some other parsing error
 
+                request.app.formValidation = request.app.formValidation || [];
                 request.app.formValidation = [{
                     type: 'form',
                     path: 'image',
@@ -61,6 +62,7 @@ module.exports = {
                         }
                     }),
                 image: Joi.binary()
+                    .empty({}, '', null)
                     .label('Profile image'),
                 password: Joi.string()
                     .empty('')
@@ -105,7 +107,35 @@ module.exports = {
                     .then(() => Object.keys(settings).length && userService.updateSettings(userId, settings))
                     .then(() => password && authService.changePassword(userId, password))
                     .then(() => image && userService.changeProfileImage(userId, image))
-                    .then(() => reply.continue());
+                    .then(() => reply.continue())
+                    .catch((err) => {
+
+                        request.app.formValidation = request.app.formValidation || [];
+
+                        if (err instanceof userService.BadImageFormatError) {
+
+                            request.app.formValidation.push({
+                                type: 'form',
+                                path: 'image',
+                                message: 'Image is an unsupported image format.  Must be .jpg or .png.'
+                            });
+
+                            return reply.continue();
+                        }
+
+                        if (err instanceof userService.InvalidHomeTownError) {
+
+                            request.app.formValidation.push({
+                                type: 'form',
+                                path: 'homeTown',
+                                message: 'Sorry, you can\'t choose that home town because you\'re not a member.'
+                            });
+
+                            return reply.continue();
+                        }
+
+                        return reply(err);
+                    });
             }
         ]
     },
