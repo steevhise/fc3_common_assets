@@ -16,11 +16,14 @@
                     {% elseif post.type.name === 'WANTED' %}
                     {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
                     <span class="text-wanted">Wanted</span>
+                    {% else %}
+                    {{ post.type.name }}
                     {% endif %}
                 </div>
             </div>
             <div class="post-grid-item-header-right">
                 <div class="post-grid-item-header-icon">
+                    <span>{{post.group.name}}</span>
                     {% include '../icons/map_pin.html' %}
                     <span>{{post.location|title }}</span>
                 </div>
