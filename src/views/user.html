@@ -65,7 +65,7 @@
 
 </div>
 
-<pre>{{ data.profile|json}}</pre>
+{# debugging output :  <pre>{{ data.profile|json}}</pre> #}
 
 
 <div class="row collapse user-details">
@@ -105,7 +105,7 @@
               <tbody>
                 {% for group in data.profile.groups %}
                 <tr>
-                  <td><h4>{{group.group.name}}</h4></td>  <!-- TODO: take out extra "group"  -->
+                  <td><h4>{{group.group.name}}</h4></td>  <!-- TODO: take out extra "group" from data structure? -->
                   <td>{{group.group.region.name}}</td>
                   <!-- TODO: <td>{{group.group.country.name}}</td>  ?? -->
                 </tr>
