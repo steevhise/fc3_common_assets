@@ -7,7 +7,6 @@
   <ul class="tabs" id="h-example-tabs" data-tab data-update-history="true" data-options="deep_linking:true">
     {% include '../partials/home_tabs.html' %}
   </ul>
-<pre>{{data.settings|json}}</pre>
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="dashboard">
@@ -105,7 +104,7 @@
             </select>
           </label>
         </div>
-        {%  include '../partials/notification_prefs.html' with {notificationOptions: data.notificationOptions} %}
+        {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>

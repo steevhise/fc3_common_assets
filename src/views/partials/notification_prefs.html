@@ -1,15 +1,17 @@
-<div class="row">   <!-- TODO: this needs to repeat for each group the user is in. -->
-  <div class="medium-12 columns form-group">
-    <label for="notice-settings">Notification Settings
-      <select class="select-notice-settings" name="notice-settings" data-width="100%">
-        {% for option in notificationOptions %}
-          {% if loop.index === userData.notificationPref %}
-            <option value="{{loop.index}}" selected="selected">{{option.type}}</option>
-          {% else %}
-            <option value="{{loop.index}}" >{{option.type}}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-    </label>
+{% for pref in preferences %}
+  <div class="row">   <!-- TODO: this needs to repeat for each group the user is in. -->
+    <div class="medium-12 columns form-group">
+      <label for="notice-settings">{{pref.name}} Notification Settings
+        <select class="select-notice-settings" name="emailDeliveryPreferences" data-width="100%">
+          {% for option in notificationOptions %}
+            {% if pref.value === option.value %}
+              <option value="{{pref.townId}},{{option.value}}" selected="selected">{{option.type}}</option>
+            {% else %}
+              <option value="{{pref.townId}},{{option.value}}">{{option.type}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </label>
+    </div>
   </div>
-</div>
+{% endfor %}
