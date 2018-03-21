@@ -64,6 +64,9 @@ module.exports = {
                 image: Joi.binary()
                     .empty({}, '', null)
                     .label('Profile image'),
+                emailFormat: Joi.string()
+                    .valid('text', 'html')
+                    .label('Email format'),
                 password: Joi.string()
                     .empty('')
                     .label('Password'),
@@ -100,8 +103,13 @@ module.exports = {
                 // Handle a POST
 
                 const { authService, userService } = request.server;
-                const { id: userId } = request.auth.credentials;
+                const { id: userId, email } = request.auth.credentials;
                 const { image, password, confpassword, ...settings } = request.payload;
+
+                // Updating email will affect the user's verified status, so only update if it changed
+                if (settings.email && email && email.toLowerCase() === settings.email.toLowerCase()) {
+                    delete settings.email;
+                }
 
                 return Promise.resolve()
                     .then(() => Object.keys(settings).length && userService.updateSettings(userId, settings))
