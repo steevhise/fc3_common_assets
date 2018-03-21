@@ -1,6 +1,6 @@
-<div class="row">
   <div class="medium-12 columns form-group">
     <label for="lang-prefs">Language Preferences
+      <div class="input-group edit-profile_group">
       <select class="language-prefs" name="languages" multiple="multiple" data-width="100%">
         {% for language in data.languageOptions %}
           {% if data.settings.languages.includes(language.code) %}
@@ -10,6 +10,6 @@
           {% endif %}
         {% endfor %}
       </select>
+      </div>
     </label>
   </div>
-</div>

@@ -83,27 +83,34 @@
             </div>
           </div>
         </div>
-        {% include '../partials/language_preferences.html' %}
+          <div class="row">
+            {% include '../partials/language_preferences.html' %}
+          </div>
+          <div class="row">
+              <div class="medium-12 columns form-group">
+              <label for="emailFormat">Email format
+                      <select class="select-email-format" name="emailFormat" data-width="100%">
+                          {% if data.settings.emailFormat === 'html' %}
+                          <option value="html" selected="selected">HTML</option>
+                          {% else %}
+                          <option value="html">HTML</option>
+                          {% endif %}
+                          {% if data.settings.emailFormat === 'text' %}
+                          <option value="text" selected="selected">Text</option>
+                          {% else %}
+                          <option value="text">Text</option>
+                          {% endif %}
+                      </select>
+                  </label>
+              </div>
+          </div>
         <div class="row">
           {% include '../partials/home_group.html' %}
           {% include '../partials/default_location.html' %}
         </div>
-        <div class="medium-12 columns form-group">
-          <label for="home-group">Email format
-            <select class="select-email-format" name="emailFormat" data-width="100%">
-              {% if data.settings.emailFormat === 'html' %}
-                <option value="html" selected="selected">HTML</option>
-              {% else %}
-                <option value="html">HTML</option>
-              {% endif %}
-              {% if data.settings.emailFormat === 'text' %}
-                <option value="text" selected="selected">Text</option>
-              {% else %}
-                <option value="text">Text</option>
-              {% endif %}
-            </select>
-          </label>
-        </div>
+
+          <hr>
+          <h3 class="text-center columns">Group Notifications</h3>
         {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
