@@ -66,7 +66,11 @@
             <div class="input-group edit-profile_group">
               <input type="email" class="input-group-field" name="email" value="{{data.settings.email}}"/>
               <!-- <div class="input-group-button"> -->
+                {% if !data.settings.verified %}
                 <input type="button" class="btn btn-default btn-verification" name="sendVerification" value="Send Verification" />
+                {% else %}
+                email verified (todo: style this and put verified icon here)
+                {% endif %}
               <!-- </div> -->
             </div>
           </div>
