@@ -37,7 +37,7 @@ module.exports = {
                     .label('Last name'),
                 about: Joi.string()
                     .allow('')
-                    .label('About'),
+                    .label('Tagline'),
                 email: Joi.string()
                     .email()
                     .allow('')
