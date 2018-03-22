@@ -11,7 +11,10 @@
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
       {{ data.profile.info.reputation|default(0) }} thumbs up
-      {# TODO: Verified icon goes here too #}
+      {% if !data.profile.verified %}
+        |
+        {% include "./partials/user_verified.html" with { text: "Verified", fontSize: "16px" } %}
+      {% endif %}
     </h3>
   </div>
 </div>
@@ -94,7 +97,7 @@
         {# TODO: of course if this is our own profile page, don't show any of the action buttons #}
         <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i>Report</button>'>
             <form method="post"> {# TODO: Submit form to report user once endpoint is available. #}
-              <p>Contact a modetrator to report this user {{data.profile.username}}</p>
+              <p>Contact a moderator to report this user {{data.profile.username}}</p>
               <label for="subject">Subject</label>
               <input name="subject" type="text">
               <label for="message">Message</label>
