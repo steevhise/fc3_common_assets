@@ -1,7 +1,7 @@
 <!-- <div class="row"> -->
   <div class="medium-12 columns form-group">
     <label for="home-group">Home Town
-      <select class="select-home-group" name="home-group" data-width="100%">
+      <select class="select-home-group" name="homeTown" data-width="100%">
         {% for town in data.settings.towns %}
           {% if data.settings.homeTown === town.id %}
             <option value="{{town.id}}" selected="selected">{{town.name}}</option>
@@ -11,5 +11,5 @@
         {% endfor %}
       </select>
     </label>
-  </div>  
+  </div>
 <!-- </div> -->

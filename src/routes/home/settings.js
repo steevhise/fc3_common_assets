@@ -16,6 +16,7 @@ module.exports = {
 
                 // TODO ensure error is about image size and not some other parsing error
 
+                request.app.formValidation = request.app.formValidation || [];
                 request.app.formValidation = [{
                     type: 'form',
                     path: 'image',
@@ -36,7 +37,7 @@ module.exports = {
                     .label('Last name'),
                 about: Joi.string()
                     .allow('')
-                    .label('About'),
+                    .label('Tagline'),
                 email: Joi.string()
                     .email()
                     .allow('')
@@ -61,10 +62,18 @@ module.exports = {
                         }
                     }),
                 image: Joi.binary()
+                    .empty({}, '', null)
                     .label('Profile image'),
+                emailFormat: Joi.string()
+                    .valid('text', 'html')
+                    .label('Email format'),
                 password: Joi.string()
                     .empty('')
                     .label('Password'),
+                emailDeliveryPreferences: Joi.array()
+                    .single()
+                    .items(Joi.string().regex(/^[\d]+,(?:0|1|2|3)$/)) // townId,value
+                    .label('Email delivery preferences'),
                 confpassword: Joi.string()
                     .valid(Joi.ref('password'))
                     .empty('')
@@ -98,14 +107,58 @@ module.exports = {
                 // Handle a POST
 
                 const { authService, userService } = request.server;
-                const { id: userId } = request.auth.credentials;
-                const { image, password, confpassword, ...settings } = request.payload;
+                const { id: userId, email } = request.auth.credentials;
+                const { image, password, confpassword, emailDeliveryPreferences, ...settings } = request.payload;
+
+                // Updating email will affect the user's verified status, so only update if it changed
+                if (settings.email && email && email.toLowerCase() === settings.email.toLowerCase()) {
+                    delete settings.email;
+                }
+
+                // Map per-town email delivery prefs
+                //
+                // ['234,2', '984,0'] -> [{ townId: 234, value: 1 }, { townId: 984, value: 0 }]
+
+                if (emailDeliveryPreferences && emailDeliveryPreferences.length) {
+                    settings.emailDeliveryPreferences = emailDeliveryPreferences.map((n) => ({
+                        townId: Number(n.split(',')[0]),
+                        value: Number(n.split(',')[1]),
+                    }));
+                }
 
                 return Promise.resolve()
                     .then(() => Object.keys(settings).length && userService.updateSettings(userId, settings))
                     .then(() => password && authService.changePassword(userId, password))
                     .then(() => image && userService.changeProfileImage(userId, image))
-                    .then(() => reply.continue());
+                    .then(() => reply.continue())
+                    .catch((err) => {
+
+                        request.app.formValidation = request.app.formValidation || [];
+
+                        if (err instanceof userService.BadImageFormatError) {
+
+                            request.app.formValidation.push({
+                                type: 'form',
+                                path: 'image',
+                                message: 'Image is an unsupported image format.  Must be .jpg or .png.'
+                            });
+
+                            return reply.continue();
+                        }
+
+                        if (err instanceof userService.InvalidHomeTownError) {
+
+                            request.app.formValidation.push({
+                                type: 'form',
+                                path: 'homeTown',
+                                message: 'Sorry, you can\'t choose that home town because you\'re not a member.'
+                            });
+
+                            return reply.continue();
+                        }
+
+                        return reply(err);
+                    });
             }
         ]
     },
@@ -132,16 +185,24 @@ module.exports = {
                     ],
                     notificationOptions: [ // TODO
                         {
+                            value: 2,
                             type: 'Email Digest',
                             description: 'Receive a summary of all new posts'
                         },
                         {
+                            value: 1,
                             type: 'Per Post',
                             description: 'Receive an email for every new post'
                         },
                         {
+                            value: 0,
                             type: 'Admin Only',
                             description: 'Only receive emails for new admin posts'
+                        },
+                        {
+                            value: 3,
+                            type: 'None',
+                            description: 'Never receive emails'
                         }
                     ]
                 }

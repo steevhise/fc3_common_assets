@@ -7,15 +7,19 @@
   <ul class="tabs" id="h-example-tabs" data-tab data-update-history="true" data-options="deep_linking:true">
     {% include '../partials/home_tabs.html' %}
   </ul>
-
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="dashboard">
+      <div>
+        {% for error in errors %}
+          <p class="callout alert">{{ error.message }}</p>
+        {% endfor %}
+      </div>
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
       <div class="profile-pic">
         <img src="{{data.settings.image}}" style="max-width: 50%;" alt="Current profile image"/>
       </div>
-      <form class="edit-profile" method="post">
+      <form class="edit-profile" method="post" enctype="multipart/form-data">
         <div class="row">
           <div class="medium-6 columns form-group">
             <label for="firstName">First Name
@@ -61,7 +65,11 @@
             <div class="input-group edit-profile_group">
               <input type="email" class="input-group-field" name="email" value="{{data.settings.email}}"/>
               <!-- <div class="input-group-button"> -->
+                {% if !data.settings.verified %}
                 <input type="button" class="btn btn-default btn-verification" name="sendVerification" value="Send Verification" />
+                {% else %}
+                email verified (todo: style this and put verified icon here)
+                {% endif %}
               <!-- </div> -->
             </div>
           </div>
@@ -70,17 +78,40 @@
             <div class="input-group edit-profile_group">
               <input type="tel" class="input-group-field" name="phone" value="{{data.settings.phone}}"/>
               <!-- <div class="input-group-button"> -->
-                <input type="button" class="btn btn-default btn-verification" name="phone" value="Test SMS Confirm" />
+                <!--<input type="button" class="btn btn-default btn-verification" name="phone" value="Test SMS Confirm" />-->
               <!-- </div>   -->
             </div>
           </div>
         </div>
-        {% include '../partials/language_preferences.html' %}
+          <div class="row">
+            {% include '../partials/language_preferences.html' %}
+          </div>
+          <div class="row">
+              <div class="medium-12 columns form-group">
+              <label for="emailFormat">Email format
+                      <select class="select-email-format" name="emailFormat" data-width="100%">
+                          {% if data.settings.emailFormat === 'html' %}
+                          <option value="html" selected="selected">HTML</option>
+                          {% else %}
+                          <option value="html">HTML</option>
+                          {% endif %}
+                          {% if data.settings.emailFormat === 'text' %}
+                          <option value="text" selected="selected">Text</option>
+                          {% else %}
+                          <option value="text">Text</option>
+                          {% endif %}
+                      </select>
+                  </label>
+              </div>
+          </div>
         <div class="row">
           {% include '../partials/home_group.html' %}
           {% include '../partials/default_location.html' %}
         </div>
-        {% include '../partials/notification_prefs.html' with {notificationOptions: data.notificationOptions} %}
+
+          <hr>
+          <h3 class="text-center columns">Group Notifications</h3>
+        {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
