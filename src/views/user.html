@@ -11,21 +11,84 @@
     <h3 class="section-title-small thumbsup">
       {% include './icons/like.html' %}
       {{ data.profile.info.reputation|default(0) }} thumbs up
-      {# TODO: Verified icon goes here too #}
+      {% if !data.profile.verified %}
+        |
+        {% include "./partials/user_verified.html" with { text: "Verified", fontSize: "16px" } %}
+      {% endif %}
     </h3>
   </div>
 </div>
 <div class="row">
   <hr class="row section-divider"/>
 </div>
+<div class="row"> <!-- TODO:
+        - style these buttons, make em change colors and shit when they change state,
+        - make buttons closer together  in row.
+        - when a button isn't visible, collapse the empty space
+        - make submission be via AJAX, etc
+        - message button should go away if user is blocked
+        - entire page should not show if user is blocking me
+        - etc.
 
-<div class="row">
+        -->
   <div class="profile-actions container">
     <div class="columns medium-8 medium-centered">
-      <div class="columns medium-3">
-        {# TODO: use profile.data.friendStatus to display "friend" or "unfriend" button. #}
-        <button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-user-plus"></i>Friend</button>
-      </div>
+      {% set friendStatus = data.profile.friendStatus %}
+      {% if
+        session.id &&
+        session.id !== data.profile.id &&
+        friendStatus !== 'BLOCKED' &&
+        friendStatus !== 'BLOCKING' &&
+        friendStatus !== 'REJECTED'
+      %}
+        {% if friendStatus === 'NONE' || friendStatus === 'REJECTING' %}
+          <div class="columns medium-3">
+            {% include 'partials/friendship_action_button.html' with {
+              username: data.profile.username,
+              action: 'friend',
+              icon: 'user-plus',
+              label: 'Friend'
+            } only %}
+          </div>
+        {% endif %}
+        {% if friendStatus === 'FRIENDS' %}
+          <div class="columns medium-3">
+            {% include 'partials/friendship_action_button.html' with {
+              username: data.profile.username,
+              action: 'unfriend',
+              icon: 'user-times',
+              label: 'Unfriend',
+              confirm: true
+            } only %}
+          </div>
+        {% endif %}
+        {% if friendStatus === 'PENDING' %}
+          <div class="columns medium-2">
+            {% include 'partials/friendship_action_button.html' with {
+              username: data.profile.username,
+              action: 'accept',
+              icon: 'user-plus',
+              label: 'Accept'
+            } only %}
+          </div>
+          <div class="columns medium-2">
+            {% include 'partials/friendship_action_button.html' with {
+              username: data.profile.username,
+              action: 'reject',
+              icon: 'user-times',
+              label: 'Reject'
+            } only %}
+          </div>
+        {% endif %}
+        {% if friendStatus === 'WAITING' %}
+          <div class="columns medium-3">
+            {% include 'partials/friendship_action_button.html' with {
+              icon: 'user',
+              label: 'Pending request'
+            } only %}
+          </div>
+        {% endif %}
+      {% endif %}
       <div class="columns medium-3">
         <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
       </div>
@@ -34,7 +97,7 @@
         {# TODO: of course if this is our own profile page, don't show any of the action buttons #}
         <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i>Report</button>'>
             <form method="post"> {# TODO: Submit form to report user once endpoint is available. #}
-              <p>Contact a modetrator to report this user {{data.profile.username}}</p>
+              <p>Contact a moderator to report this user {{data.profile.username}}</p>
               <label for="subject">Subject</label>
               <input name="subject" type="text">
               <label for="message">Message</label>
@@ -45,17 +108,31 @@
             </form>
         </fc-modal>
       </div>
+      {% if
+        session.id &&
+        session.id !== data.profile.id
+      %}
 
-      <div class="columns medium-3">
-          <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-ban"></i>Block</button>'>
-            <form method="POST" action="/user/{{data.profile.username}}/friendship">
-              <p>Are you sure you want to block this user {{data.profile.username}}?</p>
-              <input type="hidden" name="action" value="block">
-              <button class="btn btn-default">Yes</button>
-              <button class="btn btn-offer">No</button>
-            </form>
-        </fc-modal>
-      </div>
+        {% if friendStatus !== 'BLOCKING' %}
+          {% include 'partials/friendship_action_button.html' with {
+            username: data.profile.username,
+            action: 'block',
+            icon: 'ban',
+            label: 'Block',
+            confirm: true
+          } only %}
+        {% endif %}
+
+        {% if friendStatus === 'BLOCKING' %}
+          {% include 'partials/friendship_action_button.html' with {
+            username: data.profile.username,
+            action: 'unblock',
+            icon: 'user',
+            label: 'Unblock'
+          } only %}
+        {% endif %}
+
+      {% endif %}
     </div>
   </div>
 

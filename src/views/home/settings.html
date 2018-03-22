@@ -68,7 +68,7 @@
                 {% if !data.settings.verified %}
                 <input type="button" class="btn btn-default btn-verification" name="sendVerification" value="Send Verification" />
                 {% else %}
-                email verified (todo: style this and put verified icon here)
+                    {% include "../partials/user_verified.html" %}
                 {% endif %}
               <!-- </div> -->
             </div>
