@@ -8,8 +8,8 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.11",
-    "@freecycle/fc3_common_assets": ">=0.2.3",
+    "@freecycle/common-hapi-plugins": "0.2.13",
+    "@freecycle/fc3_common_assets": ">=0.2.x",
     "@freecycle/freecycle_graphql_schema": "^0.2.6",
     "@freecycle/freecycle_node_dal": "^0.2.5",
     "babel-loader": "^6.2.4",
@@ -35,7 +35,7 @@
     "joi": "^10.6.0",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
-    "moment": "^2.18.1",
+    "moment": "^2.19.3",
     "node-geocoder": "^3.20.0",
     "nodemon": "^1.12.0",
     "oppsy": "^1.0.2",
