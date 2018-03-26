@@ -1,5 +1,5 @@
 <template>
-    <form method="POST" id="loginForm" v-pre >
+    <form method="POST" id="loginForm" action="/login" >
             <div class="container">
                 <div class="medium-6 columns float-left">
                     <label>Username/Email
