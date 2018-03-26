@@ -12,6 +12,8 @@
     <a href="{{ path.pages_signup }}"><button class="btn-default header-button">Sign Up</button></a>
     <span class="heading-with-icon header-user-icon">
         {% include '../icons/user.html' %}
-        <a href="{{ path.pages_login }}">Login</a>
+        <fc-modal id="login" custom-trigger="<a style='position: relative; top: 6px;'>Login</a>" style="float: right;">
+            <fc-login></fc-login>
+        </fc-modal>
     </span>
 </div>
