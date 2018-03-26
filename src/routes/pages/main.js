@@ -9,6 +9,8 @@ module.exports = {
     },
     handler: function (request, reply) {
 
+        const { postService } = request.server;
+
         const localGroups = [
             'Tuscon', 'Marana', 'Oro Valley', 'Vail', 'Sanuarita'
         ];
@@ -28,11 +30,14 @@ module.exports = {
             }
         ];
 
-        reply.view('home', {
-            title: 'Freecycle',
-            posts: Mocks.posts.slice(0, 3),
-            groups: localGroups,
-            metrics
+        return postService.fetchFeatured(3).then((posts) => {
+
+            return reply.view('home', {
+                title: 'Freecycle',
+                posts,
+                groups: localGroups,
+                metrics
+            });
         });
     }
 };
