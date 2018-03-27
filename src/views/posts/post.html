@@ -7,7 +7,7 @@
 {% block content %}
 
   <div class="row post-detail">
-    {% include '../partials/post_body.html' %}
+    {% include '../partials/post_body.html' with { post: data.post } %}
   </div>
 
 {% include '../partials/in_body_banner_row.html'%}

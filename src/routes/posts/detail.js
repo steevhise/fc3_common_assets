@@ -28,7 +28,9 @@ module.exports = {
             }
 
             reply.view('posts/post', {
-                post,
+                data: {
+                    post
+                },
                 inBodyAds: [
                     'one',
                     'two'
