@@ -13,16 +13,16 @@
                   </div>
                   <div class="post-list-item-category-icon">
                     {# TODO: this logic should be in a partial, i think #}
-                    {% if post.postType.post_type_name === 'OFFER'  %}
+                    {% if post.type.name === 'OFFER'  %}
                       {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
                       <span class="text-offer">Offer</span>
-                    {% elseif post.postType.post_type_name === 'LEND' %}
+                    {% elseif post.type.name === 'LEND' %}
                       {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
                       <span class="text-lend">Lend</span>
-                    {% elseif post.postType.post_type_name === 'BORROW' %}
+                    {% elseif post.type.name === 'BORROW' %}
                       {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
                       <span class="text-borrow">Borrow</span>
-                    {% elseif post.postType.post_type_name === 'WANTED' %}
+                    {% elseif post.type.name === 'WANTED' %}
                       {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
                       <span class="text-wanted">Wanted</span>
                     {% endif %}
@@ -34,26 +34,30 @@
               </div>
               <div class="clearfix" style="margin-top: 10px;"></div>
               <div class="row">
-                <h4 class="section-title">{{post.post_subject}}</h4>
+                <h4 class="section-title">{{post.subject}}</h4>
 
                 <ul class="post-items">
-                  <li>{{ post.post_location }}</li> {# TODO eventually we'll need to include the region/country when available #}
-                  <li class="text-lighten">{{ post.post_date|mreldate|capitalize }}</li>
-                  <li>{{post.post_date|mdate('MM/DD/YYYY')}}</li>
-                  <li>#{{post.post_id}}</li>
+                  <li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
+                  <li class="text-lighten">{{ post.date|mreldate|capitalize }}</li>
+                  <li>{{post.date|mdate('MM/DD/YYYY')}}</li>
+                  <li>#{{post.id}}</li>
                 </ul>
               </div>
             </div>
           </div>
           <ul class="post-items">
-            <li><span>{{ post.group.group_name }}</span></li>
+            <li><span>{{ post.group.name }}</span></li>
             <li><div>{{post.user.username|upper}}</div></li>
-            {# TODO tags will be replaced with a for loop once tag data is available #}
-            <li><a>Furniture</a>,<a>Sofa</a>,<a>Bed</a></li>
+            <li>
+              {% for tag in post.tags %}
+                {# TODO where ought this link go? #}
+                <a>{{tag.name}}</a>{% if !loop.last %}, {% endif %}
+              {% endfor %}
+            </li>
           </ul>
           <div class="post-list-item-content-description align-left">
             <div class="container">
-              <p>{{post.post_description|raw}}</p>
+              <p>{{post.description|raw}}</p>
             </div>
 
             <div class="container">
@@ -64,14 +68,14 @@
       </div>
 
       <div class="columns medium-4">
-        {% if post.files_post_images[0] %}
+        {% if post.image && post.thumb %}
         <div class="row">
           <div class="post-list-item-photo">
-            <img src="{{ path.post_images }}{{post.files_post_images[0].post_image_id}}/thumb">
+            <img src="{{post.thumb}}">
           </div>
         </div>
         <div class="row text-center">
-          <a href="{{ path.post_images }}{{post.files_post_images[0].post_image_id}}">View image full size</a>
+          <a href="{{post.image}}" target="_blank">View image full size</a>
           {#TODO: should popup full image .  should also provide carousel of images if there are multiple #}
         </div>
         {% endif %}
