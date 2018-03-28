@@ -10,11 +10,11 @@
       <img src="http://lorempixel.com/1200/600/nightlife" />
     </div>
   </div>
-  {% include './partials/recent_list.html'  %}
+  {% include './partials/recent_list.html' with { posts: data.posts } %}
   <div class="row">
     <hr class="row section-divider"/>
   </div>
-  {% include './partials/nearby_groups.html'  %}
+  {% include './partials/nearby_groups.html' with { groups: data.groups } %}
   <div class="row">
     <hr class="row section-divider"/>
   </div>
@@ -39,12 +39,18 @@
     <div class="medium-8 columns">
       <div class="row">
         <div>
-          {% for key,val in metrics %}
-            <div class="medium-4 columns metric bg-white">
-              <h4>{{val.count}}</h4>
-              <small>{{val.name}}</small>
-            </div>
-          {% endfor %}
+          <div class="medium-4 columns metric bg-white">
+            <h4>{{data.statistics.userCount.toLocaleString()}}</h4>
+            <small>Members</small>
+          </div>
+          <div class="medium-4 columns metric bg-white">
+            <h4>{{data.statistics.townCount.toLocaleString()}}</h4>
+            <small>Local Towns</small>
+          </div>
+          <div class="medium-4 columns metric bg-white">
+            <h4>0</h4>
+            <small>Scams or Cost</small>
+          </div>
         </div>
       </div>
       <div class="row">
