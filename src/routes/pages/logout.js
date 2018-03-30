@@ -9,6 +9,8 @@ module.exports = {
 
             request.cookieAuth.clear();
 
+            reply.unstate('location');
+
             reply.view('logout', {
                 title: 'Logged out'
             });

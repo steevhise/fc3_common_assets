@@ -1,7 +1,12 @@
 <div class="recent-list">
     <div class="recent-list-inner row">
         <!-- Header row and controls -->
-        <h3 class="section-title-small">Recent items near you</h3>
+        <h3 class="section-title-small">
+          Recent items
+          {% if !data.hasLocation %}
+            | <a id="get-geolocation" href="#">Show items near me</a> {# see also src/assets/js/modules/home.js #}
+          {% endif %}
+        </h3>
         <!-- Items list -->
         <div class="recent-list-items">
             <div class="recent-grid-view">
