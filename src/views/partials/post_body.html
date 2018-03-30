@@ -9,7 +9,7 @@
               <div class="row">
                 <div class="post-list-item-header-left">
                   <div class="post-list-item-category-icon">
-                    <button class="btn-offer">Reply</button>
+                    <a href="{{ path.home_myreplies }}" class="btn-offer">Reply</a>
                   </div>
                   <div class="post-list-item-category-icon">
                     {# TODO: this logic should be in a partial, i think #}
@@ -59,9 +59,9 @@
             <div class="container">
               <p>{{ post.description|raw }}</p>
             </div>
-
+            <br/>
             <div class="container">
-              <button class="btn-offer">Reply</button>
+              <a href="{{ path.home_myreplies }}" class="btn-offer">Reply</a>
             </div>
           </div>
         </div>
