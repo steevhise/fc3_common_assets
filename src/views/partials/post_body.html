@@ -51,7 +51,8 @@
             <li>
               {% for tag in post.tags %}
                 {# TODO where ought this link go? #}
-                <a>{{tag.name}}</a>{% if !loop.last %}, {% endif %}
+                {% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
+                <a href="{{tag.url}}" >{{tag.name}}</a>{% if !loop.last %}, {% endif %}
               {% endfor %}
             </li>
           </ul>
