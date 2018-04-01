@@ -25,25 +25,34 @@
               <div class="clearfix" style="margin-top: 10px;"></div>
               <div class="row">
                 <ul class="post-items">
-                  <li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
-                  <li class="text-lighten">{{ post.date|mreldate|capitalize }}</li>
-                  <li>{{post.date|mdate('MM/DD/YYYY')}}</li>
                   <li>#{{post.id}}</li>
+                  <li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
+                  <li>{{ post.date|mreldate|capitalize }}</li>
+                  <li>{{post.date|mdate('MM/DD/YYYY')}}</li>
+                  <br/>
+                  <li>
+                    <a href="{{path.groups_main}}{{post.group.name}}">
+                      <icon class="fa fa-home"></span>
+                      <span>{{ post.group.name }}</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{path.user}}{{post.user.username}}">
+                      <icon class="fa fa-user"></span>
+                      <span>{{ post.user.username|upper }}</span>
+                    </a>
+                  </li>
+                  <li>
+                    {% for tag in post.tags %}
+                      {# TODO where ought this link go? #}
+                      {% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
+                      <a href="{{tag.url}}" >{{tag.name}}</a>{% if !loop.last %}, {% endif %}
+                    {% endfor %}
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
-          <ul class="post-items">
-            <li><span>{{ post.group.name }}</span></li>
-            <li><div>{{ post.user.username|upper }}</div></li>
-            <li>
-              {% for tag in post.tags %}
-                {# TODO where ought this link go? #}
-                {% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
-                <a href="{{tag.url}}" >{{tag.name}}</a>{% if !loop.last %}, {% endif %}
-              {% endfor %}
-            </li>
-          </ul>
           <div class="post-list-item-content-description align-left">
             <div class="container">
               <p>{{ post.description|raw }}</p>
