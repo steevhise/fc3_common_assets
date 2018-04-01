@@ -1,0 +1,23 @@
+<template>
+	<div id="fc-data">
+		<slot></slot>
+	</div>
+</template>
+
+<script>
+	export default {
+		name : 'fc-data',
+		props : {
+			limit: { type : Number, default : 10 },
+			items: {}
+		},
+		data() {
+			return {
+				current : 0
+			}
+		},
+		mounted() {
+			console.log(this);
+		}
+	}
+</script>
