@@ -8,8 +8,6 @@
 </template>
 
 <script>
-    import {EventBus as bus} from './EventBus';
-
     export default {
         name : 'fc-callout',
         data() {
@@ -22,7 +20,7 @@
             }
         },
         created() {
-            bus.$on('alert', (data) => {
+            this.$bus.$on('alert', (data) => {
                 this.init(data);
             });
         },

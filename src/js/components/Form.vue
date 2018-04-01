@@ -6,7 +6,6 @@
 </template>
 
 <script>
-    import { EventBus as bus } from './EventBus';
     export default {
         name : 'fc-form',
         props: {
@@ -36,9 +35,9 @@
             },
             handleSubmit(event) {
                 $.post(this.action, this.serializedData).done(function(data) {
-                    bus.$emit('alert', { level : 'success', message : data.message });
+                    this.$bus.$emit('alert', { level : 'success', message : data.message });
                 }).fail(function(error) {
-                    bus.$emit('alert', { level : 'alert', message : `${error.status} \n ${error.statusText}` });
+                    this.$bus.$emit('alert', { level : 'alert', message : `${error.status} \n ${error.statusText}` });
                 })
             }
         }
