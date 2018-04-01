@@ -25,7 +25,9 @@
             
         </div>
         <div class="post-grid-item-content">
-            <h4>{{ post.subject|raw }}</h4>
+            <a href="{{path.posts_detail}}{{post.id}}">
+                <h4>{{ post.subject|raw }}</h4>
+            </a>
         </div>
         <div class="post-grid-item-footer">
             <div class="post-grid-item-header-left">
