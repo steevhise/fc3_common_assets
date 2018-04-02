@@ -37,17 +37,19 @@
         </div>
         
         <!-- Items list -->
-        <div class="item-list-items">
-            <div class="item-grid-view" style="display: none">
+        <div class="item-list-items" >
+            <div class="item-grid-view" style="display: none" ref="post_gridview" >
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
-                {% for post in posts %}
+                {% for post in data.posts %}
                 {% include './post_grid_item.html' with post %}
                 {% endfor %}
             </div>
-            <div class="item-list-view">
-                {% for post in posts %}
-                {% include './post_list_item.html' with post %}
+            <div class="item-list-view" ref="post_listview" >
+                {% for post in data.posts %}
+                    <div data-index="{{loop.index}}" data-id="{{post.id}}" {% if loop.index > 10 %}style="display: none;"{%endif%}>
+                        {% include './post_list_item.html' with post %}
+                    </div>
                 {% endfor %}
             </div>
             <div class="item-list-load-more">
