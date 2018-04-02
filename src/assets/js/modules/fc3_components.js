@@ -5,7 +5,6 @@ import { FCVue } from '@freecycle/fc3_common_assets/src/js/modules';
 Vue.config.silent = true;
 Vue.use(FCVue);
 
-
 //components
 import Modal from '../components/Modal.vue';
 Vue.component('fc-modal', Modal);

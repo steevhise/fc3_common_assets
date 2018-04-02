@@ -13,11 +13,15 @@
 		},
 		data() {
 			return {
-				current : 0
+				current : 0,
+				localItems: this.items
 			}
 		},
+		created() {
+			
+		},
 		mounted() {
-			console.log(this);
+			
 		}
 	}
 </script>
