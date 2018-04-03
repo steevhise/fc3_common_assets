@@ -10,7 +10,7 @@ module.exports = {
         validate: {
             params: Joi.object({
                 postImageId: Joi.number(),
-                thumb: Joi.boolean()
+                thumb: Joi.boolean().truthy('thumb')
             })
         }
     },

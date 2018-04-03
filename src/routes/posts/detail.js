@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const Boom = require('boom');
 
 module.exports = {
     method: 'GET',
@@ -15,18 +16,21 @@ module.exports = {
     handler: function (request, reply) {
 
         const { postId } = request.params;
+        const { postService } = request.server;
 
         request.log('debug', 'about to look up post ' + postId);
 
-        new request.server.Post(postId, (err, post) => {
+        return postService.fetchByIdentifier(postId)
+        .then((post) => {
 
-            if (err) {
-                return reply(err);
+            if (!post) {
+                throw Boom.notFound('That post was not found, and may have been closed.');
             }
 
             reply.view('posts/post', {
-                showFilterSelectors: true,
-                post,
+                data: {
+                    post
+                },
                 inBodyAds: [
                     'one',
                     'two'
