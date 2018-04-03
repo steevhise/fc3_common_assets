@@ -1,9 +1,15 @@
-{% set headerText = "Recent items near you" %}
+{% set headerText = "Recent items" %}
+{% set nearMeText = "Show items near me" %}
 
 <div class="recent-list">
     <div class="recent-list-inner row">
         <!-- Header row and controls -->
-        <h3 class="section-title text-center">{{ headerText|upper }}</h3>
+        <h3 class="section-title-small">
+          {{ headerText|upper }}
+          {% if !data.hasLocation %}
+            | <a id="get-geolocation" href="#">{{ nearMeText|upper }}</a> {# see also src/assets/js/modules/home.js #}
+          {% endif %}
+        </h3>
         <!-- Items list -->
         <div class="recent-list-items">
             <div class="recent-grid-view">

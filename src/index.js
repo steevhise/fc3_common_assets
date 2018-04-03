@@ -32,6 +32,8 @@ exports.register = Util.callbackify((server, options) => {
             require('./extensions/errors')
         ));
 
+        server.state(...require('./cookies/location')(server, options));
+
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({
             cache: 'freecycleMain',

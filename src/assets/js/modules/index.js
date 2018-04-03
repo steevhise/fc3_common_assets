@@ -6,3 +6,4 @@ export {default as NotificationPrefs} from "./notification_prefs";
 export {MainVue} from './fc3_components';
 export {default as FindGroups} from "./find_groups";
 export {default as Settings} from "./settings";
+export {default as Home} from "./home";
