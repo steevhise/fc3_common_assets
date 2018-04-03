@@ -9,9 +9,7 @@ module.exports = {
 
             request.cookieAuth.clear();
 
-            reply.view('logout', {
-                title: 'Logged out'
-            });
+            return reply.redirect('/').temporary();
         }
     }
 };
