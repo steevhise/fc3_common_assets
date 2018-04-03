@@ -9,30 +9,23 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const localGroups = [
-            'Tuscon', 'Marana', 'Oro Valley', 'Vail', 'Sanuarita'
-        ];
+        const { postService, groupService, siteService } = request.server;
 
-        const metrics = [
-            {
-                name: 'Members',
-                count: '9,073,808'
-            },
-            {
-                name: 'Local Towns',
-                count: '5,270'
-            },
-            {
-                name: 'Scams or Cost',
-                count: '0'
-            }
-        ];
+        return Promise.all([
+            postService.fetchFeatured(3),
+            groupService.fetchFeatured(),
+            siteService.fetchStatistics()
+        ])
+        .then(([posts, groups, statistics]) => {
 
-        reply.view('home', {
-            title: 'Freecycle',
-            posts: Mocks.posts.slice(0, 3),
-            groups: localGroups,
-            metrics
+            return reply.view('home', {
+                title: 'Freecycle',
+                data: {
+                    posts,
+                    groups,
+                    statistics
+                }
+            });
         });
     }
 };

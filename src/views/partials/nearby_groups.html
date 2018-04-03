@@ -4,8 +4,8 @@
 
         <!--  nearby location groups  -->
         <span class="nearby-groups-buttons">
-            {% for key,val in groups %}
-                <button class="btn-default nearby-groups-button">{{val}}</button>
+            {% for group in groups %}
+                <a href="/town/{{group.id}}" class="btn-default nearby-groups-button">{{group.name}}</a>
             {% endfor %}
         </span>
 
