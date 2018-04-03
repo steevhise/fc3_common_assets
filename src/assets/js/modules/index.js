@@ -3,6 +3,6 @@ export {default as LanguageSelect} from "./language_select";
 export {default as HomeGroup} from "./home_group";
 export {default as DefaultLocation} from "./default_location";
 export {default as NotificationPrefs} from "./notification_prefs";
-export {default as FC3VueComponents} from './fc3_components';
+export {MainVue} from './fc3_components';
 export {default as FindGroups} from "./find_groups";
 export {default as Settings} from "./settings";
