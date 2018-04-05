@@ -96,7 +96,7 @@ module.exports = [{
                 return userService.unblock(friendship);
             }
 
-            throw Boom.badImplementation(`Invalid friend action "${friendAction}".`);
+            throw Boom.badImplementation(`Invalid friend action "${action}".`);
         })
         .then(() => {
 

@@ -4,8 +4,29 @@
     <span>
       {{ group.region.region_name }}, {{ group.region.country.country_name }} ({{ group.num_members }} Members)
     </span>
-    <a href="#">+Join Town</a>
-    {#TODO: need to add path for join group#}
-    {# TODO: move this to partials #}
+    {% if !isAuthenticated %}
+      <a href="/signup">Signup</a> or <a href="/login">Login</a>
+    {% else %}
+      {% if !isMember %}
+        <div class="columns medium-3">
+          {% include 'partials/membership_action_button.html' with {
+            id: group.group_id,
+            action: 'join',
+            <!-- TODO Need more specific icon? -->
+            label: 'Join Town'
+          } only %}
+        </div>
+      {% else %}
+        <div class="columns medium-3">
+          {% include 'partials/membership_action_button.html' with {
+            id: group.group_id,
+            action: 'leave',
+            <!-- TODO Change this icon? -->
+            icon: 'alert'
+            label: 'Leave Town'
+          } only %}
+        </div>
+      {% endif %}
+    {% endif %}
   </div>
 </div>
