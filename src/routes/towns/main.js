@@ -38,15 +38,11 @@ module.exports = {
         return groupService.fetchByIdentifier(uniqueName).then((group) => {
 
             if (!group) {
-                // reply with the find-towns view, adding a not-found-try-searching error
-                // TODO Add error to response
-                //reply.state('redirectedError', 'groupNotFound', { path: '/town' });
-                /*{
+                reply.state('redirectedError', {
                     message: 'Sorry, we couldn\'t find that group. Try searching!',
-                    path: request.route.path.replace('uniqueName?', uniqueName),
-                    type:
-                }*/
-                //console.log(request.state);
+                    path: request.route.path.replace('{uniqueName?}', uniqueName),
+                    type: 'groupNotFound'
+                });
                 return reply.redirect('/find-towns').temporary();
             }
 

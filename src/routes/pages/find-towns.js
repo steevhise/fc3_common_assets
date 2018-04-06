@@ -58,6 +58,20 @@ module.exports = {
             ]
         };
 
+        // Handles the case where a user supplies an invalid group name to /town/{uniqueName},
+        // which we handle by redirecting here with a cookie (redirectedError) describing the error
+        const errors = [];
+        if (request.state.redirectedError) {
+            const { redirectedError } = request.state;
+            if (redirectedError.type === 'groupNotFound') {
+                errors.push({
+                    message: redirectedError.message
+                });
+            }
+            // Clean up the error cookie to ensure no fraudulent errors on subsequent visits in the session
+            reply.unstate('redirectedError');
+        }
+
         reply.view('find-groups', {
             title: 'Find Towns',
             groupList,
@@ -67,7 +81,8 @@ module.exports = {
             inBodyAds: [
                 'one',
                 'two'
-            ]
+            ],
+            errors
         });
     }
 };
