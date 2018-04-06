@@ -46,11 +46,16 @@
                 {% endfor %}
             </div>
             <div class="item-list-view" ref="post_listview" >
+                <div v-for="(post, index) in {{data.posts|json}}" :key="index">
+                    <fc-post-list-item :post="post" :path="{{path|json}}" ></fc-post-list-item>
+                </div>
+                {#
                 {% for post in data.posts %}
                     <div data-index="{{loop.index}}" data-id="{{post.id}}" {% if loop.index > 10 %}style="display: none;"{%endif%}>
                         {% include './post_list_item.html' with post %}
                     </div>
                 {% endfor %}
+                #}
             </div>
             <div class="item-list-load-more">
                 <button class="btn-action">Load More</button>
