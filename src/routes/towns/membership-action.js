@@ -53,7 +53,6 @@ module.exports = {
         })
         .then((result) => {
 
-            console.log(result, 'DID EVERYTHING WORK????');
             return reply.redirect(request.info.referrer || '/').temporary();
         });
     }

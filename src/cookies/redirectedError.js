@@ -5,7 +5,7 @@ module.exports = (server, options) => ([
         isHttpOnly: true,
         isSecure: false,
         encoding: 'base64json',
-        clearInvalid: false, // remove invalid cookies
+        clearInvalid: false,
         strictHeader: false,
         path: '/'
     }
