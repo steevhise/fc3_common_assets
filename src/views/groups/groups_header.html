@@ -2,30 +2,29 @@
   <h1 class="post-header-title">{{ group.group_name }}</h1>
   <div class="post-header-subtitle">
     <span>
-      {{ group.region.region_name }}, {{ group.region.country.country_name }} ({{ group.num_members }} Members)
+      {{ group.region.region_name }}, {{ group.region.country.country_name }} ({{ membersCount }} Members)
     </span>
     {% if !isAuthenticated %}
       <a href="/signup">Signup</a> or <a href="/login">Login</a>
     {% else %}
       {% if !isMember %}
-        <div class="columns medium-3">
-          {% include 'partials/membership_action_button.html' with {
+        {% if !isPending %}
+          {% include '../partials/membership_action_button.html' with {
             id: group.group_id,
             action: 'join',
-            <!-- TODO Need more specific icon? -->
+            icon: 'plus',
             label: 'Join Town'
           } only %}
-        </div>
+        {% else %}
+          <div>Request to join awaiting moderation. Hold tight!</div>
+        {% endif %}
       {% else %}
-        <div class="columns medium-3">
-          {% include 'partials/membership_action_button.html' with {
-            id: group.group_id,
-            action: 'leave',
-            <!-- TODO Change this icon? -->
-            icon: 'alert'
-            label: 'Leave Town'
-          } only %}
-        </div>
+        {% include '../partials/membership_action_button.html' with {
+          id: group.group_id,
+          action: 'leave',
+          icon: 'alert',
+          label: 'Leave Town'
+        } only %}
       {% endif %}
     {% endif %}
   </div>

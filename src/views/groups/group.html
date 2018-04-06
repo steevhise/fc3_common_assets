@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% include './groups_header.html' with { group: data.group }%}
+{% include './groups_header.html' with { group: data.group, membersCount: data.membersCount }%}
 <div class="horizontal_tabs">
 
   <!--  tabs  -->

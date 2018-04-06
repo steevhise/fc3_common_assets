@@ -29,7 +29,7 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const { groupService, postService, userService } = request.server;
+        const { groupService, postService, userService, siteService } = request.server;
         const { uniqueName } = request.params;
         const { isAuthenticated, credentials } = request.auth;
 
@@ -40,30 +40,41 @@ module.exports = {
             if (!group) {
                 // reply with the find-towns view, adding a not-found-try-searching error
                 // TODO Add error to response
-                reply.redirect('/find-towns').temporary();
+                //reply.state('redirectedError', 'groupNotFound', { path: '/town' });
+                /*{
+                    message: 'Sorry, we couldn\'t find that group. Try searching!',
+                    path: request.route.path.replace('uniqueName?', uniqueName),
+                    type:
+                }*/
+                //console.log(request.state);
+                return reply.redirect('/find-towns').temporary();
             }
 
-            const { latitude, longitude } = group;
+            const { latitude, longitude, group_id: groupId } = group;
 
             return Promise.all([
                 groupService.fetchNearest({ latitude, longitude }),
                 postService.forGroup(group.group_id),
-                isAuthenticated ? userService.fetchTownMemberships(credentials.id) : Promise.resolve([])
+                isAuthenticated ? userService.fetchTownMemberships(credentials.id, true) : Promise.resolve([]),
+                siteService.fetchMembershipStatistics(groupId)
             ])
-                .then(([groups, posts, memberships]) => {
+                .then(([groups, posts, memberships, membersCount]) => {
 
                     const tags = Hoek.unique(Hoek.flatten(posts.map(({ tags }) => tags)), 'id');
-                    const isMember = Hoek.contain(memberships, [{ id: group.group_id }], { deep: true });
+                    const isMember = Hoek.contain(memberships, [{ id: groupId, isPending: 0 }], { deep: true });
+                    const isPending = Hoek.contain(memberships, [{ id: groupId, isPending: 1 }], { deep: true });
 
                     reply.view('groups/group', {
                         data: {
                             group,
                             posts,
                             groups,
-                            tags
+                            tags,
+                            membersCount
                         },
                         isAuthenticated,
                         isMember,
+                        isPending,
                         showFilterSelectors: true,
                         isGroup: true,
                         inBodyAds: [
