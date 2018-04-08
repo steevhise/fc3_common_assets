@@ -38,20 +38,18 @@
         
         <!-- Items list -->
         <div class="item-list-items" >
-            {#<div class="item-grid-view" style="display: none" ref="post_gridview" >
+            <div class="item-grid-view" style="display: none" ref="post_gridview" >
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
-                {% for post in data.posts %}
-                {% include './post_grid_item.html' with post %}
-                {% endfor %}
-            </div>#}
+                <fc-data :data="{{data|json}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}"></fc-data>
+            </div>
             <div class="item-list-view" ref="post_listview">
                 <fc-data :data="{{data|json}}" context="posts" component="fc-post-list-item" :path="{{path|json}}"></fc-data>
             </div>
-            <div class="item-list-load-more">
-                <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
-            </div>
         </div>
-
+        <br/>
+        <div class=" row item-list-load-more">
+            <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
+        </div>
     </div>
 </div>
