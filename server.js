@@ -94,9 +94,9 @@ exports.deployment = (start) => {
 
         if (err.port === 6379) {
             // This means no Redis server to connect to.
-            throw 'Server init failed: Must have local Redis server running on port 6379!';
+            err.message = `Server init failed: Must have local Redis server running on port 6379!\n${err.message}`;
         }
-        throw err;   // something else went wrong.
+        throw err;   // Now whatever it is, throw it.
     })
     .then(() => {
 
