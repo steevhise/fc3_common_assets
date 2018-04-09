@@ -90,6 +90,14 @@ exports.deployment = (start) => {
         }
     ])
     .then(() => server.initialize()) // Starts caches, checks plugin dependencies
+    .catch( (err) => {
+
+        if (err.port === 6379) {
+            // This means no Redis server to connect to.
+            throw 'Server init failed: Must have local Redis server running on port 6379!';
+        }
+        throw err;   // something else went wrong.
+    })
     .then(() => {
 
         if (!start) {
