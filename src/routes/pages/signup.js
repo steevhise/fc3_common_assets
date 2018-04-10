@@ -60,12 +60,7 @@ module.exports = {
         const title = 'Sign up for Freecycle';
 
         if (request.auth.isAuthenticated) {
-            return reply.view('signup', {
-                title,
-                data: {
-                    step2: {}
-                }
-            });
+            return reply.redirect('/home/dashboard').temporary();
         }
 
         if (!request.payload) {
