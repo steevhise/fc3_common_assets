@@ -1,4 +1,4 @@
-{% set headerText = "Recent items" %}
+{% set headerText = "Selected items" %}
 {% set nearMeText = "Show items near me" %}
 
 <div class="recent-list">
@@ -7,7 +7,7 @@
         <h3 class="section-title-small">
           {{ headerText|upper }}
           {% if !data.hasLocation %}
-            | <a id="get-geolocation" href="#">{{ nearMeText|upper }}</a> {# see also src/assets/js/modules/home.js #}
+            <!-- | <a id="get-geolocation" href="#">{{ nearMeText|upper }}</a> {# see also src/assets/js/modules/home.js #}  -->
           {% endif %}
         </h3>
         <!-- Items list -->

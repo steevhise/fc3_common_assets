@@ -4,11 +4,19 @@
 }
 
 #{$home} {
+  .banner-movie {
+    margin: auto;
+    horiz-align: center;
+    width: 50%;
+  }
+
   .banner-movie-inner {
-    margin-bottom: 1.5rem;
-    margin-top: 1.25rem;
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
+    //margin-bottom: 1.5rem;
+    //margin-top: 3rem;
+    //margin-left: 1.25rem;
+    //margin-right: 1.25rem;
+    margin: auto;
+    padding: 2em;
 
     @include breakpoint(large) {
       margin-top: 0.75rem;
