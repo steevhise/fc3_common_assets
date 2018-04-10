@@ -1,5 +1,8 @@
 const Hoek = require('hoek');
 const Joi = require('joi');
+const Constants = require('@freecycle/common-hapi-plugins/constants');
+
+const internals = {};
 
 module.exports = {
     method: 'GET',
@@ -49,7 +52,7 @@ module.exports = {
             const { latitude, longitude, group_id: groupId } = group;
 
             return Promise.all([
-                groupService.fetchNearest({ latitude, longitude }),
+                groupService.fetchNearest({ latitude, longitude }, groupId),
                 postService.forGroup(group.group_id),
                 isAuthenticated ? userService.fetchTownMemberships(credentials.id, true) : Promise.resolve([]),
                 siteService.fetchMembershipStatistics(groupId)
@@ -60,9 +63,16 @@ module.exports = {
                     const isMember = Hoek.contain(memberships, [{ id: groupId, isPending: 0 }], { deep: true });
                     const isPending = Hoek.contain(memberships, [{ id: groupId, isPending: 1 }], { deep: true });
 
+                    // We count only approved memberships toward the limit.
+                    // TODO Make sure to prevent multiple pending memberships from exceeding this limit on the moderation side
+                    const membershipLimitReached = memberships.filter((memb) => memb.isPending === 0).length === Constants.MAX_GROUPS;
+                    const noCoordinates = (latitude === 0 && longitude === 0) ? true : false;
+                    const requiresApproval = group.members_require_approval || false;
+
                     reply.view('groups/group', {
                         data: {
                             group,
+                            // TODO Need to do any post filtering / validation for display? Re: group moderation settings?
                             posts,
                             groups,
                             tags,
@@ -71,6 +81,9 @@ module.exports = {
                         isAuthenticated,
                         isMember,
                         isPending,
+                        noCoordinates,
+                        requiresApproval,
+                        membershipLimitReached,
                         showFilterSelectors: true,
                         isGroup: true,
                         inBodyAds: [

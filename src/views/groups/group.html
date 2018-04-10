@@ -12,7 +12,7 @@
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="group_posts">
       <div class="nearby-wrapper">
-        {% include '../partials/nearby_groups.html' with { groups: data.groups }%}
+        {% include '../partials/nearby_groups.html' with { currentGroup: data.group, groups: data.groups }%}
       </div>
       <div class="upper-ad-wrapper">
         <div class="in-body-banner-ad">300 x 250 banner ad</div>

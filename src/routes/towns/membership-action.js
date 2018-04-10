@@ -1,4 +1,5 @@
 const Boom = require('boom');
+const Hoek = require('hoek');
 const Joi = require('joi');
 
 module.exports = {
@@ -13,7 +14,8 @@ module.exports = {
                 action: Joi.string().lowercase().required().valid([
                     'join',
                     'leave'
-                ])
+                ]),
+                requiresApproval: Joi.boolean()
             },
             params: {
                 id: Joi.number().integer()
@@ -22,9 +24,9 @@ module.exports = {
     },
     handler: (request, reply) => {
 
-        const { groupService } = request.server;
+        const { groupService, userService } = request.server;
         const { id } = request.params;  // Group.group_id
-        const { action } = request.payload;
+        const { action, requiresApproval } = request.payload;
         const { credentials } = request.auth;
 
         return groupService.fetchByIdentifier(id)
@@ -34,18 +36,24 @@ module.exports = {
                 throw Boom.notFound('Group not found');
             }
 
-            // see GroupMembership model
-            const membership = {
+            const baseData = {
                 user_id: credentials.id,
                 group_id: id
             };
 
             if (action === 'join') {
-                return groupService.join(membership);
+                // see GroupMembership model
+                const membership = Hoek.merge({ is_pending: requiresApproval ? 1 : 0 }, baseData);
+                return userService.fetchTownMemberships(credentials.id)
+                    .then((memberships) => {
+
+                        console.log(memberships.length);
+                        return groupService.join(membership, memberships.length);
+                    });
             }
 
             if (action === 'leave') {
-                return groupService.leave(membership);
+                return groupService.leave(baseData);
             }
 
             // NOTE Can we ever get here? Review, possibly remove

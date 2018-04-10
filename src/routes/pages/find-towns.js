@@ -7,6 +7,9 @@ module.exports = {
     config: {
         id: 'find_groups',
         description: 'Search for towns.'
+        // TODO Note that on /town/{{id}} (routes/towns/main.js), when a searched town has no set coordinates (lat, lng = 0,0)
+        // We display a button that links to this page, setting the query string
+        // QUESTION What do we need from that query to search for a given town's region? Will need to update other route and group templates accordingly
     },
     handler: function (request, reply) {
 
