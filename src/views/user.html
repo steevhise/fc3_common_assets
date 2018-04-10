@@ -18,9 +18,11 @@
     </h3>
   </div>
 </div>
+
 <div class="row">
   <hr class="row section-divider"/>
 </div>
+{% if session.id && session.id !== data.profile.id %}
 <div class="row"> <!-- TODO:
         - style these buttons, make em change colors and shit when they change state,
         - make buttons closer together  in row.
@@ -34,10 +36,7 @@
   <div class="profile-actions container">
     <div class="columns medium-8 medium-centered">
       {% set friendStatus = data.profile.friendStatus %}
-      {% if
-        session.id &&
-        session.id !== data.profile.id &&
-        friendStatus !== 'BLOCKED' &&
+      {% if friendStatus !== 'BLOCKED' &&
         friendStatus !== 'BLOCKING' &&
         friendStatus !== 'REJECTED'
       %}
@@ -93,8 +92,6 @@
         <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
       </div>
       <div class="columns medium-3">
-
-        {# TODO: of course if this is our own profile page, don't show any of the action buttons #}
         <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i>Report</button>'>
             <form method="post"> {# TODO: Submit form to report user once endpoint is available. #}
               <p>Contact a moderator to report this user {{data.profile.username}}</p>
@@ -108,30 +105,23 @@
             </form>
         </fc-modal>
       </div>
-      {% if
-        session.id &&
-        session.id !== data.profile.id
-      %}
+      {% if friendStatus !== 'BLOCKING' %}
+        {% include 'partials/friendship_action_button.html' with {
+          username: data.profile.username,
+          action: 'block',
+          icon: 'ban',
+          label: 'Block',
+          confirm: true
+        } only %}
+      {% endif %}
 
-        {% if friendStatus !== 'BLOCKING' %}
-          {% include 'partials/friendship_action_button.html' with {
-            username: data.profile.username,
-            action: 'block',
-            icon: 'ban',
-            label: 'Block',
-            confirm: true
-          } only %}
-        {% endif %}
-
-        {% if friendStatus === 'BLOCKING' %}
-          {% include 'partials/friendship_action_button.html' with {
-            username: data.profile.username,
-            action: 'unblock',
-            icon: 'user',
-            label: 'Unblock'
-          } only %}
-        {% endif %}
-
+      {% if friendStatus === 'BLOCKING' %}
+        {% include 'partials/friendship_action_button.html' with {
+          username: data.profile.username,
+          action: 'unblock',
+          icon: 'user',
+          label: 'Unblock'
+        } only %}
       {% endif %}
     </div>
   </div>
@@ -141,6 +131,7 @@
   </div>
 
 </div>
+{% endif %}
 
 {# debugging output :  <pre>{{ data.profile|json}}</pre> #}
 
