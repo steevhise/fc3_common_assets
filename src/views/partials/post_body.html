@@ -12,9 +12,6 @@
               <div class="row">
                 <div class="post-list-item-header-left">
                   <div class="post-list-item-category-icon">
-                    <a href="{{ path.home_myreplies }}" class="btn-offer">Reply</a>
-                  </div>
-                  <div class="post-list-item-category-icon">
                     {% include "./post_type.html" with { post : post } %}
                   </div>
                 </div>
@@ -76,7 +73,7 @@
           <fc-modal type="custom" custom-trigger='<a @click.prevent="">View image full size</a>'>
             <img src="{{ post.image }}" />
           </fc-modal>
-          
+
           {#TODO: should popup full image .  should also provide carousel of images if there are multiple #}
         </div>
         {% endif %}
