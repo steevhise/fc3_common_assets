@@ -12,9 +12,11 @@
                 {% endif %}
             </div>
             <div class="item-list-header-controls">
+                {# NOTE: this conditional no longer exists, and was not allowing the filters to pass.
                 {% if showFilterSelectors && !isGroup %}
+                #}
                 {% include './listing_type_filter_list.html' %}
-                {% endif %}
+                {#{% endif %}#}
                 <label class="text-lighten item-list-header-controls-label">View: </label>
                 <ul class="item-list-header-controls-list">
                     <li class="item-list-header-filter-icon item-list-grid-view">
@@ -43,21 +45,15 @@
             <div class="item-grid-view" style="display: none" ref="post_gridview" >
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
-                {% for post in data.posts %}
-                {% include './post_grid_item.html' with post %}
-                {% endfor %}
+                <fc-data :data="{{data|json}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}"></fc-data>
             </div>
-            <div class="item-list-view" ref="post_listview" >
-                {% for post in data.posts %}
-                    <div data-index="{{loop.index}}" data-id="{{post.id}}" {% if loop.index > 10 %}style="display: none;"{%endif%}>
-                        {% include './post_list_item.html' with post %}
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="item-list-load-more">
-                <button class="btn-action">Load More</button>
+            <div class="item-list-view" ref="post_listview">
+                <fc-data :data="{{data|json}}" context="posts" component="fc-post-list-item" :path="{{path|json}}"></fc-data>
             </div>
         </div>
-
+        <br/>
+        <div class=" row item-list-load-more">
+            <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
+        </div>
     </div>
 </div>
