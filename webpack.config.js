@@ -50,8 +50,8 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             { from: './node_modules/@freecycle/fc3_common_assets/src/images', to: './images' },
-            { from: './node_modules/@freecycle/fc3_common_assets/src/scss', to: '../../build/scss' },
-            { from: './node_modules/@freecycle/fc3_common_assets/src/views', to: '../../build/views' }
+            { from: './node_modules/@freecycle/fc3_common_assets/src/scss', to: '../../build/scss' }
+            // { from: './node_modules/@freecycle/fc3_common_assets/src/views', to: '../../build/views' }
 
         ], {
             copyUnmodified: true,
