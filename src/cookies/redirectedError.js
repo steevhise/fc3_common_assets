@@ -1,4 +1,4 @@
-module.exports = (server, options) => ([
+module.exports = [
     'redirectedError',
     {
         isSameSite: 'Lax',
@@ -9,4 +9,4 @@ module.exports = (server, options) => ([
         strictHeader: false,
         path: '/'
     }
-]);
+];

@@ -1,5 +1,4 @@
 const Boom = require('boom');
-const Hoek = require('hoek');
 const Joi = require('joi');
 
 module.exports = {
@@ -13,7 +12,8 @@ module.exports = {
             payload: {
                 action: Joi.string().lowercase().required().valid([
                     'join',
-                    'leave'
+                    'leave',
+                    'accept'
                 ]),
                 requiresApproval: Joi.boolean()
             },
@@ -24,36 +24,28 @@ module.exports = {
     },
     handler: (request, reply) => {
 
-        const { groupService, userService } = request.server;
-        const { id } = request.params;  // Group.group_id
+        const { groupService } = request.server;
         const { action, requiresApproval } = request.payload;
-        const { credentials } = request.auth;
+        const userId = request.auth.credentials.id;
+        const groupId = request.params.id;
 
-        return groupService.fetchByIdentifier(id)
+        return groupService.fetchByIdentifier(groupId)
         .then((group) => {
 
             if (!group) {
                 throw Boom.notFound('Group not found');
             }
 
-            const baseData = {
-                user_id: credentials.id,
-                group_id: id
-            };
-
             if (action === 'join') {
-                // see GroupMembership model
-                const membership = Hoek.merge({ is_pending: requiresApproval ? 1 : 0 }, baseData);
-                return userService.fetchTownMemberships(credentials.id)
-                    .then((memberships) => {
+                return groupService.join(userId, groupId, requiresApproval);
+            }
 
-                        console.log(memberships.length);
-                        return groupService.join(membership, memberships.length);
-                    });
+            if (action === 'accept') {
+                return groupService.acceptInvitation(userId, groupId);
             }
 
             if (action === 'leave') {
-                return groupService.leave(baseData);
+                return groupService.leave(userId, groupId);
             }
 
             // NOTE Can we ever get here? Review, possibly remove
