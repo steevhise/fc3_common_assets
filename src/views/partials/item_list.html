@@ -27,17 +27,19 @@
             </div>
         </div>
         <!-- tag row -->
-        <div class="item-list-subheader">        
+        <div class="item-list-subheader">
           {% if showDashboard %}
           <div class="item-list-dropdown">
               {% include './group_dropdown.html' %}
           </div>
           {% endif %}
-          <div class="item-list-tags">
-              {% include './tag_list.html' %}
-          </div>
+          {% if data.tags.length %}
+              <div class="item-list-tags">
+                  {% include './tag_list.html' %}
+              </div>
+          {% endif %}
         </div>
-        
+
         <!-- Items list -->
         <div class="item-list-items" >
             <div class="item-grid-view" style="display: none" ref="post_gridview" >
