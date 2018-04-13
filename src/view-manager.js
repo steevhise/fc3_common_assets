@@ -20,6 +20,7 @@ module.exports = (server, options) => ({
     layoutPath: 'src/views/layout',
     context: (request) => ({
         session: request.auth.credentials,
+        isAuthenticated: request.auth.isAuthenticated,
         route: {
             id: request.route.settings.id,
             auth: request.route.settings.auth

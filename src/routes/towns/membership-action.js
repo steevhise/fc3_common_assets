@@ -14,8 +14,7 @@ module.exports = {
                     'join',
                     'leave',
                     'accept'
-                ]),
-                requiresApproval: Joi.boolean()
+                ])
             },
             params: {
                 id: Joi.number().integer()
@@ -25,12 +24,14 @@ module.exports = {
     handler: (request, reply) => {
 
         const { groupService } = request.server;
-        const { action, requiresApproval } = request.payload;
+        const { action } = request.payload;
         const userId = request.auth.credentials.id;
         const groupId = request.params.id;
 
         return groupService.fetchByIdentifier(groupId)
         .then((group) => {
+
+            const requiresApproval = !!group.members_require_approval;
 
             if (!group) {
                 throw Boom.notFound('Group not found');
