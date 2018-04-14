@@ -21,7 +21,7 @@ module.exports = {
 
         request.log('debug', 'about to look up post ' + postId);
 
-        return postService.fetchByIdentifier(postId, isAuthenticated && credentials.id)
+        return postService.fetchByIdentifier(postId, { viewerId: isAuthenticated && credentials.id })
         .then((post) => {
 
             if (!post) {
