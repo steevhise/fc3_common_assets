@@ -8,8 +8,8 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.17",
-    "@freecycle/fc3_common_assets": "0.2.6",
+    "@freecycle/common-hapi-plugins": "0.2.18-b",
+    "@freecycle/fc3_common_assets": "0.2.7",
     "@freecycle/freecycle_graphql_schema": "^0.2.7",
     "@freecycle/freecycle_node_dal": "^0.2.6",
     "babel-loader": "^6.2.4",
