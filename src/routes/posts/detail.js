@@ -17,10 +17,11 @@ module.exports = {
 
         const { postId } = request.params;
         const { postService } = request.server;
+        const { isAuthenticated, credentials } = request.auth;
 
         request.log('debug', 'about to look up post ' + postId);
 
-        return postService.fetchByIdentifier(postId)
+        return postService.fetchByIdentifier(postId, { viewerId: isAuthenticated && credentials.id })
         .then((post) => {
 
             if (!post) {

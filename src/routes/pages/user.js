@@ -15,6 +15,7 @@ module.exports = [{
         const { credentials, isAuthenticated } = request.auth;
 
         return userService.fetchProfile({
+            // viewerId is either false OR id of currently logged in user
             viewerId: isAuthenticated && credentials.id,
             where: {
                 username
