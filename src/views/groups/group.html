@@ -1,7 +1,11 @@
 {% extends '../layout/layout.html' %}
 
 {% block content %}
-
+{% for error in errors %}
+    {% if error.message %}
+    <p class="callout alert">{{ error.message }}</p>
+    {% endif %}
+{% endfor %}
 {% include './groups_header.html' with {
     group: data.group,
     isMember: data.isMember,

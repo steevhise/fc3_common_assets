@@ -80,6 +80,19 @@ module.exports = {
             const noCoordinates = (latitude === 0 && longitude === 0) ? true : false;
             const tags = Hoek.unique(Hoek.flatten(posts.map(({ tags }) => tags)), 'id');
 
+            // Handles a predictable membership action error
+            const errors = [];
+            if (request.state.redirectedError) {
+                const { redirectedError } = request.state;
+                if (redirectedError.type === 'membershipActionFailed') {
+                    errors.push({
+                        message: redirectedError.message
+                    });
+                }
+                // Clean up the error cookie to ensure no fraudulent errors on subsequent visits in the session
+                reply.unstate('redirectedError');
+            }
+
             reply.view('groups/group', {
                 data: {
                     group,
@@ -98,10 +111,10 @@ module.exports = {
                 inBodyAds: [
                     'one',
                     'two'
-                ]
+                ],
+                errors
             });
         });
-        //;
     }
 };
 

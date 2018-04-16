@@ -1,6 +1,15 @@
 const Boom = require('boom');
 const Joi = require('joi');
 
+const internals = {};
+
+// These must correspond exactly to method names on the group service
+internals.validMembershipActions = [
+    'join',
+    'leave',
+    'acceptInvitation'
+];
+
 module.exports = {
     method: 'POST',
     path: '/town/{id}/membership',
@@ -10,11 +19,7 @@ module.exports = {
         auth: { mode: 'required' },
         validate: {
             payload: {
-                action: Joi.string().lowercase().required().valid([
-                    'join',
-                    'leave',
-                    'accept'
-                ])
+                action: Joi.string().lowercase().required().valid(internals.validMembershipActions)
             },
             params: {
                 id: Joi.number().integer()
@@ -28,33 +33,30 @@ module.exports = {
         const userId = request.auth.credentials.id;
         const groupId = request.params.id;
 
-        return groupService.fetchByIdentifier(groupId)
-        .then((group) => {
-
-            const requiresApproval = !!group.members_require_approval;
-
-            if (!group) {
-                throw Boom.notFound('Group not found');
-            }
-
-            if (action === 'join') {
-                return groupService.join(userId, groupId, requiresApproval);
-            }
-
-            if (action === 'accept') {
-                return groupService.acceptInvitation(userId, groupId);
-            }
-
-            if (action === 'leave') {
-                return groupService.leave(userId, groupId);
-            }
-
-            // NOTE Can we ever get here? Review, possibly remove
+        if (!internals.validMembershipActions.includes(action)) {
+            // We get here only if something really bad happens i.e. a bug, so we want things to explode
             throw Boom.badImplementation(`Invalid group action "${action}".`);
-        })
+        }
+
+        return groupService[action](userId, groupId)
         .then((result) => {
 
             return reply.redirect(request.info.referrer || '/').temporary();
+        })
+        .catch((err) => {
+
+            if (err instanceof groupService.MembershipActionError) {
+
+                reply.state('redirectedError', {
+                    message: err.message,
+                    path: request.route.path.replace('{id}', groupId),
+                    type: 'membershipActionFailed'
+                });
+
+                return reply.redirect(request.info.referrer || '/').temporary();
+            }
+
+            return reply(err);
         });
     }
 };
