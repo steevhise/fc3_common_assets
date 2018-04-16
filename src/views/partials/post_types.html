@@ -1,14 +1,14 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 
-{% set postTypes = postTypes %}
+<input type="hidden" name="{{name}}" value="{{value}}"/>
 
 {% for postType in postTypes %}
-    {% set postTypeLower = postType.toLowerCase() %}
-    {% set isActive = postType.toLowerCase() == selected.toLowerCase() ? true : false %}
-    <button data-post-typebutton class="{% if isActive %}active{% endif %}" {% if disabled %} disabled {% endif %}>
+    {% set slug = postType.name.toLowerCase() %}
+    {% set isActive = postType.value == value %}
+    <button data-value="{{postType.value}}" data-post-typebutton class="{% if isActive %}active{% endif %}">
         <div class="post-list-item-category-icon icon-container">
-            {% include '../icons/chevron.html' with {className:'icon-chevron-' + postTypeLower} only %}
-            <span class="text-offer">{{postType}}</span>
+            {% include '../icons/chevron.html' with { className: 'icon-chevron-' + slug } only %}
+            <span class="text-offer">{{postType.name}}</span>
         </div>
     </button>
 {% endfor %}
