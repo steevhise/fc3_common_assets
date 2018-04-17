@@ -16,13 +16,29 @@
 		},
 		data() {
 			return {
-				currLimit: this.limit
+				currLimit: this.limit,
+				postFilter: null
 			}
 		},
 		created() {
 			let self = this;
+
+			this.$root.listView = true;
+
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
+			});
+
+			this.$root.$on('filterPost', (type) => {
+				if (this.postFilter == type) {
+					this.postFilter = null;
+				} else {
+					this.postFilter = type;
+				}
+			});
+
+			this.$root.$on('postViewToggle', () => {
+				this.$root.listView = ! this.$root.listView;
 			});
 		},
 		computed: {
@@ -30,7 +46,13 @@
 				let self = this;
 				let results = this.$lodash.filter(this.data[this.context], function(item, index) {
 					return self.$lodash.inRange( index, 0, self.currLimit )
-				})
+				});
+
+				if (self.postFilter) {
+					results = this.$lodash.filter(results, function(item, index) {
+						return item.type.name.toLowerCase() == self.postFilter;
+					});
+				}
 
 				return results;
 			}
