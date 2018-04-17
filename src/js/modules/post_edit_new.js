@@ -22,7 +22,7 @@ const PostEditNew = () => {
 
            e.preventDefault();
 
-           input.val($(option).data('value'));
+           input.val($(option).data('value')).trigger('input');
 
            clearActives(options);
            $(option).toggleClass('active');
