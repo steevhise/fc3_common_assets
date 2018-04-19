@@ -22,10 +22,10 @@
               <div class="clearfix" style="margin-top: 10px;"></div>
               <div class="row">
                 <ul class="post-items">
+                  {% set datetimeOpts = { time: post.time, timezone: post.group.timezone }%}
                   <li>#{{post.id}}</li>
                   <li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
-                  <li>{{ post.date|mreldate|capitalize }}</li>
-                  <li>{{post.date|mdate('MM/DD/YYYY')}}</li>
+                  <li>{{ post.date|mreldate(datetimeOpts)|capitalize }} ( {{ post.date|mdate(datetimeOpts, 'ddd, MM/DD/YYYY hh:mm a')}} )</li>
                   <br/>
                   <li>
                     <a href="{{path.groups_main}}{{post.group.uniqueName}}">
