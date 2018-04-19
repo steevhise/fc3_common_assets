@@ -63,19 +63,27 @@
       </div>
 
       <div class="columns medium-4">
-        {% if post.image && post.thumb %}
-        <div class="row">
-          <div class="post-list-item-photo">
-            <img src="{{post.image}}">
-          </div>
-        </div>
-        <div class="row text-center">
-          <fc-modal type="custom" custom-trigger='<a @click.prevent="">View image full size</a>'>
-            <img src="{{ post.image }}" />
-          </fc-modal>
-
-          {#TODO: should popup full image .  should also provide carousel of images if there are multiple #}
-        </div>
+        {% if post.images && post.thumbs %}
+          {% for pImg in post.images%}
+            {# Our featured image #}
+            {% if loop.first %}
+              <div class="row">
+                <div class="post-list-item-photo">
+                  <img src="{{ pImg }}">
+                </div>
+              </div>
+              <div class="row text-center">
+                <fc-modal type="custom" custom-trigger='<a @click.prevent="">View image full size</a>'>
+                  <img src="{{ pImg }}" />
+                </fc-modal>
+                {#TODO: should popup full image .  should also provide carousel of images if there are multiple #}
+              </div>
+            {% else %}
+              <div class="post-list-item-photo">
+                <img src="{{pImg}}">
+              </div>
+            {% endif %}
+          {% endfor %}
         {% endif %}
       </div>
     </div>

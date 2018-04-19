@@ -51,9 +51,9 @@
                 <fc-data :data="{{data|json}}" context="posts" component="fc-post-list-item" :path="{{path|json}}"></fc-data>
             </div>
         </div>
-        <br/>
-        <div class=" row item-list-load-more">
-            <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
-        </div>
+    </div>
+    <br/>
+    <div class=" row item-list-load-more">
+        <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
     </div>
 </div>

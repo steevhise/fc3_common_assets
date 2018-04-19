@@ -48,3 +48,13 @@
     fill: palette(borrow-darken);
   }
 }
+
+.icon-chevron-taken {
+  @extend .icon-chevron;
+  path {
+    &:first-child {
+      fill: palette(primary);
+    }
+    fill: palette(primary-darken);
+  }
+}

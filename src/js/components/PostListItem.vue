@@ -9,6 +9,7 @@
 				<div class="post-list-item-header-left">
 					<div class="post-list-item-category-icon">
 						<fc-icon name="chevron" :classname="`icon-chevron-${postType}`"></fc-icon>
+						<span :class="`text-${postType}`">{{postType | title}}</span>
 					</div>
 					<div class="post-list-item-header-icon">
 						<fc-icon name="map_pin"></fc-icon>

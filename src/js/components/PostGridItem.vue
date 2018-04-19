@@ -6,6 +6,7 @@
 					<div class="post-grid-item-header-left">
 						<div class="post-grid-item-category-icon">
 							<fc-icon name="chevron" :classname="`icon-chevron-${postType}`"></fc-icon>
+							<span :class="`text-${postType}`">{{postType | title}}</span>
 						</div>
 					</div>
 					<div class="post-grid-item-header-right">
