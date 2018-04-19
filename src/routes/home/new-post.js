@@ -34,11 +34,11 @@ module.exports = {
             payload: Joi.object({
                 subject: Joi.string()
                     .required()
-                    .label('Subject'),
+                    .label('Title'),
                 description: Joi.string()
                     .required()
                     .label('Description'),
-                type: Joi.any()
+                type: Joi.number()
                     .valid([
                         postService.OFFER,
                         postService.WANTED,
@@ -51,7 +51,7 @@ module.exports = {
                     .integer().min(1)
                     .empty(null, '')
                     .when('type', {
-                        is: Joi.any().required().valid([
+                        is: Joi.number().required().valid([
                             postService.BORROW,
                             postService.LEND
                         ]),
@@ -80,7 +80,17 @@ module.exports = {
                         ]),
                         then: Joi.forbidden()
                     })
-                    .label('Post images')
+                    .label('Post images'),
+                tags: Joi.array()
+                    .single()
+                    .items(Joi.number().integer().min(1))
+                    .label('Tags'),
+                acceptedTerms: Joi.boolean()
+                    .valid(true)
+                    .falsy('0', 'false', '')
+                    .truthy('1', 'true')
+                    .required()
+                    .label('Terms of service')
             })
             .empty(null),
             options: {
@@ -106,7 +116,7 @@ module.exports = {
 
                 const { postService, userService } = request.server;
                 const { id: userId } = request.auth.credentials;
-                const { validation, ...post } = request.payload;
+                const { validation, acceptedTerms, ...post } = request.payload;
 
                 return Promise.resolve()
                     .then(() => postService.create(userId, post))
@@ -144,22 +154,33 @@ module.exports = {
     }),
     handler(request, reply) {
 
-        const { validation, ...post } = request.payload || {};
+        const { postService, userService } = request.server;
+        const { id: userId } = request.auth.credentials;
+        const { validation, acceptedTerms, ...post } = request.payload || {};
 
-        // Remove invalid form fields
+        return Promise.all([
+            postService.fetchTags(),
+            userService.fetchTownMemberships(userId)
+        ])
+        .then(([tags, towns]) => {
 
-        if (validation) {
-            validation.info.forEach(({ path }) => {
+            // Remove invalid form fields
 
-                delete post[path];
-            });
-        }
+            if (validation) {
+                validation.info.forEach(({ path }) => {
 
-        reply.view('home/post_new', {
-            title: 'Make a Post',
-            data: {
-                post
+                    delete post[path];
+                });
             }
+
+            reply.view('home/post_new', {
+                title: 'Make a Post',
+                data: {
+                    post,
+                    tags,
+                    towns
+                }
+            });
         });
     }
 };

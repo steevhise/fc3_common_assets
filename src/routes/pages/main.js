@@ -42,7 +42,8 @@ module.exports = {
             const groupIds = !!groups.length && groups.map(({ id }) => id);
 
             return Promise.all([
-                groups,
+                // Don't feature invitation_only groups
+                groups.filter((group) => group.invitationOnly === 0),
                 postService.fetchFeatured(groupIds, 3),
                 siteService.fetchStatistics()
             ]);
