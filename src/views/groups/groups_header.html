@@ -2,10 +2,43 @@
   <h1 class="post-header-title">{{ group.group_name }}</h1>
   <div class="post-header-subtitle">
     <span>
-      {{ group.region.region_name }}, {{ group.region.country.country_name }} ({{ group.num_members }} Members)
+      {{ group.region.region_name }}, {{ group.region.country.country_name }} ({{ group.num_members }} Members )
     </span>
-    <a href="#">+Join Town</a>
-    {#TODO: need to add path for join group#}
-    {# TODO: move this to partials #}
+    {% if !isAuthenticated %}
+      <a href="/signup">Signup</a> or <a href="/login">Login</a>
+    {% else %}
+      {% if !isMember %}
+        {% if !membershipLimitReached %}
+          {% if !isPending %}
+            {% if !isInvited %}
+              {% include '../partials/membership_action_button.html' with {
+                id: group.group_id,
+                action: 'join',
+                icon: 'plus',
+                label: 'Join Town'
+              } only %}
+            {% else %}
+              {% include '../partials/membership_action_button.html' with {
+                id: group.group_id,
+                action: 'acceptInvitation',
+                icon: 'plus',
+                label: 'Accept Invite'
+              } only %}
+            {% endif %}
+          {% else %}
+            <div>Request to join awaiting moderation. Hold tight!</div>
+          {% endif %}
+        {% else %}
+          <div>You've reached the limit for group memberships (8). If you want to join this group or others, leave one of your current groups</div>
+        {% endif %}
+      {% else %}
+        {% include '../partials/membership_action_button.html' with {
+          id: group.group_id,
+          action: 'leave',
+          icon: 'alert',
+          label: 'Leave Town'
+        } only %}
+      {% endif %}
+    {% endif %}
   </div>
 </div>
