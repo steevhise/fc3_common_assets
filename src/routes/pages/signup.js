@@ -1,5 +1,5 @@
-const RouteHelpers = require('../helpers');
 const Joi = require('joi');
+const RouteHelpers = require('../helpers');
 
 module.exports = {
     method: '*',
