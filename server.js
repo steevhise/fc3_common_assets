@@ -59,7 +59,8 @@ exports.deployment = (start) => {
                 facebook: {
                     clientId: '117834011565165',
                     clientSecret: 'fa596fcabbeb2651544ed73ea7c847e3'
-                }
+                },
+                imagesURL: 'https://images.freecycle.org'
             }
         },
         {
