@@ -34,7 +34,7 @@
 
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
-				self.$emit('redrawVueMasonry');
+				self.$root.$emit('redrawVueMasonry');
 			});
 
 			this.$root.$on('postViewToggle', () => {
