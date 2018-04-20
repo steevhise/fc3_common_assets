@@ -17,7 +17,8 @@
 		data() {
 			return {
 				currLimit: this.limit,
-				postFilter: null
+				postFilter: null,
+				selectedTags: []
 			}
 		},
 		created() {
@@ -25,11 +26,15 @@
 
 			this.$root.listView = true;
 
-			this.$root.$on('loadMorePosts', () => {
-				self.currLimit += self.limit;
+			this.$root.$on('redrawVueMasonry', () => {
 				setTimeout(() => {
 					this.$redrawVueMasonry();
 				}, 100)
+			});
+
+			this.$root.$on('loadMorePosts', () => {
+				self.currLimit += self.limit;
+				self.$emit('redrawVueMasonry');
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -49,11 +54,23 @@
 					});
 				}
 
+				if (self.selectedTags.length > 0) {
+					results = this.$lodash.filter(results, function(item, index) {
+
+						return self.$findOne(self.selectedTags, item.tags);
+					})
+				}
+
 				return results;
 			}
 		},
 		mounted() {
-			
+			let self = this;
+
+			window.$('.tag-select').on('change', function() {
+				self.selectedTags = window.$('.tag-select').val();
+				self.$emit('redrawVueMasonry');
+			});
 		}
 	}
 </script>
