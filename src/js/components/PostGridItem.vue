@@ -6,14 +6,14 @@
 					<div class="post-grid-item-header-left">
 						<div class="post-grid-item-category-icon">
 							<fc-icon name="chevron" :classname="`icon-chevron-${postType}`"></fc-icon>
-							<span :class="`text-${postType}`">{{postType | title}}</span>
+							<span :class="`text-${postType}`">{{postType}}</span>
 						</div>
 					</div>
 					<div class="post-grid-item-header-right">
 						<div class="post-grid-item-header-icon">
 							<span>{{post.group.name}}</span>
 							<fc-icon name="map_pin"></fc-icon>
-							<span>{{post.location|title }}</span>
+							<span>{{post.location }}</span>
 						</div>
 					</div>
 
