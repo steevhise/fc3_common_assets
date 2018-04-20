@@ -32,14 +32,6 @@
 				}, 100)
 			});
 
-			this.$root.$on('post.filter', (type) => {
-				if (self.postFilter == type) {
-					self.postFilter = null;
-				} else {
-					self.postFilter = type;
-				}
-			});
-
 			this.$root.$on('postViewToggle', () => {
 				this.$root.listView = ! this.$root.listView;
 			});
@@ -51,9 +43,9 @@
 					return self.$lodash.inRange( index, 0, self.currLimit )
 				});
 
-				if (self.postFilter) {
+				if (self.$root.posts.filter) {
 					results = this.$lodash.filter(results, function(item, index) {
-						return item.type.name.toLowerCase() == self.postFilter;
+						return item.type.name.toLowerCase() == self.$root.posts.filter;
 					});
 				}
 
