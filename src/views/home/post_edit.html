@@ -1,3 +1,5 @@
+{% extends '../layout/layout.html' %}
+
 {% block content %}
   {% parent %}
 
@@ -5,7 +7,7 @@
         <p class="callout alert">{{ error.message }}</p>
     {% endfor %}
 
-    <div class="new_post row">
+    <div class="edit_post row">
         <div class="row">
             <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
         </div>
@@ -60,7 +62,7 @@
                       {% endfor %}
                     </select>
                 </div>
-                {% if data.post.type.id === x || data.post.type.id === x %}
+                {% if data.post.type.typeId === 1 || data.post.type.typeId === 3 %}
                   <div class="form-group text-center">
                     {% if data.post.type.typeId === 1 %} {# offer -> taken #}
                       <input type="checkbox" name="type" value="2" />
