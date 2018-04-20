@@ -31,7 +31,8 @@ export const MainVue = new Vue({
 		return {
 			posts: {
 				layout: 'list',
-				filter: null
+				filter: null,
+				tags: []
 			}
 		}
 	}
