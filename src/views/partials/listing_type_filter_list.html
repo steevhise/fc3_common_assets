@@ -8,11 +8,11 @@
         {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
         <span class="text-wanted">Wanted</span>
     </li>
-    <li :class="`item-list-header-filter-icon item-list-lend-filter ${$root.posts.layout == 'lend' ? 'inactive' : ''}`" @click.prevent="$root.posts.filter = 'lend'" >
+    <li :class="`item-list-header-filter-icon item-list-lend-filter ${$root.posts.filter == 'lend' ? 'inactive' : ''}`" @click.prevent="$root.posts.filter = 'lend'" >
         {% include '../icons/chevron.html' with {className:'icon-chevron-lend'} only %}
         <span class="text-lend">Lend</span>
     </li>
-    <li :class="`item-list-header-filter-icon item-list-borrow-filter ${$root.posts.layout == 'borrow' ? 'inactive' : ''}`" @click.prevent="$root.posts.filter = 'borrow'" >
+    <li :class="`item-list-header-filter-icon item-list-borrow-filter ${$root.posts.filter == 'borrow' ? 'inactive' : ''}`" @click.prevent="$root.posts.filter = 'borrow'" >
         {% include '../icons/chevron.html' with {className:'icon-chevron-borrow'} only %}
         <span class="text-borrow">Borrow</span>
     </li>
