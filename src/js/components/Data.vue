@@ -11,7 +11,7 @@
 			limit: { type: Number, default: 10 },
 			component: { type: String, required: true },
 			data: { type: Object, default: {} },
-			path: { type: Array, default: {} },
+			path: { type: Object, default: {} },
 			context: { type: String, default: "item" }
 		},
 		data() {
@@ -27,13 +27,16 @@
 
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
+				setTimeout(() => {
+					this.$redrawVueMasonry();
+				}, 100)
 			});
 
-			this.$root.$on('filterPost', (type) => {
-				if (this.postFilter == type) {
-					this.postFilter = null;
+			this.$root.$on('post.filter', (type) => {
+				if (self.postFilter == type) {
+					self.postFilter = null;
 				} else {
-					this.postFilter = type;
+					self.postFilter = type;
 				}
 			});
 
