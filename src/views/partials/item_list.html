@@ -19,15 +19,15 @@
                 {#{% endif %}#}
                 <label class="text-lighten item-list-header-controls-label">View: </label>
                 <ul class="item-list-header-controls-list">
-                    <li class="item-list-header-filter-icon item-list-grid-view">
+                    <li :class="`item-list-header-filter-icon item-list-grid-view ${$root.posts.layout !== 'grid' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'grid'">
                         {% include '../icons/grid.html' %} <span>Grid</span></li>
-                    <li class="item-list-header-filter-icon item-list-list-view">
+                    <li :class="`item-list-header-filter-icon item-list-list-view ${$root.posts.layout !== 'list' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'list'" >
                         {% include '../icons/list.html' %} <span>List</span></li>
                 </ul>
             </div>
         </div>
         <!-- tag row -->
-        <div class="item-list-subheader">        
+        <div class="item-list-subheader">
           {% if showDashboard %}
           <div class="item-list-dropdown">
               {% include './group_dropdown.html' %}
@@ -40,12 +40,12 @@
         
         <!-- Items list -->
         <div class="item-list-items" >
-            <div class="item-grid-view" style="display: none" ref="post_gridview" >
+            <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
-                <fc-data :data="{{data|json}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}"></fc-data>
+                <fc-data v-masonry-tile :data="{{data|json}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}"></fc-data>
             </div>
-            <div class="item-list-view" ref="post_listview">
+            <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout == 'list'">
                 <fc-data :data="{{data|json}}" context="posts" component="fc-post-list-item" :path="{{path|json}}"></fc-data>
             </div>
         </div>
