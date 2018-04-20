@@ -30,7 +30,8 @@ export const MainVue = new Vue({
 	data() {
 		return {
 			posts: {
-				layout: 'list'
+				layout: 'list',
+				filter: null
 			}
 		}
 	}
