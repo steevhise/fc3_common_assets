@@ -33,11 +33,13 @@
               {% include './group_dropdown.html' %}
           </div>
           {% endif %}
-          <div class="item-list-tags">
-              {% include './tag_list.html' %}
-          </div>
+          {% if data.tags.length %}
+              <div class="item-list-tags">
+                  {% include './tag_list.html' %}
+              </div>
+          {% endif %}
         </div>
-        
+
         <!-- Items list -->
         <div class="item-list-items" >
             <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
