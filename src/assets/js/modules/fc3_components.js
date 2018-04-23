@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { FCVue } from '@freecycle/fc3_common_assets/src/js/modules';
+import { VueMasonryPlugin } from 'vue-masonry';
 
 // Vue Configuration & Plugins
 Vue.config.silent = true;
@@ -10,6 +11,8 @@ import moment from "moment";
 Vue.use(FCVue, {
 	moment: moment
 });
+
+Vue.use(VueMasonryPlugin);
 
 //components
 import Modal from '../components/Modal.vue';
@@ -26,8 +29,10 @@ export const MainVue = new Vue({
 	props: ['path'],
 	data() {
 		return {
-			global: {
-				postLimit: 5
+			posts: {
+				layout: 'list',
+				filter: null,
+				tags: []
 			}
 		}
 	}

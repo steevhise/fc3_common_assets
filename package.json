@@ -49,6 +49,7 @@
     "vue": "^2.4.2",
     "vue-custom-element": "^1.4.1",
     "vue-loader": "12.2.2",
+    "vue-masonry": "^0.11.1",
     "vue-template-compiler": "^2.4.2",
     "webpack": "3.6.0"
   },
