@@ -103,6 +103,7 @@ module.exports = {
         pre: [
             (request, reply) => {
 
+                console.log('PAYLOAD', request.payload);
                 if (!request.payload) {
                     return reply.continue();
                 }

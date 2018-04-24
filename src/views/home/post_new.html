@@ -60,7 +60,89 @@
                 </div>
                 <div class="form-group">
                     <label>Upload Pictures</label>
-                    <input name="images" type="file" multiple />
+                    <div class="dropbox">
+                      <input name="images" type="file" id="images" multiple accept="image/*" class="input-file" />
+                      <p>Drag your files here to begin upload</p>
+                    </div>
+                    <div class="selected-files"></div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", init, false);
+
+                        function init() {
+                            document.querySelector('#images').addEventListener('change', handleFileInput);
+                            window.ImageUploader = {};
+                            // TODO Needs to be initialized w/ files retrieved from server
+                            ImageUploader.filesList = [];
+
+                            // moves filesList into FormData before submit
+                            document.querySelector('#post_edit').addEventListener('submit', function(e) {
+                              e.preventDefault();
+                              var formElement = document.querySelector("form");
+                              var formData = new FormData(formElement);
+
+                              ImageUploader.filesList.forEach((file, index) => {
+                                // TODO SET for the first so no repeat
+                                if (index === 0) {
+                                  formData.set('images', file, file.name);
+                                }
+                                formData.append('images', file, file.name);
+                              });
+
+                              var request = new XMLHttpRequest();
+                              request.open("POST", "/home/new-post");
+                              request.onload = function(e) {
+                                  console.log(e);
+                              };
+                              request.send(formData);
+                              // NOTE input constraints aren't checked when submitting forms this way (https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit)
+                              //formElement.submit();
+                            });
+                        }
+
+                        function handleFileInput(e) {
+
+                            var formElement = document.querySelector("form");
+                            var formData = new FormData(formElement);
+                            var selDiv = document.querySelector(".selected-files");
+                            // Ensure form data is set correctly, regardless of upload type
+                              // multiple at once; repeated uploads
+                              // Not allowed to exceed 3
+                            // Sync display w/ formdata
+
+                            // TODO Sensible way to handle this case? Error messaging?
+                            // TODO Add case: OR if formData.images already has 3 files
+                            if(!e.target.files || !window.FileReader) {
+                              return;
+                            }
+                            // Take the new file or files
+
+                            var files = e.target.files;
+                            var filesArr = Array.prototype.slice.call(files); // TODO Array.from?
+                            // TODO Refactor
+                            // Handling new files; JUST VALIDATING
+                            filesArr.forEach(function(f, index) {
+                                var f = files[index];
+                                // TODO Add rules for expected image types
+                                if(!f.type.match("image.*")) {
+                                    // TODO Handle error
+                                    return;
+                                }
+                                var reader = new FileReader();
+                                reader.onload = function (e) {
+                                    var html = "<img src=\"" + e.target.result + "\">" + f.name + "<br clear=\"left\"/>";
+                                    selDiv.innerHTML += html;
+                                }
+                                // TODO What the hell does this do?
+                                reader.readAsDataURL(f);
+
+                                // Store each newly uploaded file as each upload attempt i.e. drag once, then drag another,
+                                // overwrites the input's file list
+                                ImageUploader.filesList.push(f);
+                            });
+                        }
+                        // TODO Handle Deleting images and loading existing ones into the uploader
+                        // is data not auto-added to form data on add (drag / select)?
+                    </script>
                 </div>
                 <div class="form-group">
                     <label>Post to Local Town</label>
@@ -114,6 +196,7 @@
         </div>
         <hr class="section-divider" />
     </div>
+    <div id="respy"></div>
     {% include '../partials/in_body_banner_row.html'%}
 
 {% endblock %}
