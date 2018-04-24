@@ -5,12 +5,14 @@
     </div>
     <div class="tags-input-container">
         <select class="tag-select" multiple="multiple">
-            {% for option in data.tags %}
-                <option >{{ option.name }}</option>
+            {% for tag in data.tags %}
+                <option value="{{ tag.name }}">{{ tag.name }}</option>
             {% endfor %}
         </select>
     </div>
-    <div class="tags-suffix-container">
-        <button class="add-tag-icon-button">{% include '../icons/plus.html' %} Add Tag</button>
-    </div>
+    {% if !isGroup %}
+        <div class="tags-suffix-container">
+            <button class="add-tag-icon-button">{% include '../icons/plus.html' %} Add Tag</button>
+        </div>
+    {% endif %}
 </div>
