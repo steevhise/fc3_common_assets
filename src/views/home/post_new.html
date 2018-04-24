@@ -62,6 +62,7 @@
                     <label>Upload Pictures</label>
                     <div class="dropbox">
                       <input name="images" type="file" id="images" multiple accept="image/*" class="input-file" />
+                      <input name="imgdata" id="imgdata" type="hidden" />
                       <p>Drag your files here to begin upload</p>
                     </div>
                     <div class="selected-files"></div>
@@ -74,28 +75,34 @@
                             // TODO Needs to be initialized w/ files retrieved from server
                             ImageUploader.filesList = [];
 
-                            // moves filesList into FormData before submit
-                            document.querySelector('#post_edit').addEventListener('submit', function(e) {
+
+                            document.querySelector("#post_edit").addEventListener("submit", function(e) {
                               e.preventDefault();
                               var formElement = document.querySelector("form");
                               var formData = new FormData(formElement);
-
+                              var dataUrls = [];
+                              var earlProms = [];
                               ImageUploader.filesList.forEach((file, index) => {
-                                // TODO SET for the first so no repeat
-                                if (index === 0) {
-                                  formData.set('images', file, file.name);
-                                }
-                                formData.append('images', file, file.name);
+
+                                earlProms.push(new Promise(function(resolve, reject) {
+                                  var reader = new FileReader();
+                                  reader.onload = function (e) {
+                                      dataUrls.push(e.target.result);
+                                      resolve();
+                                  }
+                                  // reads the image blob into a dataurl
+                                  reader.readAsDataURL(file);
+                                }));
+
                               });
 
-                              var request = new XMLHttpRequest();
-                              request.open("POST", "/home/new-post");
-                              request.onload = function(e) {
-                                  console.log(e);
-                              };
-                              request.send(formData);
-                              // NOTE input constraints aren't checked when submitting forms this way (https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit)
-                              //formElement.submit();
+                              return Promise.all(earlProms)
+                              .then(function() {
+
+                                // NOTE input constraints aren't checked when submitting forms this way (https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit)
+                                document.getElementById("imgdata").value = JSON.stringify(dataUrls);
+                                formElement.submit();
+                              });
                             });
                         }
 

@@ -81,6 +81,8 @@ module.exports = {
                         then: Joi.forbidden()
                     })
                     .label('Post images'),
+                imgdata: Joi.array()
+                    .label('Data Urls'),
                 tags: Joi.array()
                     .single()
                     .items(Joi.number().integer().min(1))
