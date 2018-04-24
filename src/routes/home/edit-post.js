@@ -1,98 +1,179 @@
 const Joi = require('joi');
-const Hoek = require('hoek');
 const Boom = require('boom');
+const RouteHelpers = require('../helpers');
 
 module.exports = {
-    method: 'GET',
+    method: '*',
     path: '/home/edit-post/{postId}',
-    config: {
+    config: ({ postService }) => ({
         id: 'home_post_edit',
         description: 'Edit a post',
         auth:  { mode: 'required' },
-        validate: {
-            params: Joi.object({
-                postId: Joi.number()
-            })
+        payload: {
+            // processes any input from the images field into Buffers representing the image files in memory
+            multipart: { output: 'data' },
+            maxBytes: 1048576 * postService.MAX_POST_IMAGES, // 1mb per image
+            failAction: (request, reply, error) => {
+
+                request.app.formValidation = request.app.formValidation || [];
+                request.app.formValidation = [{
+                    type: 'form',
+                    path: 'image',
+                    message: 'The maximum individual image size is 1mb'
+                }];
+
+                return reply.continue();
+            }
         },
-        plugins: { 'hapiAuthorization': { aclQuery: (id, request, cb) => {
-
-            const userId = request.auth.credentials.id;
-            request.log('authorization', 'user is ' + userId);
-
-            // only allow edit of own posts.
-            const { postId } = request.params;
-
-            // get the post and see if post author is same as current user
-            // TODO: i'd like this to be scoped such that we can re-use this data in the handler below rather than query the post again.
-            new request.server.Post(postId, (err, post) => {
-
-                if (err) {
-                    return cb(err);
+        validate: {
+            failAction: RouteHelpers.formFailAction,
+            params: Joi.object({
+                postId: Joi.number().integer()
+            }),
+            payload: Joi.object({
+                subject: Joi.string()
+                    .required()
+                    .label('Title'),
+                description: Joi.string()
+                    .required()
+                    .label('Description'),
+                type: Joi.number()
+                    .valid([
+                        // TODO Need to add TAKEN and RECEIVED here?
+                        postService.OFFER,
+                        postService.WANTED,
+                        postService.BORROW,
+                        postService.LEND
+                    ])
+                    .required()
+                    .label('Type'),
+                town: Joi.number()
+                    .integer().min(1)
+                    .empty(null, '')
+                    .when('type', {
+                        // TODO Require town if not forbidden
+                        is: Joi.number().required().valid([
+                            postService.BORROW,
+                            postService.LEND
+                        ]),
+                        then: Joi.forbidden()
+                    })
+                    .label('Town'),
+                // TODO Need to require? Fails if not supplied b/c
+                // Post.entity expects this to exist, I think...?
+                location: Joi.string()
+                    .empty('')
+                    .label('Crossroads'),
+                images: Joi.array()
+                        // Handles the case of 1 valid upload
+                        .single()
+                        .items(
+                            Joi.binary().min(1)
+                        )
+                        .max(postService.MAX_POST_IMAGES)
+                        // one of the empty schemas is an empty object because the route's configured multipart processing outputs an empty object
+                        // when no images are sent in the payload AND the form's encoding is multipart/form-data (enctype="multipart/form-data")(which it is and needs to be to upload image files)
+                        // If the form is not encoded thusly, the output of an empty images input is an empty Buffer. Not sure what this means, just felt it was odd/worth noting :)
+                        .empty({}, '', null)
+                        .when('type', {
+                            // People can post images only of what they have (no hypotheticals, only reals)
+                            is: Joi.any().required().valid([
+                                postService.BORROW,
+                                postService.WANTED
+                            ]),
+                            then: Joi.forbidden()
+                        })
+                        .label('Post images'),
+                tags: Joi.array()
+                    .single()
+                    .items(Joi.number().integer().min(1))
+                    .label('Tags')
+            })
+            .empty(null),
+            options: {
+                abortEarly: false,
+                language: {
+                    key: '{{!key}} field '
                 }
+            }
+        },
+        pre: [
+            {
+                // 'post' is the key on request.pre to which the return value of method is assigned
+                // return value is only ever the post data loaded via fetchByIdentifier (just GET or invalid POST requests)
+                assign: 'post',
+                method: (request, reply) => {
 
-                if (post.user_id !== userId) {
-                    // not allowed
-                    // TODO: right now this just pops up a rude error page. later we want to just redirect to the post detail page.
+                    const { id: userId } = request.auth.credentials;
+                    const { postId } = request.params;
 
-                    request.log('authorization', 'post author id is ' + post.user_id + ' but current user is ' + userId);
+                    return postService.fetchByIdentifier(postId, { viewerId: userId })
+                    .then((post) => {
 
-                    return cb(Boom.forbidden());
+                        // Only post author can edit a post
+                        if (userId !== post.user.id) {
+                            request.log('authorization', 'post author id is ' + post.user.id + ' but current user is ' + userId);
+                            const path = request.route.path.replace('{postId}', postId);
+
+                            reply.state('redirectedError', {
+                                message: 'You\'re not allowed to edit other users\' posts',
+                                path,
+                                type: 'postEditForbidden'
+                            });
+                            return reply.redirect(`/posts/${postId}`).temporary().takeover();
+                        }
+
+                        // Handle a GET OR failed validation (in either case, we're onto the handler)
+                        if (!request.payload || request.payload.validation) {
+                            // In prerequisites, reply interface with a value assigns the value
+                            // to request.pre, does NOT send value to the client (inconsistency explained here: https://github.com/hapijs/hapi/blob/v16/API.md#route-prerequisites)
+                            // TODO What key of request.pre is this assigned to?
+                            return reply(post);
+                        }
+
+                        // Handle a POST
+                        // TODO Need to kick off w/ Promise.resolve()?
+                        // TODO Safe to pass payload directly?
+                        return Promise.resolve()
+                        .then(() => postService.update(userId, postId, request.payload))
+                        .then((postId) => reply.redirect(`/posts/${postId}`).temporary().takeover())
+                        .catch((err) => {
+
+                            // TODO Actually handle cases, ya turkey
+                            return reply(err);
+                        });
+                    });
                 }
+            }
+        ]
+    }),
+    handler: (request, reply) => {
 
-                // allowed
-                return cb(null, true);
-            });
-        } } }
-    },
-    handler: function (request, reply) {
+        // GOAL: Delivering post data, DATA OF THE CURRENT POST, to the frontend
+        // TODO On error, revert to current val
+        // TODO On error, send back ok values
 
-        // retrieve data for post edit  TODO: see above, we should be only querying post once... not sure how to scope it though.
-        const { postId } = request.params;
+        const { userService, postService } = request.server;
+        const { id: userId } = request.auth.credentials;
+        const { post } = request.pre;
 
-        return queryPost(request.server, postId).then((post) => {
+        return Promise.all([
+            postService.fetchTags(),
+            userService.fetchTownMemberships(userId)
+        ])
+        .then(([tags, towns]) => {
 
             reply.view('home/post_edit', {
-                title: `Edit Post : ${post.post_id}`,
-                post,
+                data: {
+                    post,
+                    title: `Edit Post : ${post.id}`,
+                    towns,
+                    tags
+                },
                 inBodyAds: [
                     'one', 'two'
                 ]
             });
         });
     }
-};
-
-/**
- * A Graphql Query that returns a specific post.
- * @param {string} server the server context
- * @param {number} postId the postId we would like to query   TODO: this should be replaced with new Post object construction.
- */
-const queryPost = (server, postId) => {
-
-    const query = `{
-        post(post_id:${postId}){
-            post_id
-            user_id
-            group_id
-            group {
-                group_name
-            }
-            post_subject
-            post_description
-            post_location
-            postType {
-                post_type_name
-            }
-        }
-    }`;
-
-    return server.graphql(server.schema, query)
-        .then(({ data }) => {
-
-            if (!data || !data.post) {
-                throw Boom.notFound('Post not found');
-            }
-
-            return data.post;
-        });
 };

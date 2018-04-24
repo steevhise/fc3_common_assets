@@ -22,19 +22,19 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
     switch (Number(value)) {
       case OFFER:
-        getGroupForField('image').show();
+        getGroupForField('images').show();
         getGroupForField('town').show();
         break;
       case WANTED:
-        getGroupForField('image').hide();
+        getGroupForField('images').hide();
         getGroupForField('town').show();
         break;
       case LEND:
-        getGroupForField('image').show();
+        getGroupForField('images').show();
         getGroupForField('town').hide();
         break;
       case BORROW:
-        getGroupForField('image').hide();
+        getGroupForField('images').hide();
         getGroupForField('town').hide();
         break;
       default:

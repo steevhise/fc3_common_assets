@@ -15,6 +15,7 @@ module.exports = [{
         const { credentials, isAuthenticated } = request.auth;
 
         return userService.fetchProfile({
+            // viewerId is either false OR id of currently logged in user
             viewerId: isAuthenticated && credentials.id,
             where: {
                 username
@@ -96,7 +97,7 @@ module.exports = [{
                 return userService.unblock(friendship);
             }
 
-            throw Boom.badImplementation(`Invalid friend action "${friendAction}".`);
+            throw Boom.badImplementation(`Invalid friend action "${action}".`);
         })
         .then(() => {
 

@@ -40,6 +40,7 @@ module.exports = {
                     .label('Description'),
                 type: Joi.number()
                     .valid([
+                        // TODO Need to add TAKEN and RECEIVED here?
                         postService.OFFER,
                         postService.WANTED,
                         postService.BORROW,
@@ -51,6 +52,7 @@ module.exports = {
                     .integer().min(1)
                     .empty(null, '')
                     .when('type', {
+                        // TODO Require town if not forbidden
                         is: Joi.number().required().valid([
                             postService.BORROW,
                             postService.LEND
@@ -61,10 +63,6 @@ module.exports = {
                 location: Joi.string()
                     .empty('')
                     .label('Crossroads'),
-                tags: Joi.array()
-                    .single()
-                    .items(Joi.number().integer().min(1))
-                    .label('Tags'),
                 images: Joi.array()
                     // Handles the case of 1 valid upload
                     .single()
@@ -84,7 +82,17 @@ module.exports = {
                         ]),
                         then: Joi.forbidden()
                     })
-                    .label('Post images')
+                    .label('Post images'),
+                tags: Joi.array()
+                    .single()
+                    .items(Joi.number().integer().min(1))
+                    .label('Tags'),
+                acceptedTerms: Joi.boolean()
+                    .valid(true)
+                    .falsy('0', 'false', '')
+                    .truthy('1', 'true')
+                    .required()
+                    .label('Terms of service')
             })
             .empty(null),
             options: {

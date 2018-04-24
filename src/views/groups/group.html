@@ -1,8 +1,19 @@
 {% extends '../layout/layout.html' %}
 
 {% block content %}
-
-{% include './groups_header.html'%}
+{% for error in errors %}
+    {% if error.message %}
+    <p class="callout alert">{{ error.message }}</p>
+    {% endif %}
+{% endfor %}
+{% include './groups_header.html' with {
+    group: data.group,
+    isMember: data.isMember,
+    isPending: data.isPending,
+    isInvited: data.isInvited,
+    membershipLimitReached: data.membershipLimitReached
+  }
+%}
 <div class="horizontal_tabs">
 
   <!--  tabs  -->
@@ -12,7 +23,12 @@
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="group_posts">
       <div class="nearby-wrapper">
-        {% include '../partials/nearby_groups.html'%}
+        {% include '../partials/nearby_groups.html' with {
+            currentGroup: data.group,
+            groups: data.groups,
+            noCoordinates: data.noCoordinates
+          }
+        %}
       </div>
       <div class="upper-ad-wrapper">
         <div class="in-body-banner-ad">300 x 250 banner ad</div>
