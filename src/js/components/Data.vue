@@ -60,7 +60,9 @@
 						return self.$findOne(self.selectedTags, item.tags);
 					})
 				}
-
+				
+				self.$root.$emit('redrawVueMasonry');
+				
 				return results;
 			}
 		},
