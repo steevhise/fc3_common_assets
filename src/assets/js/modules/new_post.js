@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
     return;
   }
 
-  const getGroupForField = (field) => $('.new_post').find(`input[name=${field}], select[name=${field}]`).first().closest('.form-group');
+  const getField = (field) => $('.new_post').find(`input[name=${field}], select[name=${field}]`).first();
+  const getGroupForField = (field) => getField(field).closest('.form-group');
 
   const updateFieldVisibility = () => {
 
@@ -32,10 +33,12 @@ document.addEventListener("DOMContentLoaded", ()=> {
       case LEND:
         getGroupForField('images').show();
         getGroupForField('town').hide();
+        getField('town').val('');
         break;
       case BORROW:
         getGroupForField('images').hide();
         getGroupForField('town').hide();
+        getField('town').val('');
         break;
       default:
         console.warn('Unrecognized post type', value);

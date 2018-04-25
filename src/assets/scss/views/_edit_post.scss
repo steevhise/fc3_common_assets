@@ -1,0 +1,6 @@
+.edit_post {
+  .post-type-icon-wrapper {
+    text-align: center;
+    @include iconWithLeftText();
+  }
+}
