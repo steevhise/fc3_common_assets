@@ -2,7 +2,7 @@
 * Note: this file is provided by the fc3_common_assets package
  */
 export {FCVue} from './vue_init';
-export {default as ItemList} from "./item_list";
+// export {default as ItemList} from "./item_list";
 export {default as ColorPalette} from "./color_palette";
 export {default as TagList} from "./tag_list";
 export {default as HamburgerMenu} from "./hamburger_menu";
