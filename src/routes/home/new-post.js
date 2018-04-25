@@ -59,7 +59,8 @@ module.exports = {
                     })
                     .label('Town'),
                 location: Joi.string()
-                    .empty('')
+                    .allow('')
+                    .default('', 'Default to empty string, as hotwords check expects this value to be a string')
                     .label('Crossroads'),
                 images: Joi.array()
                     // Handles the case of 1 valid upload
@@ -81,8 +82,6 @@ module.exports = {
                         then: Joi.forbidden()
                     })
                     .label('Post images'),
-                imgdata: Joi.array()
-                    .label('Data Urls'),
                 tags: Joi.array()
                     .single()
                     .items(Joi.number().integer().min(1))
@@ -105,16 +104,19 @@ module.exports = {
         pre: [
             (request, reply) => {
 
-                console.log('PAYLOAD', request.payload);
-                if (!request.payload) {
+                if (request.method === 'get') {
                     return reply.continue();
                 }
 
-                // Handle a POST
+                // Handle a POST, which we'll receive as an AJAX request (per the image uploader component)
+                // We reply with a 200 regardless of result, check the ok prop on the frontend to decide how to react (ok convention bic'd from fetch API)
 
-                // Failed validation
-                if (request.payload.validation) {
-                    return reply.continue();
+                // Failed payload processing and/or validation
+                if (request.app.formValidation) {
+                    return reply({
+                        ok: false,
+                        errors: request.app.formValidation
+                    }).takeover();
                 }
 
                 const { postService, userService } = request.server;
@@ -123,7 +125,7 @@ module.exports = {
 
                 return Promise.resolve()
                     .then(() => postService.create(userId, post))
-                    .then((postId) => reply.redirect(`/posts/${postId}`).takeover())
+                    .then((postId) => reply({ ok: true, postId }).takeover())
                     .catch((err) => {
 
                         request.app.formValidation = request.app.formValidation || [];
@@ -136,7 +138,10 @@ module.exports = {
                                 message: 'Sorry, you can\'t post to that town because you\'re not a member.'
                             });
 
-                            return reply.continue();
+                            return reply({
+                                ok: false,
+                                errors: request.app.formValidation
+                            }).takeover();
                         }
 
                         if (err instanceof postService.BadImageFormatError) {
@@ -147,10 +152,13 @@ module.exports = {
                                 message: 'Image is an unsupported image format.  Must be .jpg or .png.'
                             });
 
-                            return reply.continue();
+                            return reply({
+                                ok: false,
+                                errors: request.app.formValidation
+                            }).takeover();
                         }
 
-                        return reply(err);
+                        return reply({ ok: false, errors: [ err ]}).takeover();
                     });
             }
         ]
@@ -159,22 +167,13 @@ module.exports = {
 
         const { postService, userService } = request.server;
         const { id: userId } = request.auth.credentials;
-        const { validation, acceptedTerms, ...post } = request.payload || {};
+        const { acceptedTerms, ...post } = request.payload || {};
 
         return Promise.all([
             postService.fetchTags(),
             userService.fetchTownMemberships(userId)
         ])
         .then(([tags, towns]) => {
-
-            // Remove invalid form fields
-
-            if (validation) {
-                validation.info.forEach(({ path }) => {
-
-                    delete post[path];
-                });
-            }
 
             reply.view('home/post_new', {
                 title: 'Make a Post',
