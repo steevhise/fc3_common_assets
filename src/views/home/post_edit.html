@@ -3,42 +3,45 @@
 {% block content %}
   {% parent %}
 
-    <pre>{{data.post.type|json(2)}}</pre>
-
     {% for error in errors %}
         <p class="callout alert">{{ error.message }}</p>
     {% endfor %}
 
     <div class="edit_post row">
         <div class="row">
-            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+            <h2 class="post-header-title text-center columns large-12">{{ data.title }}</h2>
         </div>
         <hr class="section-divider" />
         <div class="row">
             <form method="POST" class="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form" enctype="multipart/form-data">
                 <input type="hidden" name="crumb" value="{{crumb}}"/>
+                {% if data.post.town.name %}
+                    <div class="form-group">
+                        <label>Town</label>
+                        <div class="input-with-icon">
+                            {{data.post.town.name}}
+                            <span class="iconcenter">
+                                {% include '../icons/map_pin.html' %}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="form-group">
-                    <label>Post type</label>
-                    {% include '../icons/chevron.html' with { className: 'icon-chevron-' + data.post.type.name.toLowerCase() } only %}
-                    <span class="text-offer">{{data.post.type.name}}</span>
-                </div>
-                <div class="form-group">
+                    <div class="post-type-icon-wrapper">
+                        <span>
+                            {% include '../icons/chevron.html' with { className: 'icon-chevron-' + data.post.type.name.toLowerCase() } only %}
+                            <span class="text-offer">{{data.post.type.name}}</span>
+                        </span>
+                    </div>
                     <label>Post title</label>
                     <input name="subject" value="{{data.post.subject}}" type="text" />
                 </div>
-                <div class="form-group">
-                    <label>Upload Pictures</label>
-                    <input name="images" type="file" multiple />
-                </div>
-                <div class="form-group">
-                    <label>Post to Local Town</label>
-                    <div class="input-with-icon">
-                        {{data.post.town.name}}
-                        <span class="iconcenter">
-                            {% include '../icons/map_pin.html' %}
-                        </span>
+                {% if data.post.type.typeId === 1 || data.post.type.typeId === 9 %} {# allow image uploads for offers and lends #}
+                    <div class="form-group">
+                        <label>Upload Pictures</label>
+                        <input name="images" type="file" multiple />
                     </div>
-                </div>
+                {% endif %}
                 <div class="form-group">
                     <label>Nearest Crossroads</label>
                     <div class="input-with-icon">

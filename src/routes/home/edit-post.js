@@ -2,6 +2,8 @@ const Joi = require('joi');
 const Boom = require('boom');
 const RouteHelpers = require('../helpers');
 
+const internals = {};
+
 module.exports = {
     method: '*',
     path: '/home/edit-post/{postId}',
@@ -89,43 +91,17 @@ module.exports = {
                 const { id: userId } = request.auth.credentials;
 
                 return postService.update(postId, userId, request.payload)
+                .catch(internals.handleUpdateError(request))
                 .then(() => {
+
+                    if (request.app.formValidation && request.app.formValidation.length) {
+                        return reply.continue();
+                    }
 
                     return reply.redirect(`/posts/${postId}`).temporary().takeover();
                 });
             }
-        ],
-        ext: {
-            onPreResponse: {
-                method(request, reply) {
-
-                    if (!request.response.isBoom) {
-                        return reply.continue();
-                    }
-
-                    const err = request.response;
-                    const { postService } = request.server;
-
-                    /*
-                    TODO handle each error from update()
-                    // Only post author can edit a post
-                    if (userId !== post.user.id) {
-                        request.log('authorization', 'post author id is ' + post.user.id + ' but current user is ' + userId);
-                        const path = request.route.path.replace('{postId}', postId);
-
-                        reply.state('redirectedError', {
-                            message: 'You\'re not allowed to edit other users\' posts',
-                            path,
-                            type: 'postEditForbidden'
-                        });
-                        return reply.redirect(`/posts/${postId}`).temporary().takeover();
-                    }
-                    */
-
-                    return reply.continue();
-                }
-            }
-        }
+        ]
     }),
     handler: (request, reply) => {
 
@@ -134,10 +110,39 @@ module.exports = {
         const { postId } = request.params;
 
         return Promise.all([
-            postService.fetchForUpdate(postId, userId),
+            postService.fetchForUpdate(postId, userId)
+                .catch(internals.handleUpdateError(request)),
             postService.fetchTags()
         ])
-        .then(([post, tags]) => {
+        .then(([post = {}, tags]) => {
+
+            // Keep valid, submitted values
+
+            if (request.payload) {
+
+                const { images, type, validation, ...submittedValues } = request.payload;
+
+                if (validation) {
+                    validation.info.forEach(({ path }) => {
+
+                        delete submittedValues[path];
+                    });
+                }
+
+                post = {
+                    ...post,
+                    ...submittedValues
+                };
+            }
+
+            // Rename "group" to "town"
+
+            const { group, ...others } = post;
+
+            post = {
+                ...others,
+                town: group
+            };
 
             reply.view('home/post_edit', {
                 data: {
@@ -151,4 +156,51 @@ module.exports = {
             });
         });
     }
+};
+
+internals.handleUpdateError = (request) => {
+
+    return (err) => {
+
+        const { postService } = request.server;
+
+        if (err instanceof postService.PostNotFoundError) {
+            throw Boom.notFound('Post not found');
+        }
+
+        if (err instanceof postService.PostRejectedError) {
+            throw Boom.notFound('Sorry, your post was rejected');
+        }
+
+        if (err instanceof postService.PostClosedError) {
+            throw Boom.notFound('That post is closed');
+        }
+
+        if (err instanceof postService.PostOwnershipError) {
+            throw Boom.notFound('Post not found');
+        }
+
+        request.app.formValidation = request.app.formValidation || [];
+
+        if (err instanceof postService.PostTypeError) {
+            request.app.formValidation.push({
+                type: 'form',
+                path: 'type',
+                message: err.message
+            });
+
+            return;
+        }
+
+        if (err instanceof postService.CheckHotwordsError) {
+            request.app.formValidation.push({
+                type: 'form',
+                message: 'Your post seems to contain content that violates our terms of service.'
+            });
+
+            return;
+        }
+
+        throw err;
+    };
 };

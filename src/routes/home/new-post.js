@@ -86,13 +86,7 @@ module.exports = {
                 tags: Joi.array()
                     .single()
                     .items(Joi.number().integer().min(1))
-                    .label('Tags'),
-                acceptedTerms: Joi.boolean()
-                    .valid(true)
-                    .falsy('0', 'false', '')
-                    .truthy('1', 'true')
-                    .required()
-                    .label('Terms of service')
+                    .label('Tags')
             })
             .empty(null),
             options: {
