@@ -27,9 +27,23 @@
     padding: 50px 0;
 }
 
-.selected-files img {
-    max-width: 125px;
+.uploaded-files .img-block {
+    max-width: 200px;
     max-height: 125px;
     margin: 20px 40px;
     display: inline-block;
+}
+
+.img-block img {
+    display: block;
+}
+
+button.del-img {
+    max-width: 125px;
+    margin-top: 15px;
+    background-color: crimson;
+}
+
+button.del-img:hover {
+    background-color: maroon;
 }
