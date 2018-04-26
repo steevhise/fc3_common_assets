@@ -59,14 +59,7 @@
                 </div>
                 <div class="form-group">
                     <label>Upload Pictures</label>
-                    <p>Up to 3 images. Only jpg/jpegs and pngs. Images can be at most 1MB.</p>
-                    <div class="upload-errors-container"></div>
-                    <div class="dropbox">
-                      <input name="images" type="file" id="images" multiple accept="image/jpeg,image/png" class="input-file" />
-                      <p class="enabled-upload">Drag your files here to begin upload</p>
-                      <p class="disabled-upload" hidden>You've uploaded the max allowed images</p>
-                    </div>
-                    <div class="uploaded-files row"></div>
+                    {% include '../partials/image_uploader.html'%}
                 </div>
                 <div class="form-group">
                     <label>Post to Local Town</label>
