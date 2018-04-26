@@ -28,13 +28,13 @@
 }
 
 .uploaded-files .img-block {
-    max-width: 200px;
-    max-height: 125px;
     margin: 20px 40px;
     display: inline-block;
 }
 
 .img-block img {
+    max-width: 200px;
+    max-height: 200px;
     display: block;
 }
 

@@ -1,5 +1,9 @@
 // TODO Can refactor to use jQuery if desired; didn't because access native Web APIs
 // Figured it's better to go all one style and since that forced going native, went all native. Sorry! Up for debate :)
+
+// UI based on: https://scotch.io/tutorials/how-to-handle-file-uploads-in-vue-2#file-upload-service
+
+// WARNING Assumes only 1 form on the page; will have to refactor to accommodate multiple, if any cases of that
 class ImageUploader {
 
     constructor(form, uploadedFiles, uploadErrors, formErrors) {
@@ -15,8 +19,6 @@ class ImageUploader {
         this.filesList = [];
 
         // Load any detected files into filesList (in the case of editing)
-        // TODO Add loading current images to init routine e.g. on edit
-        // Add images via template; loop over, add to uploadList, poop in your pants
         const currentUploads = Array.from(this.uploadedFiles.children);
         if (currentUploads.length) {
 
@@ -24,20 +26,21 @@ class ImageUploader {
             // are displayed before we do this i.e. set in template
             // TODO handle data-attributes in template?
             const self = this;
-            currentUploads.forEach(function(up, index) {
-                this.filesList.push(up.src); // fill upload queue with bunk placeholders; submit routine will check for these
-                up.dataset.uploadOrder = index;
-                this.displayImage(up.src, index)
-            }.bind(self));
+            currentUploads.forEach(function(imgBlock) {
+                let img = imgBlock.querySelector('img');
+                let deleteButton = imgBlock.querySelector('.del-img');
+                self.filesList.push(img.src); // fill upload queue with bunk placeholders; submit routine will check for these
+                deleteButton.addEventListener('click', self.deleteUpload.bind(self)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
+            });
 
             // disable input if full
             if (currentUploads.length === 3) {
+                const input = document.querySelector('#images');
                 const enabledMsg = document.querySelector('.enabled-upload');
                 const disabledMsg = document.querySelector('.disabled-upload');
                 const dropbox = document.querySelector('.dropbox');
-                const input = document.querySelector('#images');
 
-                images.setAttribute('disabled', 'disabled');
+                input.setAttribute('disabled', 'disabled');
                 enabledMsg.setAttribute('hidden', 'hidden');
                 disabledMsg.removeAttribute('hidden');
                 dropbox.style.backgroundColor = 'lightgray';
@@ -105,7 +108,7 @@ class ImageUploader {
             const dropbox = document.querySelector('.dropbox');
             const input = document.querySelector('#images');
 
-            images.removeAttribute('disabled');
+            input.removeAttribute('disabled');
             disabledMsg.setAttribute('hidden', 'hidden');
             enabledMsg.removeAttribute('hidden');
             dropbox.style.backgroundColor = 'lightcyan';
@@ -123,6 +126,7 @@ class ImageUploader {
         }
 
         // TODO Sensible way to handle this case? Error messaging?
+        // TODO Move higher up the call chain? If no HTML5 APIs detected, bail on init, disable files input and display message
         if (!e.target.files || !window.FileReader) {
             return;
         }
@@ -143,26 +147,22 @@ class ImageUploader {
                 return this.displayError(`We can't process images in ${f.name}'s format. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
             }
 
-            if (f.size > 1048576) {
-                return this.displayError(`${f.name} is too big; can't exceed 1MB`, uploadErrContainer);
-            }
-
             // User's attempting to upload >3 images at once
             if (this.filesList.length === 3) {
                 return this.displayError(`Upload for ${f.name} failed; you've already uploaded 3 images`, uploadErrContainer);
             }
 
-            // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another,
-            // overwrites the input's file list
-            // Disable the uploader if limit has been reached
+            // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another, overwrites the input's file list
             const numUploads = this.filesList.push(f)
+
+            // Disable the uploader if limit has been reached
             if (numUploads === 3) {
+                const input = document.querySelector('#images');
                 const enabledMsg = document.querySelector('.enabled-upload');
                 const disabledMsg = document.querySelector('.disabled-upload');
                 const dropbox = document.querySelector('.dropbox');
-                const input = document.querySelector('#images');
 
-                images.setAttribute('disabled', 'disabled');
+                input.setAttribute('disabled', 'disabled');
                 enabledMsg.setAttribute('hidden', 'hidden');
                 disabledMsg.removeAttribute('hidden');
                 dropbox.style.backgroundColor = 'lightgray';
@@ -173,10 +173,18 @@ class ImageUploader {
             reader.onload = function (e) {
                 // we pass the index of filesList at which the new image was inserted
                 // so we can track and identify images (in case of deletion) independent of load order i.e. in-sync with filesList order
-                return self.displayImage(e.target.result, numUploads - 1);
+                const dataURL = e.target.result;
+                self.displayImage(dataURL, numUploads - 1);
+
+                // Resize images larger than our 1MB / image limit
+                // NOTE We resize just the file stored in ImageUploader.filesList i.e. the image we send to the server
+                // This doesn't care about the preview image rendered via displayImage; we don't care about that because it's just a preview
+                if (f.size > 1048576) {
+                    self.resizeImage(dataURL, f, numUploads - 1);
+                }
             }
             reader.readAsDataURL(f);
-        }, self /* ensures instance of ImageUploader is the this value w/in callback */);
+        }, self /* ensures instance of ImageUploader is the `this` value w/in callback */);
 
     }
 
@@ -242,9 +250,55 @@ class ImageUploader {
 
         req.send(body);
     }
+
+    // Adapted from Steev's work on legacy and this guy: https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/
+    // Cuts down images larger than 1MB to an acceptable size
+    resizeImage(dataURL, file, uploadOrder) {
+
+        const self = this; // expected to be active ImageUploader instance
+
+        const tempImg = new Image();
+        tempImg.src = dataURL;
+        tempImg.addEventListener('load', function() {
+
+            const MAX_WIDTH = 600;
+            const MAX_HEIGHT = 600;
+            let tempW = tempImg.width;
+            let tempH = tempImg.height;
+
+            // Scale image to MAX dimensions according to its original aspect ratio
+            if (tempW > tempH) {
+                if (tempW > MAX_WIDTH) {
+                   tempH *= MAX_WIDTH / tempW;
+                   tempW = MAX_WIDTH;
+                }
+            } else {
+                if (tempH > MAX_HEIGHT) {
+                   tempW *= MAX_HEIGHT / tempH;
+                   tempH = MAX_HEIGHT;
+                }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = tempW;
+            canvas.height = tempH;
+
+            const ctx = canvas.getContext('2d');
+            // Proportionally resize image on canvas
+            ctx.drawImage(tempImg, 0, 0, tempW, tempH);
+
+            canvas.toBlob(function(blob) {
+
+                const resizedFile = new File([blob], file.name, { type: file.type });
+
+                // replace file in filesList w/ new file, ensuring resized file,
+                // not originally-sized (too large) file is sent to the server
+                self.filesList.splice(uploadOrder, 1, resizedFile);
+            }, file.type);
+        });
+    }
 }
 
-// Assumes only 1 form on the page; will have to refactor to accommodate multiple, if any cases of that
 document.addEventListener('DOMContentLoaded', () => {
 
     if (document.querySelector('.image-upload-form')) {
