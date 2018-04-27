@@ -1,11 +1,18 @@
 {
+  "root": true,
   "extends": "eslint:recommended",
   "env": {
-    "browser": true
+    "browser": true,
+    "commonjs": true
+  },
+  "globals": {
+    "$": true
   },
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
   },
-  "root": true
+  "rules": {
+    "no-unused-vars": "warn"
+  }
 }
