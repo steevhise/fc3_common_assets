@@ -14,11 +14,26 @@ module.exports = {
 
             request.log('my-post', 'in the route - ' + posts);
 
+            // TODO Abstract this pattern into a helper that accepts the error type you're checking for
+            // Handles forbidden edit, redirected from edit-post
+            const errors = [];
+            if (request.state.redirectedError) {
+                const { redirectedError } = request.state;
+                if (redirectedError.type === 'postModeration') {
+                    errors.push({
+                        message: redirectedError.message
+                    });
+                }
+                // Clean up the error cookie to ensure no fraudulent errors on subsequent visits in the session
+                reply.unstate('redirectedError');
+            }
+
             reply.view('home/my_posts', {
                 title: 'My Posts',
                 showFilterSelectors: true,
                 showCityDropdown: true,
                 posts,
+                errors,
                 postAction: 'Manage',
                 inBodyAds: [
                     'one',
