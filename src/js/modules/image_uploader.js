@@ -3,7 +3,9 @@
 
 // UI based on: https://scotch.io/tutorials/how-to-handle-file-uploads-in-vue-2#file-upload-service
 
-// WARNING Assumes only 1 form on the page; will have to refactor to accommodate multiple, if any cases of that
+// WARNING
+// - Assumes only 1 form on the page; will have to refactor to accommodate multiple, if any cases of that
+// - Assumes form will post to current page (uses window.location in XHR); totally easy to reconfigure
 
 /***** INSTRUCTIONS FOR ADDING TO A PAGE ****/
 /*
@@ -30,9 +32,12 @@ class ImageUploader {
         const currentUploads = Array.from(this.uploadedFiles.children);
         if (currentUploads.length) {
 
+            this.deletedImages = [];
+
             // Sync push and display ordering, which should happen by default given that images
             // are displayed before we do this i.e. set in template
-            // TODO handle data-attributes in template?
+            // WARNING This expects any view that loads in images e.g. edit post to markup those image blocks
+            // like we do when we manually create them in displayImage
             const self = this;
             currentUploads.forEach(function(imgBlock) {
                 let img = imgBlock.querySelector('img');
@@ -95,6 +100,14 @@ class ImageUploader {
         const imgRow = imgBlock.parentNode;
         const delIndex = imgBlock.dataset.uploadOrder
 
+
+        // Case of a pre-existing image i.e. where item in queue is a string
+        // Later used to diff images in db w/ images sent back from edit form
+        if (typeof this.filesList[delIndex] === 'string'){
+            // regex is likely overkill; just searching for a sequence of digits should be fine, just felt afraid of potential false positives??? :)
+            this.deletedImages.push(this.filesList[delIndex].match(/images\/(\d+)\/?/)[1]);
+        }
+
         // Remove the image from the upload queue
         this.filesList.splice(delIndex, 1);
 
@@ -149,10 +162,10 @@ class ImageUploader {
         const files = e.target.files;
         const filesArr = Array.from(files);
 
-        filesArr.forEach(function(f, index) {
+        filesArr.forEach(function(f) {
 
             if (f.type.match(/image\/(jpeg|png)/) === null) {
-                return this.displayError(`We can't process images in ${f.name}'s format. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
+                return this.displayError(`We can't process ${f.name} because it's a ${f.type}. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
             }
 
             // User's attempting to upload >3 images at once
@@ -229,10 +242,16 @@ class ImageUploader {
         // editor-0 is the default editor name (as configured in fc3_common_assets Editor.vue component)
         // This access is reliable ASSUMING only 1 instance per page ... sorry
         // https://docs.ckeditor.com/ckeditor4/latest/guide/dev_savedata.html
-        body.set('description', CKEDITOR.instances['editor-0'].getData());
+        body.set('description', CKEDITOR.instances['editor-0'].getData()); // eslint-disable-line no-undef 
+
+        // On edit form, send back ids of any previously set images that were deleted
+        if (this.deletedImages && this.deletedImages.length) {
+            // Server expects ids to be numbers, not strings
+            body.set('deletedImages', JSON.stringify(this.deletedImages.map((id) => Number(id))));
+        }
 
         const req = new XMLHttpRequest();
-        req.open('POST', '/home/new-post');
+        req.open('POST', location);
         req.addEventListener('load', function () {
 
             const resp = JSON.parse(req.responseText);
