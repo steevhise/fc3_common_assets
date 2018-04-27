@@ -1,3 +1,4 @@
+const Boom = require('boom');
 const Joi = require('joi');
 const RouteHelpers = require('../helpers');
 
@@ -67,9 +68,7 @@ module.exports = {
                 images: Joi.array()
                     // Handles the case of 1 valid upload
                     .single()
-                    .items(
-                        Joi.binary().min(1)
-                    )
+                    .items(Joi.binary().min(1))
                     .max(postService.MAX_POST_IMAGES)
                     // one of the empty schemas is an empty object because the route's configured multipart processing outputs an empty object
                     // when no images are sent in the payload AND the form's encoding is multipart/form-data (enctype="multipart/form-data")(which it is and needs to be to upload image files)
@@ -98,6 +97,7 @@ module.exports = {
             }
         },
         pre: [
+            RouteHelpers.validateImagesPre,
             (request, reply) => {
 
                 if (request.method === 'get') {
@@ -115,7 +115,6 @@ module.exports = {
                     }).takeover();
                 }
 
-                const { postService, userService } = request.server;
                 const { id: userId } = request.auth.credentials;
                 const { validation, acceptedTerms, ...post } = request.payload;
 
@@ -145,7 +144,7 @@ module.exports = {
                             request.app.formValidation.push({
                                 type: 'form',
                                 path: 'image',
-                                message: 'Image is an unsupported image format.  Must be .jpg or .png.'
+                                message: err.message
                             });
 
                             return reply({
@@ -154,7 +153,10 @@ module.exports = {
                             }).takeover();
                         }
 
-                        return reply({ ok: false, errors: [ err ]}).takeover();
+                        // Something has gone terribly, terribly wrong
+                        // TODO This is currently triggered the case where the user submits an offer/wanted w/o a town (uncaught assertion err)
+                        // Make sure that path no longer blows things up when we update post create to allow Friends-only OFFERS/WANTEDS
+                        throw err;
                     });
             }
         ]
@@ -163,7 +165,6 @@ module.exports = {
 
         const { postService, userService } = request.server;
         const { id: userId } = request.auth.credentials;
-        const { acceptedTerms, ...post } = request.payload || {};
 
         return Promise.all([
             postService.fetchTags(),
@@ -174,7 +175,6 @@ module.exports = {
             reply.view('home/post_new', {
                 title: 'Make a Post',
                 data: {
-                    post,
                     tags,
                     towns
                 }

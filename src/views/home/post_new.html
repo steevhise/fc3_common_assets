@@ -42,7 +42,7 @@
                     <div class="button-bar" data-post-buttongroup>
                         {% include "../partials/post_types.html" with {
                             name: 'type',
-                            value: data.post.type || 1,
+                            value: 1,
                             postTypes: [
                               { name: 'Offer', value: 1 },
                               { name: 'Wanted', value: 3 },
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group">
                     <label>Post title</label>
-                    <input name="subject" value="{{data.post.subject}}" type="text" required />
+                    <input name="subject" value="" type="text" required />
                 </div>
                 <div class="form-group">
                     <label>Upload Pictures</label>
@@ -66,11 +66,7 @@
                     <div class="input-with-icon">
                         <select class="select-post-town" name="town" data-width="100%">
                           {% for town in data.towns %}
-                            {% if data.post.town === town.id %}
-                              <option value="{{town.id}}" selected="selected">{{town.name}}</option>
-                            {% else %}
                               <option value="{{town.id}}" >{{town.name}}</option>
-                            {% endif %}
                           {% endfor %}
                         </select>
                         <span class="iconcenter">
@@ -81,7 +77,7 @@
                 <div class="form-group">
                     <label>Nearest Crossroads</label>
                     <div class="input-with-icon">
-                        <input name="location" value="{{data.post.location}}" class="input-with-icon" type="search" />
+                        <input name="location" value="" class="input-with-icon" type="search" />
                         <span class="iconcenter">
                             {% include '../icons/map_compass.html' %}
                         </span>
@@ -89,17 +85,13 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <fc-editor name="description" value="{{data.post.description}}"></fc-editor>
+                    <fc-editor name="description" value=""></fc-editor>
                 </div>
                 <div class="form-group">
                     <label>Tags</label>
                     <select class="select-new-post-tags" name="tags" multiple="multiple" data-width="100%">
                       {% for tag in data.tags %}
-                        {% if data.post.tags.includes(tag.id) %}
-                          <option value="{{tag.id}}" selected="selected">{{tag.name}}</option>
-                        {% else %}
-                          <option value="{{tag.id}}">{{tag.name}}</option>
-                        {% endif %}
+                        <option value="{{tag.id}}">{{tag.name}}</option>
                       {% endfor %}
                     </select>
                 </div>
