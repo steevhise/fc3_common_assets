@@ -4,6 +4,14 @@
 // UI based on: https://scotch.io/tutorials/how-to-handle-file-uploads-in-vue-2#file-upload-service
 
 // WARNING Assumes only 1 form on the page; will have to refactor to accommodate multiple, if any cases of that
+
+/***** INSTRUCTIONS FOR ADDING TO A PAGE ****/
+/*
+    Given the page has 1 and only 1 form element
+    1. Include partial somewhere in page's form
+    2. Add image-upload-form to form element's class attribute (see constructor call at bottom of file)
+    3. Add a div somewhere near the top of the page with the form-errors-container class
+*/
 class ImageUploader {
 
     constructor(form, uploadedFiles, uploadErrors, formErrors) {
@@ -251,7 +259,7 @@ class ImageUploader {
         req.send(body);
     }
 
-    // Adapted from Steev's work on legacy and this guy: https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/
+    // Adapted from Steev's work on legacy (for reference: https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/ )
     // Cuts down images larger than 1MB to an acceptable size
     resizeImage(dataURL, file, uploadOrder) {
 
