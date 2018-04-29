@@ -1,6 +1,6 @@
 <template>
 	<div id="fc-data">
-		<component :is="component" v-for="(item, index) in items" :key="index" :path="path" :item="item" :index="index" ></component>
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" ></component>
 	</div>
 </template>
 
@@ -44,25 +44,25 @@
 		computed: {
 			items() {
 				let self = this;
-				let results = this.$lodash.filter(this.data[this.context], function(item, index) {
+				let results = [];
+				
+				results = this.$lodash.filter(this.data.posts, function(item, index) {
 					return self.$lodash.inRange( index, 0, self.currLimit )
 				});
 
 				if (self.$root.posts.filter) {
-					results = this.$lodash.filter(results, function(item, index) {
+					results = this.$lodash.filter(self.data.posts, function(item, index) {
 						return item.type.name.toLowerCase() == self.$root.posts.filter;
 					});
 				}
 
 				if (self.selectedTags.length > 0) {
-					results = this.$lodash.filter(results, function(item, index) {
-
-						return self.$findOne(self.selectedTags, item.tags);
+					results = this.$lodash.filter(self.data.posts, function(item, index) {
+						return self.$findOne(self.$lodash.values(self.selectedTags), self.$lodash.values(self.$lodash.mapValues(item.tags, 'name')));
 					})
 				}
 				
 				self.$root.$emit('redrawVueMasonry');
-				
 				return results;
 			}
 		},
