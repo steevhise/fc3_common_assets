@@ -1,7 +1,7 @@
 <template>
 	<div class="post-list-item" >
 		<div class="post-list-item-photo">
-			<img width="128" :src="post.thumb" v-if="post.thumb">
+			<img :src="post.image" v-if="post.image">
 			<fc-icon name="logo" v-else></fc-icon>
 		</div>
 		<div class="post-list-item-content">
