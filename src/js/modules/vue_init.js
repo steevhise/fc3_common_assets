@@ -23,6 +23,9 @@ export const FCVue = {
 	install(Vue, options) {
 		Vue.prototype.$bus = new Vue();
 		Vue.prototype.$lodash = lodash;
+		Vue.prototype.$findOne = (haystack, arr) => {
+			return arr.some(val => haystack.includes(val));
+		};
 
 		// filters
 		Vue.filter('mreldate', function(date) {

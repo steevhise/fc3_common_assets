@@ -48,9 +48,7 @@ module.exports = {
             }
         }),
         new CopyWebpackPlugin([
-            { from: 'images', to: './images' },
-            { from: 'scss', to: '../../build/scss' },
-            { from: 'views', to: '../../build/views' }     // partials and icons
+            { from: 'images', to: './images' }
         ], {
             copyUnmodified: true,
             debug: 'warning'

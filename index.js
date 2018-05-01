@@ -50,7 +50,7 @@ server.register([
     {
         register: require('@freecycle/common-hapi-plugins/plugins/hapi-swig-extensions'),
         options: {
-            includeDir: rel('build/views')
+            includeDir: rel('./node_modules/@freecycle/fc3_common_assets/src/views')
         }
     }
 

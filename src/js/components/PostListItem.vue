@@ -1,7 +1,7 @@
 <template>
 	<div class="post-list-item" >
 		<div class="post-list-item-photo">
-			<img width="128" :src="post.thumb" v-if="post.thumb">
+			<img :src="post.image" v-if="post.image">
 			<fc-icon name="logo" v-else></fc-icon>
 		</div>
 		<div class="post-list-item-content">
@@ -9,7 +9,7 @@
 				<div class="post-list-item-header-left">
 					<div class="post-list-item-category-icon">
 						<fc-icon name="chevron" :classname="`icon-chevron-${postType}`"></fc-icon>
-						<span :class="`text-${postType}`">{{postType | title}}</span>
+						<span :class="`text-${postType}`">{{postType}}</span>
 					</div>
 					<div class="post-list-item-header-icon">
 						<fc-icon name="map_pin"></fc-icon>
