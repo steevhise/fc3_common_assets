@@ -11,6 +11,8 @@ jsconfig.json
 lib/index.js
 node_modules/
 npm-debug.log
-public/
+package-lock.json
+public/assets/js/
+public/assets/css/
 build/
 src/views/common/

@@ -1,74 +1,84 @@
-{#
-    TODO: Post Edit
-    - example /home/edit_post/17696015
-    - data will be passed from route.
-    - check that required fields are not editable by disabling those fields.
-    - ensure post save method filters out changes that should not be made such as ,
-    changing the post type.
-#}
-
 {% extends '../layout/layout.html' %}
 
 {% block content %}
-    {% parent %}
-    <div class="new_post row">
+  {% parent %}
+
+    {# We programmatically add errors here via the image uploader component #}
+    <div class="form-errors-container"></div>
+    <div class="edit_post row">
         <div class="row">
-            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+            <h2 class="post-header-title text-center columns large-12">{{ data.title }}</h2>
         </div>
         <hr class="section-divider" />
         <div class="row">
-            <form method="POST" action="/actions" class="columns large-10 large-offset-1" id="post_edit" ref="post_edit_form" data='{ "post" : {{post|json}}, "crumb" : "{{crumb}}", "isValid" : false }'>
-                <div vue-slot="formBody" scope="{formData}">
-                    <input type="hidden" name="crumb" v-model="formData.crumb" value="{{crumb}}"/>
-                    <input type="hidden" name="post_id" value="{{ post.post_id }}"/>
-                    <input type="hidden" name="command" value="post_edit" />
-
+            <form method="POST" class="columns large-10 large-offset-1 image-upload-form" id="post_edit" ref="post_edit_form" enctype="multipart/form-data">
+                <input type="hidden" name="crumb" value="{{crumb}}"/>
+                {% if data.post.town.name %}
                     <div class="form-group">
-                        <label>Select type of Post</label>
-                        <div class="button-bar" data-post-buttongroup>
-                            {% include "../partials/post_types.html" with {postTypes: ['Offer', 'Lend', 'Borrow', 'Wanted'], disabled: true, selected: post.postType.post_type_name} only %}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Post title</label>
-                        <input name="post_subject" type="text" value="{{ post.post_subject }}" v-model="formData.post.post_subject"/>
-                    </div>
-                    <div class="form-group">
-                        <label>Upload a Picture</label> {# TODO: Upload and save image using hapi server post.saveImage.... #}
-                        <input type="file" />
-                    </div>
-                    <div class="form-group">
-                        <label>Post to Local Town</label>
+                        <label>Town</label>
                         <div class="input-with-icon">
-                            <input type="text" name="group_name" value="{{ post.group.group_name }}" v-model="formData.post.group.group_name"/>
+                            {{data.post.town.name}}
                             <span class="iconcenter">
                                 {% include '../icons/map_pin.html' %}
                             </span>
                         </div>
                     </div>
+                {% endif %}
+                <div class="form-group">
+                    <div class="post-type-icon-wrapper">
+                        <span>
+                            {% include '../icons/chevron.html' with { className: 'icon-chevron-' + data.post.type.name.toLowerCase() } only %}
+                            <span class="text-offer">{{data.post.type.name}}</span>
+                        </span>
+                    </div>
+                    <label>Post title</label>
+                    <input name="subject" value="{{data.post.subject}}" type="text" />
+                </div>
+                {% if data.post.type.typeId === 1 || data.post.type.typeId === 9 %} {# allow image uploads for offers and lends #}
                     <div class="form-group">
-                        <label>Nearest Crossroads</label>
-                        <div class="input-with-icon">
-                            <input class="input-with-icon" type="search" placeholder="{{label}}"/>
-                            <span class="iconcenter">
-                                {% include '../icons/map_compass.html' %}
-                            </span>
-                        </div>
+                        <label>Upload Pictures</label>
+                        {% include '../partials/image_uploader.html' with { images: data.post.images } %}
                     </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <fc-editor name="post_description" v-model="formData.post.post_description" value="{{ post.post_description }}"></fc-editor>
+                {% endif %}
+                <div class="form-group">
+                    <label>Nearest Crossroads</label>
+                    <div class="input-with-icon">
+                        <input name="location" value="{{data.post.location}}" class="input-with-icon" type="search" />
+                        <span class="iconcenter">
+                            {% include '../icons/map_compass.html' %}
+                        </span>
                     </div>
-                    <div class="form-group">
-                        <label>Tags</label>
-                        <input type="text" placeholder="..."/>
-                    </div>
-                    <div class="form-group text-center terms-conditions">
-                        <input type="checkbox" v-model="formData.isValid" @click="$emit('terms')" /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
-                    </div>
-                    <div class="form-group text-center">
-                        <button type="submit" role="submit" v-if="formData.isValid" class="btn-default btn-wide">Post Item</button>
-                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <fc-editor name="description" value="{{data.post.description}}"></fc-editor>
+                </div>
+                <div class="form-group">
+                    <label>Tags</label>
+                    <select class="select-edit-post-tags" name="tags" multiple="multiple" data-width="100%">
+                      {% for tag in data.tags %}
+                        {% if data.post.tags.includes(tag.id) %}
+                          <option value="{{tag.id}}" selected="selected">{{tag.name}}</option>
+                        {% else %}
+                          <option value="{{tag.id}}">{{tag.name}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                </div>
+                {% if data.post.type.typeId === 1 || data.post.type.typeId === 3 %}
+                  <div class="form-group text-center">
+                    {% if data.post.type.typeId === 1 %} {# offer -> taken #}
+                      <input type="checkbox" name="type" value="2" />
+                      <span class="button-palette-group-title">Taken</a>
+                    {% endif %}
+                    {% if data.post.type.typeId === 3 %} {# wanted -> received #}
+                      <input type="checkbox" name="type" value="4" />
+                      <span class="button-palette-group-title">Received</a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                <div class="form-group text-center">
+                    <button type="submit" role="submit" class="btn-default btn-wide">Edit Post</button>
                 </div>
             </form>
         </div>

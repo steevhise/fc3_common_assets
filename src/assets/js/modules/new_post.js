@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
     return;
   }
 
-  const getGroupForField = (field) => $('.new_post').find(`input[name=${field}], select[name=${field}]`).first().closest('.form-group');
+  const getField = (field) => $('.new_post').find(`input[name=${field}], select[name=${field}]`).first();
+  const getGroupForField = (field) => getField(field).closest('.form-group');
 
   const lendButton = $('.new_post').find('button[data-value=9]').first();
   const borrowButton = $('.new_post').find('button[data-value=10]').first();
@@ -61,17 +62,17 @@ document.addEventListener("DOMContentLoaded", ()=> {
         break;
       case LEND:
         getGroupForField('images').show();
-        // getGroupForField('town').hide();
+        getGroupForField('town').hide();
+        getField('town').val('');
         break;
       case BORROW:
         getGroupForField('images').hide();
-        // getGroupForField('town').hide();
+        getGroupForField('town').hide();
+        getField('town').val('');
         break;
       default:
         console.warn('Unrecognized post type', value);
     }
-
-    console.log('group id: ', townMenu.val());
   };
 
   updateFieldVisibility();

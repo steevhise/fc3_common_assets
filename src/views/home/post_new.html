@@ -68,7 +68,7 @@
                     <div class="button-bar" data-post-buttongroup>
                         {% include "../partials/post_types.html" with {
                             name: 'type',
-                            value: data.post.type || 1,
+                            value: 1,
                             postTypes: [
                               { name: 'Offer', value: 1 },
                               { name: 'Wanted', value: 3 },
@@ -81,23 +81,17 @@
                 </div>
                 <div class="form-group">
                     <label>Post title</label>
-                    <input name="subject" value="{{data.post.subject}}" type="text" required />
+                    <input name="subject" value="" type="text" required />
                 </div>
                 <div class="form-group">
                     <label>Upload Pictures</label>
-                    <p>Up to 3 images. Only jpg/jpegs and pngs. Images can be at most 1MB.</p>
-                    <div class="upload-errors-container"></div>
-                    <div class="dropbox">
-                      <input name="images" type="file" id="images" multiple accept="image/jpeg,image/png" class="input-file" />
-                      <p class="enabled-upload">Drag your files here to begin upload</p>
-                      <p class="disabled-upload" hidden>You've uploaded the max allowed images</p>
-                    </div>
-                    <div class="uploaded-files row"></div>
+                    {% include '../partials/image_uploader.html'%}
                 </div>
+
                 <div class="form-group">
                     <label>Nearest Crossroads</label>
                     <div class="input-with-icon">
-                        <input name="location" value="{{data.post.location}}" class="input-with-icon" type="search" />
+                        <input name="location" value="" class="input-with-icon" type="search" />
                         <span class="iconcenter">
                             {% include '../icons/map_compass.html' %}
                         </span>
@@ -105,22 +99,15 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <fc-editor name="description" value="{{data.post.description}}"></fc-editor>
+                    <fc-editor name="description" value=""></fc-editor>
                 </div>
                 <div class="form-group">
                     <label>Tags</label>
                     <select class="select-new-post-tags" name="tags" multiple="multiple" data-width="100%">
                       {% for tag in data.tags %}
-                        {% if data.post.tags.includes(tag.id) %}
-                          <option value="{{tag.id}}" selected="selected">{{tag.name}}</option>
-                        {% else %}
-                          <option value="{{tag.id}}">{{tag.name}}</option>
-                        {% endif %}
+                        <option value="{{tag.id}}">{{tag.name}}</option>
                       {% endfor %}
                     </select>
-                </div>
-                <div class="form-group text-center terms-conditions">
-                    <input type="checkbox" name="acceptedTerms" value="1" required /> <span class="button-palette-group-title">I AGREE TO THE </span> <a href="/"> TERMS AND CONDITIONS</a> {# TODO: update the link to terms #}
                 </div>
                 <div class="form-group text-center">
                     <button type="submit" role="submit" class="btn-default btn-wide">Post Item</button>
