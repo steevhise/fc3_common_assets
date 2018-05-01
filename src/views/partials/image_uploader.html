@@ -1,0 +1,19 @@
+<div>
+    <p>Up to 3 images. Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload</p>
+    <div class="upload-errors-container"></div>
+    <div class="dropbox">
+        <input name="images" type="file" id="images" multiple accept="image/jpeg,image/png" class="input-file" />
+        <p class="enabled-upload">Drag your files here to begin upload</p>
+        <p class="disabled-upload" hidden>You've uploaded the max allowed images</p>
+    </div>
+    <div class="uploaded-files row">
+        {% if images %}
+            {% for image in images %}
+                <div class="img-block" data-upload-order="{{loop.index0}}">
+                    <img src="{{image}}" />
+                    <button class="btn-default del-img" type="button">Remove</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
