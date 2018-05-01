@@ -38,13 +38,30 @@
             <form method="POST" class="columns large-10 large-offset-1 image-upload-form" id="post_edit" ref="post_edit_form" enctype="multipart/form-data">
                 <input type="hidden" name="crumb" value="{{crumb}}"/>
                 <div class="form-group">
-                        <div class="switch" style="position:relative;left:10em;margin-top:0px;margin-bottom:0px;bottom:-4em;">
+                        <div class="switch large" style="position:relative;left:10em;margin-top:0px;margin-bottom:0px;bottom:-4em;">
                             <input class="switch-input" id="friendCircleSwitch" type="checkbox" name="friendsCircle">
                             <label class="switch-paddle" for="friendCircleSwitch">
                                 <span class="switch-text-active" style="position:relative;right:-80px;">Friends Circle</span>
                                 <span class="switch-text-inactive" style="position:relative;right:75px;top:-3.5em;">Town Group</span>
                             </label>
                         </div>
+                </div>
+                <div class="form-group">
+                    <label>Post to Local Town</label>
+                    <div class="input-with-icon">
+                        <select class="select-post-town" name="town" data-width="100%">
+                            {% for town in data.towns %}
+                            {% if data.post.town === town.id %}
+                            <option value="{{town.id}}" selected="selected">{{town.name}}</option>
+                            {% else %}
+                            <option value="{{town.id}}" >{{town.name}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <span class="iconcenter">
+                            {% include '../icons/map_pin.html' %}
+                        </span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Select type of Post:</label>
@@ -76,23 +93,6 @@
                       <p class="disabled-upload" hidden>You've uploaded the max allowed images</p>
                     </div>
                     <div class="uploaded-files row"></div>
-                </div>
-                <div class="form-group">
-                    <label>Post to Local Town</label>
-                    <div class="input-with-icon">
-                        <select class="select-post-town" name="town" data-width="100%">
-                          {% for town in data.towns %}
-                            {% if data.post.town === town.id %}
-                              <option value="{{town.id}}" selected="selected">{{town.name}}</option>
-                            {% else %}
-                              <option value="{{town.id}}" >{{town.name}}</option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                        <span class="iconcenter">
-                            {% include '../icons/map_pin.html' %}
-                        </span>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label>Nearest Crossroads</label>
