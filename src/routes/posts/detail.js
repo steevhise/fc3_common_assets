@@ -36,7 +36,7 @@ module.exports = {
                 }
 
                 reply.state('redirectedError', {
-                    message: 'Your post is still being moderated. You will be notified when the group\'s moderator has approved it',
+                    message: 'Your post is being moderated. You will be notified when the group\'s moderator has approved it',
                     path: request.route.path.replace('{postId}', request.params.postId),
                     type: 'postModeration'
                 });
