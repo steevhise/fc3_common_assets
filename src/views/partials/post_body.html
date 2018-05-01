@@ -56,10 +56,18 @@
             </div>
             <br/>
             <div class="container">
-              <a href="{{ path.home_myreplies }}" class="btn-offer">Reply</a>
+            {% if session %}
+              {% if session.id === post.user.id %}
+                  <a href="/home/edit-post/{{post.id}}" class="btn-action">Edit</a>
+              {% else %}
+                  <a href="{{ path.home_myreplies }}" class="btn-offer">Reply</a>
+              {% endif %}
+            {% else %}
+              <fc-modal id="login" custom-trigger="<a>Login to reply to this post</a>">
+                <fc-login></fc-login>
+              </fc-modal>
+            {% endif %}
             </div>
-          </div>
-        </div>
       </div>
 
       <div class="columns medium-4">
