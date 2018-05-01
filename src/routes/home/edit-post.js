@@ -51,15 +51,19 @@ module.exports = {
                 images: Joi.array()
                     // Handles the case of 1 valid upload
                     .single()
-                    .items(
-                        Joi.binary().min(1)
-                    )
+                    .items(Joi.binary().min(1))
                     .max(postService.MAX_POST_IMAGES)
                     // one of the empty schemas is an empty object because the route's configured multipart processing outputs an empty object
                     // when no images are sent in the payload AND the form's encoding is multipart/form-data (enctype="multipart/form-data") (which it is and needs to be to upload image files)
                     // If the form is not encoded thusly, the output of an empty images input is an empty Buffer. Not sure what this means, just felt it was odd/worth noting :)
                     .empty({}, '', null)        // TODO disallow images for certain types?
-                    .label('Post images'),
+                    .label('Post images (newly uploaded)'),
+                deletedImages: Joi.array()
+                    .single()
+                    .items(Joi.number().integer())
+                    .max(postService.MAX_POST_IMAGES)
+                    .empty({}, '', null)
+                    .label('Deleted previously uploaded post images '),
                 tags: Joi.array()
                     .single()
                     .items(Joi.number().integer().min(1))
@@ -76,15 +80,19 @@ module.exports = {
         pre: [
             (request, reply) => {
 
-                if (!request.payload) {
+                if (request.method === 'get') {
                     return reply.continue();
                 }
 
-                // Handle a POST
+                // Handle a POST, which we'll receive as an AJAX request (per the image uploader component)
+                // We reply with a 200 regardless of result, check the ok prop on the frontend to decide how to react (ok convention bic'd from fetch API)
 
-                // Failed validation
-                if (request.payload.validation) {
-                    return reply.continue();
+                // Failed payload processing and/or validation
+                if (request.app.formValidation) {
+                    return reply({
+                        ok: false,
+                        errors: request.app.formValidation
+                    }).takeover();
                 }
 
                 const { postId } = request.params;
@@ -95,10 +103,13 @@ module.exports = {
                 .then(() => {
 
                     if (request.app.formValidation && request.app.formValidation.length) {
-                        return reply.continue();
+                        return reply({
+                            ok: false,
+                            errors: request.app.formValidation
+                        }).takeover();
                     }
 
-                    return reply.redirect(`/posts/${postId}`).temporary().takeover();
+                    return reply({ ok: true, postId }).takeover();
                 });
             }
         ]
@@ -115,25 +126,6 @@ module.exports = {
             postService.fetchTags()
         ])
         .then(([post = {}, tags]) => {
-
-            // Keep valid, submitted values
-
-            if (request.payload) {
-
-                const { images, type, validation, ...submittedValues } = request.payload;
-
-                if (validation) {
-                    validation.info.forEach(({ path }) => {
-
-                        delete submittedValues[path];
-                    });
-                }
-
-                post = {
-                    ...post,
-                    ...submittedValues
-                };
-            }
 
             // Rename "group" to "town"
 
