@@ -2,6 +2,11 @@
 
 {% block content %}
 {% parent %}
+{% if errors %}
+  {% for error in errors %}
+    <p class="callout alert">{{error.message}}</p>
+  {% endfor %}
+{% endif %}
 <div class="horizontal_tabs">
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
