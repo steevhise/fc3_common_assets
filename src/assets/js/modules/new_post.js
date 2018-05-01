@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   const lendButton = $('.new_post').find('button[data-value=9]').first();
   const borrowButton = $('.new_post').find('button[data-value=10]').first();
+  const townMenu = $('.new_post').find('select[name=town]').first();
 
     console.log(lendButton);
 
@@ -34,14 +35,14 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
     // if FriendsCircle, hide town dropdown.  If town group, hide LEND and BORROW post types.
     if (friendVal === true) {
-        getGroupForField('town').hide();
         //TODO: set group id to 0
+        townMenu.val(null);
+        getGroupForField('town').hide();
         lendButton.show();
         borrowButton.show();
         console.log('friendCircle  = ', friendVal);
     } else {
         getGroupForField('town').show();
-        // TODO: hide the LEND and BORROW buttons
         lendButton.hide();
         lendButton.removeClass('active');
         borrowButton.hide();
@@ -69,6 +70,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
       default:
         console.warn('Unrecognized post type', value);
     }
+
+    console.log('group id: ', townMenu.val());
   };
 
   updateFieldVisibility();
