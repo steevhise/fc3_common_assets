@@ -1,4 +1,3 @@
-const Mocks = require('./helpers/mocks');
 
 module.exports = {
     method: 'GET',
@@ -10,37 +9,86 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        reply.view('home/my_friends', {
-            messageSets: [
+        const { id: userId } = request.auth.credentials;
+        const { userService } = request.server;
+
+        return userService.fetchFriends(userId)
+        .then((friends) => {
+
+            const mocks = [
                 {
-                    messageHeader: 'Chat With Friends',
-                    messages: [
-                        {
-                            title: 'Deron Beal',
-                            image: 'http://lorempixel.com/250/250',
-                            type: 'ChatMessage',
-                            time: '5 minutes ago',
-                            id: 7
-                        },
-                        {
-                            title: 'Steev Hise',
-                            image: 'http://lorempixel.com/250/250',
-                            type: 'ChatMessage',
-                            time: '3 weeks ago',
-                            id: 8
-                        }
-                    ]
+                    firstName: 'Garth',
+                    lastName: 'Angers',
+                    image: 'http://lorempixel.com/150/150/people/5',
+                    username: 'countrythunder2015'
+                },
+                {
+                    firstName:'Deron',
+                    lastName: 'Beal',
+                    image: 'http://lorempixel.com/150/150/people/1',
+                    username: 'deronbeal'
+                },
+                {
+                    firstName: 'Steev',
+                    lastName: 'Hise',
+                    image: 'http://lorempixel.com/150/150/people/2',
+                    username: 'steevhise'
+                },
+                {
+                    firstName: 'Nguyet',
+                    lastName: 'Aleshire',
+                    image: 'http://lorempixel.com/150/150/people/3',
+                    username: 'nuggeti'
+                },
+                {
+                    firstName: 'Dominick',
+                    lastName: 'Amundson',
+                    image: 'http://lorempixel.com/150/150/people/4',
+                    username: 'stayingalive'
+                },
+                {
+                    firstName: 'Dominick2',
+                    lastName: 'Amundson2',
+                    image: 'http://lorempixel.com/150/150/people/4',
+                    username: 'stayingalive2'
+                },
+                {
+                    firstName: 'Dominick3',
+                    lastName: 'Amundson3',
+                    image: 'http://lorempixel.com/150/150/people/4',
+                    username: 'stayingalive3'
+                },
+                {
+                    firstName: 'Dominick4',
+                    lastName: 'Amundson4',
+                    image: 'http://lorempixel.com/150/150/people/4',
+                    username: 'stayingalive4'
+                },
+                {
+                    firstName: 'Tiffaney',
+                    lastName: 'August',
+                    image: 'http://lorempixel.com/150/150/people/6',
+                    username: 'augustsummer'
+                },
+                {
+                    firstName: 'Ronny',
+                    lastName: 'Bartkowiak',
+                    image: 'http://lorempixel.com/150/150/people/7',
+                    username: 'ronnnnnnnny'
                 }
-            ],
-            showFilterSelectors: true,
-            filterType: 'circle',
-            friends: Mocks.friends,
-            title: 'My Friends',
-            posts: Mocks.posts,
-            inBodyAds: [
-                'one',
-                'two'
-            ]
+            ];
+
+            friends = friends.concat(mocks);
+
+            reply.view('home/my_friends', {
+                data: {
+                    friends
+                },
+                inBodyAds: [
+                    'one',
+                    'two'
+                ]
+            });
         });
     }
 };
