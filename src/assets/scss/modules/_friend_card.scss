@@ -47,5 +47,13 @@
     font-size: .875rem;
     text-transform: uppercase;
   }
+  .thumbsup {
+    font-size: 0.625em;
+    color: map_get($freecycle-palette,primary);
+      svg {
+        top: 3px;
+        position: relative;
+        fill: currentColor;
+      }
+  }
 }
-
