@@ -11,7 +11,7 @@ module.exports = [
             id: 'actions',
             description: 'the actions route',
             auth: { mode: 'required' },
-
+            tags: ['api'],
             // auth seems to work now and doesn't screw up data saving in handler.
             plugins: {
                 'hapiAuthorization': { aclQuery: (id, request, cb) => {
