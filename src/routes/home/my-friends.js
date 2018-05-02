@@ -19,6 +19,7 @@ module.exports = {
                 data: {
                     friends
                 },
+                title: 'My Friends',
                 inBodyAds: [
                     'one',
                     'two'
