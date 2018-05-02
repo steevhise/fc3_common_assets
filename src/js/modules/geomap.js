@@ -14,9 +14,11 @@ gmap.LIBRARIES = ['places'];
  * @class {null} GeoMap
  */
 export default class GeoMap {
-	constructor(instance) {
+	constructor() {
 		// setup
-		this.instance = instance;
+		// TODO All of this is BANDAIDS!!! :) This module is being converted to a Vue component
+		// So, we're essentially gutting this constructor to get something easily working in the meantime
+		this.instance = document.getElementById("geomap");
 		this.$element = $(this.instance);
 		this.markerIcons = {};
 
@@ -32,37 +34,43 @@ export default class GeoMap {
 
 	/**
 	 * Initializes the leaflet map instance.
-	 * @return {null} 
+	 * @return {null}
 	 */
 	init() {
 		this.settings = JSON.parse(new Array(this.$element.attr('data-geomap-settings'))) || this.defaultSettings;
 		this.markers = JSON.parse(new Array(this.$element.attr('data-geomap-markers'))) || [];
-		
+		// TODO Allow configuring center
+
 		let geoLocation;
-		
+
 		navigator.geolocation.getCurrentPosition( (position) =>  {
 			geoLocation = {
 				lat: position.coords.latitude,
 				lng: position.coords.longitude
 			}
 		});
-		
+
 		// loads the google maps api
 		gmap.load( (google) => {
 			// instantiates a new map instance
-			let map = new google.maps.Map(this.instance, {
-				zoom: 8,
-				center: {lat: 32.5, lng: -110.09}
+			// NOTE We re-reference the DOM element here b/c there's something funky happening re: DOM manipulation, maybe
+			// Vue-related, where stored element references don't work as the element param to the map constructor...not sure what's up
+			let map = new google.maps.Map(document.getElementById("geomap"), {
+				center: this.settings.center || {lat: 32.5, lng: -110.09},
+				zoom: 8
 			});
-			
-			map.setCenter(geoLocation ? geoLocation : map.getCenter());
+
+			// TODO Uncommented b/c figured map should be centered on user's home group primarily
+			// TODO Consider setting center in constructor config to geoLocation if no supplied center i.e. home group
+			// map.setCenter(geoLocation ? geoLocation : map.getCenter());
 
 			// create an infoWindow
 			let mapInfoWindow = new google.maps.InfoWindow();
-			
+
 			let marker, i;
 			let mapLocations = this.markers;
 			let self = this;
+			const bounds = new google.maps.LatLngBounds();
 
 			// loop through the markers and attach them to the map instance
 			for (i = 0; i < mapLocations.length; i++) {
@@ -71,6 +79,8 @@ export default class GeoMap {
 					icon : this.getIcon(mapLocations[i]),
 					map: map
 				});
+
+				bounds.extend(marker.getPosition());
 
 				google.maps.event.addListener(marker, 'click', (function(marker, i) {
 					let markerContent = `
@@ -84,21 +94,24 @@ export default class GeoMap {
 					}
 				})(marker, i));
 			}
+
+			// ensures map display contains all markers
+			map.fitBounds(bounds);
 		});
 
 		this.$element.css({
 			height: this.settings.height,
 			width: this.settings.width
 		});
-	};
+	}
 
 	/**
 	 * Initialize the setup of the default marker icons.
 	 * note a marker icon may be passed as an object, by which it will be used to register a new marker icon,
-	 * upon instantiation. 
+	 * upon instantiation.
 	 * A marker icon may also be passed a string, the string must be the url of a marker icon accessible via
 	 * the web.
-	 * 
+	 *
 	 * @method initIcons
 	 * @return {null}
 	 */
@@ -139,15 +152,15 @@ export default class GeoMap {
 		};
 
 		this.markerIcons = icons;
-	};
+	}
 
 	/**
 	 * This function accepts a string or object with key custom.
 	 * Primarily used when building the map markers to determine,
 	 * which icon should be rendered with the marker.
-	 * 
+	 *
 	 * @method getIcon
-	 * @param {string|object} config 
+	 * @param {string|object} config
 	 */
 	getIcon(config) {
 		if (typeof config.icon === 'string') {
@@ -158,7 +171,7 @@ export default class GeoMap {
 			// if all else fails return a default marker icon.
 			return this.markerIcons.default;
 		}
-	};
+	}
 
 	getReadMore(item) {
 		let result;
@@ -168,10 +181,10 @@ export default class GeoMap {
 		} else {
 			result = '';
 		}
-		
+
 		return result;
-	};
-	
+	}
+
 }
 
 $('body').find('[data-geomap]').each(function(idx, item) {
