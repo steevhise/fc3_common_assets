@@ -1,3 +1,7 @@
+const Haversine = require('haversine');
+
+const internals = {};
+
 module.exports = {
     method: 'GET',
     path: '/home/my-towns',
@@ -8,40 +12,94 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        reply.view('home/my_groups', {
-            title: 'My Towns',
-            myGroups,
-            geomap: myGroupsGeomap,
-            inBodyAds: [
-                'one',
-                'two'
-            ]
+        const { userService } = request.server;
+        const { id: userId } = request.auth.credentials;
+
+        return userService.fetchSettings(userId)
+        .then(({ homeTown, towns: groups }) => {
+
+            const homedata = groups.find((group) => group.id === homeTown);
+            const locatedGroups = groups.map((group) => {
+
+                const distance = Math.round(internals.measureFromHome(homedata, group));
+                return {
+                    ...group,
+                    distance
+                };
+            }).sort((g1, g2) => g1.distance - g2.distance);
+
+            const geomap = internals.generateMapData(locatedGroups);
+
+            reply.view('home/my_groups', {
+                title: 'My Towns',
+                data: {
+                    locatedGroups,
+                    geomap
+                },
+                inBodyAds: [
+                    'one',
+                    'two'
+                ]
+            });
         });
     }
 };
 
-const myGroups = [
-    {
-        name: 'Tucson',
-        state: 'AZ',
-        distance: '0 miles' // unit should probably be separated for our UK bros, correct?
-    },
-    {
-        name: 'Marana',
-        state: 'AZ',
-        distance: '15 miles'
-    },
-    {
-        name: 'Vail',
-        state: 'AZ',
-        distance: '15 miles'
-    },
-    {
-        name: 'Oro Valley',
-        state: 'AZ',
-        distance: '15 miles'
+
+internals.measureFromHome = function (homeGroup, group) {
+
+    const conf = { unit: 'mile' }; // TODO Any way to toggle this based on user setting?
+
+    // hack for sorting groups w/ lat, lng (0,0) (null value) to bottom of list sent to view
+    // these values are > than the earth's diameter (longest possible distance between points) in corresponding units
+    const diameterPlus = {
+        mile: 8000,
+        km: 13000
+    };
+
+    if (group.latitude === 0 && group.longitude === 0) {
+        return diameterPlus[conf.unit];
     }
-];
+
+    return Haversine(
+        { latitude: homeGroup.latitude, longitude: homeGroup.longitude },
+        { latitude: group.latitude, longitude: group.longitude },
+        conf
+    ); // TODO How do we adapt to different units?
+};
+
+// see map component for notes on configuration and settings expected
+internals.generateMapData = (points) => {
+
+    // user icon for home group
+    // group icon for rest
+    const markers = points.map((point, index) => ({
+        lat: point.latitude,
+        lng: point.longitude,
+        description: point.name,
+        icon: index === 0 ? 'user' : 'group' // differentiate home group
+    }))
+    .filter((point) => !(point.lat === 0 && point.lng === 0));
+
+    const settings = {
+        height: '400',
+        width: '100%'
+    };
+    settings.center = { // center map on user's home group
+        lat: points[0].latitude,
+        lng: points[0].longitude
+    };
+
+    return {
+        settings,
+        markers
+    };
+};
+
+
+/**** NOTE The below is all test content, just to exemplify the shape of the input to the google
+maps API methods the geomap we configure here eventually interfaces with
+***/
 
 // see google docs for custom svg settings, these are just a few mainly the
 // ones we would use to configure a new icon. but you can also pass things like maxWidth,
