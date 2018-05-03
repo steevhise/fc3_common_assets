@@ -78,7 +78,7 @@
                   </div>
                 {% endif %}
                 <div class="form-group text-center">
-                    <button type="submit" role="submit" class="btn-default btn-wide">Edit Post</button>
+                    {% include "../partials/loading_button.html" with { text: "Edit Post" } %}
                 </div>
             </form>
         </div>

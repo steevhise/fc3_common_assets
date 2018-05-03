@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
   console.log('friend circle is ', friendCircle);
 
   if (!typeInput.length && !friendCircle.length) {
-    console.log('no type or friendCircle');
+    // console.log('no type or friendCircle');
     return;
   }
 
@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   const lendButton = $('.new_post').find('button[data-value=9]').first();
   const borrowButton = $('.new_post').find('button[data-value=10]').first();
-  const townMenu = $('.new_post').find('select[name=town]').first();
+  const townMenu = getField('town');
 
-    console.log(lendButton);
+    console.log(townMenu);
 
   const updateFieldVisibility = () => {
 
@@ -34,21 +34,21 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
     const friendVal = friendCircle[0].checked;
 
-    // if FriendsCircle, hide town dropdown.  If town group, hide LEND and BORROW post types.
+    console.log('friendCircle  = ', friendVal);
+
+      // if FriendsCircle, hide town dropdown.  If town group, hide LEND and BORROW post types.
     if (friendVal === true) {
         //TODO: set group id to 0
-        townMenu.val(null);
+        townMenu.val(0);
         getGroupForField('town').hide();
         lendButton.show();
         borrowButton.show();
-        console.log('friendCircle  = ', friendVal);
     } else {
         getGroupForField('town').show();
         lendButton.hide();
         lendButton.removeClass('active');
         borrowButton.hide();
         borrowButton.removeClass('active');
-        console.log('friendCircle = ', friendVal);
     }
 
     switch (Number(value)) {
@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
       default:
         console.warn('Unrecognized post type', value);
     }
+    console.warn('town id: ', getField('town').val());
   };
 
   updateFieldVisibility();
