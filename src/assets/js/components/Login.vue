@@ -40,10 +40,7 @@
 
 
                 const extraForm = this.valuesFromForm && new FormData(document.querySelector(this.valuesFromForm));
-
-                console.log('extraForm', extraForm)
                 const entries = extraForm ? [...extraForm.entries()] : [];
-                console.log('entries', entries)
 
                 this.extraValues = entries.reduce((collect, [key, value]) => {
 
@@ -52,11 +49,9 @@
                     });
                 }, {});
 
-                console.log('extraValues', this.extraValues);
 
                 this.$nextTick(() => {
 
-                    console.log('submit', this.$refs.form);
                     this.$refs.form.submit();
                 });
             }
