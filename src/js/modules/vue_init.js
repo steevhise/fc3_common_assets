@@ -28,8 +28,21 @@ export const FCVue = {
 		};
 
 		// filters
-		Vue.filter('mreldate', function(date) {
-			return options.moment(date, 'ddd MMM D YYYY H:mm:ss').fromNow();
+		Vue.filter('mreldate', function(date, time, timezone) {
+
+			const { momentTimezone } = options;
+
+			if (!(time && timezone)) {
+				// when no time given, fromNow sets time to 00:00:00 in machine's timezone, can result in odd relative times
+				return momentTimezone(date, 'YYYY-MM-DD').fromNow();
+			}
+
+			const dateToModify = time ? `${date} ${time}` : date;
+			// We standardize to utc (how times are stored in db), as otherwise, moment will first convert the time to the server's local time
+			const utc = momentTimezone.utc(dateToModify);
+
+			// Then, convert to the given timezone (default_tz set on group post is on, most likely)
+			return utc.tz(timezone).fromNow();
 		});
 
 		// register components

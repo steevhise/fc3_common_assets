@@ -45,10 +45,10 @@
             <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
-                <fc-data v-masonry-tile :data="{{data|json}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}"></fc-data>
+                <fc-data v-masonry-tile :data="{{data|json}}" :viewer="{{session.id}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}"></fc-data>
             </div>
             <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout == 'list'">
-                <fc-data :data="{{data|json}}" context="posts" component="fc-post-list-item" :path="{{path|json}}"></fc-data>
+                <fc-data :data="{{data|json}}" context="posts" :viewer="{{session.id}}" component="fc-post-list-item" :path="{{path|json}}"></fc-data>
             </div>
         </div>
     </div>
