@@ -38,7 +38,6 @@
         methods: {
             onSubmit() {
 
-
                 const extraForm = this.valuesFromForm && new FormData(document.querySelector(this.valuesFromForm));
                 const entries = extraForm ? [...extraForm.entries()] : [];
 
@@ -48,7 +47,6 @@
                         [key]: value
                     });
                 }, {});
-
 
                 this.$nextTick(() => {
 
