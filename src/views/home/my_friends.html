@@ -13,10 +13,14 @@
     <div class="tabs-panel" id="myposts">
     </div>
     <div class="tabs-panel is-active" id="myfriends">
-      {% include '../partials/my_friends_page.html'%}
+      {% include '../partials/my_friends_page.html' with { friends: data.friends }%}
     </div>
     <div class="tabs-panel" id="mygroups">
     </div>
+  </div>
+  <!-- Button defaults to hidden, conditionally revealed in my_friends.js module --> 
+  <div class="row item-list-load-more friends-load-more" style="display:none">
+    <button class="btn-action pulse">Load More</button>
   </div>
   {% include '../partials/in_body_banner_row.html'%}
 </div>
