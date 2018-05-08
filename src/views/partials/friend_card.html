@@ -1,12 +1,20 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-<a class="friend-card large-4 columns">
+<a class="friend-card large-4 columns" data-friend-id="{{ friend.id }}" href="/user/{{ friend.username }}">
   <div class="friend-card-inner">
     <div class="friend-card-avatar">
-      <img src="{{friend.avatar_url}}"/>
+      <img src="{{ friend.image }}"/>
     </div>
     <div class="friend-card-name">
-      <h4 class="friend-card-real-name">{{friend.name}}</h4>
-      <h5 class="friend-card-user-name">{{friend.username}}</h5>
+      <h4 class="friend-card-real-name">{{ friend.firstName }} {{ friend.lastName }}</h4>
+      <h5 class="friend-card-user-name">{{ friend.username }}</h5>
+      <h5 class="thumbsup">
+          {% include '../icons/like.html' %}
+          {{ friend.info.reputation|default(0) }} thumbs up
+          {% if friend.info.verified %}
+            |
+            {% include './user_verified.html' with { text: "Verified", fontSize: "16px" } %}
+          {% endif %}
+      </h5>
     </div>
   </div>
 </a>
