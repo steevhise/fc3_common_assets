@@ -62,7 +62,7 @@ module.exports = {
                             request.app.formValidation.push({
                                 type: 'form',
                                 path: 'step1',
-                                message: 'You must check the checkbox for step1'
+                                message: 'Please acknowledge that you have checked the Freecycle map, and that there is no existing group very close to you.'
                             });
                             return skip();
                         }
@@ -77,7 +77,7 @@ module.exports = {
                             request.app.formValidation.push({
                                 type: 'form',
                                 path: 'step2',
-                                message: 'You must check the checkbox for step2'
+                                message: 'Please acknowledge that by applying for a new group in your location, you are offering to moderate and promote the group yourself.'
                             });
                             return skip();
                         }
