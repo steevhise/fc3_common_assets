@@ -42,6 +42,14 @@
 			this.$root.$on('postViewToggle', () => {
 				this.$root.listView = ! this.$root.listView;
 			});
+
+			this.$root.$on('handlePostFilter', (type) => {
+				if (type == this.$root.posts.filter) {
+					this.$root.posts.filter = null;
+				} else {
+					this.$root.posts.filter = type;
+				}
+			});
 		},
 		computed: {
 			items() {
