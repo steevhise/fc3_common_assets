@@ -31,6 +31,7 @@
     "hapi-cache-buster": "~0.4.0",
     "hapi-named-routes": "~0.3.0",
     "hapi-statsd": "^6.0.0",
+    "haversine": "^1.1.0",
     "inert": "^4.2.0",
     "joi": "^10.6.0",
     "jquery": "^3.1.0",
