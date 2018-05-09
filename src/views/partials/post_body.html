@@ -52,7 +52,7 @@
           </div>
           <div class="post-list-item-content-description align-left">
             <div class="container">
-              <p>{{ post.description|raw }}</p>
+              <p>{{ post.description|sanitizeHtml|raw }}</p>
             </div>
             <br/>
             <div class="container">

@@ -22,11 +22,11 @@
             {%else%}
                 {% include "../icons/logo.html" %}
             {% endif %}
-            
+
         </div>
         <div class="post-grid-item-content">
             <a href="{{path.posts_detail}}{{post.id}}">
-                <h4>{{ post.subject|raw }}</h4>
+                <h4>{{ post.subject|sanitizeHtml|raw }}</h4>
             </a>
         </div>
         <div class="post-grid-item-footer">
