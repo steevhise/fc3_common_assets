@@ -8,7 +8,7 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.20",
+    "@freecycle/common-hapi-plugins": "0.2.21",
     "@freecycle/fc3_common_assets": "0.2.8",
     "@freecycle/freecycle_graphql_schema": "^0.2.8",
     "@freecycle/freecycle_node_dal": "^0.2.6",
@@ -33,7 +33,7 @@
     "hapi-statsd": "^6.0.0",
     "haversine": "^1.1.0",
     "inert": "^4.2.0",
-    "joi": "^10.6.0",
+    "joi": "^13.1.2",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
     "moment-timezone": "^0.5.16",
