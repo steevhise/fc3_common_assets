@@ -242,7 +242,7 @@ class ImageUploader {
         // editor-0 is the default editor name (as configured in fc3_common_assets Editor.vue component)
         // This access is reliable ASSUMING only 1 instance per page ... sorry
         // https://docs.ckeditor.com/ckeditor4/latest/guide/dev_savedata.html
-        body.set('description', CKEDITOR.instances['editor-0'].getData()); // eslint-disable-line no-undef 
+        body.set('description', CKEDITOR.instances['editor-0'].getData()); // eslint-disable-line no-undef
 
         // On edit form, send back ids of any previously set images that were deleted
         if (this.deletedImages && this.deletedImages.length) {
@@ -336,7 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.form-errors-container')
         );
 
-        window.ImageUpload = imageUploader; // TODO Mock ; EXPECT index in fileslist = index in uploaded children array
         // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
         document.querySelector('#images').addEventListener('change', imageUploader.handleFileInput.bind(imageUploader));
         document.querySelector('.image-upload-form').addEventListener('submit', imageUploader.handleSubmit.bind(imageUploader));
