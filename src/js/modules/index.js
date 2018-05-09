@@ -14,3 +14,5 @@ export {default as GeoMap} from "./geomap";
 export {default as GroupTabs} from './group_tabs';
 export {default as PostEditNew} from './post_edit_new';
 export {default as ImageUploader} from './image_uploader';
+export {default as Loading} from './loading';
+export {default as PostImageModalCarousel} from './post_image_modal_carousel';
