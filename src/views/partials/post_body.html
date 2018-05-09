@@ -68,31 +68,33 @@
               </fc-modal>
             {% endif %}
             </div>
+          </div>
+        </div>
       </div>
 
       <div class="columns medium-4">
-        {% if post.images && post.thumbs %}
-          {% for pImg in post.images%}
-            {# Our featured image #}
-            {% if loop.first %}
+          {% if post.images %}
+            {# Use carousel only if multiple images #}
+            {% if post.images.length > 1 %}
+              {% include "./post_images_carousel.html" with { images: post.images } %}
+              <div class="row text-center">
+                <fc-modal type="custom" custom-trigger='<a @click.prevent="">View images full size</a>'>
+                  {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
+                </fc-modal>
+              </div>
+            {% else %}
               <div class="row">
                 <div class="post-list-item-photo">
-                  <img src="{{ pImg }}">
+                  <img src="{{ post.images[0] }}">
                 </div>
               </div>
               <div class="row text-center">
                 <fc-modal type="custom" custom-trigger='<a @click.prevent="">View image full size</a>'>
-                  <img src="{{ pImg }}" />
+                  <img src="{{ post.images[0] }}" />
                 </fc-modal>
-                {#TODO: should popup full image .  should also provide carousel of images if there are multiple #}
-              </div>
-            {% else %}
-              <div class="post-list-item-photo">
-                <img src="{{pImg}}">
               </div>
             {% endif %}
-          {% endfor %}
-        {% endif %}
+          {% endif %}
       </div>
     </div>
   </div>
