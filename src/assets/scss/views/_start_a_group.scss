@@ -1,22 +1,22 @@
-  .start-group {
-    padding: 1rem;
-    
-    .dynamic-form {
-      // don't show items until triggered
-      display: none;
-    }
-    
-    .select2 {
-      // match select2 fields to other input fields
-      @extend [type='text'];
-    }
-    
-    .start-group-button {
-      text-align: center;
-    }
-    
-    textarea {
-      height: 10rem;
-    }
+.start-group {
+  padding: 1rem;
+
+  .dynamic-form {
+    // don't show items until triggered
+    display: none;
   }
-  
+
+  .select2 {
+    // match select2 fields to other input fields
+    @extend [type='text'];
+  }
+
+  textarea {
+    height: 10rem;
+  }
+
+  .content {
+    background-color: white;
+    padding: 1rem;
+  }
+}

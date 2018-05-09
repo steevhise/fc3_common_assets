@@ -43,6 +43,21 @@ module.exports = {
 
                 request.log('debug', 'ok we gave out the cookie');
 
+                // See also pre on routes/pages/start-a-town.js
+                // Might need to login while moving from step2 to step3 of create-a-town
+
+                const { startATown } = request.state;
+                const { step2 } = request.payload;
+
+                if (startATown && startATown.step1 && typeof step2 !== 'undefined') {
+                    if (step2) {
+                        reply.state('startATown', { step2: true });
+                    }
+                    return reply.redirect('/startatown').temporary(true);
+                }
+
+                // Use redirect
+
                 const { redirect } = request.state;
 
                 if (redirect) {

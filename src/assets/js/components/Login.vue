@@ -1,5 +1,5 @@
 <template>
-    <form method="POST" id="loginForm" action="/login" >
+    <form method="POST" id="loginForm" action="/login" v-on:submit.prevent="onSubmit" ref="form">
             <div class="container">
                 <div class="medium-6 columns float-left">
                     <label>Username/Email
@@ -19,15 +19,39 @@
                     </p>
                 </div>
             </div>
+            <input v-for="(value, key) in extraValues" type="hidden" v-bind:name="key" v-bind:value="value" />
         </form>
 </template>
 
 <script>
     export default {
         name: 'fc-login',
+        props: {
+            valuesFromForm: { default: "" },
+        },
         data() {
+
             return {
-                
+                extraValues: []
+            };
+        },
+        methods: {
+            onSubmit() {
+
+                const extraForm = this.valuesFromForm && new FormData(document.querySelector(this.valuesFromForm));
+                const entries = extraForm ? [...extraForm.entries()] : [];
+
+                this.extraValues = entries.reduce((collect, [key, value]) => {
+
+                    return Object.assign({}, collect, {
+                        [key]: value
+                    });
+                }, {});
+
+                this.$nextTick(() => {
+
+                    this.$refs.form.submit();
+                });
             }
         }
     }

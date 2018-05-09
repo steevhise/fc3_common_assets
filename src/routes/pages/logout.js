@@ -10,6 +10,7 @@ module.exports = {
             request.cookieAuth.clear();
 
             reply.unstate('location');
+            reply.unstate('startATown');
 
             return reply.redirect('/').temporary();
         }

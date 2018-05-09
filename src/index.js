@@ -35,7 +35,8 @@ exports.register = Util.callbackify((server, options) => {
         ));
 
         server.state(...require('./cookies/location')(server, options));
-        server.state(...require('./cookies/redirectedError')(server, options));
+        server.state(...require('./cookies/redirected-error')(server, options));
+        server.state(...require('./cookies/start-a-town')(server, options));
 
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({
