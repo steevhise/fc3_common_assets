@@ -29,16 +29,17 @@
                         <span>
                             {% include '../icons/chevron.html' with { className: 'icon-chevron-' + data.post.type.name.toLowerCase() } only %}
                             <span class="text-offer">{{data.post.type.name}}</span>
+                            <input type="hidden" name="currentType" value="{{data.post.type.typeId}}" />
                         </span>
                     </div>
                     <label>Post title</label>
                     <input name="subject" value="{{data.post.subject}}" type="text" />
                 </div>
-                {% if data.post.type.typeId === 1 || data.post.type.typeId === 9 %} {# allow image uploads for offers and lends #}
-                    <div class="form-group">
-                        <label>Upload Pictures</label>
-                        {% include '../partials/image_uploader.html' with { images: data.post.images } %}
-                    </div>
+                {% if data.post.type.typeId === 1 || data.post.type.typeId === 2 || data.post.type.typeId === 10 %} {# allow image uploads for offers, lends, and takens... #}
+                      <div class="form-group">
+                          <label>Upload Pictures</label>
+                          {% include '../partials/image_uploader.html' with { images: data.post.images } %}
+                      </div>
                 {% endif %}
                 <div class="form-group">
                     <label>Nearest Crossroads</label>
