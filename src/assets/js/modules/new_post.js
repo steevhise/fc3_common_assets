@@ -12,10 +12,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   const friendCircle = $(".new_post input[name=friendsCircle]").first();
 
-  console.log('friend circle is ', friendCircle);
-
   if (!typeInput.length && !friendCircle.length) {
-    // console.log('no type or friendCircle');
     return;
   }
 
@@ -26,15 +23,11 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const borrowButton = $('.new_post').find('button[data-value=10]').first();
   const townMenu = getField('town');
 
-    console.log(townMenu);
-
   const updateFieldVisibility = () => {
 
     const value = typeInput.val();
 
     const friendVal = friendCircle[0].checked;
-
-    console.log('friendCircle  = ', friendVal);
 
       // if FriendsCircle, hide town dropdown.  If town group, hide LEND and BORROW post types.
     if (friendVal === true) {
@@ -71,9 +64,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         getField('town').val('');
         break;
       default:
-        console.warn('Unrecognized post type', value);
     }
-    console.warn('town id: ', getField('town').val());
   };
 
   updateFieldVisibility();
