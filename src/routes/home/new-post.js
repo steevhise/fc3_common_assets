@@ -1,3 +1,4 @@
+const Boom = require('boom');
 const Joi = require('joi');
 const RouteHelpers = require('../helpers');
 
@@ -40,6 +41,7 @@ module.exports = {
                     .label('Description'),
                 type: Joi.number()
                     .valid([
+                        // TODO Need to add TAKEN and RECEIVED here?
                         postService.OFFER,
                         postService.WANTED,
                         postService.BORROW,
@@ -51,6 +53,7 @@ module.exports = {
                     .integer().min(1)
                     .empty(null, '')
                     .when('type', {
+                        // TODO Require town if not forbidden
                         is: Joi.number().required().valid([
                             postService.BORROW,
                             postService.LEND
@@ -59,14 +62,13 @@ module.exports = {
                     })
                     .label('Town'),
                 location: Joi.string()
-                    .empty('')
+                    .allow('')
+                    .default('', 'Default to empty string, as hotwords check expects this value to be a string')
                     .label('Crossroads'),
                 images: Joi.array()
                     // Handles the case of 1 valid upload
                     .single()
-                    .items(
-                        Joi.binary().min(1)
-                    )
+                    .items(Joi.binary().min(1))
                     .max(postService.MAX_POST_IMAGES)
                     // one of the empty schemas is an empty object because the route's configured multipart processing outputs an empty object
                     // when no images are sent in the payload AND the form's encoding is multipart/form-data (enctype="multipart/form-data")(which it is and needs to be to upload image files)
@@ -84,13 +86,7 @@ module.exports = {
                 tags: Joi.array()
                     .single()
                     .items(Joi.number().integer().min(1))
-                    .label('Tags'),
-                acceptedTerms: Joi.boolean()
-                    .valid(true)
-                    .falsy('0', 'false', '')
-                    .truthy('1', 'true')
-                    .required()
-                    .label('Terms of service')
+                    .label('Tags')
             })
             .empty(null),
             options: {
@@ -101,26 +97,30 @@ module.exports = {
             }
         },
         pre: [
+            RouteHelpers.validateImagesPre,
             (request, reply) => {
 
-                if (!request.payload) {
+                if (request.method === 'get') {
                     return reply.continue();
                 }
 
-                // Handle a POST
+                // Handle a POST, which we'll receive as an AJAX request (per the image uploader component)
+                // We reply with a 200 regardless of result, check the ok prop on the frontend to decide how to react (ok convention bic'd from fetch API)
 
-                // Failed validation
-                if (request.payload.validation) {
-                    return reply.continue();
+                // Failed payload processing and/or validation
+                if (request.app.formValidation) {
+                    return reply({
+                        ok: false,
+                        errors: request.app.formValidation
+                    }).takeover();
                 }
 
-                const { postService, userService } = request.server;
                 const { id: userId } = request.auth.credentials;
                 const { validation, acceptedTerms, ...post } = request.payload;
 
                 return Promise.resolve()
                     .then(() => postService.create(userId, post))
-                    .then((postId) => reply.redirect(`/posts/${postId}`).takeover())
+                    .then((postId) => reply({ ok: true, postId }).takeover())
                     .catch((err) => {
 
                         request.app.formValidation = request.app.formValidation || [];
@@ -133,7 +133,10 @@ module.exports = {
                                 message: 'Sorry, you can\'t post to that town because you\'re not a member.'
                             });
 
-                            return reply.continue();
+                            return reply({
+                                ok: false,
+                                errors: request.app.formValidation
+                            }).takeover();
                         }
 
                         if (err instanceof postService.BadImageFormatError) {
@@ -141,13 +144,19 @@ module.exports = {
                             request.app.formValidation.push({
                                 type: 'form',
                                 path: 'image',
-                                message: 'Image is an unsupported image format.  Must be .jpg or .png.'
+                                message: err.message
                             });
 
-                            return reply.continue();
+                            return reply({
+                                ok: false,
+                                errors: request.app.formValidation
+                            }).takeover();
                         }
 
-                        return reply(err);
+                        // Something has gone terribly, terribly wrong
+                        // TODO This is currently triggered the case where the user submits an offer/wanted w/o a town (uncaught assertion err)
+                        // Make sure that path no longer blows things up when we update post create to allow Friends-only OFFERS/WANTEDS
+                        throw err;
                     });
             }
         ]
@@ -156,7 +165,6 @@ module.exports = {
 
         const { postService, userService } = request.server;
         const { id: userId } = request.auth.credentials;
-        const { validation, acceptedTerms, ...post } = request.payload || {};
 
         return Promise.all([
             postService.fetchTags(),
@@ -164,19 +172,9 @@ module.exports = {
         ])
         .then(([tags, towns]) => {
 
-            // Remove invalid form fields
-
-            if (validation) {
-                validation.info.forEach(({ path }) => {
-
-                    delete post[path];
-                });
-            }
-
             reply.view('home/post_new', {
                 title: 'Make a Post',
                 data: {
-                    post,
                     tags,
                     towns
                 }

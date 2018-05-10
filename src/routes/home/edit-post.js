@@ -1,59 +1,147 @@
 const Joi = require('joi');
-const Hoek = require('hoek');
 const Boom = require('boom');
+const RouteHelpers = require('../helpers');
+
+const internals = {};
 
 module.exports = {
-    method: 'GET',
+    method: '*',
     path: '/home/edit-post/{postId}',
-    config: {
+    config: ({ postService }) => ({
         id: 'home_post_edit',
         description: 'Edit a post',
         auth:  { mode: 'required' },
-        validate: {
-            params: Joi.object({
-                postId: Joi.number()
-            })
+        payload: {
+            // processes any input from the images field into Buffers representing the image files in memory
+            multipart: { output: 'data' },
+            maxBytes: 1048576 * postService.MAX_POST_IMAGES, // 1mb per image
+            failAction: (request, reply, error) => {
+
+                request.app.formValidation = request.app.formValidation || [];
+                request.app.formValidation = [{
+                    type: 'form',
+                    path: 'image',
+                    message: 'The maximum individual image size is 1mb'
+                }];
+
+                return reply.continue();
+            }
         },
-        plugins: { 'hapiAuthorization': { aclQuery: (id, request, cb) => {
+        validate: {
+            failAction: RouteHelpers.formFailAction,
+            params: Joi.object({
+                postId: Joi.number().integer()
+            }),
+            payload: Joi.object({
+                subject: Joi.string()
+                    .required()
+                    .label('Title'),
+                description: Joi.string()
+                    .required()
+                    .label('Description'),
+                type: Joi.number()
+                    .valid([
+                        postService.TAKEN,
+                        postService.RECEIVED
+                    ])
+                    .label('Type'),
+                location: Joi.string()
+                    .empty('')
+                    .label('Crossroads'),
+                images: Joi.array()
+                    // Handles the case of 1 valid upload
+                    .single()
+                    .items(Joi.binary().min(1))
+                    .max(postService.MAX_POST_IMAGES)
+                    // one of the empty schemas is an empty object because the route's configured multipart processing outputs an empty object
+                    // when no images are sent in the payload AND the form's encoding is multipart/form-data (enctype="multipart/form-data") (which it is and needs to be to upload image files)
+                    // If the form is not encoded thusly, the output of an empty images input is an empty Buffer. Not sure what this means, just felt it was odd/worth noting :)
+                    .empty({}, '', null)        // TODO disallow images for certain types?
+                    .label('Post images (newly uploaded)'),
+                deletedImages: Joi.array()
+                    .single()
+                    .items(Joi.number().integer())
+                    .max(postService.MAX_POST_IMAGES)
+                    .empty({}, '', null)
+                    .label('Deleted previously uploaded post images '),
+                tags: Joi.array()
+                    .single()
+                    .items(Joi.number().integer().min(1))
+                    .label('Tags')
+            })
+                .empty(null),
+            options: {
+                abortEarly: false,
+                language: {
+                    key: '{{!key}} field '
+                }
+            }
+        },
+        pre: [
+            (request, reply) => {
 
-            const userId = request.auth.credentials.id;
-            request.log('authorization', 'user is ' + userId);
-
-            // only allow edit of own posts.
-            const { postId } = request.params;
-
-            // get the post and see if post author is same as current user
-            // TODO: i'd like this to be scoped such that we can re-use this data in the handler below rather than query the post again.
-            new request.server.Post(postId, (err, post) => {
-
-                if (err) {
-                    return cb(err);
+                if (request.method === 'get') {
+                    return reply.continue();
                 }
 
-                if (post.user_id !== userId) {
-                    // not allowed
-                    // TODO: right now this just pops up a rude error page. later we want to just redirect to the post detail page.
+                // Handle a POST, which we'll receive as an AJAX request (per the image uploader component)
+                // We reply with a 200 regardless of result, check the ok prop on the frontend to decide how to react (ok convention bic'd from fetch API)
 
-                    request.log('authorization', 'post author id is ' + post.user_id + ' but current user is ' + userId);
-
-                    return cb(Boom.forbidden());
+                // Failed payload processing and/or validation
+                if (request.app.formValidation) {
+                    return reply({
+                        ok: false,
+                        errors: request.app.formValidation
+                    }).takeover();
                 }
 
-                // allowed
-                return cb(null, true);
-            });
-        } } }
-    },
-    handler: function (request, reply) {
+                const { postId } = request.params;
+                const { id: userId } = request.auth.credentials;
 
-        // retrieve data for post edit  TODO: see above, we should be only querying post once... not sure how to scope it though.
+                return postService.update(postId, userId, request.payload)
+                .catch(internals.handleUpdateError(request))
+                .then(() => {
+
+                    if (request.app.formValidation && request.app.formValidation.length) {
+                        return reply({
+                            ok: false,
+                            errors: request.app.formValidation
+                        }).takeover();
+                    }
+
+                    return reply({ ok: true, postId }).takeover();
+                });
+            }
+        ]
+    }),
+    handler: (request, reply) => {
+
+        const { postService } = request.server;
+        const { id: userId } = request.auth.credentials;
         const { postId } = request.params;
 
-        return queryPost(request.server, postId).then((post) => {
+        return Promise.all([
+            postService.fetchForUpdate(postId, userId)
+                .catch(internals.handleUpdateError(request)),
+            postService.fetchTags()
+        ])
+        .then(([post = {}, tags]) => {
+
+            // Rename "group" to "town"
+
+            const { group, ...others } = post;
+
+            post = {
+                ...others,
+                town: group
+            };
 
             reply.view('home/post_edit', {
-                title: `Edit Post : ${post.post_id}`,
-                post,
+                data: {
+                    title: 'Edit Post',
+                    post,
+                    tags
+                },
                 inBodyAds: [
                     'one', 'two'
                 ]
@@ -62,37 +150,49 @@ module.exports = {
     }
 };
 
-/**
- * A Graphql Query that returns a specific post.
- * @param {string} server the server context
- * @param {number} postId the postId we would like to query   TODO: this should be replaced with new Post object construction.
- */
-const queryPost = (server, postId) => {
+internals.handleUpdateError = (request) => {
 
-    const query = `{
-        post(post_id:${postId}){
-            post_id
-            user_id
-            group_id
-            group {
-                group_name
-            }
-            post_subject
-            post_description
-            post_location
-            postType {
-                post_type_name
-            }
+    return (err) => {
+
+        const { postService } = request.server;
+
+        if (err instanceof postService.PostNotFoundError) {
+            throw Boom.notFound('Post not found');
         }
-    }`;
 
-    return server.graphql(server.schema, query)
-        .then(({ data }) => {
+        if (err instanceof postService.PostRejectedError) {
+            throw Boom.notFound('Sorry, your post was rejected');
+        }
 
-            if (!data || !data.post) {
-                throw Boom.notFound('Post not found');
-            }
+        if (err instanceof postService.PostClosedError) {
+            throw Boom.notFound('That post is closed');
+        }
 
-            return data.post;
-        });
+        if (err instanceof postService.PostOwnershipError) {
+            throw Boom.notFound('Post not found');
+        }
+
+        request.app.formValidation = request.app.formValidation || [];
+
+        if (err instanceof postService.PostTypeError) {
+            request.app.formValidation.push({
+                type: 'form',
+                path: 'type',
+                message: err.message
+            });
+
+            return;
+        }
+
+        if (err instanceof postService.CheckHotwordsError) {
+            request.app.formValidation.push({
+                type: 'form',
+                message: 'Your post seems to contain content that violates our terms of service.'
+            });
+
+            return;
+        }
+
+        throw err;
+    };
 };
