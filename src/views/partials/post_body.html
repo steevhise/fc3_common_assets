@@ -82,7 +82,7 @@
                   {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
                 </fc-modal>
               </div>
-            {% else %}
+            {% elseif post.images.length === 1 %}
               <div class="row">
                 <div class="post-list-item-photo">
                   <img src="{{ post.images[0] }}">

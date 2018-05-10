@@ -329,16 +329,20 @@ class ImageUploader {
 document.addEventListener('DOMContentLoaded', () => {
 
     if (document.querySelector('.image-upload-form')) {
-        const imageUploader = new ImageUploader(
-            document.querySelector('.image-upload-form'),
-            document.querySelector('.uploaded-files'),
-            document.querySelector('.upload-errors-container'),
-            document.querySelector('.form-errors-container')
-        );
 
-        // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
-        document.querySelector('#images').addEventListener('change', imageUploader.handleFileInput.bind(imageUploader));
-        document.querySelector('.image-upload-form').addEventListener('submit', imageUploader.handleSubmit.bind(imageUploader));
+        try {
+            const imageUploader = new ImageUploader(
+                document.querySelector('.image-upload-form'),
+                document.querySelector('.uploaded-files'),
+                document.querySelector('.upload-errors-container'),
+                document.querySelector('.form-errors-container')
+            );
+            // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
+            document.querySelector('#images').addEventListener('change', imageUploader.handleFileInput.bind(imageUploader));
+            document.querySelector('.image-upload-form').addEventListener('submit', imageUploader.handleSubmit.bind(imageUploader));
+        } catch (error) {
+            console.warn('Image Uploader not intialized'); // eslint-disable-line no-console
+        }
     }
 });
 
