@@ -1,25 +1,104 @@
+const Joi = require('joi');
 const Mocks = require('./helpers/mocks');
+const RouteHelpers = require('../helpers');
+
+const internals = {};
 
 module.exports = {
-    method: 'GET',
+    method: '*',
     path: '/home/alerts',
-    config: {
+    config: ({ alertService }) => ({
         id: 'home_alerts',
         description: 'The logged in user\'s alerts page.',
-        auth:  { mode: 'required' }
-    },
+        auth:  { mode: 'required' },
+        validate: {
+            failAction: RouteHelpers.formFailAction,
+            payload: {
+                newAlertTags: Joi.array()
+                  .single()
+                  .items(Joi.number().integer().min(1))
+                  .label('New Alert Tags')
+            }
+        },
+        pre: [
+            (request, reply) => {
+
+                if (request.method === 'get') {
+                    return reply.continue();
+                }
+
+                // TODO Is this right?
+                if (request.app.formValidation) {
+                    return reply.continue();
+                }
+
+                // Handle post
+            }
+        ]
+    }),
     handler: function (request, reply) {
 
-        reply.view('home/alerts', {
-            title: 'Alerts',
-            posts: Mocks.posts,
-            alerts,
-            inBodyAds: [
-                'one', 'two'
-            ]
+        const { alertService, postService } = request.server;
+        const { id: userId } = request.auth.credentials;
+        const { alertCount } = request.state;
+
+        if (alertCount) {
+            reply.unstate('alertCount');
+            delete request.state.alertCount; // reply.unstate doesn't remove cookies parsed from request
+            // TODO alertService.countForUser.cache.drop(userId);
+            // REMEMBER: THIS IS A PROMISE!!!
+        }
+
+        return Promise.all([
+            postService.fetchTags(),
+            Promise.resolve(internals.alerts) // TODO alertService.forUser(userId)
+        ])
+        .then(([tags, alerts]) => {
+
+            // TODO Remember to add errors?? Do we need to? No...b/c failAction does that for us?
+            reply.view('home/alerts', {
+                title: 'Alerts',
+                data: {
+                    alerts,
+                    tags
+                },
+                inBodyAds: [
+                    'one', 'two'
+                ]
+            });
         });
     }
 };
+
+// Place Mock.posts in alerts mocks
+
+/**
+{
+    tags: [{ id, name }],   // From postService.fetchTags()
+    alerts: [{              // From alertService.forUser(userId)
+        id,
+        tag: { id, name },
+        posts: [{           // Intended to work with post_grid_item partial
+            id,
+            subject,
+            location,
+            date,
+            type: { const, name },
+            group {
+                id,
+                name,
+                region: { name }
+            },
+            image,
+            thumb
+        }]
+    }],
+    alertCount: Number      // From alertService.countForUser(userId),
+}
+
+**/
+
+internals.alerts = [];
 
 const alerts = [
     {

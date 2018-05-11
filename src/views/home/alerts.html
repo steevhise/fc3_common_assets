@@ -7,19 +7,24 @@
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
     </div>
     <div class="row column">
-      <form class="large-12 alert_new-alert">
+      <form class="alert_new-alert">
         <h3>New Alert</h3>
-        <div class="form-group column">
-          <label>Search Term</label>
-          <input type="text" class="large-8" placeholder="Add a new alert"/>
-          <button type="submit" role="submit" data-fc-submitpost class="btn-default large-2">Create Alert</button>
+        <div class="large-12 form-group column">
+          <label for="newAlertTags">Select the post tag you want to receive alerts for</label>
+          <select name="newAlertTags" class="create-alert large-8" multiple="multiple">
+              {% for tag in data.tags %}
+                  <option value="{{ tag.id }}">{{ tag.name }}</option>
+                  <!-- TODO Filter already-selected alerts out of here -->
+              {% endfor %}
+          </select>
+          <button type="submit" role="submit" class="btn-default large-2">Create Alert</button>
         </div>
       </form>
     </div>
     <hr class="section-divider" />
     <div class="row column">
       <h3>Existing Alerts</h3>
-      {% for alert in alerts %}
+      {% for alert in data.alerts %}
         <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
           <div class="alert_title">
             <p class="alert_close large-1 small-1">x</p>

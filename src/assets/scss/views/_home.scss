@@ -47,7 +47,13 @@
   button {
     display: inline-block;
   }
-  
+
+  /* select2 styling */
+  span.select2-selection.select2-selection--single {
+    height: 40px;
+    padding: 5px 0;
+  }
+
   .form-group label {
     margin-top: 0;
   }
@@ -66,7 +72,7 @@
 }
 
 .alerts_existing .message-arrow {
-  
+
   display: inline-block;
   cursor: pointer;
   &.open {
@@ -81,11 +87,11 @@
   p.alert_result-count.large-2.small-3 {
     width: 100%;
   }
-  
+
   p.alert_close.large-1.small-1 {
     display: block;
   }
-  
+
   .alert_name {
     padding-left: 3%;
     .alert_time {
@@ -96,7 +102,7 @@
       text-align: left;
     }
   }
-  
+
   .alert_name.large-8.small-6 {
     width: unset;
   }

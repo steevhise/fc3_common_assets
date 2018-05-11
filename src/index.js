@@ -31,9 +31,11 @@ exports.register = Util.callbackify((server, options) => {
 
         // declare some server extensions
         server.ext(combine(
-            require('./extensions/errors')
+            require('./extensions/errors'),
+            require('./extensions/alert-count')
         ));
 
+        server.state(...require('./cookies/alert-count')(server, options));
         server.state(...require('./cookies/location')(server, options));
         server.state(...require('./cookies/redirected-error')(server, options));
         server.state(...require('./cookies/start-a-town')(server, options));

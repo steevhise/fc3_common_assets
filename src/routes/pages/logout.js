@@ -9,6 +9,7 @@ module.exports = {
 
             request.cookieAuth.clear();
 
+            reply.unstate('alertCount');
             reply.unstate('location');
             reply.unstate('startATown');
 

@@ -26,6 +26,7 @@ module.exports = (server, options) => ({
             auth: request.route.settings.auth
         },
         errors: null, // Set in extensions/errors.js
+        alertCount: request.state.alertCount,
         footerMenuItems: [
             { name: 'Local Towns', path: '/' },
             { name: 'Merchandise', path: '/' },
