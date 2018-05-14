@@ -15,7 +15,8 @@ module.exports = {
     path: '/town/{id}/membership',
     config: {
         id: 'town-membership-action',
-        description: 'Allows the current user to take action on their membership with a town',
+        description: 'Endpoint that allows the current user to take action on their membership with a town',
+        tags: ['exclude'],
         auth: { mode: 'required' },
         validate: {
             payload: {

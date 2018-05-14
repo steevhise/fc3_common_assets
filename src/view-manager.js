@@ -42,6 +42,7 @@ module.exports = (server, options) => ({
         ],
         consts: {
             friendStatuses: request.server.userService.friendStatuses
-        }
+        },
+        date: new Date()
     })
 });

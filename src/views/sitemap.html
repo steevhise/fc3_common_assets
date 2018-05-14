@@ -1,17 +1,16 @@
 {% extends './layout/layout.html' %}
 
 {% block content %}
+{{ date|date('M d, Y') }}
     <h1>Sitemap (auto-generated)</h1>
     <div id="list">
         <ul>
         {%  for page in pages %}
 
-                <li><h3><strong>{{  page.public.settings.id }}</strong>&nbsp;&nbsp;<a href="{{ page.path }}">{{ page.path }}</a></h3>
-                {{ page.public.settings.description }}</li>
+                <li><span class="subsection-title"><strong>{{  page.settings.id }}</strong>:&nbsp;&nbsp;<a href="{{ page.path }}">{{ page.path }}</a></span>
+                    : <span class="paragraph-small">{{ page.settings.description }}</span></li>
         {%  endfor %}
         </ul>
-
-
     </div>
 
 

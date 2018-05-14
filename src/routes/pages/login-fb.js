@@ -7,6 +7,7 @@ module.exports = {
     config: {
         id: 'pages_fblogin',
         description: 'Log in via FB',
+        tags: ['login', 'exclude'],
         auth: 'facebook',
         handler: function (request, reply) {
 
