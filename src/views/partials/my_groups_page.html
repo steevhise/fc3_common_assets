@@ -1,6 +1,8 @@
 <div class="row">
   <h4 class="text-center page-sub-title">My Towns</h4>
-  {% include './in_page_search.html' with {label:'Search Towns'} %}
+  <div class="row text-center">
+    Want to join another town? <a href="/find-towns">Find more here</a>
+  </div>
 </div>
 
 <div class="row">
@@ -21,24 +23,25 @@
 
 <div class="row tabs-content small-centered large-12 column" data-tabs-content="mygroups_detail">
   <div id="mygroups_map" class="table-example row tabs-panel is-active">
-    {% include "./geomap.html" with geomap %}
+    {% include "./geomap.html" with { geomap: data.geomap } %}
   </div>
-  
+
   <div id="mygroups_list" class="table-example row tabs-panel">
     <table>
       <thead>
       <tr>
         <th>Local Town</th>
         <th>State</th>
-        <th>Distance</th>
+        <th>Distance</th> <!-- TODO Call out units here? -->
       </tr>
       </thead>
       <tbody>
-      {% for group in myGroups %}
+      {% for group in data.locatedGroups %}
         <tr>
-          <td><h4>{{group.name}}</h4></td>
-          <td>{{group.state}}</td>
-          <td>{{group.distance}}</td>
+          <td><h4><a href="/town/{{group.id}}">{{group.name}}</a></h4></td>
+          <td>{{group.region.name}}</td>
+          <!-- TODO This assumes unit is miles; update to work w/ km when used -->
+          <td>{% if group.distance == 8000 %}N/A (no location info available){% else %}{{group.distance}}{% endif %}</td>
         </tr>
       {% endfor %}
       </tbody>

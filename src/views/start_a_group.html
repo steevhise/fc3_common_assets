@@ -1,26 +1,104 @@
 {% extends './layout/layout.html' %}
 
 {% block content %}
-<div class="start-group row">
-  <div class="row">
-    <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
-  </div>
-  <div class="row">
-    <form>
+    {% for error in errors %}
+        <p class="callout alert">{{ error.message }}</p>
+    {% endfor %}
+    {#
       {% include './partials/country_dropdown.html' %}
       {% include './partials/region_dropdown.html' %}
-      <label for="city" class="dynamic-form">
-        Enter the city, town or county you'd like to create a new town in.
-      </label>
-      <input type="text" name="city" class="dynamic-form"/>
-      <label for="comment" class="dynamic-form">
-        Why should a new town be created here?
-      </label>
-      <textarea name="comment" class="dynamic-form"></textarea>
-    </form>
-  </div>
-  <div class="row start-group-button">
-    <input type="button" value="Submit" class="dynamic-form"/>
-  </div>
-</div>
+    #}
+    <div class="start-group row">
+        <div class="row">
+            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+        </div>
+        <div class="row content">
+            <div class="columns">
+                <div class="column vertical {% if data.step1 %}step1{% endif %} {% if data.step2 %}step2{% endif %} {% if data.step3 %}step3{% endif %}">
+                    {% if data.step1 %}
+                        <form method="post">
+                            <p>
+                                Before we get started, we need to make sure your location is not currently served by a group.
+                                Please <a href="/find-towns">look up your town</a> and make sure there isn’t already a group that serves your community.
+                            </p>
+                            <p>
+                                <input name="step1" type="hidden" />
+                                <input name="step1" type="checkbox" value="1" />
+                                I have checked the Freecycle map and there is no existing group very close to me.
+                            </p>
+                            <p>
+                                <input type="submit" value="Continue" />
+                            </p>
+                        </form>
+                    {% endif %}
+                    {% if data.step2 %}
+                        <form method="post">
+                            <p>
+                                You must be willing to moderate your new group and put in the effort required to promote and grow the group within your community.
+                                Please <a href="#">click here</a> for more information on being a moderator.
+                            </p>
+                            <p>
+                                <input name="step2" type="hidden"/>
+                                <input name="step2" type="checkbox" value="1"/>
+                                I understand that by applying for a new group in my location, I am offering to moderate and promote the group myself.
+                            </p>
+                            <p>
+                                {% if isAuthenticated %}
+                                    <input type="submit" value="Continue" />
+                                {% endif %}
+                                {% if !isAuthenticated %}
+                                    <fc-modal custom-trigger="<input type='submit' value='Continue and Login' onclick='return false'>">
+                                        <fc-login values-from-form=".start-group form"></fc-login>
+                                    </fc-modal>
+                                {% endif %}
+                            </p>
+                        </form>
+                    {% endif %}
+                    {% if data.step3 %}
+                        <form method="post">
+                            <p>
+                                <label for="country">
+                                    *Enter the country this town would be located in
+                                </label>
+                                <input type="text" name="country" value="{{data.step3.country}}"/>
+                                <label for="Region">
+                                    *Enter the region, province, or state this town would be located in
+                                </label>
+                                <input type="text" name="region" value="{{data.step3.region}}"/>
+                                <label for="city">
+                                    *Town or City where you live
+                                </label>
+                                <input type="text" name="city" value="{{data.step3.city}}"/>
+                                <label for="address">
+                                    *Residential street address where you live
+                                </label>
+                                <input type="text" name="address" value="{{data.step3.address}}"/>
+                                <label for="name">
+                                    *First and Last name
+                                </label>
+                                <input type="text" name="name" value="{{data.step3.name}}"/>
+                                <label for="comment">
+                                    *Why should a new town be created here?
+                                </label>
+                                <textarea name="comment">{{data.step3.comment}}</textarea>
+                            </p>
+                            <p>
+                                <div class="row start-group-button">
+                                    <input type="submit" value="Submit"/>
+                                </div>
+                            </p>
+                        </form>
+                    {% endif %}
+                    {% if data.success %}
+                        <p>
+                            <b>Thank you</b>
+                        </p>
+                        <p>
+                            Thank you for your submission—we will be in touch.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

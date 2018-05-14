@@ -6,10 +6,10 @@ import { VueMasonryPlugin } from 'vue-masonry';
 Vue.config.silent = true;
 
 // deps
-import moment from "moment";
+import momentTimezone from "moment-timezone";
 
 Vue.use(FCVue, {
-	moment: moment
+	momentTimezone: momentTimezone
 });
 
 Vue.use(VueMasonryPlugin);

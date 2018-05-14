@@ -6,6 +6,7 @@ const PostService = require('@freecycle/common-hapi-plugins/services/post');
 const UserService = require('@freecycle/common-hapi-plugins/services/user');
 const GroupService = require('@freecycle/common-hapi-plugins/services/group');
 const AuthService = require('@freecycle/common-hapi-plugins/services/auth');
+const SearchService = require('@freecycle/common-hapi-plugins/services/search');
 const SiteService = require('@freecycle/common-hapi-plugins/services/site');
 
 exports.register = Util.callbackify((server, options) => {
@@ -17,6 +18,7 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'userService', new UserService(server, { UserEntity: server.User, imagesURL: options.imagesURL }));
     server.decorate('server', 'groupService', new GroupService(server, { GroupEntity: server.Group }));
     server.decorate('server', 'authService', new AuthService(server, { UserEntity: server.User }));
+    server.decorate('server', 'searchService', new SearchService(server));
     server.decorate('server', 'siteService', new SiteService(server));
 
     const combine = (...arrays) => [].concat(...arrays);
@@ -33,7 +35,8 @@ exports.register = Util.callbackify((server, options) => {
         ));
 
         server.state(...require('./cookies/location')(server, options));
-        server.state(...require('./cookies/redirectedError')(server, options));
+        server.state(...require('./cookies/redirected-error')(server, options));
+        server.state(...require('./cookies/start-a-town')(server, options));
 
         // store user info that we can get to from anywhere.
         server.app.cache = server.cache({

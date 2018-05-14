@@ -4,9 +4,10 @@ module.exports = {
     type: 'onPreResponse',
     method: (request, reply) => {
 
-        const { response } = request;
+        const { response, route } = request;
+        const tags = [].concat(route.settings.tags || []);
 
-        if (!response.isBoom) {
+        if (!response.isBoom || tags.includes('api')) {
 
             if (request.response.variety === 'view') {
                 request.response.source.context.errors = []

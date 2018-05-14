@@ -45,6 +45,17 @@ module.exports = {
                         postService.RECEIVED
                     ])
                     .label('Type'),
+                currentType: Joi.number()
+                    .required() // Something's wrong if we've somehow ended up w/ a type-less post :)
+                    .valid([
+                        postService.WANTED,
+                        postService.OFFER,
+                        postService.LEND,
+                        postService.BORROW,
+                        postService.TAKEN,
+                        postService.RECEIVED
+                    ])
+                    .label('Post\'s current type'),
                 location: Joi.string()
                     .empty('')
                     .label('Crossroads'),
@@ -96,17 +107,32 @@ module.exports = {
                 }
 
                 const { postId } = request.params;
+                const { currentType } = request.payload;
                 const { id: userId } = request.auth.credentials;
 
                 return postService.update(postId, userId, request.payload)
                 .catch(internals.handleUpdateError(request))
                 .then(() => {
 
+                    // If editing a post that doesn't allow images (wanted, borrow, received), then image uploader isn't initialized,
+                    // so submit behavior isn't overriden, so this route isn't expected to be AJAX-y
+                    const nonAJAX = [postService.WANTED, postService.BORROW, postService.RECEIVED].includes(currentType);
+
                     if (request.app.formValidation && request.app.formValidation.length) {
+
+                        if (nonAJAX) {
+                            return reply.continue();
+                        }
+
                         return reply({
                             ok: false,
                             errors: request.app.formValidation
                         }).takeover();
+                    }
+
+                    if (nonAJAX) {
+                        /* OR imageless taken or received */
+                        return reply.redirect(`/posts/${postId}`).temporary().takeover();
                     }
 
                     return reply({ ok: true, postId }).takeover();
