@@ -12,7 +12,13 @@
     height: 2px;
     margin: 3rem 0;
   }
+
 }
+
+.alert-delete-confirm {
+    display: inline-block;
+}
+
 .alerts_existing:last-child:not(:first-child) {
   float: left;
 }

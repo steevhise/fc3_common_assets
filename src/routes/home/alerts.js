@@ -9,30 +9,47 @@ module.exports = {
     path: '/home/alerts',
     config: ({ alertService }) => ({
         id: 'home_alerts',
-        description: 'The logged in user\'s alerts page.',
+        description: 'The logged in user\'s alerts page (also supports setting new alerts).',
         auth:  { mode: 'required' },
         validate: {
             failAction: RouteHelpers.formFailAction,
-            payload: {
+            payload: Joi.object({
                 newAlertTags: Joi.array()
-                  .single()
-                  .items(Joi.number().integer().min(1))
-                  .label('New Alert Tags')
-            }
+                    .single()
+                    .items(Joi.number().integer().min(1))
+                    .label('New Alert Tags'),
+                alertIdDelete: Joi.number()
+                    .integer()
+                    .min(1)
+                    .label('Alert To Delete')
+            }).xor('newAlertTags', 'alertIdDelete')
         },
         pre: [
             (request, reply) => {
 
-                if (request.method === 'get') {
+                if (request.method === 'get' || request.app.formValidation) {
                     return reply.continue();
                 }
 
-                // TODO Is this right?
-                if (request.app.formValidation) {
-                    return reply.continue();
-                }
+                // Route supports both deleting and creating alerts
+                // Deletions still come in as POST requests; joi validation ensures post bodies of each request are mutually exclusive
+                const { id: userId } = request.auth.credentials;
+                const { newAlertTags, alertIdDelete } = request.payload;
+                console.log('DELETING AN ALERT', alertIdDelete);
+                // TODO const alertAction = newAlertTags ? alertService.create(newAlertTags, userId) :alertService.delete(alertIdDelete, userId);
 
-                // Handle post
+                // Handle post — Create an alert with the given data and return to the page....
+                return Promise.resolve()
+                    //.then(() => alertAction TODO Replace with actual create method when built
+                    .then(() => reply.continue())
+                    .catch((err) => {
+
+                        // TODO Update when errors returned from service layer are more defined
+                        if (err) {
+                            console.log(err.message);
+                            throw err;
+                        }
+                    });
             }
         ]
     }),
@@ -51,16 +68,50 @@ module.exports = {
 
         return Promise.all([
             postService.fetchTags(),
-            Promise.resolve(internals.alerts) // TODO alertService.forUser(userId)
+            Promise.resolve(internals.alerts), // TODO alertService.forUser(userId)
+            postService.forGroup(1014) // TODO Remove, just for mock data
         ])
-        .then(([tags, alerts]) => {
+        .then(([tags, alerts, posts]) => {
 
-            // TODO Remember to add errors?? Do we need to? No...b/c failAction does that for us?
-            reply.view('home/alerts', {
+            // TODO Filter out existing alerts tags from tags passed to template (tags are used as options for new)
+            const unalertedTags = tags.filter((tag) => !alerts.find((alert) => alert.tag.id === tag.id));
+
+            /***** TODO MOCK - Remove ******/
+            alerts.forEach((alert) => {
+
+                alert.posts = posts.filter((post) => post.tags.find((tag) => tag.id === alert.tag.id));
+                alert.posts.forEach((p) => {
+
+                    p.seen = true;
+                });
+            });
+            alerts[0].posts[0].seen = false;
+            /***********/
+
+            // Hacking newly created tags list into more grammatically presentable state for form success message :)
+            let formattedSuccess;
+            if (request.payload) {
+                const { newAlertTags, alertIdDelete } = request.payload;
+                if (newAlertTags) {
+                    formattedSuccess = newAlertTags.map((nalt) => (tags.find((t) => t.id === nalt)).name);
+                    if (newAlertTags.length > 1) {
+                        formattedSuccess[formattedSuccess - 1] = `and ${formattedSuccess[formattedSuccess.length - 1]}`;
+                    }
+                    const glue = formattedSuccess.length > 2 ? ' ,' : ' ';
+                    formattedSuccess = `You will now receive alerts for posts tagged as ${formattedSuccess.join(glue)}`;
+                }
+                else if (alertIdDelete) {
+                    formattedSuccess = 'Alert deleted!';
+                }
+            }
+
+            // NOTE No need to handle formValidation errors; errors extension does that for us (when errors are placed in req.app.formValidation)
+            return reply.view('home/alerts', {
                 title: 'Alerts',
                 data: {
                     alerts,
-                    tags
+                    formattedSuccess,
+                    unalertedTags
                 },
                 inBodyAds: [
                     'one', 'two'
@@ -90,7 +141,8 @@ module.exports = {
                 region: { name }
             },
             image,
-            thumb
+            thumb,
+            seen
         }]
     }],
     alertCount: Number      // From alertService.countForUser(userId),
@@ -98,7 +150,32 @@ module.exports = {
 
 **/
 
-internals.alerts = [];
+internals.alerts = [
+    /*{
+        id: 1,
+        tag: {
+            id: 1,
+            name: 'furniture'
+        },
+        posts: []
+    },*/
+    {
+        id: 2,
+        tag: {
+            id: 3,
+            name: 'tools'
+        },
+        posts: []
+    },
+    {
+        id: 3,
+        tag: {
+            id: 4,
+            name: 'materials'
+        },
+        posts: []
+    }
+];
 
 const alerts = [
     {
