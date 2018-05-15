@@ -10,6 +10,7 @@ const { Config } = require('@freecycle/freecycle_node_dal');
 exports.deployment = (start) => {
 
     const configPath = `${__dirname}/config.json`;
+    const config = require(configPath);
     const legacyConfigPath = `${__dirname}/config.xml`;
     const { sequelizeDbConfig } = Config.create(configPath, legacyConfigPath);
 
@@ -55,6 +56,7 @@ exports.deployment = (start) => {
             register: require('.'),
             options: {
                 dev: process.env.NODE_ENV !== 'production',
+                maintenanceMode: config.maintenanceMode,
                 cookiePassword: 'abscdfvhgnjtrueyfhdmjkrutifhdjr4',
                 facebook: {
                     clientId: '117834011565165',
