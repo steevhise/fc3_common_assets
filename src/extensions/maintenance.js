@@ -8,14 +8,15 @@ module.exports = {
 
         const { pluginOptions: options } = reply.realm;
         const tags = [].concat(request.route.settings.tags || []);
+        const id = request.route.settings.id;
 
-        if (!options.maintenanceMode || tags.includes('asset')) {
+        if (!options.maintenanceMode || tags.includes('asset') || id === 'pages_login' || id === 'pages_logout') {
             return reply.continue();
         }
 
         const { isAuthenticated, credentials } = request.auth;
 
-        if (isAuthenticated && !credentials.role.includes(ACCESS_TO_CTL_CENTER)) {
+        if (isAuthenticated && credentials.role.includes(ACCESS_TO_CTL_CENTER)) {
             return reply.continue();
         }
 
