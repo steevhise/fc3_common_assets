@@ -10,21 +10,12 @@
       {% if !isMember %}
         {% if !membershipLimitReached %}
           {% if !isPending %}
-            {% if !isInvited %}
-              {% include '../partials/membership_action_button.html' with {
-                id: group.group_id,
-                action: 'join',
-                icon: 'plus',
-                label: 'Join Town'
-              } only %}
-            {% else %}
-              {% include '../partials/membership_action_button.html' with {
-                id: group.group_id,
-                action: 'acceptInvitation',
-                icon: 'plus',
-                label: 'Accept Invite'
-              } only %}
-            {% endif %}
+            {% include '../partials/membership_action_button.html' with {
+              id: group.group_id,
+              action: 'join',
+              icon: 'plus',
+              label: 'Join Town'
+            } only %}
           {% else %}
             <div>Request to join awaiting moderation. Hold tight!</div>
           {% endif %}
