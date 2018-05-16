@@ -57,8 +57,8 @@
 p {
   color: $black;
   font-family: $body-font-family;
-  font-size: rem-calc(20px);
-  line-height: rem-calc(30px);
+  font-size: rem-calc(16px);
+  line-height: rem-calc(20px);
 
   a {
     font-weight: bold;
@@ -67,8 +67,8 @@ p {
 
 .paragraph-small {
   font-family: $body-font-family;
-  font-size: rem-calc(14px);
-  line-height: rem-calc(20px);
+  font-size: rem-calc(11px);
+  line-height: rem-calc(14px);
   a {
     @include heading-text();
   }

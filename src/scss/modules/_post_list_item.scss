@@ -1,7 +1,7 @@
 .post-list-item {
-  min-height: rem-calc(272px);
+  min-height: rem-calc(64px);
   background: $white;
-  padding: rem-calc(20px);
+  padding: rem-calc(5px);
   margin-bottom: rem-calc(6px);
   display: flex;
   flex-direction: column;
@@ -13,8 +13,8 @@
   .post-list-item-photo {
     flex: 1;
     display: flex;
-    align-items: center;
-    padding-bottom: rem-calc(10px);
+    //align-items: center;
+    padding-bottom: rem-calc(5px);
     @media #{$medium-up} {
       padding-bottom: rem-calc(0);
     }
@@ -23,8 +23,8 @@
 
   .post-list-item-content {
     flex: 3;
-    padding-left: rem-calc(20px);
-    padding-right: rem-calc(20px);
+    padding-left: rem-calc(10px);
+    padding-right: rem-calc(10px);
   }
 
   .post-list-item-content-header {
@@ -37,7 +37,7 @@
 
     @media #{$medium-up} {
       flex-direction: row;
-      padding-bottom: rem-calc(20px);
+      padding-bottom: rem-calc(10px);
     }
 
   }
@@ -86,9 +86,9 @@
     }
   }
   .post-list-item-content-description {
-    padding-top: rem-calc(20px);
+    padding-top: rem-calc(5px);
     h4 {
-      font-size: rem-calc(30px);
+      font-size: rem-calc(12px);
       font-weight: bold;
     }
     p {
