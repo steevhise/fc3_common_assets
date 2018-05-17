@@ -1,12 +1,14 @@
+const { PRIV_ADMIN_CONTROL_CENTER } = require('../scopes');
+
 module.exports = {
     method: '*',
     path: '/admin/pages',
     config: {
         id: 'admin_pages',
         description: 'Create and edit "static" pages.',
-        auth: { mode: 'required' },
-        plugins: {
-            'hapiAuthorization': { role: '1' }    // Only priv type id 1  - note: role has to be a string.
+        auth: {
+            mode: 'required',
+            scope: PRIV_ADMIN_CONTROL_CENTER
         }
     },
     handler: function (request, reply) {
@@ -27,7 +29,7 @@ module.exports = {
                 // Success!
                 reply.view('admin/pages', {
                     title: 'Administrate Pages',
-                    pages: result
+                    data: { pages: result }
                 });
             });
     }
