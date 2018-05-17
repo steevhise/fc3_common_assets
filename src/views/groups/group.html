@@ -43,10 +43,7 @@
       <div class="row group-notice-detail">
           {{ data.notice.description|default(data.notice.filename)}}
           {% if data.notice.mimetype === 'text/html' %}
-            {{ data.notice.content|sanitizeHtml({
-                  allowedTags: ['h1', 'h2', 'h3', 'h4', 'div', 'p', 'a', 'ol', 'ul', 'li', 'img', 'b', 'i', 'em', 'strong']
-              })
-            }}
+            {{ data.notice.content|sanitizeHtml(true) }}
           {% else %}
             {{ data.notice.content|safe }}
           {% endif %}
@@ -54,8 +51,10 @@
 
     {% elseif route.id === 'groups_info' %}
 
-      <div class="row">
-        {{ group.description|safe }}
+      <div class="row group-info">
+        <div class="group-info-wrapper medium-8">
+          {{ data.group.description|sanitizeHtml(true)|safe }}
+        </div>
       </div>
 
     {% elseif route.id === 'groups_contact' %}
