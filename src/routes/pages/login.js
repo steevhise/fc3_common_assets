@@ -20,7 +20,7 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const { authService } = request.server; // TODO , alertService
+        const { authService } = request.server;
 
         // if credentials are passed in from form...
         if (request.payload) {
@@ -34,19 +34,13 @@ module.exports = {
                     throw new internals.LoginRequired();
                 }
 
-                return Promise.all([
-                    authService.grantToken(user.user_id, request.info.remoteAddress),
-                    Promise.resolve(5) // TODO alertService.countForUser(user.user_id)
-                ]);
+                return authService.grantToken(user.user_id, request.info.remoteAddress);
             })
-            .then(([{ user_id, token }, alertCount]) => {
+            .then(({ user_id, token }) => {
 
                 request.cookieAuth.set(user_id, token);
 
                 request.log('debug', 'ok we gave out the cookie');
-
-                reply.state('alertCount', `${alertCount}`); // unencoded cookies must be strings
-
 
                 // See also pre on routes/pages/start-a-town.js
                 // Might need to login while moving from step2 to step3 of create-a-town

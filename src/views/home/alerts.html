@@ -17,8 +17,8 @@
         <form class="alert_new-alert" method="POST">
           <h3>New Alert</h3>
           <div class="form-group column">
-            <label for="newAlertTags">Select the post tag you want to receive alerts for</label>
-            <select name="newAlertTags" class="create-alert large-8" multiple="multiple" required>
+            <select name="newAlertTag" class="create-alert large-8" required>
+                <option></option> {# Empty first option required to display select2's placeholder #}
                 {% for tag in data.unalertedTags %}
                     <option value="{{ tag.id }}">{{ tag.name }}</option>
                 {% endfor %}
@@ -29,40 +29,45 @@
       </div>
       <hr class="section-divider" />
     {% endif %}
-    <div class="row column">
-      <h3>Existing Alerts</h3>
-      {% for alert in data.alerts %}
-        <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
-          <div class="alert_title">
-            <fc-modal class="alert-delete-confirm" custom-trigger='<p class="alert_close large-1 small-1">x</p>'>
-              <p>Are you sure you want to delete your alert for {{alert.tag.name}} posts?</p>
-              <form method="POST">
-                <input type="hidden" name="alertIdDelete" value="{{alert.id}}" />
-                <button class="btn btn-default" type="submit">Delete Alert</button>
-              </form>
-            </fc-modal>
-            <div class="alert_name large-8 small-6">
-              <h4>{{ alert.tag.name }}</h4>
-              <p class="alert_time text-lighten">{{ alert.posts[0].date|mreldate }}</p>
-            </div>
-            {% if alert.posts.length %}
-              <div class="message-arrow alert_result-count large-2 small-3">
-                {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
+    {% if data.alerts.length %}
+      <div class="row column">
+        <h3>Existing Alerts</h3>
+        {% for alert in data.alerts %}
+          <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
+            <div class="alert_title">
+              <fc-modal class="alert-delete-confirm" custom-trigger='<p class="alert_close large-1 small-1">x</p>'>
+                <p>Are you sure you want to delete your alert for {{alert.tag.name}} posts?</p>
+                <form method="POST">
+                  <input type="hidden" name="deleteAlertTag" value="{{alert.tag.id}}" />
+                  <button class="btn btn-default" type="submit">Delete Alert</button>
+                </form>
+              </fc-modal>
+              <div class="alert_name large-8 small-6">
+                <h4>{{ alert.tag.name }}</h4>
+                <p class="alert_time text-lighten">{{ alert.posts[0].date|mreldate }}</p>
+                {% if alert.posts|checkUnseen %}
+                  <p class="callout success">New Posts!</p>
+                {% endif %}
               </div>
-            {% else %}
-              <p class="alert_result-count large-2 small-3">No Results</p>
-            {% endif %}
+              {% if alert.posts.length %}
+                <div class="message-arrow alert_result-count large-2 small-3">
+                  {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
+                </div>
+              {% else %}
+                <p class="alert_result-count large-2 small-3">No Results</p>
+              {% endif %}
+            </div>
           </div>
-        </div>
-        {% if alert.posts.length %}
-          <div class="alert_result large-12" data-result-id={{loop.index}}>
-            {% include '../partials/alert_result.html' with { posts: alert.posts } %}
-            <hr class="alert_result-divider" />
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
+          {% if alert.posts.length %}
+            <div class="alert_result large-12" data-result-id={{loop.index}}>
+              {% include '../partials/alert_result.html' with { posts: alert.posts } %}
+              <hr class="alert_result-divider" />
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
     <hr class="section-divider" />
+    {% endif %}
   </div>
   {% include '../partials/in_body_banner_row.html'%}
 {% endblock %}
