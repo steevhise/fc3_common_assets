@@ -10,29 +10,20 @@ document.addEventListener("DOMContentLoaded", ()=> {
 		$(elm).closest('li').addClass('is-active');
 	};
 
-	// strip off group id from path
 	const path = document.location.pathname;
-	const ids = path.match(/\d+/g);
-	const groupId = ids[0];
-	const noticeId = ids[1];
 
-	switch (path) {
-		case `/town/${groupId}`:
+	if (tabRoot) {
+		if (/\/town\/\w+$/.test(path)) {
 			setActiveTab('#group_posts');
-			break;
-		case `/town/${groupId}/notices`:
+		} else if (/\/town\/\w+\/notices(\/\w+)?$/.test(path) ) {
 			setActiveTab('#group_notices');
-			break;
-		case `/town/${groupId}/notices/${noticeId}`:
-			setActiveTab('#group_notices');
-			break;
-		case `/town/${groupId}/contact`:
-			setActiveTab('#group_contact');
-			break;
-		case `/town/${groupId}/info`:
+		} else if (/\/town\/\w+\/info$/.test(path)) {
 			setActiveTab('#group_info');
-			break;
+		} else if (/\/town\/\w+\/contact$/.test(path)) {
+			setActiveTab('#group_contact');
+		}
 	}
+
 });
 
 export default "GroupTabs";
