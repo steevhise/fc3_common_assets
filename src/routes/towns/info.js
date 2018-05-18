@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const RouteHelpers = require('../helpers');
 
+const internals = {};
+
 module.exports = {
     method: 'GET',
     path: '/town/{uniqueName}/info',
@@ -35,17 +37,17 @@ module.exports = {
         .then(({ userCount, townCount }) => {
 
             const descriptionTokens = {
-                '%%copyright': 'The official TFN copyright notice.', // TODO Where do I get this?
-                '%%disclaimer': 'The official TFN disclaimer.', // TODO Where do I get this?
-                '%%freecycle_logo': '<img src="/images/logo.png" />', // TODO Need to set a width and height here?
+                '%%copyright': internals.copyright(),
+                '%%disclaimer': internals.standardDisclaimer(),
+                '%%freecycle_logo': '<fc-icon name="logo"></fc-icon>',
                 '%%group_name': group.group_name,
-                '%%num_groups': townCount,
-                '%%num_members': group.num_members,
-                '%%total_num_members': userCount,
+                '%%num_groups': Number(townCount).toLocaleString(), // Formats numbers with commas
+                '%%num_members': Number(group.num_members).toLocaleString(),
+                '%%total_num_members': Number(userCount).toLocaleString(),
                 '%%yahoogroup_link': `<a href="/town/${group.yahoo_group_name}">${group.yahoo_group_name}</a>"`
             };
 
-            group.description = group.description.replace(/%%\w+/g, (match) => {
+            let subbedDescription = group.description.replace(/%%\w+/g, (match) => {
 
                 return descriptionTokens[match] || match;
             });
@@ -53,6 +55,7 @@ module.exports = {
             reply.view('groups/group', {
                 data: {
                     group,
+                    subbedDescription,
                     ...membershipChecks
                 },
                 inBodyAds: [
@@ -63,3 +66,23 @@ module.exports = {
         });
     }
 };
+
+
+internals.standardDisclaimer = () => `
+    <p>
+        DISCLAIMER: FREECYCLE NETWORK MEMBERS USE THE LIST AT THEIR OWN RISK. Please
+        take reasonable measures to protect your safety and privacy when posting to
+        the list or participating in an exchange. By joining the list, you agree to hold
+        neither the list owners and moderators nor anyone affiliated with Freecycle.org
+        responsible or liable for any circumstance resulting from a Freecycle-related
+        exchange or communication.
+    </p>
+`;
+
+
+internals.copyright = () => `
+    <p>
+        Copyright &copy; ${new Date().getFullYear()} The Freecycle Network (<a href="http://www.freecycle.org">http://www.freecycle.org</a>).
+        All rights reserved. Freecycle and the Freecycle logo are trademarks of The Freecycle Network in various countries.
+    </p>
+`;
