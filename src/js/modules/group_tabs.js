@@ -11,22 +11,25 @@ document.addEventListener("DOMContentLoaded", ()=> {
 	};
 
 	// strip off group id from path
-	var path = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("/"));
+	const path = document.location.pathname;
+	const ids = path.match(/\d+/g);
+	const groupId = ids[0];
+	const noticeId = ids[1];
 
 	switch (path) {
-		case '/town':
+		case `/town/${groupId}`:
 			setActiveTab('#group_posts');
 			break;
-		case '/town/guidelines':
-			setActiveTab('#group_guidelines');
+		case `/town/${groupId}/notices`:
+			setActiveTab('#group_notices');
 			break;
-		case '/town/announcements':
-			setActiveTab('#group_announcements');
+		case `/town/${groupId}/notices/${noticeId}`:
+			setActiveTab('#group_notices');
 			break;
-		case '/town/contact':
+		case `/town/${groupId}/contact`:
 			setActiveTab('#group_contact');
 			break;
-		case '/town/info':
+		case `/town/${groupId}/info`:
 			setActiveTab('#group_info');
 			break;
 	}
