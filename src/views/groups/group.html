@@ -41,11 +41,13 @@
     {% elseif route.id === 'groups_notices_detail' %}
 
       <div class="row group-notice-detail">
-          {{ data.notice.description|default(data.notice.filename)}}
+          <h2>{{ data.notice.description|default(data.notice.filename)|safe }}<h2>
           {% if data.notice.mimetype === 'text/html' %}
-            {{ data.notice.content|sanitizeHtml(true) }}
+            {{ data.notice.content|sanitizeHtml({ moderator: true })|safe }}
           {% else %}
-            {{ data.notice.content|safe }}
+            <p>
+              {{ data.notice.content|safe }}
+            </p>
           {% endif %}
       </div>
 
@@ -53,7 +55,7 @@
 
       <div class="row group-info">
         <div class="group-info-wrapper medium-8">
-          {{ data.group.description|sanitizeHtml(true)|safe }}
+          {{ data.group.description|sanitizeHtml({ moderator: true })|safe }}
         </div>
       </div>
 
