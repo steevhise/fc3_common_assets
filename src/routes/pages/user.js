@@ -1,5 +1,6 @@
-const Joi = require('joi');
 const Boom = require('boom');
+const Constants = require('@freecycle/common-hapi-plugins/constants');
+const Joi = require('joi');
 
 module.exports = [{
     method: 'GET',
@@ -22,6 +23,11 @@ module.exports = [{
             }
         })
         .then((profile) => {
+
+            // Don't publicize groups in region 32
+            if (!isAuthenticated || credentials.id !== profile.id) {
+                profile.groups = profile.groups.filter(({ group }) => group.region.id !== Constants.SEMI_PRIVATE_REGION);
+            }
 
             if (!profile) {
                 throw Boom.notFound('User not found');
