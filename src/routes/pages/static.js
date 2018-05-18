@@ -8,6 +8,7 @@ module.exports = {
     handler: function (request, reply) {
 
         const { pagePath } = request.params;
+        const { isAuthenticated } = request.auth;
 
         const query = '{ page (where: {path: "' + pagePath + `"})
           {
@@ -15,6 +16,7 @@ module.exports = {
             title
             content
             path
+            published
           }
         }`;
 
@@ -46,11 +48,19 @@ module.exports = {
                 }
             }
             else {   // success!
+
+                //  only control-center admins are allowed to see unpublished pages
+                if (!page.published) {
+                    if (!isAuthenticated || !request.auth.credentials.scope.includes('PRIV_ADMIN_CONTROL_CENTER')) {
+                        return reply.view('error_template', { statusCode: 404, errorTitle: 'Not Found', errorMessage: 'Sorry, \'' + request.path + '\' not found.' });
+                    }
+                }
+
+                // Page is published, anyone can view
                 reply.view('static_template', {
                     title: page.title,
-                    static_content: function pageContent() {
-
-                        return page.content;
+                    data: {
+                        page
                     }
                 });
             }
