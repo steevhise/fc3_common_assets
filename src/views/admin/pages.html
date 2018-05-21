@@ -24,22 +24,26 @@
                 <div class="row">
                     <div class="columns medium-6 small-12">
                         <label for="pageselect">Existing Pages:</label>
-                        <select title="page" name="pageselect" id="pageselect" value="{{page.title}}">
-                            <option value="" selected></option>
-                            {%  for page in pages %}
-                                {% if page.path %}
-                                    <option value="{{ page.page_id }}" >{{ page.title }} (/pages/{{ page.path }})</option>
+                        <select title="page" name="pageselect" id="pageselect">
+                            <option value=""></option>
+                            {% for pageItem in data.allPages %}
+                                {% if pageItem.path %}
+                                    <option value="{{ pageItem.id }}" {% if pageItem.id === data.page.id %}selected{% endif %}>
+                                        {{ pageItem.title }} (/pages/{{ pageItem.path }})
+                                    </option>
                                 {% endif %}
-                            {%  endfor %}
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="columns medium-6">
                         <div class="row">
-                            <div class="columns medium-6">Author: {{ page.author.username }}</div>
-                            <div class="columns medium-6">Created: {{ page.date_created }}</div>
+                            <div class="columns medium-6">Author: {{ data.page.author.username }}</div>
+                            <div class="columns medium-6">Created: {{ data.page.created }}</div>
                         </div>
                         <div class="row">
-                            <div class="columns medium-12">Date last edited: {{ page.date_last_modified }} by {{ page.last_editor.username }}</div>
+                            <div class="columns medium-12">
+                              Date last edited: {{ data.page.lastModified }}
+                              {% if data.page.lastEditor %}by {{ data.page.lastEditor.username }}</div>{% endif %}
                         </div>
                     </div>
                 </div>
@@ -47,16 +51,16 @@
                 <div class="row">
                     <div class="columns medium-6 small-12">
                         <label for="title">Title:</label>
-                        <input id="title" type="text" size=32 name="title" value="{{ page.title }}" placeholder="title">
+                        <input id="title" type="text" size=32 name="title" value="{{ data.page.title }}" placeholder="Title">
                     </div>
                     <div class="columns medium-6 small-12">
                         <label for="path">Path: <code>/pages/</code> </label>
-                        <input id="path" type="text" size=32 name="path" placeholder="the url of your page, after '/pages/'">
+                        <input id="path" type="text" size=32 name="path" value="{{ data.page.path }}" placeholder="URL of your page, after '/pages/'">
                     </div>
                 </div>
                 <div class="row">
                     <div class="columns medium-12">
-                        <fc-editor placeholder="enter the text of your page here."></fc-editor>
+                        <fc-editor name="content" value="{{ data.page.content }}" placeholder="Enter page content here"></fc-editor>
                     </div>
                     <div class="columns medium-12">
                         <div class="form-group text-center">
@@ -79,14 +83,16 @@
   {% parent %}
 
 <script>
-    // document.addEventListener('DOMContentLoaded', function() {
-
     $(document).ready(function() {
         $("#pageselect").select2({
             placeholder: "Select a page to edit",
-            //width: "80%",
             theme: "classic"
-//            templateResult: formatOption  // i forget what this is for, i guess i don't need.
+        })
+        .change(function () {
+
+            if (this.value) {
+                document.location = '/admin/pages/' + this.value;
+            }
         });
     });
 </script>

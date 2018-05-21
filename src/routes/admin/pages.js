@@ -1,78 +1,94 @@
+const Joi = require('joi');
+const Boom = require('boom');
 const { PRIV_ADMIN_CONTROL_CENTER } = require('../scopes');
 
 module.exports = {
     method: '*',
-    path: '/admin/pages',
+    path: '/admin/pages/{id?}',
     config: {
         id: 'admin_pages',
         description: 'Create and edit "static" pages.',
         auth: {
             mode: 'required',
             scope: PRIV_ADMIN_CONTROL_CENTER
-        }
-    },
-    handler: function (request, reply) {
+        },
+        validate: {
+            params: {
+                id: Joi.number().integer()
+            }
+        },
+        pre: [
+            {
+                assign: 'pageId',
+                method: (request, reply) => {
 
-        // get all the pages. TODO: cache this. probably make it a server method.
-        return getPages(request.server)
-            .then((result) => {
+                    const { server: { pageService }, params, payload, auth } = request;
 
-                if (typeof result === 'string') {
-
-                    if (result !== '0') {
-                        return reply.view('error_template', { statusCode: 500, errorTitle: 'Server Error', errorMessage: result });
+                    if (!payload) {
+                        return reply(params.id);
                     }
 
-                    result = null;
+                    if (!params.id) {
+                        return pageService.create(auth.credentials.id, request.payload)
+                            .then((pageId) => reply(pageId)).catch(reply);
+                    }
+
+                    return pageService.update(params.id, auth.credentials.id, request.payload)
+                    .then((updated) => {
+
+                        if (!updated) {
+                            throw Boom.notFound('Page not found');
+                        }
+
+                        return reply(params.id)
+                    })
+                    .catch(reply);
                 }
+            },
+            [{
+                assign: 'page',
+                method: (request, reply) => {
 
-                // Success!
-                reply.view('admin/pages', {
-                    title: 'Administrate Pages',
-                    data: { pages: result }
-                });
-            });
-    }
-};
+                    const { server: { pageService }, pre: { pageId } } = request;
 
-// a function to grab all the Page records out of the database.
-const getPages = function (server) {   // TODO: refactor this to use PageService from common-hapi-plugins
+                    if (!pageId) {
+                        return reply(null);
+                    }
 
-    const query = `{
-      pages {
-        page_id
-        title
-        content
-        path
-        date_last_modified
-        date_created
-        author {
-          username
-          user_id
-        }
-        published
-        last_editor {
-          username
-          user_id
-        }
-      }
-    }`;
+                    return pageService.fetch(pageId)
+                    .then((page) => {
 
-    // console.log('about to query this query: ', query);
-    return server.graphql(server.schema, query)
-        .then((queryResult) => {
+                        if (!page) {
+                            throw Boom.notFound('Page not found');
+                        }
 
-            let retval;
-            if (typeof queryResult.data.pages === 'undefined' || queryResult.data.pages === null) {
-                retval = '0';
+                        return reply(page)
+                    })
+                    .catch(reply);
+                }
+            },
+            {
+                assign: 'allPages',
+                method: (request, reply) => {
+
+                    const { server: { pageService } } = request;
+
+                    return pageService.fetchAll()
+                        .then(reply).catch(reply);
+                }
+            }]
+        ]
+    },
+    handler: (request, reply) => {
+
+        const { pre: { page, allPages } } = request;
+
+        reply.view('admin/pages', {
+            title: 'Administrate Pages',
+            data: {
+                page,
+                allPages
             }
-            else if (queryResult.data.pages) {  // we've got data
-                retval = queryResult.data.pages;
-                // console.log('result from page query is ', retval);
-            }
-            else {    // put this first?
-                retval = queryResult.toString || 'unknown error.';
-            }
-            return retval;
         });
+    }
 };
