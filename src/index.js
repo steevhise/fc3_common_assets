@@ -31,7 +31,8 @@ exports.register = Util.callbackify((server, options) => {
 
         // declare some server extensions
         server.ext(combine(
-            require('./extensions/errors')
+            require('./extensions/errors'),
+            require('./extensions/maintenance')
         ));
 
         server.state(...require('./cookies/location')(server, options));

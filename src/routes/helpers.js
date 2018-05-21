@@ -41,3 +41,12 @@ exports.validateImagesPre = (request, reply) => {
         return reply.continue();
     });
 };
+
+// { A: true } -> { A: 'A' }
+exports.keyMirror = (obj) => {
+
+    return Object.keys(obj).reduce((scopes, key) => ({
+        ...scopes,
+        [key]: key
+    }), {});
+};
