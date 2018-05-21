@@ -34,7 +34,22 @@
 
   <div class="row tabs-content small-centered large-12 column" data-tabs-content="find-groups_detail">
     <div id="find-groups_map" class="table-example row tabs-panel is-active">
-      {% include "./partials/geomap.html" with geomap %}
+      {# {% include "./partials/geomap.html" with geomap %} #}
+      <div class="flex-video">
+         <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="7" :center="map.center" >
+             <fc-map-cluster ref="mapcluster">
+                 <div v-for="(town, index) in {{data.groups|json}}">
+                     <fc-map-infowindow :options="map.infoWindow.options" :position="geoFormat(town.latitude, town.longitude)" :id="`marker-${town.id}`" :ref="`marker-${town.id}`" >
+                         {%raw%}
+                             <h3 v-html="town.name"></h3>
+                         {%endraw%}
+                     </fc-map-infowindow>
+                     <fc-map-marker :position="geoFormat(town.latitude, town.longitude)" :clickable="true" @click="$emit(`marker-${town.id}`);" :animation="4" ></fc-map-marker>
+                 </div>
+             </fc-map-cluster>
+             
+         </fc-map> 
+      </div>
     </div>
 
     <div id="find-groups_list" class="table-example row tabs-panel">
@@ -47,13 +62,14 @@
         </tr>
         </thead>
         <tbody>
-        {% for group in groupList %}
-          <tr>
-            <td><h4>{{group.name}}</h4></td>
-            <td>{{group.state}}</td>
+        {#{% for group in groupList %}#}
+          <tr v-for="(town, index) in {{data.groups|json}}">
+            <td><h4 v-html="town.name"></h4></td>
+            {#NOTE: group.name and group.distance is not available in the current scope.#}
+            <td>{{group.name}}</td>
             <td>{{group.distance}} miles</td>
           </tr>
-        {% endfor %}
+        {#{% endfor %}#}
         </tbody>
       </table>
     </div>
