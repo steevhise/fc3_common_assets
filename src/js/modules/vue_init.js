@@ -26,6 +26,10 @@ export const FCVue = {
 		Vue.prototype.$findOne = (haystack, arr) => {
 			return arr.some(val => haystack.includes(val));
 		};
+		
+		Vue.prototype.geoFormat = (lat, lng) => {
+			return { lat : Number(lat), lng : Number(lng) };
+		};
 
 		// filters
 		Vue.filter('mreldate', function(date) {
