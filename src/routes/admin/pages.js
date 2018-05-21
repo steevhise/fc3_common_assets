@@ -3,7 +3,7 @@ const Boom = require('boom');
 const RouteHelpers = require('../helpers');
 const { PRIV_ADMIN_CONTROL_CENTER } = require('../scopes');
 
-module.exports = {
+module.exports = [{
     method: '*',
     path: '/admin/pages/{id?}',
     config: {
@@ -175,4 +175,86 @@ module.exports = {
             }
         });
     }
-};
+},
+{
+    method: 'post',
+    path: '/admin/pages/preview/{id?}',
+    config: {
+        id: 'admin_pages_preview',
+        description: 'Preview "static" pages.',
+        auth: {
+            mode: 'required',
+            scope: PRIV_ADMIN_CONTROL_CENTER
+        },
+        validate: {
+            failAction: RouteHelpers.formFailAction,
+            params: {
+                id: Joi.number().integer()
+            },
+            payload: Joi.object({
+                title: Joi.string()
+                    .required()
+                    .label('Title'),
+                content: Joi.string()
+                    .required()
+                    .label('Page content'),
+                published: Joi.boolean()
+                    .truthy('1')
+                    .default(false)
+                    .label('Published')
+            }),
+            options: {
+                abortEarly: false,
+                language: {
+                    key: '{{!key}} field '
+                }
+            }
+        },
+        pre: [
+            {
+                assign: 'page',
+                method: (request, reply) => {
+
+                    const { server: { pageService }, params: { id: pageId } } = request;
+
+                    if (!pageId) {
+                        return reply(null);
+                    }
+
+                    return pageService.fetch(pageId)
+                    .then((page) => {
+
+                        if (!page) {
+                            throw Boom.notFound('Page not found');
+                        }
+
+                        return reply(page)
+                    })
+                    .catch(reply);
+                }
+            }
+        ]
+    },
+    handler: (request, reply) => {
+
+        const { pre, payload } = request;
+        const { validation, ...submitted } = payload;
+
+        if (validation) {
+            validation.info.forEach(({ path }) => {
+
+                delete submitted[path];
+            });
+        }
+
+        const page = Object.assign({}, pre.page, submitted);
+
+        reply.view('static_template', {
+            title: `Preview: ${page.title}`,
+            data: {
+                page,
+                preview: true
+            }
+        });
+    }
+}];

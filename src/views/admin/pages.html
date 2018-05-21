@@ -8,12 +8,14 @@
 {% endblock %}
 
 {% block content %}
+
 {% if data.deleted %}
     <p class="callout success">Page successfully deleted</p>
 {% endif %}
 {% for error in errors %}
     <p class="callout alert">{{ error.message }}</p>
 {% endfor %}
+
 <div class="admin-pages container">
     <div class="row text-center">
         <h2 class="page-title">Static Pages Administration</h2>
@@ -90,7 +92,7 @@
                     <div class="columns medium-12">
                         <div class="form-group text-center">
                             <button type="submit" role="submit" class="btn-default btn-sm">Save</button>
-                            <button type="submit" role="preview" class="btn-default btn-sm">Preview</button>
+                            <button type="submit" role="preview" class="btn-default btn-sm" formaction="/admin/pages/preview{% if data.page.id %}/{{data.page.id}}{% endif %}" formtarget="_blank">Preview</button>
                             <button type="submit" name="delete" value="delete" role="submit" class="btn-offer btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                         </div>
                     </div>
