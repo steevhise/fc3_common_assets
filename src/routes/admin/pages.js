@@ -18,7 +18,11 @@ module.exports = {
             params: {
                 id: Joi.number().integer()
             },
+            query: {
+                deleted: [Joi.boolean().truthy('', '1'), Joi.any()]
+            },
             payload: Joi.object({
+                delete: Joi.boolean().truthy('delete').default(false),
                 title: Joi.string()
                     .required()
                     .label('Title'),
@@ -65,7 +69,7 @@ module.exports = {
 
                         Object.keys(err.fields).forEach((field) => {
 
-                            field = field.startsWith('title') ? 'title' :
+                            field = field.startsWith('title') ? 'title' :   // E.g. might be "title_UNIQUE"
                                 (field.startsWith('path') ? 'path' : null);
 
                             request.app.formValidation.push({
@@ -88,6 +92,19 @@ module.exports = {
                         return reply.redirect(`/admin/pages/${pageId}`).temporary().takeover();
                     })
                     .catch(handleUniquenessError)
+                    .catch(reply);
+                }
+
+                if (payload.delete) {
+                    return pageService.delete(params.id)
+                    .then((deleted) => {
+
+                        if (!deleted) {
+                            throw Boom.notFound('Page not found');
+                        }
+
+                        return reply.redirect(`/admin/pages?deleted`).temporary().takeover();
+                    })
                     .catch(reply);
                 }
 
@@ -139,7 +156,7 @@ module.exports = {
     },
     handler: (request, reply) => {
 
-        const { pre: { page, allPages }, payload } = request;
+        const { pre: { page, allPages }, payload, query } = request;
         const { validation, ...submitted } = payload || {};
 
         if (validation) {
@@ -153,7 +170,8 @@ module.exports = {
             title: 'Administrate Pages',
             data: {
                 page: Object.assign({}, page, submitted),
-                allPages
+                allPages,
+                deleted: !!query.deleted
             }
         });
     }
