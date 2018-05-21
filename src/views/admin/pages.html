@@ -8,14 +8,16 @@
 {% endblock %}
 
 {% block content %}
-
-<div class="container" >
+{% for error in errors %}
+    <p class="callout alert">{{ error.message }}</p>
+{% endfor %}
+<div class="admin-pages container">
     <div class="row text-center">
         <h2 class="page-title">Static Pages Administration</h2>
     </div>
     <div class="row bg-white">
         <div class="columns medium-12">
-            <fc-form method="post">
+            <form method="post">
                 <input type="hidden" name="crumb" value="{{crumb}}" />
 
                 <div class="row text-center container">
@@ -38,11 +40,11 @@
                     <div class="columns medium-6">
                         <div class="row">
                             <div class="columns medium-6">Author: {{ data.page.author.username }}</div>
-                            <div class="columns medium-6">Created: {{ data.page.created }}</div>
+                            <div class="columns medium-6">Created: {{ data.page.created|formatDate('ddd, MM/DD/YYYY hh:mm a') }}</div>
                         </div>
                         <div class="row">
                             <div class="columns medium-12">
-                              Date last edited: {{ data.page.lastModified }}
+                              Date last edited: {{ data.page.lastModified|relativeDate }}
                               {% if data.page.lastEditor %}by {{ data.page.lastEditor.username }}</div>{% endif %}
                         </div>
                     </div>
@@ -60,7 +62,27 @@
                 </div>
                 <div class="row">
                     <div class="columns medium-12">
-                        <fc-editor name="content" value="{{ data.page.content }}" placeholder="Enter page content here"></fc-editor>
+                        <fc-editor name="content" value="{{ data.page.content }}" placeholder="Enter page content here" :config="{
+                            toolbar: [
+                                { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+                                { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+                                { name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+                                { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+                                '/',
+                                { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+                                { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+                                { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+                                { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+                                '/',
+                                { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                                { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+                                { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+                                { name: 'about', items: [ 'About' ] }
+                            ]
+                        }"></fc-editor>
+                    </div>
+                    <div class="columns medium-12 text-center">
+                        <input type="checkbox" name="published" id="published" value="1" {% if data.page.published %}checked{% endif %}></input><label for="published">Published</label>
                     </div>
                     <div class="columns medium-12">
                         <div class="form-group text-center">
@@ -69,7 +91,7 @@
                         </div>
                     </div>
                 </div>
-            </fc-form>
+            </form>
         </div>
     </div>
 </div>
@@ -78,23 +100,3 @@
 
 
 {% include '../partials/footer.html' %}
-
-{% block extra_scripts %}
-  {% parent %}
-
-<script>
-    $(document).ready(function() {
-        $("#pageselect").select2({
-            placeholder: "Select a page to edit",
-            theme: "classic"
-        })
-        .change(function () {
-
-            if (this.value) {
-                document.location = '/admin/pages/' + this.value;
-            }
-        });
-    });
-</script>
-
-{% endblock %}
