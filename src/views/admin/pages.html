@@ -26,11 +26,16 @@
                 <input type="hidden" name="crumb" value="{{crumb}}" />
 
                 <div class="row text-center container">
-                    <p class="subtitle">Select an existing Page to edit, or create a new one.</p>
+                    <p class="subtitle">Select an existing page to edit, or create a new one.</p>
                 </div>
                 <div class="row">
                     <div class="columns medium-6 small-12">
-                        <label for="pageselect">Existing Pages:</label>
+                        <label for="pageselect">
+                            Existing Pages:
+                            {% if data.page.id %}
+                                [<a href="/admin/pages">new page</a>]
+                            {% endif %}
+                        </label>
                         <select title="page" name="pageselect" id="pageselect">
                             <option value=""></option>
                             {% for pageItem in data.allPages %}
