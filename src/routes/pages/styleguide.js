@@ -5,7 +5,8 @@ module.exports = {
     path: '/styleguide',
     config: {
         id: 'pages_styleguide',
-        description: 'Demonstration page of all the components of the site.'
+        description: 'Demonstration page of all the components of the site.',
+        tags: ['exclude']
     },
     handler: function (request, reply) {
 

@@ -27,7 +27,6 @@
     "good": "^7.3.0",
     "good-console": "^6.4.0",
     "hapi": "16.6.3",
-    "hapi-authorization": "^3.0.3",
     "hapi-cache-buster": "~0.4.0",
     "hapi-named-routes": "~0.3.0",
     "hapi-statsd": "^6.0.0",

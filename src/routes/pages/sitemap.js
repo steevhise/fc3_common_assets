@@ -10,30 +10,31 @@ module.exports = {
         const routeTable = request.server.table();
         const results = [];
 
+        console.log(routeTable.length);
+
         for (let i = 0; i < routeTable.length; ++i) {
             const route = routeTable[i];
-
-            for (let j = 0; j < route.table.length; ++j) {
+            const l = route.table.length;
+            for (let j = 0; j < l; ++j) {
+                console.log('j', j);
                 const table = route.table[j];
-                if (table.path === '/pages/{pagePath}') {
-                }
-
-                // auto-generated route created by hapi-sass, doesn't need to be listed.
-                if (table.path === '/css/{file}.css') {
+                console.log(table.public.path);
+                if (table.public.path === '/pages/{pagePath}') {
+                    // TODO: the 'static' pages need to return all the actual pages. so we'll have to look in database.
                     continue;
                 }
 
                 // exclude a route by adding a tag 'exclude' in the config.
-                if (table.public.settings.tags) {
-                    i = table.public.settings.tags.indexOf('exclude');
-                    if (i > -1) {
+                if (!!table.public.settings.tags) {
+                    if (table.public.settings.tags.includes('api') ||  table.public.settings.tags.includes('exclude')) {
+                        console.log('excluding ', table.public.path);
                         continue;
                     }
                 }
-                results.push(table);   // this is an array of {route settings: method: path: etc } hashes.
+
+                results.push(table.public);   // this is an array of {route settings: method: path: etc } hashes.
             }
         }
-  // TODO: the static pages need to return all the actual pages.
 
   // console.log("---------------------");
   // TODO: do some error catching, maybe - like what if there's no results?

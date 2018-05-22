@@ -5,7 +5,7 @@ module.exports = {
     method: 'DELETE',
     path: '/api/posts/{postId}',
     config: {
-        tags: ['api'],
+        tags: ['api', 'exclude'],
         validate: {
             params: {
                 postId: Joi.number().integer()

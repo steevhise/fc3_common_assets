@@ -1,6 +1,7 @@
 const Hoek = require('hoek');
 const Joi = require('joi');
 const Constants = require('@freecycle/common-hapi-plugins/constants');
+const RouteHelpers = require('../helpers');
 
 const internals = {};
 
@@ -32,16 +33,13 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const { groupService, postService, userService } = request.server;
+        const { groupService, postService } = request.server;
         const { uniqueName } = request.params;
-        const { credentials, isAuthenticated } = request.auth;
-
-        request.log('debug', 'about to look up group ' + uniqueName);
 
         return groupService.fetchByIdentifier(uniqueName).then((group) => {
 
             if (!group) {
-                return internals.groupNotFound(request, reply);
+                return RouteHelpers.groupNotFound(request, reply);
             }
 
             const { latitude, longitude, group_id: groupId } = group;
@@ -49,34 +47,13 @@ module.exports = {
             return Promise.all([
                 group,
                 groupService.fetchNearest({ latitude, longitude }, groupId),
-                group.invitation_only === 1 && isAuthenticated ? groupService.fetchInvitation(credentials.id, groupId) : Promise.resolve(null),
-                postService.forGroup(group.group_id),
-                isAuthenticated ? userService.fetchTownMemberships(credentials.id, true) : Promise.resolve([])
+                postService.forGroup(groupId),
+                RouteHelpers.groupMembershipStatus(request, groupId)
             ]);
         })
-        .then(([group, groups, invitation, posts, memberships]) => {
+        .then(([group, groups, posts, membershipChecks]) => {
 
-            const { latitude, longitude, group_id: groupId } = group;
-
-            const isMember = Hoek.contain(memberships, [{ id: groupId, isPending: 0 }], { deep: true });
-            const isPending = Hoek.contain(memberships, [{ id: groupId, isPending: 1 }], { deep: true });
-            // Will be false when: a.) non-invite_only group b.) invite_only group that user isn't invited to
-            const isInvited = Boolean(invitation);
-
-            // User shouldn't be able to view a group if it's invite_only and their neither a member nor invited
-            if (group.invitation_only === 1) {
-                // for an invite_only group we want to say not found only if no invitation AND user's not a member
-                // NOTE There are no pending memberships for invitation_only groups; an invitation is that group's equivalent to a pending membership
-                // A membership for an invite_only is created ONLY when a user accepts the invite
-                // TODO None of the above logic is built in fc3, just how things work in legacy (core_modules)
-                if (!isMember && !isInvited) {
-                    return internals.groupNotFound(request, reply);
-                }
-            }
-
-            // We count only approved memberships toward the limit.
-            // TODO Make sure to prevent multiple pending memberships from exceeding this limit on the moderation side
-            const membershipLimitReached = memberships.filter((memb) => memb.isPending === 0).length === Constants.MAX_GROUPS;
+            const { latitude, longitude } = group;
             const noCoordinates = (latitude === 0 && longitude === 0) ? true : false;
             const tags = Hoek.unique(Hoek.flatten(posts.map(({ tags }) => tags)), 'id');
 
@@ -100,11 +77,8 @@ module.exports = {
                     posts,
                     groups,
                     tags,
-                    isMember,
-                    isPending,
-                    isInvited,
                     noCoordinates,
-                    membershipLimitReached
+                    ...membershipChecks
                 },
                 showFilterSelectors: true,
                 isGroup: true,
@@ -116,16 +90,4 @@ module.exports = {
             });
         });
     }
-};
-
-// TODO If deemed more generally helpful, move into routes/helpers and generalize
-internals.groupNotFound = (request, reply) => {
-
-    reply.state('redirectedError', {
-        message: 'Sorry, we couldn\'t find that group. Try searching!',
-        path: request.route.path.replace('{uniqueName?}', request.params.uniqueName),
-        type: 'groupNotFound'
-    });
-
-    return reply.redirect('/find-towns').temporary();
 };

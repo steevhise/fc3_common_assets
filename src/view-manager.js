@@ -21,6 +21,7 @@ module.exports = (server, options) => ({
     context: (request) => ({
         session: request.auth.credentials,
         isAuthenticated: request.auth.isAuthenticated,
+        maintenanceMode: options.maintenanceMode,
         route: {
             id: request.route.settings.id,
             auth: request.route.settings.auth
@@ -43,6 +44,7 @@ module.exports = (server, options) => ({
         ],
         consts: {
             friendStatuses: request.server.userService.friendStatuses
-        }
+        },
+        date: new Date()
     })
 });

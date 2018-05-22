@@ -48,6 +48,7 @@ module.exports = [{
     config: {
         id: 'user-friendship-action',
         description: 'An endpoint for the current user to take action on their friendship with another user.',
+        tags: ['exclude'],
         auth: { mode: 'required' },
         validate: {
             payload: {

@@ -8,11 +8,7 @@ module.exports = [
         config: {
             description: 'Just a test.',
             id: 'pages_test',
-            auth: { mode: 'required' },
-            plugins: {
-                // 'hapiAuthorization': {role: '1'}
-                // you don't have to have any special privs to see your own dashboard, but this is how you do it.
-            }
+            auth: { mode: 'required' }
         },
         handler:  (request, reply) => {
 

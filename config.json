@@ -1,4 +1,5 @@
 {
+  "maintenanceMode": false,
   "database": {
     "dialect": "mysql",
     "host": "newdev.freecycle.org",
@@ -15,7 +16,6 @@
     "replication": {
       "badConnectionWindow": 300000,
       "replicationThresholdInSeconds": 5
-
     },
     "pool": {
       "maxConnections": 10,

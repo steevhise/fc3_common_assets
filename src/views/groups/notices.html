@@ -1,0 +1,9 @@
+<div class="row group-notice-list">
+    {% for notice in notices %}
+        <div class="group-notice"> <!-- Follow post list item styles -->
+            <a href="/town/{{ groupId }}/notices/{{ notice.id }}" {% if notice.mimetype !=  "text/plain" && notice.mimetype != "text/html" %}download{% endif %}>
+                <h4>{{ notice.description|default(notice.filename) }}</h4>
+            </a>
+        </div>
+    {% endfor %}
+</div>

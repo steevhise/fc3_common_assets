@@ -9,6 +9,7 @@ const AuthService = require('@freecycle/common-hapi-plugins/services/auth');
 const SearchService = require('@freecycle/common-hapi-plugins/services/search');
 const SiteService = require('@freecycle/common-hapi-plugins/services/site');
 const AlertService = require('@freecycle/common-hapi-plugins/services/alert');
+const PageService = require('@freecycle/common-hapi-plugins/services/page');
 
 exports.register = Util.callbackify((server, options) => {
 
@@ -22,6 +23,7 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'searchService', new SearchService(server));
     server.decorate('server', 'siteService', new SiteService(server));
     server.decorate('server', 'alertService', new AlertService(server));
+    server.decorate('server', 'pageService', new PageService(server));
 
     const combine = (...arrays) => [].concat(...arrays);
 
@@ -34,7 +36,8 @@ exports.register = Util.callbackify((server, options) => {
         // declare some server extensions
         server.ext(combine(
             require('./extensions/errors'),
-            require('./extensions/alert-count') // Order matters here; alert-count is expected to run after the errors check
+            require('./extensions/alert-count'), // Order matters here; alert-count is expected to run after the errors check
+            require('./extensions/maintenance')
         ));
 
         server.state(...require('./cookies/location')(server, options));

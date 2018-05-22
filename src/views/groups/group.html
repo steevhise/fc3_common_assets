@@ -10,18 +10,20 @@
     group: data.group,
     isMember: data.isMember,
     isPending: data.isPending,
-    isInvited: data.isInvited,
     membershipLimitReached: data.membershipLimitReached
   }
 %}
 <div class="horizontal_tabs">
 
   <!--  tabs  -->
-  {% include '../partials/group_tabs.html' %}
+  {% include '../partials/group_tabs.html' with { group: data.group } %}
 
   <!--  tabs-content  -->
-  <div class="tabs-content" data-tabs-content="h-example-tabs">
-    <div class="tabs-panel is-active" id="group_posts">
+
+  <div class="tabs-content">
+    <div>
+    {% if route.id === 'groups_main' %}
+
       <div class="nearby-wrapper">
         {% include '../partials/nearby_groups.html' with {
             currentGroup: data.group,
@@ -30,16 +32,38 @@
           }
         %}
       </div>
-      <div class="upper-ad-wrapper">
-        <div class="in-body-banner-ad">300 x 250 banner ad</div>
-      </div>
       {% include '../partials/item_list.html'%}
-      {% include '../partials/in_body_banner_row.html'%}
+
+    {% elseif route.id === 'groups_notices' %}
+
+      {% include './notices.html' with { notices: data.notices, groupId: data.group.group_id } %}
+
+    {% elseif route.id === 'groups_notices_detail' %}
+
+      <div class="row group-notice-detail">
+          {{ data.notice.description|default(data.notice.filename)}}
+          {% if data.notice.mimetype === 'text/html' %}
+            {{ data.notice.content|sanitizeHtml({
+                  allowedTags: ['h1', 'h2', 'h3', 'h4', 'div', 'p', 'a', 'ol', 'ul', 'li', 'img', 'b', 'i', 'em', 'strong']
+              })
+            }}
+          {% else %}
+            {{ data.notice.content|safe }}
+          {% endif %}
+      </div>
+
+    {% elseif route.id === 'groups_info' %}
+
+      <div class="row">
+        {{ group.description|safe }}
+      </div>
+
+    {% elseif route.id === 'groups_contact' %}
+
+    {% endif %}
+
+    {% include '../partials/in_body_banner_row.html'%}
     </div>
-    <div class="tabs-panel" id="group_guidelines"></div>
-    <div class="tabs-panel" id="group_announcements"></div>
-    <div class="tabs-panel" id="group_contact"></div>
-    <div class="tabs-panel" id="group_info"></div>
   </div>
 </div>
 
