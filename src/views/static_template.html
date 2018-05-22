@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% if !data.page.published %}
+  <p class="callout warning">UNPUBLISHED</p>
+{% endif %}
+
 {% if data.preview %}
     <p class="callout warning">Preview mode: these changes are unsaved</p>
 {% endif %}
@@ -10,7 +14,8 @@
 {% endfor %}
 
   <div id="static-wrapper">
-    {{ static_content() }}
+    <h2>{{ data.page.title }}</h2>
+    <p>{{ data.page.content|sanitizeHtml({ moderator: true })|safe }}</p>
   </div>
 
 
