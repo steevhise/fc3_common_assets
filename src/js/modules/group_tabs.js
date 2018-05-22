@@ -10,26 +10,20 @@ document.addEventListener("DOMContentLoaded", ()=> {
 		$(elm).closest('li').addClass('is-active');
 	};
 
-	// strip off group id from path
-	var path = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("/"));
+	const path = document.location.pathname;
 
-	switch (path) {
-		case '/town':
+	if (tabRoot) {
+		if (/\/town\/\w+$/.test(path)) {
 			setActiveTab('#group_posts');
-			break;
-		case '/town/guidelines':
-			setActiveTab('#group_guidelines');
-			break;
-		case '/town/announcements':
-			setActiveTab('#group_announcements');
-			break;
-		case '/town/contact':
-			setActiveTab('#group_contact');
-			break;
-		case '/town/info':
+		} else if (/\/town\/\w+\/notices(\/\w+)?$/.test(path) ) {
+			setActiveTab('#group_notices');
+		} else if (/\/town\/\w+\/info$/.test(path)) {
 			setActiveTab('#group_info');
-			break;
+		} else if (/\/town\/\w+\/contact$/.test(path)) {
+			setActiveTab('#group_contact');
+		}
 	}
+
 });
 
 export default "GroupTabs";
