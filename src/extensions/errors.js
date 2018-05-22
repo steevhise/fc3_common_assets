@@ -12,7 +12,7 @@ module.exports = {
             if (request.response.variety === 'view') {
                 request.response.source.context.errors = []
                     .concat(request.response.source.context.errors || [])
-                    .concat(request.app.formValidation || [])
+                    .concat(request.app.formValidation || []);
             }
 
             return reply.continue();

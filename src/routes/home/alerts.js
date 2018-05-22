@@ -1,83 +1,100 @@
-const Mocks = require('./helpers/mocks');
+const Joi = require('joi');
+const RouteHelpers = require('../helpers');
+
+const internals = {};
 
 module.exports = {
-    method: 'GET',
+    method: '*',
     path: '/home/alerts',
-    config: {
+    config: ({ alertService }) => ({
         id: 'home_alerts',
-        description: 'The logged in user\'s alerts page.',
-        auth:  { mode: 'required' }
-    },
+        description: 'The logged in user\'s alerts page (also supports setting new alerts).',
+        auth:  { mode: 'required' },
+        validate: {
+            failAction: RouteHelpers.formFailAction,
+            payload: Joi.object({
+                newAlertTag: Joi.number()
+                    .integer()
+                    .min(1)
+                    .label('New Alert Tag'),
+                deleteAlertTag: Joi.number()
+                    .integer()
+                    .min(1)
+                    .label('Alert To Delete')
+            }).xor('newAlertTag', 'deleteAlertTag')
+        },
+        pre: [
+            (request, reply) => {
+
+                if (request.method === 'get' || request.app.formValidation) {
+                    return reply.continue();
+                }
+
+                // Handle post and return to the page — Route supports both deleting and creating alerts
+                const { id: userId } = request.auth.credentials;
+                const { newAlertTag, deleteAlertTag } = request.payload;
+
+                const alertAction = newAlertTag ? alertService.create(userId, { tagId: newAlertTag }) : alertService.delete(userId, { tagId: deleteAlertTag });
+
+                return Promise.resolve()
+                .then(() => alertAction)
+                .then((success) => {
+
+                    if (!success) { // create doesn't return true, delete returns 0
+                        throw new Error('Alert action failed due to unmatching input');
+                    }
+
+                    return reply.continue();
+                })
+                .catch(reply);
+            }
+        ]
+    }),
     handler: function (request, reply) {
 
-        reply.view('home/alerts', {
-            title: 'Alerts',
-            posts: Mocks.posts,
-            alerts,
-            inBodyAds: [
-                'one', 'two'
-            ]
+        const { alertService, postService } = request.server;
+        const { id: userId } = request.auth.credentials;
+
+        return Promise.all([
+            postService.fetchTags(),
+            alertService.forUser(userId)
+        ])
+        .then(([tags, alerts]) => {
+
+            const unalertedTags = tags.filter((tag) => !alerts.find((alert) => alert.tag.id === tag.id));
+            const formattedSuccess = request.payload ? internals.formatPostSuccessMessage(request.payload, tags) : null;
+
+            return alertService.seeAlerts(userId)
+            .then(() =>
+
+                    reply.view('home/alerts', {
+                        title: 'Alerts',
+                        data: {
+                            alerts,
+                            formattedSuccess,
+                            unalertedTags
+                        },
+                        inBodyAds: [
+                            'one', 'two'
+                        ]
+                    }
+            ));
         });
     }
 };
 
-const alerts = [
-    {
-        alert_name: 'furniture',
-        alert_time: '2 hours ago',
-        alert_results: [
-            {
-                post_subject: 'Sofa Loveseat',
-                group: { group_name: 'Tucson, AZ' },
-                post_date: 'Sat Sept 9 2017 02:15:00 GMT',
-                postType: { post_type_name: 'WANTED' },
-                image: 'http://lorempixel.com/350/150/nightlife',
-                post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-            },
-            {
-                post_subject: 'Computer Desk',
-                group: { group_name: 'Tucson, AZ' },
-                post_date: 'Sat Sept 9 2017 02:15:00 GMT',
-                postType: { post_type_name: 'WANTED' },
-                image: 'http://lorempixel.com/350/150/city',
-                post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-            },
-            {
-                post_subject: 'Twin Bed Mattress',
-                location: 'Tucson, AZ',
-                group: { group_name: 'Tucson, AZ' },
-                post_date: 'Tue Sept 5 2017 02:15:00 GMT',
-                category: 'offer',
-                postType: { post_type_name: 'OFFER' },
-                image: 'http://lorempixel.com/350/400/food',
-                post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-            }
-        ]
-    },
-    {
-        alert_name: 'dresser',
-        alert_time: '2 days ago',
-        alert_results: []
-    },
-    {
-        alert_name: 'computer',
-        alert_time: '3 weeks ago',
-        alert_results: [
-            {
-                post_subject: 'Computer Monitor',
-                location: 'Tucson, AZ',
-                group: { group_name: 'Patagonia, AZ' },
-                post_date: 'Sun Sept 3 2017 02:15:00 GMT',
-                category: 'borrow',
-                postType: { post_type_name: 'BORROW' },
-                image: 'http://lorempixel.com/350/500/city',
-                post_description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis molestias, facere quisquam itaque! Labore nihil architecto nobis, repellat explicabo sit. Soluta itaque repudiandae ducimus velit aliquid, deleniti quas dicta tempora doloribus sed accusantium veniam aliquam fuga nulla iure molestiae dolore nemo unde laudantium quia! Possimus autem, nesciunt eligendi accusamus consectetur numquam. Eveniet et natus distinctio dicta reiciendis, laboriosam repellendus, in officia, accusantium saepe eos asperiores minima incidunt cupiditate sapiente doloribus id.'
-            }
-        ]
-    },
-    {
-        alert_name: 'headphones',
-        alert_time: '2 months ago',
-        alert_results: []
+
+internals.formatPostSuccessMessage = (payload, tags) => {
+
+    const { newAlertTag, deleteAlertTag } = payload;
+    let message = null;
+
+    if (newAlertTag) {
+        message = `You will now receive alerts for posts tagged as ${tags.find((t) => t.id === newAlertTag).name}`;
     }
-];
+    else if (deleteAlertTag) {
+        message = 'Alert deleted!';
+    }
+
+    return message;
+};

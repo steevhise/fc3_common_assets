@@ -2,49 +2,72 @@
 
 {% block content %}
   {% parent %}
+  {% for error in errors %}
+    <p class="callout alert">{{ error.message }}</p>
+  {% endfor %}
+  {% if data.formattedSuccess %}
+    <p class="callout success">{{ data.formattedSuccess }}</p>
+  {% endif %}
   <div class="alerts row column">
     <div class="row">
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
     </div>
-    <div class="row column">
-      <form class="large-12 alert_new-alert">
-        <h3>New Alert</h3>
-        <div class="form-group column">
-          <label>Search Term</label>
-          <input type="text" class="large-8" placeholder="Add a new alert"/>
-          <button type="submit" role="submit" data-fc-submitpost class="btn-default large-2">Create Alert</button>
-        </div>
-      </form>
-    </div>
-    <hr class="section-divider" />
-    <div class="row column">
-      <h3>Existing Alerts</h3>
-      {% for alert in alerts %}
-        <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
-          <div class="alert_title">
-            <p class="alert_close large-1 small-1">x</p>
-            <div class="alert_name large-8 small-6">
-              <h4>{{alert.alert_name}}</h4>
-              <p class="alert_time text-lighten">{{alert.alert_time}}</p>
-            </div>
-            {% if alert.alert_results.length %}
-              <div class="message-arrow alert_result-count large-2 small-3">
-                {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
+    {% if data.unalertedTags.length %}
+      <div class="row column large-12">
+        <form class="alert_new-alert" method="POST">
+          <h3>New Alert</h3>
+          <div class="form-group column">
+            <select name="newAlertTag" class="create-alert large-8" required>
+                <option></option> {# Empty first option required to display select2's placeholder #}
+                {% for tag in data.unalertedTags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" role="submit" class="btn-default large-2">Create Alert</button>
+          </div>
+        </form>
+      </div>
+      <hr class="section-divider" />
+    {% endif %}
+    {% if data.alerts.length %}
+      <div class="row column">
+        <h3>Existing Alerts</h3>
+        {% for alert in data.alerts %}
+          <div class="alerts_existing column large-12" data-alert-id="{{loop.index}}">
+            <div class="alert_title">
+              <fc-modal class="alert-delete-confirm" custom-trigger='<p class="alert_close large-1 small-1">x</p>'>
+                <p>Are you sure you want to delete your alert for {{alert.tag.name}} posts?</p>
+                <form method="POST">
+                  <input type="hidden" name="deleteAlertTag" value="{{alert.tag.id}}" />
+                  <button class="btn btn-default" type="submit">Delete Alert</button>
+                </form>
+              </fc-modal>
+              <div class="alert_name large-8 small-6">
+                <h4>{{ alert.tag.name }}</h4>
+                <p class="alert_time text-lighten">{{ alert.posts[0].date|mreldate }}</p>
+                {% if alert.posts|checkUnseen %}
+                  <p class="callout success">New Posts!</p>
+                {% endif %}
               </div>
-            {% else %}
-              <p class="alert_result-count large-2 small-3">No Results</p>
-            {% endif %}
+              {% if alert.posts.length %}
+                <div class="message-arrow alert_result-count large-2 small-3">
+                  {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
+                </div>
+              {% else %}
+                <p class="alert_result-count large-2 small-3">No Results</p>
+              {% endif %}
+            </div>
           </div>
-        </div>
-        {% if alert.alert_results.length %}
-          <div class="alert_result large-12" data-result-id={{loop.index}}>
-            {% include '../partials/alert_result.html' with alert.alert_results %}
-            <hr class="alert_result-divider" />
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
+          {% if alert.posts.length %}
+            <div class="alert_result large-12" data-result-id={{loop.index}}>
+              {% include '../partials/alert_result.html' with { posts: alert.posts } %}
+              <hr class="alert_result-divider" />
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
     <hr class="section-divider" />
+    {% endif %}
   </div>
   {% include '../partials/in_body_banner_row.html'%}
 {% endblock %}
