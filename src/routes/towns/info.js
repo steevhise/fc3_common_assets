@@ -4,7 +4,7 @@ module.exports = {
     method: 'GET',
     path: '/town/info/{uniqueName}',
     config: {
-        id: 'group_info',
+        id: 'groups_info',
         description: 'The named town\'s information.'
     },
     handler: function (request, reply) {
