@@ -48,9 +48,10 @@ exports.validateImagesPre = (request, reply) => {
 exports.keyMirror = (obj) => {
 
     return Object.keys(obj).reduce((scopes, key) => ({
-        ...scopes,
+        //...scopes,
         [key]: key
     }), {});
+};
 
 exports.groupMembershipStatus = (request, groupId) => {
 
@@ -118,5 +119,4 @@ exports.groupDetailPre = {
             .then((membershipChecks) => reply({ membershipChecks, group }));
         });
     }
-
 };
