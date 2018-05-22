@@ -44,6 +44,14 @@ exports.validateImagesPre = (request, reply) => {
     });
 };
 
+// { A: true } -> { A: 'A' }
+exports.keyMirror = (obj) => {
+
+    return Object.keys(obj).reduce((scopes, key) => ({
+        ...scopes,
+        [key]: key
+    }), {});
+
 exports.groupMembershipStatus = (request, groupId) => {
 
     const { userService } = request.server;
@@ -102,4 +110,5 @@ exports.groupDetailPre = {
             .then((membershipChecks) => reply({ membershipChecks, group }));
         });
     }
+
 };
