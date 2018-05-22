@@ -1,48 +1,88 @@
-const Mocks = require('./helpers/mocks');
+const Joi = require('joi');
+const RouteHelpers = require('../helpers');
+
+const internals = {};
 
 module.exports = {
     method: 'GET',
-    path: '/town/info/{uniqueName}',
+    path: '/town/{uniqueName}/info',
     config: {
         id: 'groups_info',
-        description: 'The named town\'s information.'
+        description: 'The named town\'s information.',
+        validate: {
+            params: {
+                // NOTE Joi.number needs to be the first alternative tried, so we cast any numeric ids (i.e. group_id), which come in as strings, to numbers
+                // Otherwise, a string representation of a number would hit our fetchByIdentifier call, which would interpret the string as the yahoo_group_name
+                uniqueName: Joi.alternatives([Joi.number().integer(), Joi.string()])
+            },
+            failAction: (request, reply, source, error) => {
+
+                if (!request.params.uniqueName) {
+                    return reply.redirect('/find-towns').temporary().takeover();
+                }
+
+                throw error;
+            }
+        },
+        pre: [
+            RouteHelpers.groupDetailPre
+        ]
     },
     handler: function (request, reply) {
 
-        const freecycle = {
-            copyright:    'The official TFN copyright notice.',
-            disclaimer:   'The official TFN disclaimer.',
-            logo:         'The official TFN logo  (bare <img> tag with width and height attributes)',
-            num_groups:   'The number of official freecycle towns.',
-            num_members:  'The total number of members in all towns.'
-        };
+        const { siteService } = request.server;
+        const { group, membershipChecks } = request.pre.groupDetail;
 
-        const descriptionTokens = {
-            '%%copyright': freecycle.copyright,
-            '%%custom_logo': Mocks.group.logo,
-            '%%disclaimer': freecycle.disclaimer,
-            '%%freecycle_logo': freecycle.logo,
-            '%%group_name': Mocks.group.group_name,
-            '%%num_groups': freecycle.num_groups,
-            '%%num_members': Mocks.group.num_members,
-            '%%total_num_members': freecycle.num_members,
-            '%%yahoogroup_link': '<a href="' + Mocks.group.yahoo_group_name + '">' + Mocks.group.yahoo_group_name + '</a>"'
-        };
+        return siteService.fetchStatistics()
+        .then(({ userCount, townCount }) => {
 
-        const group = Object.assign({}, Mocks.group);
+            const descriptionTokens = {
+                '%%copyright': internals.copyright(),
+                '%%disclaimer': internals.standardDisclaimer(),
+                '%%freecycle_logo': '<fc-icon name="logo"></fc-icon>',
+                '%%group_name': group.group_name,
+                '%%num_groups': Number(townCount).toLocaleString(), // Formats numbers with commas
+                '%%num_members': Number(group.num_members).toLocaleString(),
+                '%%total_num_members': Number(userCount).toLocaleString(),
+                '%%yahoogroup_link': `<a href="/town/${group.yahoo_group_name}">${group.yahoo_group_name}</a>"`
+            };
 
-        group.description = group.description.replace(/%%\w+/g, (all) => {
+            let subbedDescription = group.description.replace(/%%\w+/g, (match) => {
 
-            return descriptionTokens[all] || all;
-        });
+                return descriptionTokens[match] || match;
+            });
 
-        reply.view('groups/info', {
-            group,
-            freecycle,
-            inBodyAds: [
-                'one',
-                'two'
-            ]
+            reply.view('groups/group', {
+                data: {
+                    group,
+                    subbedDescription,
+                    ...membershipChecks
+                },
+                inBodyAds: [
+                    'one',
+                    'two'
+                ]
+            });
         });
     }
 };
+
+
+internals.standardDisclaimer = () => `
+    <p>
+        DISCLAIMER: FREECYCLE NETWORK MEMBERS USE THE LIST AT THEIR OWN RISK. Please
+        take reasonable measures to protect your safety and privacy when posting to
+        the list or participating in an exchange. By joining the list, you agree to hold
+        neither the list owners and moderators nor anyone affiliated with Freecycle.org
+        responsible or liable for any circumstance resulting from a Freecycle-related
+        exchange or communication.
+    </p>
+`;
+
+
+internals.copyright = () => `
+    <p>
+        Copyright &copy; ${new Date().getFullYear()} The Freecycle Network (<a href="http://www.freecycle.org">http://www.freecycle.org</a>).
+        All rights reserved. Freecycle and the Freecycle logo are trademarks of The Freecycle Network in various countries.
+    </p>
+`;

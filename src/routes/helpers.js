@@ -84,13 +84,17 @@ exports.groupMembershipStatus = (request, groupId) => {
 };
 
 // NOTE Assumes route has a uniqueName param representing group's id or yahoo_group_name
-exports.groupNotFound = (request, reply) => {
+exports.groupNotFound = (request, reply, opts = { pre: false }) => {
 
     reply.state('redirectedError', {
         message: 'Sorry, we couldn\'t find that group. Try searching!',
         path: request.route.path.replace(/{uniqueName\??}/, request.params.uniqueName),
         type: 'groupNotFound'
     });
+
+    if (opts.pre) {
+        return reply.redirect('/find-towns').temporary().takeover();
+    }
 
     return reply.redirect('/find-towns').temporary();
 };
@@ -105,6 +109,10 @@ exports.groupDetailPre = {
 
         groupService.fetchByIdentifier(uniqueName)
         .then((group) => { // A null group (not found) is fine; check for that in the handler
+
+            if (!group) {
+                return exports.groupNotFound(request, reply, { pre: true });
+            }
 
             return exports.groupMembershipStatus(request, group.group_id)
             .then((membershipChecks) => reply({ membershipChecks, group }));
