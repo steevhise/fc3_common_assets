@@ -8,7 +8,7 @@ const tree = require('require-dir')(null, {
 
         return !rel
           .split(Path.sep)
-          .some((part) => part.startsWith('helpers'));
+          .some((part) => part.startsWith('helpers') || part.startsWith('scopes'));
     }
 });
 

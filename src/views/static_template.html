@@ -1,6 +1,14 @@
 {% extends './layout/layout.html' %}
 
 {% block content %}
+
+{% if data.preview %}
+    <p class="callout warning">Preview mode: these changes are unsaved</p>
+{% endif %}
+{% for error in errors %}
+    <p class="callout alert">{{ error.message }}</p>
+{% endfor %}
+
   <div id="static-wrapper">
     {{ static_content() }}
   </div>

@@ -1,6 +1,5 @@
 const Boom = require('boom');
-
-const ACCESS_TO_CTL_CENTER = 1; // A privilege_type_id
+const { PRIV_ADMIN_CONTROL_CENTER } = require('../routes/scopes');
 
 module.exports = {
     type: 'onPostAuth',
@@ -16,7 +15,7 @@ module.exports = {
 
         const { isAuthenticated, credentials } = request.auth;
 
-        if (isAuthenticated && credentials.role.includes(ACCESS_TO_CTL_CENTER)) {
+        if (isAuthenticated && credentials.scope.includes(PRIV_ADMIN_CONTROL_CENTER)) {
             return reply.continue();
         }
 
