@@ -1,0 +1,87 @@
+{% extends '../layout/layout.html' %}
+
+{% block more %}
+{% endblock %}
+
+{% block header %}
+    {% include '../partials/header.html' with {loggedIn:true} %}
+{% endblock %}
+
+{% block content %}
+
+{% if data.deleted %}
+    <p class="callout success">Tag successfully deleted</p>
+{% endif %}
+{% for error in errors %}
+    <p class="callout alert">{{ error.message }}</p>
+{% endfor %}
+
+<div class="admin-tags container">
+    <div class="row text-center">
+        <h2 class="page-title">Tags Administration</h2>
+    </div>
+    <div class="row bg-white">
+        <div class="columns medium-12">
+            <form method="post">
+                <input type="hidden" name="crumb" value="{{crumb}}" />
+
+                <div class="row text-center container">
+                    <p class="subtitle">Select an existing tag to edit, or create a new one.</p>
+                </div>
+                <div class="row">
+                    <div class="columns medium-6 small-12">
+                        <label for="tagselect">
+                            Existing Tags:
+                            {% if data.tag.id %}
+                                [<a href="/admin/tags">new tag</a>]
+                            {% endif %}
+                        </label>
+                        <select title="tag" name="tagselect" id="tagselect">
+                            <option value=""></option>
+                            {% for tagItem in data.allTags %}
+                                {% if tagItem.name %}
+                                    <option value="{{ tagItem.id }}" {% if tagItem.id === data.tag.id %}selected{% endif %}>
+                                        {{ tagItem.name }} {% if tagItem.system %}(system tag){% endif %}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="clear"><br></div>
+                <div class="row">
+                    <div class="columns medium-6 small-12">
+                        <label for="name">Name:</label>
+                        <input id="name" type="text" size=32 name="name" value="{{ data.tag.name }}" placeholder="Name">
+                    </div>
+                </div>
+                {% if data.tag %}
+                    <div class="row">
+                        <div class="columns medium-6">
+                            <input type="hidden" name="id" value="{{ data.tag.id }}" placeholder="Tag Id">
+                            <div>Created: {{ data.tag.created|formatDate('ddd, MM/DD/YYYY hh:mm a') }}</div>
+                            <div>
+                                <strong>Posts Tagged:</strong> {{ data.tag.postCount }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="columns medium-12">
+                        <div class="form-group text-center">
+                            <button type="submit" role="submit" class="btn-default btn-sm">Save</button>
+                            {% if data.tag %}
+                                <button type="submit" name="delete" value="delete" role="submit" class="btn-offer btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% include '../partials/footer.html' %}

@@ -27,7 +27,7 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const { postService, userService } = request.server;
+        const { postService, userService, tagService } = request.server;
         const { credentials } = request.auth;
         const { town, friends } = request.query;
 
@@ -38,7 +38,7 @@ module.exports = {
 
         return Promise.all([
             postService.forUser(credentials.id, criteria),
-            postService.fetchTags(),
+            tagService.fetchAll(),
             userService.fetchTownMemberships(credentials.id)
         ])
         .then(([posts, tags, towns]) => {

@@ -11,7 +11,9 @@ module.exports = [{
         description: 'Create and edit "static" pages.',
         auth: {
             mode: 'required',
-            scope: PRIV_ADMIN_CONTROL_CENTER
+            access: {
+                scope: PRIV_ADMIN_CONTROL_CENTER
+            }
         },
         validate: {
             failAction: RouteHelpers.formFailAction,
