@@ -4,11 +4,11 @@
         {% if post.thumb %}
             <img width=128 src="{{post.thumb}}">
         {%else%}
-            {% include "../icons/logo.html" %}
+            <fc-icon name="logo"></fc-icon>
         {% endif %}
     </div>
     <div class="post-list-item-content">
-        {% if route.id === 'home_alerts' && !post.seen %}
+        {% if showNewTag %}
             <div class="callout success text-center">NEW!</div>
         {% endif %}
         <div class="post-list-item-content-header">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="post-list-item-content-description">
-            <h4><a href="{{ path.posts_detail }}{{ post.post_id }}">{{ post.subject }}</a></h4>
+            <h4><a href="{{ path.posts_detail }}{{ post.id }}">{{ post.subject }}</a></h4>
             <p class="paragraph-small">{{ post.description|sanitizeHtml|raw }}</p>
         </div>
     </div>
