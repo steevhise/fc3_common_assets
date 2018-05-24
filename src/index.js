@@ -10,6 +10,7 @@ const SearchService = require('@freecycle/common-hapi-plugins/services/search');
 const SiteService = require('@freecycle/common-hapi-plugins/services/site');
 const AlertService = require('@freecycle/common-hapi-plugins/services/alert');
 const PageService = require('@freecycle/common-hapi-plugins/services/page');
+const TagService = require('@freecycle/common-hapi-plugins/services/tag');
 
 exports.register = Util.callbackify((server, options) => {
 
@@ -24,6 +25,7 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'siteService', new SiteService(server));
     server.decorate('server', 'alertService', new AlertService(server));
     server.decorate('server', 'pageService', new PageService(server));
+    server.decorate('server', 'tagService', new TagService(server));
 
     const combine = (...arrays) => [].concat(...arrays);
 
