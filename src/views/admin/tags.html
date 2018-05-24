@@ -51,8 +51,8 @@
                 <div class="clear"><br></div>
                 <div class="row">
                     <div class="columns medium-6 small-12">
-                        <label for="name">Name:</label>
-                        <input id="name" type="text" size=32 name="name" value="{{ data.tag.name }}" placeholder="Name">
+                        <label for="name">Name (64 characters max):</label>
+                        <input id="name" type="text" size=32 name="name" value="{{ data.tag.name }}" maxlength="64" {% if !data.tag %}required{% endif %} placeholder="Name">
                     </div>
                 </div>
                 {% if data.tag %}

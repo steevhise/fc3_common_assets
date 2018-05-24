@@ -3,6 +3,8 @@ const Joi = require('joi');
 const { PRIV_ADMIN_CONTROL_CENTER } = require('../scopes');
 const RouteHelpers = require('../helpers');
 
+const internals = {};
+
 module.exports = {
     method: '*',
     path: '/admin/tags/{id?}',
@@ -33,7 +35,7 @@ module.exports = {
                     }),
                     otherwise: Joi.object({
                         id: Joi.number().integer().when(Joi.ref('$params.id'), { is: Joi.exist(), then: Joi.required() }),
-                        name: Joi.string().regex(/^\d+$/, { invert: true }).required().label('Tag Name') // TODO Any limitation on tag name length?
+                        name: Joi.string().regex(/^\d+$/, { invert: true }).max(64).required().label('Tag Name') // TODO Any limitation on tag name length?
                     })
                 }),
             options: {
@@ -59,31 +61,17 @@ module.exports = {
                     return reply();
                 }
 
-                const handleUniquenessError = (err) => {
-
-                    if (err instanceof tagService.TagAlreadyExistsError) {
-                        request.app.formValidation = request.app.formValidation || [];
-                        // Only possible source of unique constraint violation is tag name
-                        request.app.formValidation.push({
-                            type: 'data',
-                            field: 'name',
-                            message: `That tag (${err.fields.tag_name}) already exists`
-                        });
-
-                        return reply();
-                    }
-
-                    throw err;
-                };
-
                 if (!params.id) {
 
-                    return tagService.create(auth.credentials.id, payload.name)
+                    return Promise.resolve()
+                    .then(() => tagService.create(auth.credentials.id, payload.name))
                     .then((tagId) => {
 
                         return reply.redirect(`/admin/tags/${tagId}`).temporary().takeover();
                     })
-                    .catch(handleUniquenessError)
+                    .catch((err) => internals.handleUniquenessError(request, reply, err))
+                    // Entirely paranoia; form and input validation should always prevent tag name input from triggering name length errors in the service layer
+                    .catch((err) => internals.handleNameLengthError(request, reply, err))
                     .catch(reply);
                 }
 
@@ -100,7 +88,8 @@ module.exports = {
                     .catch(reply);
                 }
 
-                return tagService.update(payload.id, payload.name)
+                return Promise.resolve()
+                .then(() => tagService.update(payload.id, payload.name))
                 .then((updated) => {
 
                     if (!updated) {
@@ -109,7 +98,8 @@ module.exports = {
 
                     return reply();
                 })
-                .catch(handleUniquenessError)
+                .catch((err) => internals.handleUniquenessError(request, reply, err))
+                .catch((err) => internals.handleNameLengthError(request, reply, err))
                 .catch(reply);
             },
             [{
@@ -167,4 +157,42 @@ module.exports = {
             }
         });
     }
+};
+
+internals.handleNameLengthError = (request, reply, err) => {
+
+    const { tagService } = request.server;
+
+    if (err instanceof tagService.TagNameTooLongError) {
+
+        request.app.formValidation = request.app.formValidation || [];
+        request.app.formValidation.push({
+            type: 'data',
+            field: 'name',
+            message: 'That tag name is too long. Tags must be 64 characters or less'
+        });
+
+        return reply();
+    }
+
+    throw err;
+};
+
+internals.handleUniquenessError = (request, reply, err) => {
+
+    const { tagService } = request.server;
+
+    if (err instanceof tagService.TagAlreadyExistsError) {
+        request.app.formValidation = request.app.formValidation || [];
+        // Only possible source of unique constraint violation is tag name
+        request.app.formValidation.push({
+            type: 'data',
+            field: 'name',
+            message: `That tag (${err.fields.tag_name}) already exists`
+        });
+
+        return reply();
+    }
+
+    throw err;
 };
