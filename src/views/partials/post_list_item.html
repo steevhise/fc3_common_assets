@@ -8,6 +8,9 @@
         {% endif %}
     </div>
     <div class="post-list-item-content">
+        {% if route.id === 'home_alerts' && !post.seen %}
+            <div class="callout success text-center">NEW!</div>
+        {% endif %}
         <div class="post-list-item-content-header">
             <div class="post-list-item-header-left">
                 <div class="post-list-item-category-icon">
