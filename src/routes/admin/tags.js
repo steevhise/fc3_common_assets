@@ -13,9 +13,7 @@ module.exports = {
         description: 'Create, edit, and delete system tags',
         auth: {
             mode: 'required',
-            access: {
-                scope: PRIV_ADMIN_CONTROL_CENTER
-            }
+            scope: PRIV_ADMIN_CONTROL_CENTER
         },
         validate: {
             failAction: RouteHelpers.formFailAction,
@@ -144,6 +142,7 @@ module.exports = {
         // Remove invalid POST data
         if (validation) {
             validation.info.forEach(({ path }) => {
+
                 delete submitted[path];
             });
         }
