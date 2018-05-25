@@ -44,7 +44,7 @@
               </fc-modal>
               <div class="alert_name large-8 small-6">
                 <h4>{{ alert.tag.name }}</h4>
-                <p class="alert_time text-lighten">{{ alert.posts[0].date|mreldate }}</p>
+                {% if alert.posts.length %}<p class="alert_time text-lighten">{{ alert.posts[0].date|mreldate }}</p>{% endif %}
                 {% if alert.posts|checkUnseen %}
                   <p class="callout success">New Posts!</p>
                 {% endif %}

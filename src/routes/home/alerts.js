@@ -52,11 +52,11 @@ module.exports = {
     }),
     handler: function (request, reply) {
 
-        const { alertService, postService } = request.server;
+        const { alertService, tagService } = request.server;
         const { id: userId } = request.auth.credentials;
 
         return Promise.all([
-            postService.fetchTags(),
+            tagService.fetchAll(),
             alertService.forUser(userId)
         ])
         .then(([tags, alerts]) => {
@@ -65,19 +65,19 @@ module.exports = {
             const formattedSuccess = request.payload ? internals.formatPostSuccessMessage(request.payload, tags) : null;
 
             return alertService.seeAlerts(userId)
-            .then(() =>
+            .then(() => (
 
-                    reply.view('home/alerts', {
-                        title: 'Alerts',
-                        data: {
-                            alerts,
-                            formattedSuccess,
-                            unalertedTags
-                        },
-                        inBodyAds: [
-                            'one', 'two'
-                        ]
-                    }
+                reply.view('home/alerts', {
+                    title: 'Alerts',
+                    data: {
+                        alerts,
+                        formattedSuccess,
+                        unalertedTags
+                    },
+                    inBodyAds: [
+                        'one', 'two'
+                    ]
+                })
             ));
         });
     }
