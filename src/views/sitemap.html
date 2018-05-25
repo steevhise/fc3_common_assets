@@ -1,17 +1,23 @@
 {% extends './layout/layout.html' %}
 
 {% block content %}
-{{ date|date('M d, Y') }}
+
+    {{ date|date('M d, Y') }}
+
     <h1>Sitemap (auto-generated)</h1>
+
     <div id="list">
         <ul>
-        {%  for page in pages %}
-
-                <li><span class="subsection-title"><strong>{{  page.settings.id }}</strong>:&nbsp;&nbsp;<a href="{{ page.path }}">{{ page.path }}</a></span>
-                    : <span class="paragraph-small">{{ page.settings.description }}</span></li>
-        {%  endfor %}
+        {% for page in data.pages %}
+            <li>
+                <span class="subsection-title">
+                    {% if page.slug %}<strong>{{ page.slug }}</strong>:&nbsp;&nbsp;{% endif %}
+                    <a href="{{ page.path }}">{{ page.path }}</a>
+                </span>:
+                <span class="paragraph-small">{{ page.description }}</span>
+            </li>
+        {% endfor %}
         </ul>
     </div>
-
 
 {% endblock %}

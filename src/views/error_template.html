@@ -41,8 +41,10 @@
 <div class="error">
   <h2 class='emoji'>&#x25D5; &#xFE35; &#x25D5;</h2>
   <h2>{{errorMessage}}</h2>
-    {{ moreInfo }}
-
+  {{ moreInfo }}
+  {% if statusCode == 503 && maintenanceMode %}
+    <p>Are you an admin? <a href="/login">Login</a></p>
+  {% endif %}
   <h1>{{statusCode}}</h1>
 </div>
 </body>

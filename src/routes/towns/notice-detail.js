@@ -46,7 +46,7 @@ module.exports = {
             if (!(/text\/(plain|html)$/.test(notice.mimetype))) {
                 return reply(notice.buffer)
                     .type(notice.mimetype)
-                    .header('Content-Disposition', 'attachment');
+                    .header('Content-Disposition', `attachment; filename="${notice.filename}"`);
             }
 
             reply.view('groups/group', {
