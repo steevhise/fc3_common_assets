@@ -1,46 +1,64 @@
+const internals = {};
+
 module.exports = {
     method: 'GET',
     path: '/sitemap',
     config: {
         id: 'pages_sitemap',
-        description: 'Simple list of all pages on site.'
+        description: 'Simple list of all pages on site.',
+        pre: [
+            {
+                assign: 'staticPages',
+                method: (request, reply) => {
+
+                    const { pageService } = request.server;
+
+                    return pageService.fetchAll()
+                        .then((pages) => pages.filter((p) => p.published))
+                        .then(reply)
+                        .catch(reply);
+                }
+            }
+        ]
     },
     handler: function (request, reply) {
 
-        const routeTable = request.server.table();
-        const results = [];
+        const { connection, pre: { staticPages } } = request;
+        const routes = connection.table().filter((route) => {
 
-        console.log(routeTable.length);
+            const tags = [].concat(route.settings.tags || []);
 
-        for (let i = 0; i < routeTable.length; ++i) {
-            const route = routeTable[i];
-            const l = route.table.length;
-            for (let j = 0; j < l; ++j) {
-                console.log('j', j);
-                const table = route.table[j];
-                console.log(table.public.path);
-                if (table.public.path === '/pages/{pagePath}') {
-                    // TODO: the 'static' pages need to return all the actual pages. so we'll have to look in database.
-                    continue;
-                }
-
-                // exclude a route by adding a tag 'exclude' in the config.
-                if (!!table.public.settings.tags) {
-                    if (table.public.settings.tags.includes('api') ||  table.public.settings.tags.includes('exclude')) {
-                        console.log('excluding ', table.public.path);
-                        continue;
-                    }
-                }
-
-                results.push(table.public);   // this is an array of {route settings: method: path: etc } hashes.
+            if (tags.includes('api') || tags.includes('exclude')) {
+                return false;
             }
-        }
 
-  // console.log("---------------------");
-  // TODO: do some error catching, maybe - like what if there's no results?
-        reply.view('sitemap', {
+            if (route.path === '/pages/{pagePath}') {
+                return false;
+            }
+
+            return true;
+        });
+
+        return reply.view('sitemap', {
             title: 'Site Map',
-            pages: results
+            data: {
+                pages: [].concat(
+                    routes.map(internals.routeToSitemapItem),
+                    staticPages.map(internals.staticPageToSitemapItem)
+                )
+            }
         });
     }
 };
+
+internals.routeToSitemapItem = (route) => ({
+    slug: route.settings.id,
+    path: route.path,
+    description: route.settings.description || ''
+});
+
+internals.staticPageToSitemapItem = (staticPage) => ({
+    slug: null,
+    path: `/pages/${staticPage.path}`,
+    description: staticPage.title
+});

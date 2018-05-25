@@ -19,33 +19,38 @@ module.exports = [{
                 id: Joi.number().integer()
             },
             query: {
-                deleted: [Joi.boolean().truthy('', '1'), Joi.any()]
+                deleted: [Joi.boolean().truthy('', '1').valid(true), Joi.strip()]
             },
-            payload: Joi.object({
-                delete: Joi.boolean().truthy('delete').default(false),
-                title: Joi.string()
-                    .required()
-                    .label('Title'),
-                path: Joi.string()
-                    .uri({ relativeOnly: true })
-                    .regex(/^\//, { invert: true })
-                    .required()
-                    .label('Path')
-                    .options({
-                        language: {
-                            string: {
-                                regex: { invert: { base: 'cannot start with a "/"' } }
+            payload: [
+                Joi.object({
+                    delete: Joi.boolean().truthy('delete').valid(true)
+                }),
+                Joi.object({
+                    delete: Joi.strip(),
+                    title: Joi.string()
+                        .required()
+                        .label('Title'),
+                    path: Joi.string()
+                        .uri({ relativeOnly: true })
+                        .regex(/^\//, { invert: true })
+                        .required()
+                        .label('Path')
+                        .options({
+                            language: {
+                                string: {
+                                    regex: { invert: { base: 'cannot start with a "/"' } }
+                                }
                             }
-                        }
-                    }),
-                content: Joi.string()
-                    .required()
-                    .label('Page content'),
-                published: Joi.boolean()
-                    .truthy('1')
-                    .default(false)
-                    .label('Published')
-            }),
+                        }),
+                    content: Joi.string()
+                        .required()
+                        .label('Page content'),
+                    published: Joi.boolean()
+                        .truthy('1')
+                        .default(false)
+                        .label('Published')
+                })
+            ],
             options: {
                 abortEarly: false,
                 language: {
