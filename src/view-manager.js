@@ -21,11 +21,13 @@ module.exports = (server, options) => ({
     context: (request) => ({
         session: request.auth.credentials,
         isAuthenticated: request.auth.isAuthenticated,
+        maintenanceMode: options.maintenanceMode,
         route: {
             id: request.route.settings.id,
             auth: request.route.settings.auth
         },
         errors: null, // Set in extensions/errors.js
+        alertCount: null, // Set in extensions/alert-count.js
         footerMenuItems: [
             { name: 'Local Towns', path: '/' },
             { name: 'Merchandise', path: '/' },

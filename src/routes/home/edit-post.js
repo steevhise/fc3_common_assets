@@ -142,14 +142,14 @@ module.exports = {
     }),
     handler: (request, reply) => {
 
-        const { postService } = request.server;
+        const { postService, tagService } = request.server;
         const { id: userId } = request.auth.credentials;
         const { postId } = request.params;
 
         return Promise.all([
             postService.fetchForUpdate(postId, userId)
                 .catch(internals.handleUpdateError(request)),
-            postService.fetchTags()
+            tagService.fetchAll()
         ])
         .then(([post = {}, tags]) => {
 

@@ -8,7 +8,7 @@ module.exports = [
         method: 'GET',
         path: '/images/{param*}',
         config: {
-            tags: ['exclude'],
+            tags: ['exclude', 'asset'],
             auth: false
         },
         handler: {
@@ -22,7 +22,7 @@ module.exports = [
         method: 'GET',
         path: '/font/{param*}',
         config: {
-            tags: ['exclude'],
+            tags: ['exclude', 'asset'],
             auth: false
         },
         handler: {
@@ -38,7 +38,7 @@ module.exports = [
         config: {
             id: 'js',
             description: 'directory where Front-end javascript code goes',
-            tags: ['js', 'exclude'],
+            tags: ['js', 'exclude', 'asset'],
             auth: false
         },
         handler: {
@@ -54,7 +54,7 @@ module.exports = [
         config: {
             id: 'css',
             description: 'directory where Front-end css code goes',
-            tags: ['css', 'exclude'],
+            tags: ['css', 'exclude', 'asset'],
             auth: false
         },
         handler: {
@@ -68,7 +68,7 @@ module.exports = [
         method: 'GET',
         path: '/ckeditor/{param*}',
         config: {
-            tags: ['exclude', 'js'],
+            tags: ['exclude', 'js', 'asset'],
             auth: false
         },
         handler: {

@@ -163,11 +163,11 @@ module.exports = {
     }),
     handler(request, reply) {
 
-        const { postService, userService } = request.server;
+        const { tagService, userService } = request.server;
         const { id: userId } = request.auth.credentials;
 
         return Promise.all([
-            postService.fetchTags(),
+            tagService.fetchAll(),
             userService.fetchTownMemberships(userId)
         ])
         .then(([tags, towns]) => {

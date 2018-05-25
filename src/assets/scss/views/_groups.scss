@@ -30,6 +30,32 @@
     }
   }
 
+  .group-notice, .group-notice-detail, .group-info {
+    background: #fff;
+    padding: 1.25rem;
+    margin-bottom: .375rem;
+  }
+
+  .group-notice h4 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    display: inline;
+  }
+
+  a.notices-back {
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+
+  /* Respects line-break characters e.g. \n potentially present in text content of notice files */
+  .group-notice-detail {
+      white-space: pre-line;
+  }
+
+  .group-info-wrapper {
+    margin: auto;
+  }
+
   .upper-ad-wrapper {
     @include breakpoint(header) {
       display: none;

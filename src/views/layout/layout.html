@@ -11,6 +11,7 @@
               rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/main.css">
     {% endblock %}
+    <script>window.FC_MAINTENANCE_MODE = {% if maintenanceMode %}true{% else %}false{% endif %};</script>
 </head>
 <body data-fc-route="{{ route.id|lower }}" >
 

@@ -1,6 +1,5 @@
-const Hoek = require('hoek');
 
-const internals = {}
+const internals = {};
 
 module.exports = {
     method: '*',

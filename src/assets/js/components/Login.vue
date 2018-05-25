@@ -1,6 +1,11 @@
 <template>
     <form method="POST" id="loginForm" action="/login" v-on:submit.prevent="onSubmit" ref="form">
             <div class="container">
+                <div class="columns" v-if="maintenanceMode">
+                    <p>
+                        Site currently in temporary maintenance mode. If you're an admin, please log in. Otherwise, please try again later.
+                    </p>
+                </div>
                 <div class="medium-6 columns float-left">
                     <label>Username/Email
                         <input type="text" name="user" placeholder="username or email address">
@@ -28,6 +33,7 @@
         name: 'fc-login',
         props: {
             valuesFromForm: { default: "" },
+            maintenanceMode: { default: window.FC_MAINTENANCE_MODE || false }
         },
         data() {
 
