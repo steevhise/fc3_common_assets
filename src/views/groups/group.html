@@ -40,15 +40,18 @@
 
     {% elseif route.id === 'groups_notices_detail' %}
 
-      <div class="row group-notice-detail">
-          <h2>{{ data.notice.description|default(data.notice.filename)|safe }}<h2>
-          {% if data.notice.mimetype === 'text/html' %}
-            {{ data.notice.content|sanitizeHtml({ moderator: true })|safe }}
-          {% else %}
-            <p>
-              {{ data.notice.content|safe }}
-            </p>
-          {% endif %}
+      <div class="row">
+          <a href="/town/{{ data.group.group_id }}/notices" class="notices-back btn-default header-button">Back to Notices</a>
+          <div class="group-notice-detail">
+            <h2>{{ data.notice.description|default(data.notice.filename)|safe }}<h2>
+            {% if data.notice.mimetype === 'text/html' %}
+              {{ data.notice.content|sanitizeHtml({ moderator: true })|safe }}
+            {% else %}
+              <p>
+                {{ data.notice.content|safe }}
+              </p>
+            {% endif %}
+          </div>
       </div>
 
     {% elseif route.id === 'groups_info' %}
