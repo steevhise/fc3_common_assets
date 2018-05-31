@@ -98,7 +98,7 @@ class ImageUploader {
         // Files will be deleted incorrectly if this assumption proves wrong... hmmm
         const imgBlock = e.currentTarget.parentNode; // parent of button clicked i.e. image block div
         const imgRow = imgBlock.parentNode;
-        const delIndex = imgBlock.dataset.uploadOrder
+        const delIndex = imgBlock.dataset.uploadOrder;
 
 
         // Case of a pre-existing image i.e. where item in queue is a string
@@ -174,7 +174,7 @@ class ImageUploader {
             }
 
             // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another, overwrites the input's file list
-            const numUploads = this.filesList.push(f)
+            const numUploads = this.filesList.push(f);
 
             // Disable the uploader if limit has been reached
             if (numUploads === 3) {
@@ -203,7 +203,7 @@ class ImageUploader {
                 if (f.size > 1048576) {
                     self.resizeImage(dataURL, f, numUploads - 1);
                 }
-            }
+            };
             reader.readAsDataURL(f);
         }, self /* ensures instance of ImageUploader is the `this` value w/in callback */);
 
