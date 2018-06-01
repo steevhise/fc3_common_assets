@@ -1,5 +1,5 @@
 .post-list-item {
-  min-height: rem-calc(64px);
+  min-height: rem-calc(7em);
   background: $white;
   padding: rem-calc(5px);
   margin-bottom: rem-calc(6px);
@@ -13,6 +13,8 @@
   .post-list-item-photo {
     flex: 1;
     display: flex;
+    height: 5em;
+    width: auto;
     //align-items: center;
     padding-bottom: rem-calc(5px);
     @media #{$medium-up} {
@@ -23,21 +25,22 @@
 
   .post-list-item-content {
     flex: 3;
+    min-height: 6.5em;
     padding-left: rem-calc(10px);
     padding-right: rem-calc(10px);
+
   }
 
   .post-list-item-content-header {
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
     border-bottom: 2px solid $body-background;
 
     @media #{$medium-up} {
       flex-direction: row;
-      padding-bottom: rem-calc(10px);
+      padding-bottom: rem-calc(5px);
     }
 
   }
@@ -86,15 +89,48 @@
     }
   }
   .post-list-item-content-description {
-    padding-top: rem-calc(5px);
+    padding-top: rem-calc(1px);
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+    line-height: 1.2em;
+    font-size: rem-calc(10px);
+    max-height: 4.6em;
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
     h4 {
-      font-size: rem-calc(12px);
+      font-size: rem-calc(14px);
       font-weight: bold;
+      padding-bottom: 0;
     }
     p {
       &:last-child {
+        margin-top: 0;
         margin-bottom: 0;
+        padding-top: 5px;
+        font-size: rem-calc(12px);
       }
     }
   }
+
+  // ellipsis after truncated text
+  .post-list-item-content-description:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  .post-list-item-content-description:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: white;
+  }
+
+
 }
