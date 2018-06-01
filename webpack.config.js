@@ -1,10 +1,17 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const devMode = true;
 
 module.exports = {
+    mode: 'development',
     entry: './src/assets/js/main.js',
+    optimization: {
+        minimize: false
+    },
+    devtool: 'eval-source-map',
     output: {
         filename: 'js/main.bundle.js',
         path: Path.resolve(__dirname, 'public/assets')
@@ -27,9 +34,13 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    use: ['css-loader', 'sass-loader']
-                })
+                use: [
+                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    //'postcss-loader',
+                    'sass-loader',
+                    'vue-style-loader'
+                ]
             }
         ]
     },
@@ -42,14 +53,25 @@ module.exports = {
         new Webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new Webpack.optimize.UglifyJsPlugin({
-            sourceMap: false,
+        // for production remember to change these appropriately
+        /*new Webpack.optimize.UglifyJsPlugin({
+            optimization: {
+                minimize: false
+            },
+            output: {
+                beautify: true
+            },
+            sourceMap: true,
+            extractComments: {
+                removeAll: false
+            },
             compress: {
-                warnings: false
+                warnings: false,
+                drop_console: false
             }
-        }),
+        }),*/
         new CopyWebpackPlugin([
-            { from: './node_modules/@freecycle/fc3_common_assets/src/images', to: './images' },
+            { from: './node_modules/@freecycle/fc3_common_assets/src/images', to: './images' }
             // { from: './node_modules/@freecycle/fc3_common_assets/src/scss', to: '../../build/scss' }
             // { from: './node_modules/@freecycle/fc3_common_assets/src/views', to: '../../build/views' }
 
@@ -57,9 +79,14 @@ module.exports = {
             copyUnmodified: true,
             debug: 'warning'
         }),
-        new ExtractTextPlugin({
-            filename: '../../public/assets/css/main.css',
-            disable: false
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        }),
+        new VueLoaderPlugin({
+            // no options, i guess.
         })
     ]
 };
