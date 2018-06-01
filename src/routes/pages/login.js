@@ -1,4 +1,6 @@
 
+const Hoek = require('hoek');
+
 const internals = {};
 
 module.exports = {
@@ -78,8 +80,13 @@ module.exports = {
             });
         }
 
+        // Might receive an error redirected from facebook login
+        const msg = Hoek.reach(request, 'state.redirectedError.message');
+        reply.unstate('redirectedError');
+
         return reply.view('login', {
-            title: 'Login Required'
+            title: 'Login Required',
+            msg
         });
     }
 };

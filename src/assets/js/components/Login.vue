@@ -1,5 +1,5 @@
 <template>
-    <form method="POST" id="loginForm" action="/login" v-on:submit.prevent="onSubmit" ref="form">
+    <form method="POST" id="loginForm" ref="form">
             <div class="container">
                 <div class="columns" v-if="maintenanceMode">
                     <p>
@@ -17,10 +17,9 @@
                     </label>
                 </div>
                 <div class="medium-12 columns align-center-middle ">
-                    <input class="btn btn-default" type="submit" value="Log in">
+                    <input class="btn btn-default" type="submit" formaction="/login" value="Log in" v-on:click.prevent="onSubmit(null, $event)">
                     <p>
-                        Or <a href="/fb_login"><i class="fa fa-facebook"></i> Sign up via Facebook</a>.
-                        <!-- TODO: the link should be a swig tag: {{ path.pages_fblogin }} but it's not working at the moment-->
+                        Or <button form="loginForm" class="btn-fb" type="submit" formaction="/fb-login" v-on:click.prevent="onSubmit(null, $event)"><i class="fa fa-facebook"></i>Login via Facebook</button>
                     </p>
                 </div>
             </div>
@@ -42,8 +41,9 @@
             };
         },
         methods: {
-            onSubmit() {
+            onSubmit(_, event) {
 
+                let { formAction } = event.target;
                 const extraForm = this.valuesFromForm && new FormData(document.querySelector(this.valuesFromForm));
                 const entries = extraForm ? [...extraForm.entries()] : [];
 
@@ -56,6 +56,12 @@
 
                 this.$nextTick(() => {
 
+                    // if fb submit and step2, append step2 as query (needed to work with bell auth on fb-login)
+                    if (this.extraValues.step2 && formAction.includes('/fb-login')) {
+                        formAction = `${formAction}?step2=${this.extraValues.step2}`
+                    }
+
+                    this.$refs.form.action = formAction;
                     this.$refs.form.submit();
                 });
             }

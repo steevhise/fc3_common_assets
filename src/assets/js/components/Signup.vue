@@ -35,13 +35,20 @@
                                     </div>
                                     <!-- captcha here -->
                                     <div class="medium-12 columns align-center-middle ">
-                                        <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="">Terms of Service</a>
+                                        <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="/tos">Terms of Service</a>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
 
                                         <input class="btn btn-default" type="submit" value="Sign Up">
-                                            Or <a href="/fb_login"><i class="fa fa-facebook"></i> Sign up via Facebook</a>.
-                                        <!-- TODO: the link should be a swig tag: {{ path.pages_fblogin }} but it's not working at the moment-->
+										<fc-modal type="custom" custom-trigger='<a><i class="fa fa-facebook"></i> Sign up via Facebook.</a>'>
+                                            <form id="fb-tos" method="post" action="/fb-signup">
+                                                <p>You must accept our Terms of Service to proceed</p>
+                                                <input type="checkbox" name="acceptedTerms" value="1" required /> I agree to the <a href="/tos">Terms of Service</a>
+                                                <div>
+                                                    <button class="btn-fb" type="submit">Sign Up via Facebook</button>
+                                                </div>
+                                            </form>
+                                        </fc-modal>
                                     </div>
                                 </div>
                             </form>

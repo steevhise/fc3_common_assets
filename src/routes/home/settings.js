@@ -146,7 +146,7 @@ module.exports = {
                             return reply.continue();
                         }
 
-                        if (err instanceof userService.InvalidHomeTownError) {
+                        if (err instanceof userService.InvalidTownError) {
 
                             request.app.formValidation.push({
                                 type: 'form',
@@ -172,8 +172,13 @@ module.exports = {
 
             Hoek.assert(settings, 'User does not exist');
 
+            // Might receive an error redirected from connecting account w/ Facebook
+            const maybeError = Hoek.reach(request, 'state.redirectedError.message');
+            reply.unstate('redirectedError');
+
             return reply.view('home/settings', {
                 title: 'Edit Settings',
+                errors: maybeError ? [maybeError] : [],
                 data: {
                     settings,
                     languageOptions: [ // TODO
