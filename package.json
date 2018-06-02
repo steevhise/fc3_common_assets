@@ -8,7 +8,7 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.21",
+    "@freecycle/common-hapi-plugins": "0.2.22",
     "@freecycle/fc3_common_assets": "0.2.9",
     "@freecycle/freecycle_graphql_schema": "^0.2.9",
     "@freecycle/freecycle_node_dal": "^0.2.8",
@@ -56,7 +56,7 @@
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
     "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
-    "watch:javascript": "webpack --config webpack.config.js --colors --watch",
+    "watch:javascript": "webpack --config webpack.config.js --colors --watch --progress",
     "build:javascript": "webpack --config webpack.config.js",
     "build": "npm run build:javascript",
     "browsersync": "sleep 5; browser-sync start --proxy localhost:8000 --files ./src/ --reload-delay 1200",
