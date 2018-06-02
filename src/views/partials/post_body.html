@@ -1,21 +1,18 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-<div class="row post-detail">
-  <div class="row">
-    <h4 class="section-title text-center">{{post.subject}}</h4>
-  </div>
-  <div class="post-list-item">
+  <div class="post-detail-item">
     <div class="row">
       <div class="columns medium-8">
-        <div class="post-list-item-content">
-          <div class="post-list-item-content-header">
+        <h4 class="section-title text-center">{{post.subject}}</h4>
+        <div class="post-detail-item-content">
+          <div class="post-detail-item-content-header">
             <div class="columns medium-12">
               <div class="row">
-                <div class="post-list-item-header-left">
-                  <div class="post-list-item-category-icon">
+                <div class="post-detail-item-header-left">
+                  <div class="post-detail-item-category-icon">
                     {% include "./post_type.html" with { post : post } %}
                   </div>
                 </div>
-                <div class="post-list-item-header-right">
+                <div class="post-detail-item-header-right">
                   {# TODO add share and report button #}
                 </div>
               </div>
@@ -26,16 +23,17 @@
                   <li>#{{post.id}}</li>
                   <li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
                   <li>{{ post.date|mreldate(datetimeOpts)|capitalize }} ( {{ post.date|mdate(datetimeOpts, 'ddd, MM/DD/YYYY hh:mm a')}} )</li>
-                  <br/>
+                </ul>
+                <ul class="post-items">
                   <li>
                     <a href="{{path.groups_main}}{{post.group.uniqueName}}">
-                      <icon class="fa fa-home"></span>
+                      <icon class="fa fa-home"></icon>
                       <span>{{ post.group.uniqueName }}</span>
                     </a>
                   </li>
                   <li>
                     <a href="{{path.user}}{{post.user.username}}">
-                      <icon class="fa fa-user"></span>
+                      <icon class="fa fa-user">
                       <span>{{ post.user.username|upper }}</span>
                     </a>
                   </li>
@@ -50,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div class="post-list-item-content-description align-left">
+          <div class="post-detail-item-content-description align-left">
             <div class="container">
               <p>{{ post.description|sanitizeHtml|raw }}</p>
             </div>
@@ -84,7 +82,7 @@
               </div>
             {% elseif post.images.length === 1 %}
               <div class="row">
-                <div class="post-list-item-photo">
+                <div class="post-detail-item-photo">
                   <img src="{{ post.images[0] }}">
                 </div>
               </div>
@@ -98,4 +96,3 @@
       </div>
     </div>
   </div>
-</div>
