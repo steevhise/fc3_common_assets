@@ -22,10 +22,10 @@ module.exports = {
             {
                 test: /\.vue$/,
                 // exclude: /(node_modules)/,
-                loader: 'vue-loader',
-                options: {
+                loader: 'vue-loader'
+                /*options: {
                     hotReload: false // disables Hot Reload
-                }
+                }*/
             },
             {
                 test: /\.(js)$/,
@@ -40,13 +40,13 @@ module.exports = {
                 test: /\.scss$/,
                 use: [
                     // MiniCssExtractPlugin.loader,
-                    //{ loader: 'style-loader' },
-                    { loader: 'vue-style-loader' },
+                    'vue-style-loader',
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: { importLoaders: 1 }
                     },
-                    'postcss-loader',     // we supposedly need this because of scoped css
+                    //'postcss-loader',     // we supposedly need this because of scoped css
                     'sass-loader'
                 ]
             }
