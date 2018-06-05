@@ -58,10 +58,7 @@ exports.deployment = (start) => {
                 dev: process.env.NODE_ENV !== 'production',
                 maintenanceMode: config.maintenanceMode,
                 cookiePassword: 'abscdfvhgnjtrueyfhdmjkrutifhdjr4',
-                facebook: { // Creds from Freecycle App Test TODO Config-ify Facebook app creds
-                    clientId: '1530319417094872',
-                    clientSecret: 'a15bfe0e107e73646794d24355867c13'
-                },
+                facebook: process.env.NODE_ENV === 'production' ? config.facebook.prod : config.facebook.test,
                 imagesURL: 'https://images.freecycle.org'
             }
         },

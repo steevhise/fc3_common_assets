@@ -52,7 +52,8 @@
     "vue-masonry": "^0.11.1",
     "vue-template-compiler": "^2.4.2",
     "vue2-google-maps": "^0.9.6",
-    "webpack": "3.6.0"
+    "webpack": "3.6.0",
+    "wreck": "^14.0.2"
   },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",

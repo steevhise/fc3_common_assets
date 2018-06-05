@@ -18,9 +18,9 @@
                 </div>
                 <div class="medium-12 columns align-center-middle ">
                     <input class="btn btn-default" type="submit" formaction="/login" value="Log in" v-on:click.prevent="onSubmit(null, $event)">
-                    <p>
-                        Or <button form="loginForm" class="btn-fb" type="submit" formaction="/fb-login" v-on:click.prevent="onSubmit(null, $event)"><i class="fa fa-facebook"></i>Login via Facebook</button>
-                    </p>
+                    <div>
+                        <button form="loginForm" class="btn-fb" type="submit" formaction="/fb-login" v-on:click.prevent="onSubmit(null, $event)"><i class="fa fa-facebook"></i>Login with Facebook</button>
+                    </div>
                 </div>
             </div>
             <input v-for="(value, key) in extraValues" type="hidden" v-bind:name="key" v-bind:value="value" />

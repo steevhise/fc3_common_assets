@@ -40,12 +40,17 @@
                                     <div class="medium-12 columns align-center-middle ">
 
                                         <input class="btn btn-default" type="submit" value="Sign Up">
-										<fc-modal type="custom" custom-trigger='<a><i class="fa fa-facebook"></i> Sign up via Facebook.</a>'>
-                                            <form id="fb-tos" method="post" action="/fb-signup">
-                                                <p>You must accept our Terms of Service to proceed</p>
-                                                <input type="checkbox" name="acceptedTerms" value="1" required /> I agree to the <a href="/tos">Terms of Service</a>
+										<fc-modal type="custom" custom-trigger='<button type="button" class="btn-fb"><i class="fa fa-facebook"></i> Sign up via Facebook.</button>'>
+                                            <form id="fb-tos" method="GET" action="/fb-signup">
                                                 <div>
-                                                    <button class="btn-fb" type="submit">Sign Up via Facebook</button>
+                                                    <label>Username</label>
+                                                    <input type="text" name="username" placeholder="Username" required />
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="/tos">Terms of Service</a>
+                                                </div>
+                                                <div>
+                                                    <button class="btn-fb" type="submit"><i class="fa fa-facebook"></i>Sign Up with Facebook</button>
                                                 </div>
                                             </form>
                                         </fc-modal>

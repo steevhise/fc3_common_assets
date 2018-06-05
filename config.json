@@ -1,5 +1,19 @@
 {
   "maintenanceMode": false,
+  "facebook": {
+    "legacy": {
+      "clientId": "117834011565165",
+      "clientSecret": "fa596fcabbeb2651544ed73ea7c847e3"
+    },
+    "test": {
+      "clientId": "1530319417094872",
+      "clientSecret": "a15bfe0e107e73646794d24355867c13"
+    },
+    "prod": {
+      "clientId": "197157494242919",
+      "clientSecret": "32d7283cb26df6179be8e3bc789abc8d"
+    }
+  },
   "database": {
     "dialect": "mysql",
     "host": "newdev.freecycle.org",

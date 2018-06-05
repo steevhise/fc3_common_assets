@@ -116,7 +116,7 @@
         {% endif %}
         <hr>
         {% if data.settings.facebookId %}
-          <input type="submit" class="btn-fb" value="Disconnect Facebook Account"/>
+          <a href="/fb-disconnect?facebookId={{ data.settings.facebookId }}" class="btn-fb">Disconnect Facebook Account</a>
         {% else %}
           <a href="/fb-connect?userId={{ session.id }}" class="btn-fb">Connect Account to Facebook</a>
         {% endif %}
