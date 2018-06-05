@@ -46,8 +46,8 @@ module.exports = {
                         loader: 'css-loader',
                         options: { importLoaders: 1 }
                     },
-                    'postcss-loader',
-                    { loader: 'sass-loader' }
+                    'postcss-loader',     // we supposedly need this because of scoped css
+                    'sass-loader'
                 ]
             }
         ]
