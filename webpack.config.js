@@ -2,8 +2,9 @@ const Path = require('path');
 const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
-const devMode = true;
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
+//const devMode = true;
 
 module.exports = {
     mode: 'development',
@@ -21,7 +22,10 @@ module.exports = {
             {
                 test: /\.vue$/,
                 // exclude: /(node_modules)/,
-                loader: 'vue-loader'
+                loader: 'vue-loader',
+                options: {
+                    hotReload: false // disables Hot Reload
+                }
             },
             {
                 test: /\.(js)$/,
@@ -35,11 +39,15 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    //'postcss-loader',
-                    'sass-loader',
-                    'vue-style-loader'
+                    // MiniCssExtractPlugin.loader,
+                    //{ loader: 'style-loader' },
+                    { loader: 'vue-style-loader' },
+                    {
+                        loader: 'css-loader',
+                        options: { importLoaders: 1 }
+                    },
+                    'postcss-loader',
+                    { loader: 'sass-loader' }
                 ]
             }
         ]
@@ -85,8 +93,7 @@ module.exports = {
             filename: '[name].css',
             chunkFilename: '[id].css'
         }),
-        new VueLoaderPlugin({
+        new VueLoaderPlugin()
             // no options, i guess.
-        })
     ]
 };
