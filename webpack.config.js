@@ -4,6 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
+//TODO: figure out minification, etc for Production
+
 //const devMode = true;
 
 module.exports = {
@@ -12,7 +14,15 @@ module.exports = {
     optimization: {
         minimize: false
     },
-    devtool: 'eval-source-map',
+    watchOptions: {
+        poll: 2000,
+        aggregateTimeout: 10000
+    },
+    stats: 'normal',
+    devServer: {
+        hot: true
+    },
+    devtool: 'cheap-module-eval-source-map',
     output: {
         filename: 'js/main.bundle.js',
         path: Path.resolve(__dirname, 'public/assets')
@@ -21,10 +31,10 @@ module.exports = {
         rules:[
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
-                /*options: {
+                loader: 'vue-loader',
+                options: {
                     hotReload: false // disables Hot Reload
-                }*/
+                }
             },
             {
                 test: /\.(js)$/,
@@ -35,19 +45,6 @@ module.exports = {
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
             },
-            // {
-            //     test: /\.scss$/,
-            //     use: [
-            //         // MiniCssExtractPlugin.loader,
-            //         'style-loader',
-            //         {
-            //             loader: 'css-loader',
-            //             options: { importLoaders: 1 }
-            //         },
-            //         //'postcss-loader',     // we supposedly need this because of scoped css
-            //         'sass-loader'
-            //     ]
-            // },
             {
                 test: /\.scss?$/,
                 loader: ['style-loader', 'css-loader', 'sass-loader']
@@ -55,7 +52,6 @@ module.exports = {
             {
                 test: /\.css?$/, loaders: ['style-loader', 'css-loader', 'sass-loader']
             }
-            
         ]
     },
     resolve: {
@@ -65,7 +61,7 @@ module.exports = {
     },
     plugins: [
         new Webpack.LoaderOptionsPlugin({
-            minimize: true
+            minimize: false
         }),
         // for production remember to change these appropriately
         /*new Webpack.optimize.UglifyJsPlugin({
