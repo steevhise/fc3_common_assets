@@ -80,7 +80,6 @@
     "eslint-plugin-hapi": "^4.0.0",
     "eslint-plugin-vue": "^4.5.0",
     "googleplaces": "^0.6.1",
-    "lab": "^14.2.2",
-    "webpack-cli": "^2.0.10"
+    "lab": "^14.2.2"
   }
 }

@@ -1,7 +1,7 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 //TODO: figure out minification, etc for Production
@@ -89,12 +89,12 @@ module.exports = {
             copyUnmodified: true,
             debug: 'warning'
         }),
-        new MiniCssExtractPlugin({
+        /*new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
             filename: '[name].css',
             chunkFilename: '[id].css'
-        }),
+        }),*/
         new VueLoaderPlugin()
             // no options, i guess.
     ]
