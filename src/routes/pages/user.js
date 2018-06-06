@@ -24,13 +24,13 @@ module.exports = [{
         })
         .then((profile) => {
 
+            if (!profile) {
+                throw Boom.notFound('User not found');
+            }
+
             // Don't publicize groups in region 32
             if (!isAuthenticated || credentials.id !== profile.id) {
                 profile.groups = profile.groups.filter(({ group }) => group.region.id !== Constants.SEMI_PRIVATE_REGION);
-            }
-
-            if (!profile) {
-                throw Boom.notFound('User not found');
             }
 
             return reply.view('user', {
