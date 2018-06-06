@@ -12,6 +12,7 @@
     "@freecycle/fc3_common_assets": "0.2.9",
     "@freecycle/freecycle_graphql_schema": "^0.2.9",
     "@freecycle/freecycle_node_dal": "^0.2.8",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
