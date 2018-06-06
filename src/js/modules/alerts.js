@@ -5,23 +5,23 @@ export class AlertItem {
   constructor(id) {
     this.$deleteAlert = $(`.alerts_existing[data-alert-id=${id}] .alert_close`);
     this.$openAlert = $(`.alerts_existing[data-alert-id=${id}] .alert_result-count`);
-    
+
     this.$deleteAlert.on('click', (e) => {
       this.deleteSelected(id);
     });
-    
+
     this.$openAlert.on('click', (e) => {
       this.showResult(id);
     });
   }
-  
+
   showResult = (id) => {
     $(`.alert_result[data-result-id=${id}]`).toggle();
     $(`.alerts_existing[data-alert-id=${id}] .message-arrow`).toggleClass('open');
-  }
-  
+  };
+
   deleteSelected = (id) => {
-    // TODO: placeholder for delete functionality 
+    // TODO: placeholder for delete functionality
   }
 }
 

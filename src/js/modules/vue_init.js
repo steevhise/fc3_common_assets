@@ -62,4 +62,4 @@ export const FCVue = {
 		Vue.component('fc-icon', Icon);
 		Vue.component('fc-data', Data);
 	}
-}
+};
