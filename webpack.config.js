@@ -21,7 +21,6 @@ module.exports = {
         rules:[
             {
                 test: /\.vue$/,
-                // exclude: /(node_modules)/,
                 loader: 'vue-loader'
                 /*options: {
                     hotReload: false // disables Hot Reload
@@ -36,20 +35,27 @@ module.exports = {
                     plugins: [require('babel-plugin-transform-class-properties')]
                 }
             },
+            // {
+            //     test: /\.scss$/,
+            //     use: [
+            //         // MiniCssExtractPlugin.loader,
+            //         'style-loader',
+            //         {
+            //             loader: 'css-loader',
+            //             options: { importLoaders: 1 }
+            //         },
+            //         //'postcss-loader',     // we supposedly need this because of scoped css
+            //         'sass-loader'
+            //     ]
+            // },
             {
-                test: /\.scss$/,
-                use: [
-                    // MiniCssExtractPlugin.loader,
-                    'vue-style-loader',
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: { importLoaders: 1 }
-                    },
-                    //'postcss-loader',     // we supposedly need this because of scoped css
-                    'sass-loader'
-                ]
+                test: /\.scss?$/,
+                loader: ['style-loader', 'css-loader', 'sass-loader']
+            },
+            {
+                test: /\.css?$/, loaders: ['style-loader', 'css-loader', 'sass-loader']
             }
+            
         ]
     },
     resolve: {
