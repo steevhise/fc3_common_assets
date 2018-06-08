@@ -1,9 +1,8 @@
 <freecycle>
     <message_queue>
         <gearman>
-            server tagadab4.freecycle.org:4730
-            server tagadab2.lcy.freecycle.org:4730
-            server hetzner8.freecycle.org:4730
+            server newdev.freecycle.org:4730
+            server newdev.lcy.freecycle.org:4730
         </gearman>
     </message_queue>
     <database>
