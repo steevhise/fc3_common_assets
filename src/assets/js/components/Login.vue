@@ -15,6 +15,18 @@
                     <label>Password
                         <input type="password" name="password" placeholder="password">
                     </label>
+                    <div>
+                        Forgot your password?
+                        <fc-modal custom-trigger="<a>Request a password reset</a>">
+                            <fc-form action="/api/request-password-reset">
+                                <label>Email (we'll send an email with a link to reset your password to this address)</label>
+                                <input type="email" name="email" required>
+                                <div class="row text-center">
+                                    <button type="submit" class="btn btn-default small-5">Send</button>
+                                </div>
+                            </fc-form>
+                        </fc-modal>
+                    </div>
                 </div>
                 <div class="medium-12 columns align-center-middle ">
                     <input class="btn btn-default" type="submit" value="Log in">
