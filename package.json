@@ -48,6 +48,7 @@
     "swig-templates": "^2.0.2",
     "vision": "^4.1.1",
     "vue": "^2.5.16",
+    "vue2-google-maps": "^0.9.7",
     "vue-custom-element": "3.2.0",
     "vue-loader": "15.2.4",
     "vue-masonry": "^0.11.1",
