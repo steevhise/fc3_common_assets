@@ -93,7 +93,7 @@
 		<svg v-if="name == 'logo'" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" class="fc-logo-svg" viewBox="0 0 184 86" style="width: 100%;">
 			<defs>
 			</defs>
-			<title>Icon</title>
+			<title>TFN Logo</title>
 			<rect class="cls-1" width="52" height="20"/>
 			<path class="cls-2"
 				d="M54.33,49.7c0,3.61,2.32,7.64,7.25,7.64a6.86,6.86,0,0,0,6.68-4.27L65.95,52a4.56,4.56,0,0,1-4.27,2.8c-2.56,0-4.33-2.08-4.33-5.11,0-2.86,1.69-4.81,4.21-4.81a3.56,3.56,0,0,1,3.76,3.22h2.53V42.72H65.31v1a6.1,6.1,0,0,0-4-1.38A7.18,7.18,0,0,0,54.33,49.7Z"></path>

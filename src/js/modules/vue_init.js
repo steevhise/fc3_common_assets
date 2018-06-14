@@ -70,4 +70,4 @@ export const FCVue = {
 		Vue.component('fc-messages-board', MessagesBoard);
 		Vue.component('fc-messages-notifier', MessagesNotifier);
 	}
-}
+};
