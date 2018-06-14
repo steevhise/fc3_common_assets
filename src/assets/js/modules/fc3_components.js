@@ -76,12 +76,18 @@ export const MainVue = new Vue({
 				filter: null,
 				tags: []
 			},
+			towns: {
+				searchQuery: '',
+				markers: [],
+				filteredMarkers: []
+			},
 			map: {
 				currentMarker: null,
 				center: {
 					lat: 33.24,
 					lng: -117.36
 				},
+				markers: [],
 				infoWindow: {
 					options: {
 						pixelOffset: {
@@ -97,11 +103,50 @@ export const MainVue = new Vue({
 			},
 		}
 	},
+	methods: {
+		searchTowns() {
+			let self = this;
+			let results = [];
+			
+			results = this.$lodash.filter(self.towns.markers, function(item, index) {
+				return self.$lodash.includes(item.name, self.towns.searchQuery);
+			});
+			
+			self.towns.filteredMarkers = results;
+			
+			self.$root.$emit('renderCluster');
+		},
+		townResults(towns) {
+			if (this.towns.searchQuery) {
+				return this.towns.filteredMarkers;
+			} else {
+				return this.towns.markers;
+			}
+		}
+	},
 	created() {
+		let self = this;
 		this.$on('renderCluster', function() {
 			setTimeout(() => {
 				this.$refs.mapcluster.$clusterObject.fitMapToMarkers();
-			}, 2000);
+			}, 1000);
+		});
+		
+		this.$on('loadTowns', function(markers) {
+			self.towns.markers = markers;
+		});
+		
+		this.$on('requestGeoPermissions', function() {
+			if ('geolocation' in navigator) {
+				navigator.geolocation.getCurrentPosition(function(geo) {
+					self.map.center = {
+						lat: geo.latitude,
+						lng: geo.longitude
+					}
+				});
+			} else {
+				console.log("Device does not have GeoLocation Capabilities");
+			}
 		});
 	}
 });
