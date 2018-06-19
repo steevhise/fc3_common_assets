@@ -1,5 +1,6 @@
 
 const Boom = require('boom');
+const Constants = require('@freecycle/common-hapi-plugins/constants');
 const Joi = require('joi');
 
 const internals = {};
@@ -11,8 +12,17 @@ module.exports = {
         tags: ['api'],
         auth: { mode: 'required' },
         validate: {
+            failAction: (request, reply, source, error) => {
+
+                if (source !== 'payload') {
+                    return reply(error);
+                }
+
+                const message = `Invalid message! ${error.data.details.map((e) => e.message)}`;
+                return reply(Boom.badRequest(message));
+            },
             payload: {
-                body: Joi.string().required(), // TODO Any constraints here?
+                body: Joi.string().max(Constants.MAX_MSG_CHARS).required(), // TODO Any constraints here?
                 threadIdentifier: Joi.alternatives()
                     .try(
                         Joi.number().integer(), // A thread.thread_id provided
