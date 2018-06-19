@@ -3,13 +3,27 @@ import { FCVue } from '@freecycle/fc3_common_assets/src/js/modules';
 import { VueMasonryPlugin } from 'vue-masonry';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueGoogleMapsCluster from 'vue2-google-maps/dist/components/cluster'
+import momentTimezone from "moment-timezone";
+import Vuex from 'vuex';
+import { MessagingStore } from "../vuex_stores/messaging";
+
 
 // Vue Configuration & Plugins
 Vue.config.silent = true;
 
-// deps
-import momentTimezone from "moment-timezone";
+// Vuex Store
+Vue.use(Vuex);
+/**
+ * Export FC Main's Vuex Store
+ * @see src/assets/js/vuex_stores
+ */
+export const MainStore = new Vuex.Store({
+	modules: {
+		messaging: MessagingStore
+	}
+});
 
+// deps
 Vue.use(FCVue, {
 	momentTimezone: momentTimezone
 });
@@ -40,7 +54,9 @@ Vue.component('fc-map-cluster', {
 		})
 	}
 });
+
 Vue.component('fc-map-marker', VueGoogleMaps.Marker);
+
 Vue.component('fc-map-infowindow', {
 	name: 'gmap-info-window',
 	extends: VueGoogleMaps.InfoWindow,
@@ -64,11 +80,13 @@ Vue.component('fc-map-infowindow', {
 		});
 	}
 });
+
 Vue.component('fc-map', VueGoogleMaps.Map);
 
 export const MainVue = new Vue({
 	el: '#vue-root',
 	props: ['path'],
+	store: MainStore,
 	data() {
 		return {
 			posts: {
@@ -91,8 +109,8 @@ export const MainVue = new Vue({
 				infoWindow: {
 					options: {
 						pixelOffset: {
-						  width: 0,
-						  height: -50
+							width: 0,
+							height: -50
 						},
 						maxWidth: 380
 					},
