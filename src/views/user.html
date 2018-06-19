@@ -88,9 +88,15 @@
           </div>
         {% endif %}
       {% endif %}
-      <div class="columns medium-3">
-        <button class="btn btn-action" onclick="javascript:void(window.location.href='{{path.home_myreplies}}')" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>
-      </div>
+      {% if friendStatus === 'FRIENDS' %}
+        <div class="columns medium-3">
+            <fc-messages-detail-input topic-type="friend" topic-id="{{ data.profile.id }}"
+              custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message</button>'
+            >
+              <p><strong>New Message To</strong> {{ data.profile.username }}</p>
+          </fc-messages-detail-input>
+        </div>
+      {% endif %}
       <div class="columns medium-3">
         <fc-modal custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-flag"></i>Report</button>'>
             <form method="post"> {# TODO: Submit form to report user once endpoint is available. #}

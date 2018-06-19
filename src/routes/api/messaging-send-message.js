@@ -2,6 +2,8 @@
 const Boom = require('boom');
 const Joi = require('joi');
 
+const internals = {};
+
 module.exports = {
     method: 'POST',
     path: '/api/messaging/send',
@@ -36,7 +38,8 @@ module.exports = {
 
         return Promise.resolve()
         .then(() => messagingService.sendMessage(userId, threadIdentifier, { body }))
-        .then((messageId) => reply(messageId)) // TODO Is this a sensible / useful return value?
+        // TODO Fix thread url when finalized
+        .then(({ messageId, threadId }) => reply({ message: `Message successfully sent! View your thread at /home/my-replies?thread=${threadId}`, data: messageId })) // TODO Is this a sensible / useful return value?
         .catch((err) => {
 
             if (messagingService.serviceErrors.some((errClass) => err instanceof errClass)) {
