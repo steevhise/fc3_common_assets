@@ -34,14 +34,30 @@
                 <span class="text-lighten">{{ post.date | mreldate }}</span>
             </div>
             <div class="post-grid-item-header-right"> <!--  TODO: not sure how to make this real.  -->
-                {% if post.type.name === 'offer'  %}
-                <button class="btn-offer">{{ postAction|default('Reply') }}</button>
-                {% elseif post.type.name === 'lend' %}
-                <button class="btn-lend">{{ postAction|default('Reply') }}</button>
-                {% elseif post.type.name === 'borrow' %}
-                <button class="btn-borrow">{{ postAction|default('Reply') }}</button>
-                {% elseif post.type.name === 'wanted' %}
-                <button class="btn-wanted">{{ postAction|default('Reply') }}</button>
+                {% if post.type.name === 'OFFER'  %}
+                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                      custom-trigger='<button class="btn-offer">Reply</button>'
+                    >
+                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                    </fc-messages-detail-input>
+                {% elseif post.type.name === 'LEND' %}
+                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                      custom-trigger='<button class="btn-lend">Reply</button>'
+                    >
+                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                    </fc-messages-detail-input>
+                {% elseif post.type.name === 'BORROW' %}
+                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                      custom-trigger='<button class="btn-borrow">Reply</button>'
+                    >
+                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                    </fc-messages-detail-input>
+                {% elseif post.type.name === 'WANTED' %}
+                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                      custom-trigger='<button class="btn-wanted">Reply</button>'
+                    >
+                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                    </fc-messages-detail-input>
                 {% endif %}
             </div>
         </div>

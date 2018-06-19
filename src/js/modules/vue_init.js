@@ -22,6 +22,7 @@ import Messages from '../components/Messages.vue';
 import MessagesInput from '../components/MessagesInput.vue';
 import MessagesBoard from '../components/MessagesBoard.vue';
 import MessagesNotifier from '../components/MessagesNotifier.vue';
+import MessagesDetailInput from '../components/MessagesDetailInput.vue';
 
 export const FCVue = {
 	install(Vue, options) {
@@ -30,7 +31,7 @@ export const FCVue = {
 		Vue.prototype.$findOne = (haystack, arr) => {
 			return arr.some(val => haystack.includes(val));
 		};
-		
+
 		Vue.prototype.geoFormat = (lat, lng) => {
 			return { lat : Number(lat), lng : Number(lng) };
 		};
@@ -69,5 +70,6 @@ export const FCVue = {
 		Vue.component('fc-messages-input', MessagesInput);
 		Vue.component('fc-messages-board', MessagesBoard);
 		Vue.component('fc-messages-notifier', MessagesNotifier);
+		Vue.component('fc-messages-detail-input', MessagesDetailInput);
 	}
 };
