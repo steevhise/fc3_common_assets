@@ -11,7 +11,8 @@ const SiteService = require('@freecycle/common-hapi-plugins/services/site');
 const AlertService = require('@freecycle/common-hapi-plugins/services/alert');
 const PageService = require('@freecycle/common-hapi-plugins/services/page');
 const TagService = require('@freecycle/common-hapi-plugins/services/tag');
-const EmailService = require( '@freecycle/common-hapi-plugins/services/EmailSystem');
+const { loadGearmanConfig } = require('@freecycle/common-hapi-plugins/modules/helpers');
+const EmailService = require( '@freecycle/common-hapi-plugins/services/email');
 
 
 exports.register = Util.callbackify((server, options) => {
@@ -28,7 +29,8 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'alertService', new AlertService(server));
     server.decorate('server', 'pageService', new PageService(server));
     server.decorate('server', 'tagService', new TagService(server));
-    server.decorate('server', 'emailService', new EmailService(server, { configPath: options.legacyConfigPath }));
+    server.decorate('server', 'gearmanConfig', loadGearmanConfig( options.legacyConfigPath ));
+    server.decorate('server', 'emailService', new EmailService(server));
 
     const combine = (...arrays) => [].concat(...arrays);
 
