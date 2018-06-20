@@ -40,6 +40,7 @@
                 $.post(this.action, this.serializedData).done(function(data) {
 
                     self.$bus.$emit('alert', { level : 'success', message : data.message });
+                    self.$bus.$emit('formSuccess');
                     event.target.reset();
                 }).fail(function(error) {
 

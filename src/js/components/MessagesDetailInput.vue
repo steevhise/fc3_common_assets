@@ -38,6 +38,11 @@
 				charCount: 0
 			};
 		},
+		created() {
+			this.$bus.$on('formSuccess', () => {
+				this.charCount = 0;
+			});
+		},
 		computed: {
 			getIdentifier() {
 				return JSON.stringify({
