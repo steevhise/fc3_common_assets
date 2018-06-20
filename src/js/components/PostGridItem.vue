@@ -93,7 +93,7 @@
 							window.$(`.post-grid-item:eq(${instance.index})`).find('.post-grid-item-content').prepend(error);
 						});
 						break;
-					case 'replies':zz
+					case 'replies':
 						const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
 						window.location.assign(myReplies);
 						break;
