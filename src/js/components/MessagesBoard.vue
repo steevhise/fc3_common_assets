@@ -27,25 +27,19 @@
 		props: {
 			threads: {
 				type: Array,
-				default: [ // TODO remove
-					{ id: 10, user: { id: 42, username: 'devinivy' }, unreadCount: 0 },
-					{ id: 11, user: { id: 69, username: 'zack' }, unreadCount: 10 }
-				]
 			},
 			messages: {
 				type: Array,
-				default: [ // TODO remove
-					{ id: 10, userId: 42, body: 'Hey!', updatedAt: '2018-06-12T19:18:46.030Z' },
-					{ id: 11, userId: 69, body: 'What is goin on?!', updatedAt: '2018-06-17T19:18:46.030Z' },
-					{ id: 12, userId: 42, body: 'Nothing is going on!', updatedAt: '2018-06-18T19:18:46.030Z' },
-					{ id: 13, userId: 69, body: 'Hey!', updatedAt: '2018-06-19T19:18:46.030Z' }
-				]
+			},
+			you: {
+				type: Object,
+			},
+			me: {
+				type: Object,
 			}
 		},
 		data() {
-			return {	// TODO remove
-				me: { id: 42, username: 'devinivy' },
-				you: { id: 69, username: 'zack' }
+			return {
 			}
 		},
 		methods: {
