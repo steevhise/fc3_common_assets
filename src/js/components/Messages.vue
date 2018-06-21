@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div v-for="message in messages" class="message-list-item-details-chat-window">
-			<div class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.userId === me.id }">
+		<div class="message-list-item-details-chat-window">
+			<div v-for="message in messages" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.userId === me.id }">
 				<p class="chat-message-from">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(message.userId) }"></span>
 					{{user(message.userId).username}}
