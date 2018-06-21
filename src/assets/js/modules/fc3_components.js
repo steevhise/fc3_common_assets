@@ -46,6 +46,9 @@ Vue.component('fc-signup', Signup);
 import Login from '../components/Login.vue';
 Vue.component('fc-login', Login);
 
+import MessagesBoardConnected from '../components/MessagesBoardConnected.vue';
+Vue.component('fc-messages-board-connected', MessagesBoardConnected);
+
 Vue.component('fc-map-cluster', {
 	extends: VueGoogleMapsCluster,
 	mounted() {
@@ -125,13 +128,13 @@ export const MainVue = new Vue({
 		searchTowns() {
 			let self = this;
 			let results = [];
-			
+
 			results = this.$lodash.filter(self.towns.markers, function(item, index) {
 				return self.$lodash.includes(item.name, self.towns.searchQuery);
 			});
-			
+
 			self.towns.filteredMarkers = results;
-			
+
 			self.$root.$emit('renderCluster');
 		},
 		townResults(towns) {
@@ -149,11 +152,11 @@ export const MainVue = new Vue({
 				this.$refs.mapcluster.$clusterObject.fitMapToMarkers();
 			}, 1000);
 		});
-		
+
 		this.$on('loadTowns', function(markers) {
 			self.towns.markers = markers;
 		});
-		
+
 		this.$on('requestGeoPermissions', function() {
 			if ('geolocation' in navigator) {
 				navigator.geolocation.getCurrentPosition(function(geo) {

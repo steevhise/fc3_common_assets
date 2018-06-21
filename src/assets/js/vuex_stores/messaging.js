@@ -3,6 +3,8 @@
  * @see src/assets/js/modules/fc3_components.js to register a new store.
  */
 
+const jQuery = require('jquery');
+
 const state = {
 	topics: {},
 	threads: {},
@@ -22,8 +24,7 @@ const mutations = {
 
 		state.currentTopicId = topicId;
 		state.currentThreadId = null;
-		state.messages = null;
-		state.threads = toDictionary(threads);
+		state.threads = mergeDictionaries(state.threads, toDictionary(threads));
 		state.topics[topicId] = {
 			topic,
 			threads: toIds(threads),
@@ -39,7 +40,7 @@ const mutations = {
 		}
 
 		state.currentThreadId = id;
-		state.messages = toDictionary(messages);
+		state.messages = mergeDictionaries(state.messages, toDictionary(messages));
 		state.threads[id] = {
 			id,
 			topic,
@@ -52,12 +53,29 @@ const mutations = {
 const actions = {
 	loadTopics({ commit }) {
 
-	}
-	selectTopic({ commit }) {
-
+		jQuery.get('/api/messaging/topics', (topics) => {
+			commit('loadTopics', topics);
+		});
 	},
-	selectThread({ commit }) {
+	selectTopic({ commit, dispatch, state }, topic) {
 
+		const { type, id } = toStructuredTopicId(topic);
+
+		jQuery.get(`/api/messaging/topics/${type}` + (id ? `/${id}` : ''), (topic) => {
+
+			commit('selectTopic', topic);
+
+			const thread = topic.threads[0];
+
+			if (thread) {
+				dispatch('selectThread', thread.id);
+			}
+		});
+	},
+	selectThread({ commit }, threadId) {
+		jQuery.get(`/api/messaging/threads/${threadId}`, (thread) => {
+			commit('selectThread', thread);
+		});
 	}
 };
 
@@ -70,8 +88,26 @@ const getters = {
 		return messageIds.map((id) => messages[id]);
 	},
 	currentThread({ threads, currentThreadId }) {
-
 		return threads[currentThreadId] || null;
+	},
+	currentTopic({ topics, threads, currentTopicId }) {
+
+		const topic = topics[currentTopicId];
+
+		if (!topic) {
+			return null;
+		}
+
+		return {
+			...topic,
+			threads: (topic.threads || []).map((id) => threads[id])
+		};
+	},
+	topics({ topics }) {
+		return Object.values(topics);
+	},
+	totalUnreads({ topics, threads }) {
+		return Object.values(topics).reduce((count, t) => count + t.unreadCount, 0);
 	}
 };
 
@@ -106,9 +142,17 @@ const makeToDictionary = (getId) => (items) => {
 };
 
 const toId = (item) => item.id;
-const toTopicId = ({ type, post, user, group }) => {
+
+const toStructuredTopicId = ({ type, post, user, group }) => {
 
 	const { id } = post || user || group || {};
+
+	return { type, id };
+};
+
+const toTopicId = (topic) => {
+
+	const { type, id } = toStructuredTopicId(topic);
 
 	return type + (id ? '' : `-${id}`);
 };
