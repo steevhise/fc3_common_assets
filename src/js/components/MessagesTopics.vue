@@ -114,7 +114,8 @@
 		},
 		created() {
 
-			this.currentTopicCategory = this.topicCategories[0];
+			const hash = window.location.hash;
+			this.currentTopicCategory = hash ? this.categoryFromHash(hash) : this.topicCategories[0];
 		},
 		computed: {
 			currentTopics() {
@@ -179,6 +180,13 @@
 			href(category) {
 
 				return `#${this.normalizeCategory(category)}`
+			},
+			categoryFromHash(hash) {
+
+				return hash.replace('#', '')
+					.split('-')
+					.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+					.join(' ');
 			}
 		}
 	}
