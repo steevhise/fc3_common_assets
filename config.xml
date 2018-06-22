@@ -2,7 +2,7 @@
     <message_queue>
         <gearman>
             server newdev.freecycle.org:4730
-            server newdev.lcy.freecycle.org:4730
+            server vps005.bhs.freecycle.org:4730
         </gearman>
     </message_queue>
     <database>

@@ -29,8 +29,7 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'alertService', new AlertService(server));
     server.decorate('server', 'pageService', new PageService(server));
     server.decorate('server', 'tagService', new TagService(server));
-    server.decorate('server', 'gearmanConfig', loadGearmanConfig( options.legacyConfigPath ));
-    server.decorate('server', 'emailService', new EmailService(server));
+    server.decorate('server', 'emailService', new EmailService(server, loadGearmanConfig(options.legacyConfigPath)));
 
     const combine = (...arrays) => [].concat(...arrays);
 
