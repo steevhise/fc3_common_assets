@@ -1,17 +1,10 @@
 <template>
 	<div>
-		<div class="horizontal_tabs">
-			<ul class="tabs">
-				<li v-for="category in topicCategories" class="tabs-title">
-					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentTopicCategory">{{ category }}</a>
-				</li>
-			</ul>
-		</div>
 		<div class="row column message-reply-list-container">
 		    <h3>{{ currentTopicCategory }}</h3>
 		    <ul class="message-reply-list">
-				<div v-for="topic in currentTopics" :key="topic.id">
-			        <li class="message-reply-list-item" @click="selectTopic($event)">
+				<div v-for="topic in currentTopics" :key="topic.id"> <!-- key is namespaced key id created in toTopicId -->
+			        <li class="message-reply-list-item" @click="openTopic($event, topic)">
 						<div class="message-list-item-left">
 						    <div class="message-title">
 						    	<img v-if="topic.image" class="message-image" :src="topic.image"/>
@@ -65,7 +58,7 @@
 						    </div>
 						</div>
 					</li>
-					<fc-messages-board></fc-messages-board>
+					<fc-messages-board />
 				</div>
 		    </ul>
 		</div>
@@ -74,119 +67,37 @@
 
 <script>
 
-	import moment from 'moment';
-
-	const TOPIC_CATEGORY_MAP = {
-		'Posts': 'post',
-		'My Posts': 'post',
-		'Chats With Friends': 'friend',
-		'Group Moderators': 'group',
-		'Admin Messages': 'system'
-	};
-
-	// Sorry, got really really lazy :)
-	// TODO Remove
-	const stubTopics = JSON.parse(JSON.stringify([{"topic":{"type":"friend","user":{"id":1,"username":"deronbeal"}},"unreadCount":0,"updatedAt":"1970-01-01T00:00:00.000Z"},{"topic":{"type":"system"},"unreadCount":0,"updatedAt":"1970-01-01T00:00:00.000Z"},{"topic":{"type":"post","post":{"id":65229301,"user":{"id":23736881,"username":"steevhise"},"subject":"Tool that's not tagged Tools","type":{"typeId":1,"const":"FC_POST_OFFER","name":"OFFER"},"image":null,"thumb":null}},"unreadCount":0,"updatedAt":"2018-06-12T21:43:55.000Z"},{"topic":{"type":"group","group":{"id":1014,"name":"Tucson","region":{"id":5,"name":"Arizona"},"latitude":31.5,"longitude":-111}},"unreadCount":0,"updatedAt":"2018-06-08T20:46:29.000Z"},{"topic":{"type":"friend","user":{"id":23736881,"username":"steevhise"}},"unreadCount":0,"updatedAt":"2018-06-12T21:20:59.000Z"},{"topic":{"type":"post","post":{"id":65229288,"user":{"id":26619878,"username":"fc3devtest"},"subject":"a bunch of batteries","type":{"typeId":1,"const":"FC_POST_OFFER","name":"OFFER"},"image":"https://images.freecycle.org/posts/images/5194380","thumb":"https://images.freecycle.org/posts/images/5194380/thumb"}},"unreadCount":12,"updatedAt":"2018-06-15T17:11:00.000Z"},{"topic":{"type":"post","post":{"id":65229294,"user":{"id":23736881,"username":"steevhise"},"subject":"A Really Long Long Title to see what the layout looks like in that case.","type":{"typeId":1,"const":"FC_POST_OFFER","name":"OFFER"},"image":"https://images.freecycle.org/posts/images/5194382","thumb":"https://images.freecycle.org/posts/images/5194382/thumb"}},"unreadCount":0,"updatedAt":"2018-06-15T17:11:00.000Z"},{"topic":{"type":"post","post":{"id":65229286,"user":{"id":1,"username":"deronbeal"},"subject":"[test] A test post Fri May 25 2018 15:44:59 GMT-0700 (MST)","type":{"typeId":1,"const":"FC_POST_OFFER","name":"OFFER"},"image":null,"thumb":null}},"unreadCount":2,"updatedAt":"2018-06-19T15:53:59.000Z"},{"topic":{"type":"post","post":{"id":65229302,"user":{"id":1,"username":"deronbeal"},"subject":"[test] A test post Tue Jun 12 2018 15:05:55 GMT-0700 (MST)","type":{"typeId":1,"const":"FC_POST_OFFER","name":"OFFER"},"image":null,"thumb":null}},"unreadCount":2,"updatedAt":"2018-06-20T18:22:37.000Z"}]));
+	import { mapGetters, mapActions } from 'vuex';
 
 	export default {
 		name: 'fc-messages-topics',
-		props: {
-			me: {
-				type: Object,
-				default: () => ({
-					id: 1,
-					username: 'deronbeal'
-				})
-			},
-			topicCategories: {
-				type: Array,
-				default: () => (Object.keys(TOPIC_CATEGORY_MAP))
-			},
-			topics: { // TODO Remove, should be data, I imagine?
-				type: Array,
-				default: () => (stubTopics)
-			}
-		},
 		data() {
-			return {
-				currentTopicCategory: ''
-			}
+			return {}
 		},
-		created() {
-
-			const hash = window.location.hash;
-			this.currentTopicCategory = hash ? this.categoryFromHash(hash) : this.topicCategories[0];
-		},
-		computed: {
-			currentTopics() {
-
-				let topics = [];
-				const type = TOPIC_CATEGORY_MAP[this.currentTopicCategory];
-				topics = this.topics.filter(({ topic }) => topic.type === type);
-
-				if (type === 'post') {
-					if (this.currentTopicCategory === 'Posts') {
-						topics = topics.filter(({ topic: { post: { user }} }) => this.me.id !== user.id);
-					}
-
-					if (this.currentTopicCategory === 'My Posts') {
-						topics = topics.filter(({ topic: { post: { user }} }) => this.me.id === user.id);
-					}
-				}
-
-				const typeDisplays = {
-					post: ({ image, subject, type }) => ({ image, title: subject, type }),
-					// TODO Safe to hardcode image server????
-					friend: ({ username, id }) => ({ image: `https://images.freecycle.org/user/${id}`, title: username }),
-					group: ({ name }) => ({ title: name }),
-					system: () => ({ title: 'SYSTEM'}) // TODO Delete; garbage
-				}
-
-				// TODO consider using babel plugin for object rest/spread here???
-				return topics.map(({ topic, updatedAt, unreadCount }, index) => {
-
-					const display = typeDisplays[type](topic[type === 'friend' ? 'user' : type] || {});
-					return {
-						// sets a namespaced pseudo-id to prevent Vue from reusing the DOM for the topic list items,
-						// which would persist open state of topics by order in DOM across different topic categories
-						id: `${this.normalizeCategory(this.currentTopicCategory)}-${index}`,
-						updatedAt: moment(updatedAt).fromNow(),
-						unreadCount,
-						title: display.title,
-						image: display.image,
-						type: display.type
-					}
-				});
-			}
-		},
+		computed: mapGetters([
+			'currentTopic',
+			'currentTopics',
+			'currentThread',
+			'currentMessages',
+		]),
 		methods: {
-			selectTopicCategory(category) {
+			...mapActions([
+				'selectTopic',
+				'selectThread'
+			]),
+			openTopic(event, topic) {
 
-				this.currentTopicCategory = category;
-			},
-			selectTopic(event) {
+				return this.selectTopic(topic.data) // data is prop on shape produced by currentTopics getter
+				.then(() => {
 
-				const topicEl = $(event.currentTarget);
-				// class of the root element of the fc-messages-board component
-				const topicMessageBoard = topicEl.siblings('.message-list-item-details');
+					const topicEl = $(event.currentTarget);
+					// class of the root element of the fc-messages-board component
+					const topicMessageBoard = topicEl.siblings('.message-list-item-details');
 
-				topicEl.toggleClass('open');
-				topicMessageBoard.toggleClass('open');
-			},
-			normalizeCategory(category) {
-
-				return category.toLowerCase().replace(/ /g, '-');
-			},
-			href(category) {
-
-				return `#${this.normalizeCategory(category)}`
-			},
-			categoryFromHash(hash) {
-
-				return hash.replace('#', '')
-					.split('-')
-					.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
-					.join(' ');
+					// TODO Switch this shit out with Ryan's work -->
+					topicEl.toggleClass('open');
+					topicMessageBoard.toggleClass('open');
+				});
 			}
 		}
 	}
