@@ -1,6 +1,9 @@
 
 const Boom = require('boom');
+const Constants = require('@freecycle/common-hapi-plugins/constants');
 const Joi = require('joi');
+
+const internals = {};
 
 module.exports = {
     method: 'POST',
@@ -9,8 +12,17 @@ module.exports = {
         tags: ['api'],
         auth: { mode: 'required' },
         validate: {
+            failAction: (request, reply, source, error) => {
+
+                if (source !== 'payload') {
+                    return reply(error);
+                }
+
+                const message = `Invalid message! ${error.data.details.map((e) => e.message)}`;
+                return reply(Boom.badRequest(message));
+            },
             payload: {
-                body: Joi.string().required(), // TODO Any constraints here?
+                body: Joi.string().max(Constants.MAX_MSG_CHARS).required(), // TODO Any constraints here?
                 threadIdentifier: Joi.alternatives()
                     .try(
                         Joi.number().integer(), // A thread.thread_id provided
@@ -36,7 +48,8 @@ module.exports = {
 
         return Promise.resolve()
         .then(() => messagingService.sendMessage(userId, threadIdentifier, { body }))
-        .then((messageId) => reply(messageId)) // TODO Is this a sensible / useful return value?
+        // TODO Fix thread url when finalized
+        .then(({ messageId, threadId }) => reply({ message: `Message successfully sent! View your thread at /home/my-replies?thread=${threadId}`, data: messageId })) // TODO Is this a sensible / useful return value?
         .catch((err) => {
 
             if (messagingService.serviceErrors.some((errClass) => err instanceof errClass)) {
