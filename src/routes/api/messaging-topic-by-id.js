@@ -1,3 +1,4 @@
+const Boom = require('boom');
 const Joi = require('joi');
 
 const internals = {};
@@ -15,9 +16,8 @@ module.exports = {
                     .valid('post', 'friend', 'system', 'group')
                     .required(),
                 id: Joi.when('type', {
-                    is: 'system',
-                    then: Joi.forbidden(),
-                    otherwise: Joi.number().required()
+                    is: Joi.string().not('system'),
+                    then: Joi.number().required()
                 })
             }
         }
