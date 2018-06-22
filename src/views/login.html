@@ -5,18 +5,21 @@
 {% endblock %}
 
 {% block content %}
-    {% if msg %}
-        <p class="callout alert">{{ msg }}</p>
-    {% endif %}
-    <div class="row">
+    {#
+        {% if msg %}
+            <p class="callout alert">{{ msg }}</p>
+        {% endif %}
         <div class="row">
-            <h2 class="post-header-title text-center columns large-12">
-                {{ title }}
-            </h2>
+            <div class="row">
+                <h2 class="post-header-title text-center columns large-12">
+                    {{ title }}
+                </h2>
+            </div>
+            <div class="row">
+                <fc-login></fc-login>
+            </div>
         </div>
-        <div class="row">
-            <fc-login></fc-login>
-        </div>
-    </div>
-
+    #}
+    <!-- TODO Wire up to actual data i.e. json user object when on an authenticated route -->
+    <fc-messages-board-connected :me="{ id: 26619878, username: 'fc3devtest'}" />
 {% endblock %}

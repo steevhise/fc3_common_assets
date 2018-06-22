@@ -4,27 +4,39 @@
  */
 
 const jQuery = require('jquery');
+const Moment = require('moment');
 
 const state = {
+	me: {},
 	topics: {},
 	threads: {},
 	messages: {},
 	currentTopicId: null,
-	currentThreadId: null
+	currentThreadId: null,
+	currentTopicCategory: null
 };
 
 const mutations = {
+	setViewingUser(state, { ...user } = { id, username }) {
+
+		state.me = user;
+	},
 	loadTopics(state, topics) {
 
 		state.topics = mergeDictionaries(state.topics, toTopicDictionary(topics));
 	},
+	selectTopicCategory(state, category) {
+
+		state.currentTopicCategory = category;
+	},
 	selectTopic(state, { topic, threads, ...others }) {
 
-		const topicId = toTopicId(topic);
+		const topicId = toTopicId({ topic });
 
 		state.currentTopicId = topicId;
 		state.currentThreadId = null;
 		state.threads = mergeDictionaries(state.threads, toDictionary(threads));
+		// TODO Why this???? ASK!!!!! To make sure data of current topic is up-to-date?
 		state.topics[topicId] = {
 			topic,
 			threads: toIds(threads),
@@ -33,7 +45,7 @@ const mutations = {
 	},
 	selectThread(state, { id, topic, messages, ...others }) {
 
-		const topicId = toTopicId(topic);
+		const topicId = toTopicId({ topic });
 
 		if (topicId !== state.currentTopicId) {
 			console.warn(`Choosing thread ${id} for a topic ${topicId} other than the current ${state.currentTopicId}`);
@@ -57,7 +69,7 @@ const actions = {
 			commit('loadTopics', topics);
 		});
 	},
-	selectTopic({ commit, dispatch, state }, topic) {
+	selectTopic({ commit, dispatch, state }, { topic }) {
 
 		const { type, id } = toStructuredTopicId(topic);
 
@@ -74,6 +86,7 @@ const actions = {
 	},
 	selectThread({ commit }, threadId) {
 		jQuery.get(`/api/messaging/threads/${threadId}`, (thread) => {
+
 			commit('selectThread', thread);
 		});
 	}
@@ -108,6 +121,62 @@ const getters = {
 	},
 	totalUnreads({ topics, threads }) {
 		return Object.values(topics).reduce((count, t) => count + t.unreadCount, 0);
+	},
+	topicCategories() {
+		return Object.keys(TOPIC_CATEGORY_MAP);
+	},
+	currentTopicCategory({ currentTopicCategory }) {
+		return currentTopicCategory;
+	},
+	currentTopics({ currentTopicCategory, topics, me }) {
+
+		let currentCategoryTopics = [];
+		const type = TOPIC_CATEGORY_MAP[currentTopicCategory];
+		const typeDisplays = {
+			post: ({ image, subject, type }) => ({ image, title: subject, type }),
+			// TODO Safe to hardcode image server????
+			friend: ({ username, id }) => ({ image: `https://images.freecycle.org/user/${id}`, title: username }),
+			group: ({ name }) => ({ title: name }),
+			system: () => ({ title: 'SYSTEM'}) // TODO Delete; garbage
+		}
+
+		// we iterate over our dictionary, not the topics array (via our getter)
+		// so we can hold on to our topicId in the final shape passed to our template,
+		// which we need for our v-for key value so Vue doesn't mistakenly reuse
+		// our topic list components across categories
+		for (const topicId in topics) {
+
+			const { topic, updatedAt, unreadCount } = topics[topicId];
+
+			if (topic.type !== type) {
+				continue;
+			}
+
+			if (type === 'post') {
+
+				let { post: { user } } = topic;
+
+				if (currentTopicCategory === 'Posts' && me.id === user.id) {
+					continue;
+				}
+				if (currentTopicCategory === 'My Posts' && me.id !== user.id) {
+					continue;
+				}
+			}
+
+			currentCategoryTopics.push({
+				id: topicId,
+				...typeDisplays[type](topic[type === 'friend' ? 'user' : type] || {}),
+				updatedAt: Moment(updatedAt).fromNow(),
+				unreadCount,
+				data: { topic }
+			});
+		}
+
+		return currentCategoryTopics;
+	},
+	me({ me }) {
+		return me;
 	}
 };
 
@@ -150,13 +219,21 @@ const toStructuredTopicId = ({ type, post, user, group }) => {
 	return { type, id };
 };
 
-const toTopicId = (topic) => {
+const toTopicId = ({ topic }) => {
 
 	const { type, id } = toStructuredTopicId(topic);
 
-	return type + (id ? '' : `-${id}`);
+	return type + (id ? `-${id}` : '');
 };
 
 const toIds = (items) => items.map(toId);
 const toDictionary = makeToDictionary(toId);
 const toTopicDictionary = makeToDictionary(toTopicId);
+
+const TOPIC_CATEGORY_MAP = {
+	'Posts': 'post',
+	'My Posts': 'post',
+	'Chats With Friends': 'friend',
+	'Group Moderators': 'group',
+	'Admin Messages': 'system'
+};
