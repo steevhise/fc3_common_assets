@@ -16,6 +16,7 @@
               icon: 'plus',
               label: 'Join Town'
             } only %}
+            <div>Check out the <a href="https://wiki.freecycle.org/Main_Page#Members">Freecycle Wiki</a> for more information on group membership</div>
           {% else %}
             <div>Request to join awaiting moderation. Hold tight!</div>
           {% endif %}
@@ -29,6 +30,11 @@
           icon: 'alert',
           label: 'Leave Town'
         } only %}
+        <fc-messages-detail-input topic-type="group" topic-id="{{ group.group_id }}"
+          custom-trigger='<button class="btn btn-action" style="margin: 2px"><i class="icon fa fa-envelope"></i> Message Moderators</button>'
+        >
+          <p><strong>New Message To</strong> {{ group.group_name }} Group Moderators</p>
+      </fc-messages-detail-input>
       {% endif %}
     {% endif %}
   </div>
