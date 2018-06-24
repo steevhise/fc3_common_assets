@@ -14,14 +14,7 @@
 			}
 		},
 		methods: {
-			/**
-			 * TODO: This is a stub that will eventually get the unread count from the messages endpoint.
-			 * @returns {number}
-			 */
-			getUnreadCount() {
 
-				return 12;
-			}
 		}
 	}
 </script>
