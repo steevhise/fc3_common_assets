@@ -1,5 +1,7 @@
 <template>
-	<span id="fc-messages-notifier">{{getUnreadCount()}}</span>
+	<span id="fc-messages-notifier" :class="computedClass">
+		{{totalUnreads}}
+	</span>
 </template>
 
 <script>
@@ -10,8 +12,18 @@
 		},
 		data() {
 			return {
-				
+				totalUnreads: this.$store.getters.totalUnreads
 			}
+		},
+		computed: {
+			computedClass() {
+				if (this.totalUnreads > 0) {
+					return "pulse"
+				}
+			}
+		},
+		mounted() {
+
 		},
 		methods: {
 
