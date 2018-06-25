@@ -4,7 +4,7 @@
 			<div v-for="message in messages" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.userId === me.id }">
 				<p class="chat-message-from">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(message.userId) }"></span>
-					{{user(message.userId).username}}
+					{{username(message.userId)}}
 				</p>
 				<p class="chat-message-message">{{message.body}}</p>
 				<p class="chat-message-time">{{ago(message.updatedAt)}}</p>
@@ -30,13 +30,13 @@
 		methods: {
 			ago: (time) => moment(time).fromNow(),
 			color: (id) => colors[id % colors.length],
-			user(userId) {
+			username(userId) {
 
 				if (userId === this.me.id) {
-					return this.me;
+					return this.me.username;
 				}
 				else if (userId === this.you.id) {
-					return this.you;
+					return this.you.username;
 				}
 
 				return null;
