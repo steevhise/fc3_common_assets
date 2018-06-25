@@ -2,26 +2,6 @@
 
 {% block content %}
 {% parent %}
-<div class="horizontal_tabs">
-  <!--  tabs-content  -->
-  <div class="tabs-content" data-tabs-content="h-example-tabs">
-    <div class="tabs-panel" id="dashboard">
-
-    </div>
-    <div class="tabs-panel is-active" id="myreplies">
-      {% for messageSet in messageSets %}
-      {% include '../partials/message_reply_list.html' with messageSet %}
-      {% endfor %}
-    </div>
-    <div class="tabs-panel" id="myposts">
-    </div>
-    <div class="tabs-panel " id="myfriends">
-    </div>
-    <div class="tabs-panel" id="mygroups">
-    </div>
-  </div>
-  {% include '../partials/in_body_banner_row.html'%}
-</div>
-
-
+  <!-- TODO Wire up to actual data i.e. json user object when on an authenticated route -->
+  <fc-messages-board-connected :me="{{ me | json }}" />
 {% endblock %}

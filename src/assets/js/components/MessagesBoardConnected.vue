@@ -2,17 +2,43 @@
 	<div>
 		<div class="horizontal_tabs">
 			<ul class="tabs">
-				<li v-for="category in topicCategories" class="tabs-title">
-					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentTopicCategory">{{ category }}</a>
+				<li v-for="category in categories" class="tabs-title">
+					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentCategory">{{ category }}</a>
 				</li>
 			</ul>
 		</div>
-		<fc-messages-topics/>
+		<fc-messages-topics
+			:category="currentCategory"
+			:topics="topicsInCategory"
+			:on-click-topic="selectTopic"
+		/>
+		<fc-messages-board
+			:style="{
+				background: '#ede7df',
+				display: currentThread ? 'initial' : 'none',
+				position: 'absolute',
+				top: 0, bottom: 0,
+				left: 0, right: 0
+			}"
+			:messages="currentMessages"
+			:threads="currentTopic && currentTopic.threads"
+			:me="me"
+			:you="currentThread && currentThread.user"
+			:on-click-thread="selectThread"
+		/>
 	</div>
 </template>
 
 <script>
-	import { mapGetters, mapActions, mapMutations } from 'vuex';
+	import { mapGetters, mapActions } from 'vuex';
+
+	const TOPIC_CATEGORY_MAP = {
+		'Posts': 'post',
+		'My Posts': 'post',
+		'Chats With Friends': 'friend',
+		'Group Moderators': 'group',
+		'Admin Messages': 'system'
+	};
 
 	export default {
 		name: 'fc-messages-board-connected',
@@ -21,26 +47,55 @@
 				type: Object
 			}
 		},
+		data() {
+			return {
+				currentCategory: null,
+				categories: Object.keys(TOPIC_CATEGORY_MAP)
+			}
+		},
 		created() {
 
-			this.setViewingUser(this.me);
-			this.loadTopics()
-			.then(() => {
-				const hash = window.location.hash;
-				this.selectTopicCategory(hash ? this.categoryFromHash(hash) : this.topicCategories[0]);
-			});
+			const { hash } = window.location;
+			const category = hash && this.categoryFromHash(hash);
+
+			this.selectTopicCategory(category || this.categories[0]);
+			this.loadTopics();
 		},
-		computed: mapGetters([
-			'currentTopicCategory',
-			'topicCategories'
-		]),
+		computed: {
+			...mapGetters([
+				'topics',
+				'currentTopic',
+				'currentThread',
+				'currentMessages'
+			]),
+			topicsInCategory() {
+
+				const type = TOPIC_CATEGORY_MAP[this.currentCategory];
+
+				return this.topics.filter(({ topic }) => {
+
+					if (topic.type !== type) {
+						return false;
+					}
+
+					if (type === 'post') {
+						if (this.currentCategory === 'My Posts') {
+							return this.me.id === topic.post.user.id;
+						}
+						else {
+							return this.me.id !== topic.post.user.id;
+						}
+					}
+
+					return true;
+				});
+			}
+		},
 		methods: {
 			...mapActions([
-				'loadTopics'
-			]),
-			...mapMutations([
-				'selectTopicCategory',
-				'setViewingUser'
+				'loadTopics',
+				'selectTopic',
+				'selectThread'
 			]),
 			href(category) {
 
@@ -48,14 +103,22 @@
 			},
 			categoryFromHash(hash) {
 
-				return hash.replace('#', '')
+				const category = hash.replace('#', '')
 					.split('-')
 					.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
 					.join(' ');
+
+				return (category in TOPIC_CATEGORY_MAP) ? category : null;
 			},
 			normalizeCategory(category) {
 
 				return category.toLowerCase().replace(/ /g, '-');
+			},
+			selectTopicCategory(category) {
+
+				if (category in TOPIC_CATEGORY_MAP) {
+					this.currentCategory = category;
+				}
 			}
 		}
 	}
