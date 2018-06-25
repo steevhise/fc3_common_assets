@@ -2,6 +2,5 @@
 
 {% block content %}
 {% parent %}
-  <!-- TODO Wire up to actual data i.e. json user object when on an authenticated route -->
   <fc-messages-board-connected :me="{{ me | json }}" />
 {% endblock %}

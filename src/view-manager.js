@@ -19,7 +19,7 @@ module.exports = (server, options) => ({
     ],
     layoutPath: 'src/views/layout',
     context: (request) => ({
-        session: console.log('ERE', request.auth.credentials) && request.auth.credentials,
+        session: request.auth.credentials,
         me: request.auth.credentials && {               // Specifically for my-replies view
             id: request.auth.credentials.id,
             username: request.auth.credentials.username
