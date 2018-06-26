@@ -7,7 +7,7 @@
 					{{username(message.userId)}}
 				</p>
 				<p class="chat-message-message">{{message.body}}</p>
-				<p class="chat-message-time">{{ago(message.updatedAt)}}</p>
+				<p class="chat-message-time">{{ago(timezone(`${message.createdAt} ${message.sentTime}`))}}</p>
 			</div>
 		</div>
 	</div>
@@ -29,6 +29,14 @@
 		},
 		methods: {
 			ago: (time) => moment(time).fromNow(),
+			timezone: (datetime) => {
+				// datetime values from server are in UTC
+				const utc = new Date(datetime);
+				const milli = +utc;
+				const localOffset =  utc.getTimezoneOffset() * 60 * 1000;
+
+				return milli - localOffset;
+			},
 			color: (id) => colors[id % colors.length],
 			username(userId) {
 
