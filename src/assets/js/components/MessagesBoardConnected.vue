@@ -25,6 +25,7 @@
 			:me="me"
 			:you="currentThread && currentThread.user"
 			:on-click-thread="selectThread"
+			:on-click-close="deselectTopic"
 		/>
 	</div>
 </template>
@@ -94,6 +95,7 @@
 		methods: {
 			...mapActions([
 				'loadTopics',
+				'deselectTopic',
 				'selectTopic',
 				'selectThread'
 			]),

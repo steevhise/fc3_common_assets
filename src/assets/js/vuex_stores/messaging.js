@@ -19,12 +19,11 @@ const mutations = {
 
 		state.topics = mergeDictionaries(state.topics, toTopicDictionary(topics));
 	},
-	selectTopic(state, { topic, threads, ...others }) {
+	loadTopic(state, { topic, threads, ...others }) {
 
+		threads = threads.map((thread) => ({ ...thread, topic }));
 		const topicId = toTopicId({ topic });
 
-		state.currentTopicId = topicId;
-		state.currentThreadId = null;
 		state.threads = mergeDictionaries(state.threads, toDictionary(threads));
 		state.topics[topicId] = {
 			topic,
@@ -32,12 +31,24 @@ const mutations = {
 			...others
 		};
 	},
+	selectTopic(state, { topic }) {
+
+		const topicId = toTopicId({ topic });
+
+		state.currentTopicId = topicId;
+		state.currentThreadId = null;
+	},
+	deselectTopic(state) {
+
+		state.currentTopicId = null;
+		state.currentThreadId = null;
+	},
 	selectThread(state, { id, topic, messages, ...others }) {
 
 		const topicId = toTopicId({ topic });
 
 		if (topicId !== state.currentTopicId) {
-			console.warn(`Choosing thread ${id} for a topic ${topicId} other than the current ${state.currentTopicId}`);
+			return console.warn(`Choosing thread ${id} for a topic ${topicId} other than the current ${state.currentTopicId}`);
 		}
 
 		state.currentThreadId = id;
@@ -54,29 +65,50 @@ const mutations = {
 const actions = {
 	loadTopics({ commit }) {
 
-		jQuery.get('/api/messaging/topics', (topics) => {
+		return jQuery.get('/api/messaging/topics')
+		.then((topics) => {
 			commit('loadTopics', topics);
+		});
+	},
+	deselectTopic({ commit }) {
+		commit('deselectTopic');
+	},
+	loadTopic({ commit }, { topic }) {
+
+		const { type, id } = toStructuredTopicId(topic);
+
+		return jQuery.get(`/api/messaging/topics/${type}` + (id ? `/${id}` : ''))
+		.then((result) => {
+			commit('loadTopic', result);
 		});
 	},
 	selectTopic({ commit, dispatch, state }, { topic }) {
 
-		const { type, id } = toStructuredTopicId(topic);
+		return dispatch('loadTopic', { topic })
+		.then(() => {
 
-		jQuery.get(`/api/messaging/topics/${type}` + (id ? `/${id}` : ''), (topic) => {
+			commit('selectTopic', { topic });
 
-			commit('selectTopic', topic);
+			const { threads } = state.topics[toTopicId({ topic })];
 
-			const thread = topic.threads[0];
-
-			if (thread) {
-				dispatch('selectThread', thread.id);
+			if (threads[0]) {
+				return dispatch('selectThread', threads[0]);
 			}
 		});
 	},
-	selectThread({ commit }, threadId) {
-		jQuery.get(`/api/messaging/threads/${threadId}`, (thread) => {
+	selectThread({ commit, dispatch, state }, threadId) {
 
-			commit('selectThread', thread);
+		const { topic } = state.threads[threadId];
+
+		return jQuery.post(`/api/messaging/threads/${threadId}/read`)
+		.then(() => {
+
+			return Promise.all([
+				dispatch('loadTopic', { topic }),
+				jQuery.get(`/api/messaging/threads/${threadId}`).then((thread) => {
+					commit('selectThread', thread);
+				})
+			]);
 		});
 	}
 };
