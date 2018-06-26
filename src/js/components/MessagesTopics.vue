@@ -4,7 +4,7 @@
 		    <h3>{{ category }}</h3>
 		    <ul class="message-reply-list">
 				<div v-for="topic in topics" :key="topic.id"> <!-- key is namespaced key id created in toTopicId -->
-			        <li class="message-reply-list-item" @click="openTopic($event, topic)">
+			        <li class="message-reply-list-item" @click="clickTopic($event, topic)">
 						<div class="message-list-item-left">
 						    <div class="message-title">
 						    	<img v-if="image(topic)" class="message-image" :src="image(topic)"/>
@@ -72,7 +72,8 @@
 		props: {
 			category: String,
 			topics: Array,
-			onClickTopic: Function
+			onClickTopic: Function,
+			topicModalId: String
 		},
 		data() {
 			return {}
@@ -105,18 +106,17 @@
 
 				return makeImage(topic);
 			},
-			openTopic(event, topic) {
+			clickTopic(event, topic) {
 
-				return this.onClickTopic(topic)
+				this.onClickTopic(topic)
 				.then(() => {
 
-					const topicEl = $(event.currentTarget);
-					// class of the root element of the fc-messages-board component
-					const topicMessageBoard = topicEl.siblings('.message-list-item-details');
-
-					// TODO Switch this shit out with Ryan's work -->
-					topicEl.toggleClass('open');
-					topicMessageBoard.toggleClass('open');
+					// Defers opening the modal till after onClickTopic wiring has resolved
+					// Ensures modal opens with current thread (instead of opens w/ outdated, then rerenders)
+					// TODO Downside is noticeable lag time between click and modal appearing while topic loads ; progress indicator?
+					const selector = `[data-open='${this.topicModalId}']`;
+					const modalTrigger = $(selector);
+					modalTrigger.click();
 				});
 			}
 		}

@@ -1,8 +1,9 @@
 <template>
 	<div class="message-list-item-details">
-		<!-- TODO proper close button -->
-		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }">X</div>
-		<div class="message-list-item-details-sidebar">
+		<!-- data-close comes from Foundation's Reveal modal (part of enclosing fc-modal component on my replies page
+			 no-op if component isn't used within a modal -->
+		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }" data-close >X</div>
+		<div v-if="threads && threads.length > 1" class="message-list-item-details-sidebar">
 			<ul class="message-list-item-details-participants">
 				<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)" class="message-list-item-details-participant">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
@@ -18,8 +19,8 @@
 				v-bind:you="you"
 			/>
 			<div class="message-list-item-details-chat-form">
-				<form>
-					<textarea placeholder="Write a Message.."></textarea>
+				<form ref="messageForm" @submit.prevent="handleSubmit">
+					<textarea ref="messageBody" placeholder="Write a Message.."></textarea>
 					<button class="btn-default">Send</button>
 				</form>
 			</div>
@@ -36,14 +37,22 @@
 			me: Object,
 			you: Object,
 			onClickThread: Function,
-			onClickClose: Function
+			onClickClose: Function,
+			onSubmitMessage: Function
 		},
 		data() {
-			return {
-			}
+			return {}
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
+			handleSubmit() {
+
+				const body = this.$refs.messageBody.value;
+				const form = this.$refs.messageForm;
+
+				return this.onSubmitMessage(body)
+				.then(() => form.reset());
+			}
 		}
 	}
 
