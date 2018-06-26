@@ -1,8 +1,10 @@
 <template>
 	<div class="message-list-item-details">
+		<!-- TODO proper close button -->
+		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }">X</div>
 		<div class="message-list-item-details-sidebar">
 			<ul class="message-list-item-details-participants">
-				<li v-for="thread in threads" :key="thread.id" class="message-list-item-details-participant">
+				<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)" class="message-list-item-details-participant">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 					{{thread.user.username}}
 					<span class="unread-amount">{{thread.unreadCount || null}}</span>
@@ -32,7 +34,9 @@
 			threads: Array,
 			messages: Array,
 			me: Object,
-			you: Object
+			you: Object,
+			onClickThread: Function,
+			onClickClose: Function
 		},
 		data() {
 			return {
