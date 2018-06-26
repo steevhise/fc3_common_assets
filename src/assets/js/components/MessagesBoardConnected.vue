@@ -11,22 +11,18 @@
 			:category="currentCategory"
 			:topics="topicsInCategory"
 			:on-click-topic="selectTopic"
+			:topic-modal-id="modalId"
 		/>
-		<fc-messages-board
-			:style="{
-				background: '#ede7df',
-				display: currentThread ? 'initial' : 'none',
-				position: 'absolute',
-				top: 0, bottom: 0,
-				left: 0, right: 0
-			}"
-			:messages="currentMessages"
-			:threads="currentTopic && currentTopic.threads"
-			:me="me"
-			:you="currentThread && currentThread.user"
-			:on-click-thread="selectThread"
-			:on-click-close="deselectTopic"
-		/>
+		<fc-modal :custom-target="modalId">
+			<fc-messages-board
+				:messages="currentMessages"
+				:threads="currentTopic && currentTopic.threads"
+				:me="me"
+				:you="currentThread && currentThread.user"
+				:on-click-thread="selectThread"
+				:on-click-close="deselectTopic"
+			/>
+		</fc-modal>
 	</div>
 </template>
 
@@ -46,6 +42,10 @@
 		props: {
 			me: {
 				type: Object
+			},
+			modalId: {
+				type: String,
+				default: 'chatbox'
 			}
 		},
 		data() {
