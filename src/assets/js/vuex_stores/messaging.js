@@ -110,6 +110,18 @@ const actions = {
 				})
 			]);
 		});
+	},
+	sendMessage({ commit, dispatch, state }, body) {
+
+		const { currentThreadId } = state;
+		const { topic } = state.threads[currentThreadId];
+
+		if (!currentThreadId) {
+			return console.warn(`Message failed to send. Tried sending without a target thread selected`);
+		}
+
+		return jQuery.post('/api/messaging/send', { body, threadIdentifier: currentThreadId })
+		.then(() => dispatch('selectThread', currentThreadId));
 	}
 };
 

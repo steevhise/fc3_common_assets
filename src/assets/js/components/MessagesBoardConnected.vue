@@ -13,14 +13,16 @@
 			:on-click-topic="selectTopic"
 			:topic-modal-id="modalId"
 		/>
-		<fc-modal :custom-target="modalId">
+		<fc-modal :custom-target="modalId" :custom-trigger="`<div style='display: none;' data-open='${modalId}'></div>`">
 			<fc-messages-board
+				:class="{ open: currentTopic }"
 				:messages="currentMessages"
 				:threads="currentTopic && currentTopic.threads"
 				:me="me"
 				:you="currentThread && currentThread.user"
 				:on-click-thread="selectThread"
 				:on-click-close="deselectTopic"
+				:on-submit-message="sendMessage"
 			/>
 		</fc-modal>
 	</div>
@@ -97,7 +99,8 @@
 				'loadTopics',
 				'deselectTopic',
 				'selectTopic',
-				'selectThread'
+				'selectThread',
+				'sendMessage'
 			]),
 			href(category) {
 
