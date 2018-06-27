@@ -82,7 +82,7 @@
 					}
 
 					if (type === 'post') {
-						if (this.currentCategory === 'My Posts') {
+						if (this.currentCategory === 'To My Posts') {
 							return this.me.id === topic.post.user.id;
 						}
 						else {
