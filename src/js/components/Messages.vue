@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="message-list-item-details-chat-window">
-			<div v-for="message in messages" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.userId === me.id }">
+			<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.userId === me.id }">
 				<p class="chat-message-from">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(message.userId) }"></span>
 					{{username(message.userId)}}
@@ -43,7 +43,7 @@
 				if (userId === this.me.id) {
 					return this.me.username;
 				}
-				else if (userId === this.you.id) {
+				else if (userId === this.you.id || this.you.id.startsWith('group')) {
 					return this.you.username;
 				}
 
