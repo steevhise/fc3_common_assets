@@ -33,7 +33,7 @@
 
 	const TOPIC_CATEGORY_MAP = {
 		'Posts': 'post',
-		'My Posts': 'post',
+		'To My Posts': 'post',
 		'Chats With Friends': 'friend',
 		'Group Moderators': 'group',
 		'Admin Messages': 'system'
