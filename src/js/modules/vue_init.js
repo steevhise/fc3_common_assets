@@ -23,6 +23,7 @@ import MessagesInput from '../components/MessagesInput.vue';
 import MessagesBoard from '../components/MessagesBoard.vue';
 import MessagesNotifier from '../components/MessagesNotifier.vue';
 import MessagesDetailInput from '../components/MessagesDetailInput.vue';
+import MessagesTopics from '../components/MessagesTopics.vue';
 
 export const FCVue = {
 	install(Vue, options) {
@@ -71,5 +72,6 @@ export const FCVue = {
 		Vue.component('fc-messages-board', MessagesBoard);
 		Vue.component('fc-messages-notifier', MessagesNotifier);
 		Vue.component('fc-messages-detail-input', MessagesDetailInput);
+		Vue.component('fc-messages-topics', MessagesTopics);
 	}
 };
