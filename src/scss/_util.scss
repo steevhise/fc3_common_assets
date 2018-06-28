@@ -29,3 +29,8 @@
 @-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(52, 178, 51, 0);}}
 @-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(52, 178, 51, 0);}}
 @keyframes pulse {to {box-shadow: 0 0 0 45px rgba(52, 178, 51, 0);}}
+
+/* Ensures alert callouts appear above modal background */
+#callout {
+  z-index: 5000 !important;
+}

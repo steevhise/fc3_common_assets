@@ -19,8 +19,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
 			setActiveTab('#group_notices');
 		} else if (/\/town\/\w+\/info$/.test(path)) {
 			setActiveTab('#group_info');
-		} else if (/\/town\/\w+\/contact$/.test(path)) {
-			setActiveTab('#group_contact');
 		}
 	}
 
