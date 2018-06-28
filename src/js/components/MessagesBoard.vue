@@ -1,9 +1,11 @@
 <template>
 	<div class="message-list-item-details">
-		<div class="message-list-item-details-sidebar">
+		<!-- data-close comes from Foundation's Reveal modal (part of enclosing fc-modal component on my replies page
+			 no-op if component isn't used within a modal -->
+		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }" data-close >X</div>
+		<div v-if="threads && threads.length > 1" class="message-list-item-details-sidebar">
 			<ul class="message-list-item-details-participants">
-				<!-- TODO Necessary to set a key here? Any risk of vue wrongfully reusing elements here? -->
-				<li v-for="thread in threads" :key="thread.id" class="message-list-item-details-participant">
+				<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)" class="message-list-item-details-participant">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 					{{thread.user.username}}
 					<span class="unread-amount">{{thread.unreadCount || null}}</span>
@@ -11,10 +13,14 @@
 			</ul>
 		</div>
 		<div class="message-list-item-details-chat">
-			<fc-messages v-bind:messages="currentMessages" v-bind:you="you"/>
+			<fc-messages
+				v-bind:messages="messages"
+				v-bind:me="me"
+				v-bind:you="you"
+			/>
 			<div class="message-list-item-details-chat-form">
-				<form>
-					<textarea placeholder="Write a Message.."></textarea>
+				<form ref="messageForm" @submit.prevent="handleSubmit">
+					<textarea ref="messageBody" placeholder="Write a Message.."></textarea>
 					<button class="btn-default">Send</button>
 				</form>
 			</div>
@@ -23,31 +29,30 @@
 </template>
 
 <script>
-
-	import { mapGetters, mapActions } from 'vuex';
-
 	export default {
 		name: 'fc-messages-board',
-		data() {
-			return {
-			}
+		props: {
+			threads: Array,
+			messages: Array,
+			me: Object,
+			you: Object,
+			onClickThread: Function,
+			onClickClose: Function,
+			onSubmitMessage: Function
 		},
-		computed: {
-			you() {
-				return this.currentThread.user;
-			},
-			threads() {
-				return this.currentTopic.threads;
-			},
-			...mapGetters([
-				'me',
-				'currentThread',
-				'currentTopic',
-				'currentMessages'
-			])
+		data() {
+			return {}
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
+			handleSubmit() {
+
+				const body = this.$refs.messageBody.value;
+				const form = this.$refs.messageForm;
+
+				return this.onSubmitMessage(body)
+				.then(() => form.reset());
+			}
 		}
 	}
 
