@@ -23,31 +23,11 @@
             </div>
             <div class="post-list-item-header-right">
                 <span class="text-lighten">{{ post.date | mreldate }}</span>
-                {% if post.type.name === 'OFFER'  %}
-                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                      custom-trigger='<button class="btn-offer">Reply</button>'
-                    >
-                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-                    </fc-messages-detail-input>
-                {% elseif post.type.name === 'LEND' %}
-                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                      custom-trigger='<button class="btn-lend">Reply</button>'
-                    >
-                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-                    </fc-messages-detail-input>
-                {% elseif post.type.name === 'BORROW' %}
-                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                      custom-trigger='<button class="btn-borrow">Reply</button>'
-                    >
-                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-                    </fc-messages-detail-input>
-                {% elseif post.type.name === 'WANTED' %}
-                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                      custom-trigger='<button class="btn-wanted">Reply</button>'
-                    >
-                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-                    </fc-messages-detail-input>
-                {% endif %}
+                <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                  custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
+                >
+                  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                </fc-messages-detail-input>
             </div>
         </div>
         <div class="post-list-item-content-description">

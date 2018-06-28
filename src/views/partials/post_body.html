@@ -59,7 +59,7 @@
                   <a href="/home/edit-post/{{post.id}}" class="btn-action">Edit</a>
               {% else %}
                   <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                    custom-trigger='<button class="btn-offer">{{ postAction|default('Reply') }}</button>'
+                    custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'
                   >
                     <p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
                   </fc-messages-detail-input>
