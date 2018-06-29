@@ -113,15 +113,21 @@
 				// Since closing the modal corresponds to closing our topic, we need to register our handler for that user action
 				const revealOverlay = $(`#${this.topicModalId}`).parent()
 				// TODO Problem that this registers another, duplicate event handler every time we open a topic?
-				revealOverlay.click((ev) => {
 
-					// prevent closing when reveal's child elements e.g. the chat window are clicked
-					if (ev.target !== ev.currentTarget) {
-						return;
-					}
+				const listeners = $._data(revealOverlay[0], 'events');
 
-					return this.onClickClose();
-				});
+				// A little gross...check on event listeners registered on reveal overlay, to prevent duplicate registrations
+				if (!listeners || !listeners.click) {
+					revealOverlay.click((ev) => {
+
+						// prevent closing when reveal's child elements e.g. the chat window are clicked
+						if (ev.target !== ev.currentTarget) {
+							return;
+						}
+
+						return this.onClickClose();
+					});
+				}
 
 				this.onClickTopic(topic)
 				.then(() => {
