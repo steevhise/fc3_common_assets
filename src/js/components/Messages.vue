@@ -7,7 +7,7 @@
 					{{ message.sender.username }}
 				</p>
 				<p class="chat-message-message">{{message.body}}</p>
-				<p class="chat-message-time">{{ago(timezone(`${message.createdAt} ${message.sentTime}`))}}</p>
+				<p class="chat-message-time">{{ago(timezone(message.createdAt))}}</p>
 			</div>
 		</div>
 	</div>
