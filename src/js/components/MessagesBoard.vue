@@ -5,7 +5,9 @@
 		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }" data-close >X</div>
 		<div v-if="threads && threads.length > 1" class="message-list-item-details-sidebar">
 			<ul class="message-list-item-details-participants">
-				<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)" class="message-list-item-details-participant">
+				<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)"
+					class="message-list-item-details-participant" v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
+				>
 					<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 					{{thread.user.username}}
 					<span class="unread-amount">{{thread.unreadCount || null}}</span>
@@ -16,7 +18,6 @@
 			<fc-messages
 				v-bind:messages="messages"
 				v-bind:me="me"
-				v-bind:you="you"
 			/>
 			<div class="message-list-item-details-chat-form">
 				<form ref="messageForm" @submit.prevent="handleSubmit">
@@ -33,9 +34,9 @@
 		name: 'fc-messages-board',
 		props: {
 			threads: Array,
+			selectedThread: Object,
 			messages: Array,
 			me: Object,
-			you: Object,
 			onClickThread: Function,
 			onClickClose: Function,
 			onSubmitMessage: Function

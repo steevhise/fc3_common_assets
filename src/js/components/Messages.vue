@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div class="message-list-item-details-chat-window">
-			<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.userId === me.id }">
+			<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender.id === me.id }">
 				<p class="chat-message-from">
-					<span class="chat-message-avatar" v-bind:style="{ background: color(message.userId) }"></span>
-					{{username(message.userId)}}
+					<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender.id) }"></span>
+					{{ message.sender.username }}
 				</p>
 				<p class="chat-message-message">{{message.body}}</p>
 				<p class="chat-message-time">{{ago(timezone(`${message.createdAt} ${message.sentTime}`))}}</p>
@@ -20,8 +20,7 @@
 		name: 'fc-messages',
 		props: {
 			messages: Array,
-			me: Object,
-			you: Object
+			me: Object
 		},
 		data() {
 			return {
@@ -37,18 +36,7 @@
 
 				return milli - localOffset;
 			},
-			color: (id) => colors[id % colors.length],
-			username(userId) {
-
-				if (userId === this.me.id) {
-					return this.me.username;
-				}
-				else if (userId === this.you.id || this.you.id.startsWith('group')) {
-					return this.you.username;
-				}
-
-				return null;
-			}
+			color: (id) => colors[id % colors.length]
 		}
 	}
 
