@@ -70,6 +70,11 @@
     flex: 1;
     text-align: right;
   }
+
+  &.active {
+      color: white;
+      background-color: map-get($freecycle-palette,primary);
+  }
 }
 
 .message-list-item-details-chat {
