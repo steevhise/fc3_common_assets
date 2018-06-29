@@ -4,7 +4,7 @@
 			<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender.id === me.id }">
 				<p class="chat-message-from">
 					<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender.id) }"></span>
-					{{ message.sender.username }}
+					{{ message.sender.username }}  <!-- TODO: note here if mod or lead mod and this is a group message -->
 				</p>
 				<p class="chat-message-message">{{message.body}}</p>
 				<p class="chat-message-time">{{ago(timezone(message.createdAt))}}</p>

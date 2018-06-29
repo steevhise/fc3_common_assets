@@ -9,7 +9,7 @@
 					class="message-list-item-details-participant" v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
 				>
 					<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
-					{{thread.user.username}}
+					{{thread.user.username}}  <!-- TODO: if user is mod or lead mod of this group, say so here -->
 					<span class="unread-amount">{{thread.unreadCount || null}}</span>
 				</li>
 			</ul>
