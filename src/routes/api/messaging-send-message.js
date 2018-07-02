@@ -53,7 +53,7 @@ module.exports = {
         .catch((err) => {
 
             if (messagingService.serviceErrors.some((errClass) => err instanceof errClass)) {
-                throw Boom.boomify(err, { statusCode: 404, message: err.constructor.name });
+                throw Boom.boomify(err, { statusCode: 404, message: 'Sorry, message failed to send' });
             }
 
             throw err;
