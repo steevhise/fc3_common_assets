@@ -8,11 +8,11 @@
 	export default {
 		name: 'fc-messages-notifier',
 		props: {
-			userId: null
+			totalUnreads: Number
 		},
 		data() {
 			return {
-				totalUnreads: this.$store.getters.totalUnreads
+				unread: this.totalUnreads
 			}
 		},
 		computed: {
@@ -22,11 +22,13 @@
 				}
 			}
 		},
-		mounted() {
+		created() {
 
-		},
-		methods: {
+			// TODO Would this trigger this component to rerender?
+			this.$bus.on('update:header-unread', (count) => {
 
+				this.unread = count;
+			});
 		}
 	}
 </script>
