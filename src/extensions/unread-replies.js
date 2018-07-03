@@ -6,13 +6,18 @@ module.exports = {
             return reply.continue();
         }
 
+        if (request.route.settings.id === 'home_myreplies') {
+            return reply.continue();
+        }
+
         // Only limited response checking here, assumes errors extension ran before
         if (request.response.variety === 'view') {
 
             const { messagingService } = request.server;
             const { id: userId } = request.auth.credentials;
 
-            return messagingService.countUnreadForUser(userId)
+            return Promise.resolve()
+            .then(() => messagingService._cachedUnreadForUser(userId))
             .then((count) => {
 
                 request.response.source.context.unreadReplies = count;
