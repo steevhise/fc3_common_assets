@@ -1,6 +1,6 @@
 <template>
-	<span id="fc-messages-notifier" :class="computedClass">
-		{{totalUnreads}}
+	<span id="fc-messages-notifier" :class="{ pulse : unreadRepliesCount }">
+		{{ unreadRepliesCount }}
 	</span>
 </template>
 
@@ -8,25 +8,10 @@
 	export default {
 		name: 'fc-messages-notifier',
 		props: {
-			userId: null
+			unreadRepliesCount: Number
 		},
 		data() {
-			return {
-				totalUnreads: this.$store.getters.totalUnreads
-			}
-		},
-		computed: {
-			computedClass() {
-				if (this.totalUnreads > 0) {
-					return "pulse"
-				}
-			}
-		},
-		mounted() {
-
-		},
-		methods: {
-
+			return {}
 		}
 	}
 </script>
