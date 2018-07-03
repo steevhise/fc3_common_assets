@@ -50,7 +50,8 @@
 			you: Object,
 			onClickThread: Function,
 			onClickClose: Function,
-			onSubmitMessage: Function
+			onSubmitMessage: Function,
+			selectedThread: Object
 		},
 		data() {
 			return {}
