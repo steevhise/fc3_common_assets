@@ -23,8 +23,12 @@
 			</div>
 			<div class="message-list-item-details-chat">
 				<fc-messages
-					v-bind:messages="messages"
-					v-bind:me="me"
+					:style="{
+						height: '425px',
+						overflowY: 'scroll'
+					}"
+					:messages="messages"
+					:me="me"
 				/>
 				<div class="message-list-item-details-chat-form">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
@@ -47,7 +51,6 @@
 			threads: Array,
 			messages: Array,
 			me: Object,
-			you: Object,
 			onClickThread: Function,
 			onClickClose: Function,
 			onSubmitMessage: Function

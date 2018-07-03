@@ -1,14 +1,13 @@
 <template>
-	<div>
-		<div class="message-list-item-details-chat-window">
-			<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender.id === me.id }">
-				<p class="chat-message-from">
-					<span class="chat-message-avatar" v-bind:style="{ background: color(message.userId) }"></span>
-					<span v-if="message.sender">{{ message.sender.username }}</span>  <!-- TODO: note here if mod or lead mod and this is a group message -->
-				</p>
-				<p class="chat-message-message">{{message.body}}</p>
-				<p class="chat-message-time">{{ago(timezone(message.createdAt))}}</p>
-			</div>
+	<div class="message-list-item-details-chat-window">
+		<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
+			<p class="chat-message-from">
+				<span class="chat-message-avatar" v-bind:style="{ background: color(message.userId) }"></span>
+				<span v-if="message.sender">{{ message.sender.username }}</span>  <!-- TODO: note here if mod or lead mod and this is a group message -->
+			</p>
+			<p class="chat-message-message" v-if="!showHtml">{{message.body}}</p>
+			<p class="chat-message-message" v-if="showHtml" v-html="message.body"></p>
+			<p class="chat-message-time">{{ago(timezone(message.createdAt))}}</p>
 		</div>
 	</div>
 </template>
@@ -20,7 +19,11 @@
 		name: 'fc-messages',
 		props: {
 			messages: Array,
-			me: Object
+			me: Object,
+			showHtml: {
+				type: Boolean,
+				default: false
+			}
 		},
 		data() {
 			return {
