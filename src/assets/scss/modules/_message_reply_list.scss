@@ -12,6 +12,11 @@
   @include listReset();
 }
 
+.messages-unread-admin-badge {
+  color: $black;
+  margin-left: .25rem;
+}
+
 .message-list-item-header {
   text-align: center;
   padding-bottom: 1rem;
@@ -97,8 +102,6 @@
 }
 
 .message-list-item-details-chat-window {
-  height: 425px;
-  overflow-y: scroll;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -134,7 +137,11 @@
   .chat-message-message {
     background: $black;
     color: $white;
-    margin-bottom: 0px;
+    margin-bottom: 0;
+    p { // Particularly for system messages, which contain markup
+      color: $white;
+      margin-bottom: 0;
+    }
     font-size: 1rem;
     padding: .875rem;
     font-weight: bold;
