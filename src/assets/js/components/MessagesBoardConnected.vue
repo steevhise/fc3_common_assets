@@ -17,6 +17,7 @@
 		<fc-modal :custom-target="modalId" :custom-trigger="`<div style='display: none;' data-open='${modalId}'></div>`">
 			<fc-messages-board
 				:class="{ open: currentTopic }"
+				:topic="currentTopic"
 				:messages="currentMessages"
 				:threads="currentTopic && currentTopic.threads"
 				:selected-thread="currentThread"

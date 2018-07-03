@@ -23,7 +23,7 @@ const edit = (request, reply) => {
     new request.server.Post(postId, (err, post) => {
 
         if (err) {
-            return reply(err)
+            return reply(err);
         }
 
         Object.assign(post, input);
@@ -31,11 +31,11 @@ const edit = (request, reply) => {
         post.save((err, savedPostId) => {
 
             if (err) {
-                return reply(err)
+                return reply(err);
             }
 
             reply({
-                postId: postId,
+                postId,
                 title: `Edit Post : ${postId}`,
                 message: `Post ${postId} was saved successfully.`
             });
@@ -45,4 +45,4 @@ const edit = (request, reply) => {
 
 module.exports = {
     edit
-}
+};
