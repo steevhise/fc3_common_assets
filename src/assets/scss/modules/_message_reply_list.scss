@@ -21,6 +21,10 @@
     vertical-align: middle;
   }
   h4 {
+    max-width: 75%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     margin-bottom: 0;
   }
   .message-list-item-post-icon {
@@ -74,6 +78,7 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid $dark-gray;
+  cursor: pointer;
 
   .unread-amount {
     color: $dark-gray;
