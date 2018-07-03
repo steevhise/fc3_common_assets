@@ -2,6 +2,10 @@
  * It's the Freecycle 3.0 main web application! w00t!  hurrah!
  */
 
+//  This has to be first, as explained here: https://www.elastic.co/guide/en/apm/agent/nodejs/current/hapi.html#hapi-initialization
+const Apm = require('elastic-apm-node');
+Apm.start();
+
 const Hapi = require('hapi');
 const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
 // const { Config } = require('@freecycle/freecycle_node_dal');
@@ -64,13 +68,6 @@ exports.deployment = (start) => {
                 },
                 imagesURL: 'https://images.freecycle.org',
                 legacyConfigPath                                // this is so we can get the Gearman config not read elsewhere.
-            }
-        },
-        {
-            register: require('hapi-statsd'),
-            options: {
-                prefix: (process.env.NODE_ENV !== 'production') ? 'dev' : null,
-                host: server.info.host
             }
         },
         {
