@@ -17,6 +17,13 @@ module.exports = {
 
                 request.response.source.context.unreadReplies = count;
                 return reply.continue();
+            })
+            .catch((err) => {
+
+                // TODO Silly default, just to prevent any unexpected bugs in this logic from derailing the entire site
+                console.log('*** Replies count extension failed, defaulting to 0 ***', err);
+                request.response.source.context.unreadReplies = 0;
+                return reply.continue();
             });
         }
 
