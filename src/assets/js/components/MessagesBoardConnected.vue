@@ -11,7 +11,6 @@
 			:category="currentCategory"
 			:topics="topicsInCategory"
 			:on-click-topic="selectTopic"
-			:on-click-close="deselectTopic"
 			:topic-modal-id="modalId"
 		/>
 		<fc-modal :custom-target="modalId" :custom-trigger="`<div style='display: none;' data-open='${modalId}'></div>`">
@@ -60,11 +59,49 @@
 		},
 		created() {
 
-			const { hash } = window.location;
+			const { hash, search } = window.location;
 			const category = hash && this.categoryFromHash(hash);
+
+			$(window).on('load', () => {
+				// Given some way to identify the thread you want to view
+				// Open the modal window
+				// Select the given thread
+
+				// Foundation automatically registers a function to close modal on clicking the reveal modal
+				// Since closing the modal corresponds to closing our topic, we need to register our handler for that user action
+				const revealOverlay = $(`#${this.modalId}`).parent();
+				revealOverlay.click((ev) => {
+					// prevent closing when reveal's child elements e.g. the chat window are clicked
+					if (ev.target !== ev.currentTarget) {
+						return;
+					}
+					return this.deselectTopic();
+				});
+
+				// expects query param of thread={{ threadId }}
+				const threadId = search && search.substring(1).match(/thread=(\d+)/)[1];
+				if (threadId) {
+					return this.selectNestedThread(threadId);
+
+					// TODO Find some way to select the category to
+					// Look at current topic, derive category from it, pain in the ass for posts
+				}
+			});
 
 			this.selectTopicCategory(category || this.categories[0]);
 			this.loadTopics();
+		},
+		watch: {
+			currentTopic: function (newVal, oldVal) {
+
+				// From unselected to selected (reloading the current topic e.g. in selectThread also triggers this watcher)
+				if (newVal && !oldVal) {
+					// Defers opening the modal till after onClickTopic wiring has resolved
+					// Ensures modal opens with current thread (instead of opens w/ outdated, then rerenders)
+					const modalTrigger = $(`[data-open='${this.modalId}']`);
+					modalTrigger.click();
+				}
+			}
 		},
 		computed: {
 			...mapGetters([
@@ -102,6 +139,7 @@
 				'deselectTopic',
 				'selectTopic',
 				'selectThread',
+				'selectNestedThread',
 				'sendMessage'
 			]),
 			href(category) {
