@@ -48,12 +48,11 @@ module.exports = {
 
         return Promise.resolve()
         .then(() => messagingService.sendMessage(userId, threadIdentifier, { body }))
-        // TODO Fix thread url when finalized
-        .then(({ messageId, threadId }) => reply({ message: `Message successfully sent! View your thread at /home/my-replies?thread=${threadId}`, data: messageId })) // TODO Is this a sensible / useful return value?
+        .then(({ messageId, threadId }) => reply({ message: `Message successfully sent! View your thread at /home/my-replies?thread=${threadId}`, data: messageId }))
         .catch((err) => {
 
             if (messagingService.serviceErrors.some((errClass) => err instanceof errClass)) {
-                throw Boom.boomify(err, { statusCode: 404, message: err.constructor.name });
+                throw Boom.boomify(err, { statusCode: 404, message: 'Sorry, message failed to send' });
             }
 
             throw err;

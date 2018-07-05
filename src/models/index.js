@@ -8,4 +8,4 @@ const post = require('./post');
 
 module.exports = {
     post_edit : post.edit
-}
+};

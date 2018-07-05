@@ -20,7 +20,7 @@ exports.deployment = (start) => {
             log: ['error'],
             request: ['error']
         },
-        cache: {         // TODO: can we test for presence of Redis server first and give a more kind error before server start?
+        cache: {
             engine: require('catbox-redis'),                            // TODO catbox-memory for development
             host: sequelizeDbConfig.redis.host || 'localhost',   // TODO: should be set in app-level config
             name: 'freecycleMain',
@@ -62,7 +62,8 @@ exports.deployment = (start) => {
                     clientId: '117834011565165',
                     clientSecret: 'fa596fcabbeb2651544ed73ea7c847e3'
                 },
-                imagesURL: 'https://images.freecycle.org'
+                imagesURL: 'https://images.freecycle.org',
+                legacyConfigPath                                // this is so we can get the Gearman config not read elsewhere.
             }
         },
         {
@@ -97,9 +98,12 @@ exports.deployment = (start) => {
 
         if (err.port === 6379) {
             // This means no Redis server to connect to.
-            err.message = `Server init failed: Must have local Redis server running on port 6379!\n${err.message}`;
+            err.message = `Server init failed: Must have local Redis server running on port 6379! ---- ${err.message}`;
+            throw err.message;
         }
-        throw err;   // Now whatever it is, throw it.
+        else {
+            throw err;   // Now whatever else it is, throw it.
+        }
     })
     .then(() => {
 

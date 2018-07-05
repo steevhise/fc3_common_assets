@@ -1,4 +1,4 @@
-<li class="message-reply-list-item" data-message-id="{{message.id}}">
+<li class="message-reply-list-item" data-message-id="{{message.id}}" data-open="message_{{message.id}}">
   <div class="message-list-item-left">
     {% if message.title %}
     <div class="message-title">
@@ -9,7 +9,7 @@
         {{message.title}}
       </h4>
     </div>
-    {% endif %}
+    {% endif %} 
     {% if message.category %}
     <div class="message-type">
       <div class="post-list-item-category-icon">
