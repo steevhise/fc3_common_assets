@@ -18,7 +18,6 @@
 			:category="currentCategory"
 			:topics="topicsInCategory"
 			:on-click-topic="selectTopic"
-			:on-click-close="deselectTopic"
 			:topic-modal-id="modalId"
 		/>
 		<fc-messages
@@ -73,8 +72,33 @@
 		},
 		created() {
 
-			const { hash } = window.location;
+			const { hash, search } = window.location;
 			const category = hash && this.categoryFromHash(hash);
+
+			$(window).on('load', () => {
+
+				// Foundation automatically registers a function to close modal on clicking the reveal modal
+				// Since closing the modal corresponds to closing our topic, we need to register our handler for that user action
+				const revealOverlay = $(`#${this.modalId}`).parent();
+				revealOverlay.click((ev) => {
+					// prevent closing when reveal's child elements e.g. the chat window are clicked
+					if (ev.target !== ev.currentTarget) {
+						return;
+					}
+					return this.deselectTopic();
+				});
+
+				// expects query param of thread={{ threadId }}
+				const threadId = search && search.substring(1).match(/thread=(\d+)/)[1];
+				if (threadId) {
+					return this.selectNestedThread(threadId)
+					.then(() => {
+
+						const { topic } = this.currentTopic;
+						return this.selectTopicCategory(this.categoryFromTopic(topic))
+					});
+				}
+			});
 
 			this.selectTopicCategory(category || this.categories[0]);
 			this.loadTopics();
@@ -109,6 +133,16 @@
 				if (isSystem(prevTopic) && !isSystem(currTopic)) {
 					this.deselectTopic();
 				}
+			},
+			currentTopic: function (newVal, oldVal) {
+
+				// From unselected to selected (reloading the current topic e.g. in selectThread also triggers this watcher)
+				if (newVal && !oldVal) {
+					// Defers opening the modal till after onClickTopic wiring has resolved
+					// Ensures modal opens with current thread (instead of opens w/ outdated, then rerenders)
+					const modalTrigger = $(`[data-open='${this.modalId}']`);
+					modalTrigger.click();
+				}
 			}
 		},
 		methods: {
@@ -117,6 +151,7 @@
 				'deselectTopic',
 				'selectTopic',
 				'selectThread',
+				'selectNestedThread',
 				'sendMessage'
 			]),
 			href(category) {
@@ -163,6 +198,20 @@
 
 					return true;
 				});
+			},
+			categoryFromTopic(topic) {
+
+				if (topic.type === 'post') {
+					if (this.me.id === topic.post.user.id) {
+						return 'To My Posts';
+					}
+					else {
+						return 'Posts';
+					}
+				}
+
+				const categories = Object.keys(TOPIC_CATEGORY_MAP);
+				return categories[categories.map((c) => TOPIC_CATEGORY_MAP[c]).indexOf(topic.type)];
 			}
 		}
 	}

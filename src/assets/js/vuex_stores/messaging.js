@@ -111,6 +111,27 @@ const actions = {
 			]);
 		});
 	},
+	selectNestedThread({ commit, dispatch, state }, threadId) {
+
+		let thread, topic;
+
+		return Promise.all([
+			jQuery.post(`/api/messaging/threads/${threadId}/read`),
+			jQuery.get(`/api/messaging/threads/${threadId}`)
+		])
+		.then(([success, thr]) => {
+
+			thread = thr;
+			topic = thr.topic;
+
+			return dispatch('loadTopic', { topic });
+		})
+		.then(() => {
+
+			commit('selectTopic', { topic });
+			commit('selectThread', thread);
+		});
+	},
 	sendMessage({ commit, dispatch, state }, body) {
 
 		const { currentThreadId } = state;
