@@ -49,6 +49,9 @@ Vue.component('fc-login', Login);
 import MessagesBoardConnected from '../components/MessagesBoardConnected.vue';
 Vue.component('fc-messages-board-connected', MessagesBoardConnected);
 
+import MessagesNotifierConnected from '../components/MessagesNotifierConnected.vue';
+Vue.component('fc-messages-notifier-connected', MessagesNotifierConnected);
+
 Vue.component('fc-map-cluster', {
 	extends: VueGoogleMapsCluster,
 	mounted() {

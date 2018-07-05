@@ -44,6 +44,7 @@ exports.register = Util.callbackify((server, options) => {
         server.ext(combine(
             require('./extensions/errors'),
             require('./extensions/alert-count'), // Order matters here; alert-count is expected to run after the errors check
+            require('./extensions/unread-replies'),
             require('./extensions/maintenance')
         ));
 
