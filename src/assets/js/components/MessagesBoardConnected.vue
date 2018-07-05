@@ -90,15 +90,25 @@
 					return this.deselectTopic();
 				});
 
-				// expects query param of thread={{ threadId }}
-				const threadId = search && search.substring(1).match(/thread=(\d+)/)[1];
-				if (threadId) {
-					return this.selectNestedThread(threadId)
-					.then(() => {
+				// Do this onload to ensure Reveal modal is setup
+				if (search) {
 
-						const { topic } = this.currentTopic;
-						return this.selectTopicCategory(this.categoryFromTopic(topic))
-					});
+					let threadIdentifier;
+					// expects query param of type={{ thread type }}&id={{ type id }}
+					if (threadIdentifier = search.substring(1).match(/type=post&id=(\d+)/)) {
+						return Promise.resolve()
+						.then(() => this.selectTopic({ topic: { type: 'post', post: { id: threadIdentifier[1] } } }))
+						.then(() => this.selectTopicCategory('To My Posts'));
+					}
+
+					if (threadIdentifier = search.substring(1).match(/thread=(\d+)/)) {
+						return this.selectNestedThread(threadIdentifier[1])
+						.then(() => {
+
+							const { topic } = this.currentTopic;
+							return this.selectTopicCategory(this.categoryFromTopic(topic))
+						});
+					}
 				}
 			});
 		},
