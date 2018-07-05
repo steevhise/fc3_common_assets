@@ -4,7 +4,7 @@
 		    <h3>{{ category }}</h3>
 		    <ul class="message-reply-list">
 				<div v-for="topic in topics" :key="topic.id"> <!-- key is namespaced key id created in toTopicId -->
-			        <li class="message-reply-list-item" @click="clickTopic($event, topic)">
+			        <li class="message-reply-list-item" @click="onClickTopic(topic)">
 						<div class="message-list-item-left">
 						    <div class="message-title">
 						    	<img v-if="image(topic)" class="message-image" :src="image(topic)"/>
@@ -44,7 +44,6 @@
 			category: String,
 			topics: Array,
 			onClickTopic: Function,
-			onClickClose: Function,
 			topicModalId: String
 		},
 		data() {
@@ -64,39 +63,6 @@
 				const makeImage = byType[topic.type] || byType.default;
 
 				return makeImage(topic);
-			},
-			clickTopic(event, topic) {
-
-				// Foundation automatically registers a function to close modal on clicking the reveal modal
-				// Since closing the modal corresponds to closing our topic, we need to register our handler for that user action
-				const revealOverlay = $(`#${this.topicModalId}`).parent()
-				// TODO Problem that this registers another, duplicate event handler every time we open a topic?
-
-				const listeners = $._data(revealOverlay[0], 'events');
-
-				// A little gross...check on event listeners registered on reveal overlay, to prevent duplicate registrations
-				if (!listeners || !listeners.click) {
-					revealOverlay.click((ev) => {
-
-						// prevent closing when reveal's child elements e.g. the chat window are clicked
-						if (ev.target !== ev.currentTarget) {
-							return;
-						}
-
-						return this.onClickClose();
-					});
-				}
-
-				this.onClickTopic(topic)
-				.then(() => {
-
-					// Defers opening the modal till after onClickTopic wiring has resolved
-					// Ensures modal opens with current thread (instead of opens w/ outdated, then rerenders)
-					// TODO Downside is noticeable lag time between click and modal appearing while topic loads ; progress indicator?
-					const selector = `[data-open='${this.topicModalId}']`;
-					const modalTrigger = $(selector);
-					modalTrigger.click();
-				});
 			}
 		}
 	}
