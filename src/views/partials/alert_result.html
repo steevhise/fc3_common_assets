@@ -1,5 +1,7 @@
 {% for post in posts %}
-<div class="alert_result-item" id="alert_result-item">
-  {% include './post_list_item.html' with { post: post, showNewTag: !post.seen } %}
-</div>
+  {% if post.userId != session.id %}
+    <div class="alert_result-item" id="alert_result-item">
+      {% include './post_list_item.html' with { post: post, showNewTag: !post.seen } %}
+    </div>
+  {% endif %}
 {% endfor %}
