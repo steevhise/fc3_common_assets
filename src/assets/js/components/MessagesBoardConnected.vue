@@ -63,9 +63,6 @@
 			const category = hash && this.categoryFromHash(hash);
 
 			$(window).on('load', () => {
-				// Given some way to identify the thread you want to view
-				// Open the modal window
-				// Select the given thread
 
 				// Foundation automatically registers a function to close modal on clicking the reveal modal
 				// Since closing the modal corresponds to closing our topic, we need to register our handler for that user action
@@ -81,10 +78,12 @@
 				// expects query param of thread={{ threadId }}
 				const threadId = search && search.substring(1).match(/thread=(\d+)/)[1];
 				if (threadId) {
-					return this.selectNestedThread(threadId);
+					return this.selectNestedThread(threadId)
+					.then(() => {
 
-					// TODO Find some way to select the category to
-					// Look at current topic, derive category from it, pain in the ass for posts
+						const { topic } = this.currentTopic;
+						return this.selectTopicCategory(this.categoryFromTopic(topic))
+					});
 				}
 			});
 
@@ -164,6 +163,20 @@
 				if (category in TOPIC_CATEGORY_MAP) {
 					this.currentCategory = category;
 				}
+			},
+			categoryFromTopic(topic) {
+
+				if (topic.type === 'post') {
+					if (this.me.id === topic.post.user.id) {
+						return 'To My Posts';
+					}
+					else {
+						return 'Posts';
+					}
+				}
+
+				const categories = Object.keys(TOPIC_CATEGORY_MAP);
+				return categories[categories.map((c) => TOPIC_CATEGORY_MAP[c]).indexOf(topic.type)];
 			}
 		}
 	}

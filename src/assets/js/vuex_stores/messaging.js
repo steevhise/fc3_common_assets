@@ -124,15 +124,12 @@ const actions = {
 			thread = thr;
 			topic = thr.topic;
 
-			return dispatch('selectTopic', { topic });
+			return dispatch('loadTopic', { topic });
 		})
 		.then(() => {
 
-			if (state.currentThreadId !== threadId) {
-				return commit('selectThread', thread);
-			}
-
-			console.log('No return...ok?');
+			commit('selectTopic', { topic });
+			commit('selectThread', thread);
 		});
 	},
 	sendMessage({ commit, dispatch, state }, body) {
