@@ -27,7 +27,7 @@
 
     <li class="header-user-button">
       <a data-tooltip class="has-tip" title="Messages" href="{{ path.home_myreplies }}">{% include '../icons/messages.html' %}
-        <fc-messages-notifier-connected static-unreads="{{ unreadReplies }}" :on-my-replies="{{ route.id === 'home_myreplies' }}"/>
+        <fc-messages-notifier-connected :static-unreads="{{ unreadReplies || 0 }}" :on-my-replies="{{ route.id === 'home_myreplies' }}"/>
       </a>
     </li>
 

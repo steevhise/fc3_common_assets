@@ -64,6 +64,7 @@
 
 				switch (operation) {
 					case 'edit':
+						console.log('EDITING, WHAT THE FUCK!!', protocol, host);
 						const url = `${protocol}//${host}${instance.path.home_post_edit}${instance.post.id}`;
 						window.location.assign(url);
 						break;
@@ -82,7 +83,6 @@
 							window.$(`.post-list-item:eq(${instance.index})`).find('.post-list-item-content').prepend(error);
 						});
 					case 'replies':
-						const { protocol, host } = window.location;
 						const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
 						window.location.assign(myReplies);
 						break;
