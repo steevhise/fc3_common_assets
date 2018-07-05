@@ -74,6 +74,8 @@
 
 			const { hash, search } = window.location;
 			const category = hash && this.categoryFromHash(hash);
+			this.selectTopicCategory(category || this.categories[0]);
+			this.loadTopics();
 
 			$(window).on('load', () => {
 
@@ -99,9 +101,6 @@
 					});
 				}
 			});
-
-			this.selectTopicCategory(category || this.categories[0]);
-			this.loadTopics();
 		},
 		computed: {
 			...mapGetters([
@@ -122,22 +121,21 @@
 		watch: {
 			topicsInCategory([currTopic], [prevTopic]) {
 
-				const isSystem = (topic) => topic && topic.topic.type === 'system';
+				// When transitioning to the system category or linking directly to it (url anchor),
+				// select the system topic automatically
 
-				// When transitioning to the system category, select the system topic automatically
-
-				if (!isSystem(prevTopic) && isSystem(currTopic)) {
+				if (!this.isSystem(prevTopic) && this.isSystem(currTopic)) {
 					this.selectTopic(currTopic);
 				}
 
-				if (isSystem(prevTopic) && !isSystem(currTopic)) {
+				if (this.isSystem(prevTopic) && !this.isSystem(currTopic)) {
 					this.deselectTopic();
 				}
 			},
-			currentTopic: function (newVal, oldVal) {
+			currentTopic: function (currTopic, prevTopic) {
 
 				// From unselected to selected (reloading the current topic e.g. in selectThread also triggers this watcher)
-				if (newVal && !oldVal) {
+				if (currTopic && !this.isSystem(currTopic) && !prevTopic) {
 					// Defers opening the modal till after onClickTopic wiring has resolved
 					// Ensures modal opens with current thread (instead of opens w/ outdated, then rerenders)
 					const modalTrigger = $(`[data-open='${this.modalId}']`);
@@ -212,6 +210,10 @@
 
 				const categories = Object.keys(TOPIC_CATEGORY_MAP);
 				return categories[categories.map((c) => TOPIC_CATEGORY_MAP[c]).indexOf(topic.type)];
+			},
+			isSystem(topic) {
+
+				return topic && topic.topic.type === 'system';
 			}
 		}
 	}
