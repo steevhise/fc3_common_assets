@@ -28,7 +28,7 @@
 				/>
 				<div class="message-list-item-details-chat-form">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
-						<textarea ref="messageBody" placeholder="Write a Message.."></textarea>
+						<textarea ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required></textarea>
 						<button class="btn-default">Send</button>
 					</form>
 				</div>
