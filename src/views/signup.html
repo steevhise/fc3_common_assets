@@ -15,11 +15,6 @@
                 :step1="{{ !!data.step1 }}"
                 :step2="{{ !!data.step2 }}">
             </fc-signup>
-            {#
-                step props MUST be bound with colon syntax so they're evaluated as JS, not string values
-                otherwise, they're passed in as boolean-ish strings, not actual boolean values,
-                causing both tabs to be marked as active
-            #}
         </div>
     </div>
 {% endblock %}

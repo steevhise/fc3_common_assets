@@ -69,7 +69,7 @@ exports.register = Util.callbackify((server, options) => {
             password: options.cookiePassword,
             clientId: options.facebook.clientId,
             clientSecret: options.facebook.clientSecret,
-            isSecure: !options.dev     // Terrible idea to be false but required if not using HTTPS especially if developing locally
+            isSecure: !options.dev
         });
 
         server.views(require('./view-manager')(server, options));
