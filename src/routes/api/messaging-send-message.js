@@ -48,7 +48,7 @@ module.exports = {
 
         return Promise.resolve()
         .then(() => messagingService.sendMessage(userId, threadIdentifier, { body }))
-        .then(({ messageId, threadId }) => reply({ message: `Message successfully sent! View your thread at /home/my-replies?thread=${threadId}`, data: messageId }))
+        .then(({ messageId, threadId }) => reply({ message: `Message successfully sent! <a href="/home/my-replies?thread=${threadId}">View your thread</a> `, data: messageId }))
         .catch((err) => {
 
             if (messagingService.serviceErrors.some((errClass) => err instanceof errClass)) {
