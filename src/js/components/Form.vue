@@ -45,7 +45,7 @@
                 }).fail(function(error) {
 
                     const err = error.responseJSON;
-                    self.$bus.$emit('alert', { level : 'alert', message : err.message });
+                    self.$bus.$emit('alert', { level : 'alert', message : err.message, timer: 10000 });
                 })
             }
         }
