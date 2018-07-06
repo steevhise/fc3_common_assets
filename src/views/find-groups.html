@@ -10,7 +10,7 @@
   <div class="row">
     <h2 class="post-header-title text-center">{{title}}</h2>
     <div class="find-groups-search">
-      {% include './in_page_search.html' with {label:'Find Towns'} %}
+      {% include './towns_search.html' with {label:'Find Towns'} %}
       {% include './partials/find_groups_dropdown.html' %}
       Can't find a town near you? Maybe you'd like to <a href="{{ path.start_a_group }}">start one</a>.
 
@@ -25,7 +25,7 @@
                 <a href="#find-groups_list">{% include './icons/list.html' %} <span>List</span></a>
               </li>
               <li class="item-list-header-filter-icon item-list-list-view tabs-title is-active">
-                  <a href="#find-groups_map">{% include './icons/map_compass.html' %} <span>Map</span></a>
+                  <a href="#find-groups_map" @click="$root.$emit('renderCluster')">{% include './icons/map_compass.html' %} <span>Map</span></a>
               </li>
           </ul>
       </div>
@@ -35,10 +35,10 @@
   <div class="row tabs-content small-centered large-12 column" data-tabs-content="find-groups_detail">
     <div id="find-groups_map" class="table-example row tabs-panel is-active">
       {# {% include "./partials/geomap.html" with geomap %} #}
-      <div class="flex-video">
-         <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="7" :center="map.center" >
+      <div class="flex-video" :onload="$emit('loadTowns', {{data.groups|json}})">
+         <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="7" :center="map.center">
              <fc-map-cluster ref="mapcluster">
-                 <div v-for="(town, index) in {{data.groups|json}}">
+                 <div v-for="(town, index) in townResults()">
                      <fc-map-infowindow :options="map.infoWindow.options" :position="geoFormat(town.latitude, town.longitude)" :id="`marker-${town.id}`" :ref="`marker-${town.id}`" >
                          {%raw%}
                              <h3 v-html="town.name"></h3>
@@ -63,7 +63,7 @@
         </thead>
         <tbody>
         {#{% for group in groupList %}#}
-          <tr v-for="(town, index) in {{data.groups|json}}">
+          <tr v-for="(town, index) in townResults()">
             <td><h4 v-html="town.name"></h4></td>
             {#NOTE: group.name and group.distance is not available in the current scope.#}
             <td>{{group.name}}</td>
