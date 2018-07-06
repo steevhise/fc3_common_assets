@@ -2,9 +2,11 @@
  * It's the Freecycle 3.0 main web application! w00t!  hurrah!
  */
 
+//  This has to be first, as explained here: https://www.elastic.co/guide/en/apm/agent/nodejs/current/hapi.html#hapi-initialization
+const Apm = require('elastic-apm-node');
+Apm.start();
+
 const Hapi = require('hapi');
-const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
-// const { Config } = require('@freecycle/freecycle_node_dal');
 const { Config } = require('@freecycle/freecycle_node_dal');
 
 exports.deployment = (start) => {
@@ -67,13 +69,6 @@ exports.deployment = (start) => {
             }
         },
         {
-            register: require('hapi-statsd'),
-            options: {
-                prefix: (process.env.NODE_ENV !== 'production') ? 'dev' : null,
-                host: server.info.host
-            }
-        },
-        {
             register: require('good'),          // TODO: still not ported to hapi 17
             options: {
                 ops: {
@@ -111,17 +106,9 @@ exports.deployment = (start) => {
             return server;
         }
 
-        // Send ops data from oppsy to statsd
-
-        const oppsy = new Oppsy(server);
-
-        oppsy.on('ops', (data) => {
-
-            server.statsd.gauge('system.cpu.load', data.osload[0]);
-            server.statsd.gauge('psmem.heapUsed', data.psmem.heapUsed);
-        });
-
-        oppsy.start(5000);
+        // we are sending ops data using Elastic APM agent.
+        // attach the agent to the server here so we send custom data at will from anywhere.
+        server.decorate('server', 'apm', Apm);
 
         return server.start()
             .then(() => console.log('Server running at:', server.info.uri))
