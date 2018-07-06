@@ -18,7 +18,7 @@ module.exports = {
         poll: 2000,
         aggregateTimeout: 10000
     },
-    stats: 'normal',
+    stats: 'detailed',
     devServer: {
         hot: true
     },
