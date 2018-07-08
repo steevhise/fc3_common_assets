@@ -18,11 +18,11 @@
 			}
 		},
 		created() {
-			this.$bus.$on('loading.add', () => {
+			this.$bus.$on('loading_start', () => {
 				this.queue.push(new Date());
 			});
-			this.$bus.$on('loading.remove', () => {
-				this.queue.unshift();
+			this.$bus.$on('loading_done', () => {
+				this.queue.shift();
 			});
 		},
 		watch: {
