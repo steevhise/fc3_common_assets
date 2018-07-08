@@ -25,6 +25,7 @@ import MessagesNotifier from '../components/MessagesNotifier.vue';
 import MessagesDetailInput from '../components/MessagesDetailInput.vue';
 import MessagesTopics from '../components/MessagesTopics.vue';
 import PostIcon from '../components/PostIcon.vue';
+import Loading from '../components/Loading.vue';
 
 export const FCVue = {
 	install(Vue, options) {
@@ -75,5 +76,6 @@ export const FCVue = {
 		Vue.component('fc-messages-detail-input', MessagesDetailInput);
 		Vue.component('fc-messages-topics', MessagesTopics);
 		Vue.component('fc-post-icon', PostIcon);
+		Vue.component('fc-loading', Loading);
 	}
 };
