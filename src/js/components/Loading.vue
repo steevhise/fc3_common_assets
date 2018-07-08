@@ -13,22 +13,29 @@
 				isLoading: false,
 				timer: 6000, // time in ms
 				message: null,
-				header: 'Loading Please Wait ...'
+				header: 'Loading Please Wait ...',
+				queue: []
 			}
 		},
 		created() {
-			this.$bus.$on('loading', (data) => {
-				this.init(data);
+			this.$bus.$on('loading.add', () => {
+				this.queue.push(new Date());
+			});
+			this.$bus.$on('loading.remove', () => {
+				this.queue.unshift();
 			});
 		},
-		methods: {
-			init(data) {
-				Object.assign(this, data);
-				this.isLoading = true;
-				setTimeout(() => {
+		watch: {
+			queue(val) {
+				if (val.length > 0) {
+					this.isLoading = true;
+				} else {
 					this.isLoading = false;
-				}, this.timer);
+				}
 			}
+		},
+		methods: {
+			
 		}
 	}
 </script>
