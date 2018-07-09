@@ -2,8 +2,8 @@
 	<div class="message-list-item-details-chat-window">
 		<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 			<p class="chat-message-from">
-				<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender.id) }"></span>
-				<span v-if="message.sender">{{ message.sender.username }}</span>&nbsp;<span v-bind:style="{ color: color(message.sender.privilege) }" v-if="message.sender.privilege">({{ message.sender.privilege === 4 ? 'Lead Moderator' : 'Moderator' }})</span>
+				<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender && message.sender.id) }"></span>
+				<span v-if="message.sender">{{ message.sender.username }}</span>&nbsp;<span v-if="message.sender && message.sender.privilege" v-bind:style="{ color: color(message.sender.privilege) }">({{ message.sender.privilege === 4 ? 'Lead Moderator' : 'Moderator' }})</span>
 			</p>
 			<p class="chat-message-message" v-if="!showHtml">{{message.body}}</p>
 			<p class="chat-message-message" v-if="showHtml" v-html="message.body"></p>
