@@ -97,7 +97,8 @@ const actions = {
 		});
 	},
 	selectThread({ commit, dispatch, state }, threadId) {
-
+		let self = this;
+		self._vm.$bus.$emit('threads.loading');
 		const { topic } = state.threads[threadId];
 
 		return jQuery.post(`/api/messaging/threads/${threadId}/read`)
@@ -107,6 +108,7 @@ const actions = {
 				dispatch('loadTopic', { topic }),
 				jQuery.get(`/api/messaging/threads/${threadId}`).then((thread) => {
 					commit('selectThread', thread);
+					self._vm.$bus.$emit('threads.done');
 				})
 			]);
 		});
