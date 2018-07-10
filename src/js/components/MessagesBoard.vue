@@ -33,7 +33,8 @@
 				<div class="message-list-item-details-chat-form">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
 						<textarea ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required></textarea>
-						<button class="btn-default">Send</button>
+						<fc-spinner v-if="sendingMessage" size="medium" message="Sending..."></fc-spinner>
+						<button class="btn-default" v-else>Send</button>
 					</form>
 				</div>
 			</div>
@@ -57,18 +58,25 @@
 			selectedThread: Object
 		},
 		data() {
-			return {}
+			return {
+				sendingMessage: false // controls the state of a message being sent for the spinner
+			}
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
 			title: helpers.topicTitle,
 			handleSubmit() {
-
+				let self = this;
+				self.sendingMessage = true;
+				
 				const body = this.$refs.messageBody.value;
 				const form = this.$refs.messageForm;
 
 				return this.onSubmitMessage(body)
-				.then(() => form.reset());
+				.then(() => {
+					form.reset();
+					self.sendingMessage = false;
+				});
 			}
 		}
 	}
