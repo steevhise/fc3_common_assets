@@ -26,6 +26,9 @@
 			:messages="currentMessages.reverse()"
 			:me="me"
 		/>
+		
+		<fc-spinner v-if="topicsInCategory.length === 0" size="huge" message="Loading..." ></fc-spinner>
+		
 		<fc-modal :custom-target="modalId" :custom-trigger="`<div style='display: none;' data-open='${modalId}'></div>`">
 			<fc-messages-board
 				:class="{ open: currentTopic }"
