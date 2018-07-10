@@ -21,7 +21,12 @@
 					</li>
 				</ul>
 			</div>
-			<div class="message-list-item-details-chat">
+			
+			<div class="message-list-item-details-chat" v-if="loadingThreads" >
+				<fc-spinner size="huge" message="Loading..."></fc-spinner>
+			</div>
+			
+			<div v-else class="message-list-item-details-chat">
 				<fc-messages
 					:style="{
 						height: '425px',
@@ -59,8 +64,19 @@
 		},
 		data() {
 			return {
-				sendingMessage: false // controls the state of a message being sent for the spinner
+				// controls the state of a message being sent for the spinner
+				sendingMessage: false,
+				loadingThreads: false
 			}
+		},
+		created() {
+			let self = this;
+			this.$bus.$on('threads.loading', () => {
+				this.loadingThreads = true;
+			});
+			this.$bus.$on('threads.done', () => {
+				this.loadingThreads = false;
+			})
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
