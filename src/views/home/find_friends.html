@@ -1,0 +1,117 @@
+{% extends '../layout/layout.html' %}
+
+{% block content %}
+{% parent %}
+<div class="horizontal_tabs">
+  <!--  tabs-content  -->
+  <div class="tabs-content" data-tabs-content="h-example-tabs">
+    <div class="tabs-panel" id="dashboard">
+
+    </div>
+    <div class="tabs-panel" id="myreplies">
+    </div>
+    <div class="tabs-panel" id="myposts">
+    </div>
+    <div class="tabs-panel is-active" id="myfriends">
+      <div class="row column">
+        <div class="row">
+          <h2 class="post-header-title text-center columns large-12">Find Your Friends</h2>
+        </div>
+        <div class="row">
+          <h3>Invite Friends</h3>
+          <div class="column">
+            <fc-form name="email-invite" action="/api/friend">
+              <h4>Invite by Email</h4>
+              <label for="invite-email">Email (single email or comma-separated list)</label>
+              <input id="invite-email" type="email" multiple required /> <!-- TODO Is multiple what we want? -->
+              <button class="btn btn-default" type="submit">Send Invitation</button>
+            </fc-form>
+          </div>
+          <div class="column">
+            <!-- TODO Do we need to ensure that button opens with FC account? NO! There's no relationship with Freecycle data here, just a tunnel into FB -->
+            <h4>Invite from Facebook</h4>
+            <button class="btn-fb" onclick="openFBMessenger()">Invite Facebook Friends to Freecycle</button>
+            <!-- TODO Replace messenger link w/ correct one -->
+            <!-- TODO Add mobile detection -->
+            <!--
+            <a id="msg-link"
+              href="fb-messenger://share/?link=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fsharing%2Freference%2Fsend-dialog&app_id=1530319417094872">
+              Send in Messenger
+            </a>
+          -->
+          <!-- TODO Move into a module, variable-ize appId, share link, etc. -->
+            <script>
+              window.fbAsyncInit = function() {
+                FB.init({
+                  appId            : '1530319417094872',
+                  xfbml            : true,
+                  version          : 'v3.0'
+                });
+              };
+
+              (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+              }(document, 'script', 'facebook-jssdk'));
+
+              // TODO Turn link into variable somehow
+              function openFBMessenger() {
+                 return FB.ui(
+                   // redirect_uri doesn't appear to have any effect; on form action (cancel or submit), modal redirects to
+                   // "display" must be one of "popup", "dialog", "iframe", "touch", "async", "hidden", or "none"
+                     { method: 'send', link: 'https://coal-sandal.glitch.me/share.html' } // TODO link would be signup
+                 );
+              }
+
+              $("#msg-link").click(function(ev) {
+                ev.preventDefault();
+
+                if (window.confirm('You must have the Facebook Messenger app installed to invite your Freecycle friends to Facebook. Otherwise, this link won\'t work')) {
+                  window.location =  "fb-messenger://share/?link=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fsharing%2Freference%2Fsend-dialog&app_id=1530319417094872";
+                }
+              });
+
+
+            </script>
+          </div>
+        </div>
+        <hr style="margin: 20px 0px;">
+        <div class="row">
+          <h3>Friends from Facebook</h3>
+          <p>You have Facebook friends who are also on the Freecycle Network. Add them here!</p>
+            <fc-form action="/api/friend">
+              <div class="columns">
+                {% for friend in data.facebookFriends %}
+                <div class="column large-5">
+                  <div class="column">
+                    <input type="checkbox" value="{{ friend.id }}"/>
+                    <label><strong>Facebook username:</strong>{{ friend.facebookUsername }}</label>
+                  </div>
+                  {% include './friend_card.html' with { friend: friend, clearWidth: true } %}
+                </div>
+                <!--
+                TODO
+                facebook friends — users we found in our system by looking up by facebook ID received from query to Facebook on behalf of current user
+                all users should exist, be valid, not blocked you, etc.
+                -->
+                {% endfor %}
+              </div>
+              <div class="row">
+                <button class="btn btn-default" type="submit">Send Friend Requests</button>
+              </div>
+            </fc-form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs-panel" id="mygroups">
+    </div>
+  </div>
+  {% include '../partials/in_body_banner_row.html'%}
+</div>
+
+
+{% endblock %}

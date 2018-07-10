@@ -69,7 +69,8 @@ exports.register = Util.callbackify((server, options) => {
             password: options.cookiePassword,
             clientId: options.facebook.clientId,
             clientSecret: options.facebook.clientSecret,
-            isSecure: !options.dev
+            isSecure: !options.dev,
+            scope: ['email', 'user_friends']
         });
 
         server.views(require('./view-manager')(server, options));
