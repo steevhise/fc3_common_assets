@@ -16,6 +16,7 @@
 	};
 
 	export default {
+		name: 'fc-spinner',
 		props: {
 			'size': {
 				// either a number (pixel width/height) or 'tiny', 'small',
