@@ -1,13 +1,6 @@
-/*"data": [
-{
-"name": "Brs Testman",
-"id": "245034932753614"
-}
-]*/
-//  https://graph.facebook.com/v3.0/{{ facebook id }}/friends?access_token=${clientId}|${clientSecret}
-// https://developers.facebook.com/tools/debug/accesstoken/
-
 const Wreck = require('wreck');
+
+const internals = {};
 
 module.exports = {
     method: 'GET',
@@ -23,77 +16,38 @@ module.exports = {
         const { userService } = request.server;
         const { clientId, clientSecret } = request.server.registrations.fc3_main.options.facebook;
 
-        // NEED TO FETCH FACEBOOK ID OF USER
-
-        return reply.view('home/find_friends', {
-            data: {
-                facebookFriends: [
-                    {   // What do we need?
-                        /*
-                            use friend_card partial, comply w/ that interface
-                            but also add FB username above
-                        */
-                        id: 1,
-                        email: 'support@bigroomstudios.com',
-                        username: 'xX_postconius_Xx',
-                        image: 'https://images.freecycle.org/user/12234567845678', // default user image
-                        firstName: 'Postcone',
-                        lastName: 'Jones',
-                        info: {
-                            reputation: 1,
-                            verified: true
-                        },
-                        facebookUsername: 'Brs Testman'
-                    },
-                    {
-                        id: 2,
-                        username: 'mlgDankNugsExpress',
-                        image: 'https://images.freecycle.org/user/12234567845678', // default user image
-                        firstName: 'Shrek',
-                        lastName: 'SwampKing',
-                        info: {
-                            reputation: 0,
-                            verified: true
-                        },
-                        facebookUsername: 'Milo Nugsberry'
-                    }
-                ]
-            },
-            title: 'Invite Friends',
-            inBodyAds: [
-                'one',
-                'two'
-            ]
-        });
-        /**
         return userService.fetchFacebookUser(userId)
-        .then(({ facebookId }) => {
-
-            // TODO Need to specify version?
-            return Wreck.get(`https://graph.facebook.com/v3.0/${facebookId}/friends?access_token=${clientId}|${clientSecret}`);
-        })
+        // Graph API version is set in our app's FB developers dashboard: Settings > Advanced > Upgrade API version
+        // Alternatively, we can specify the version in the first path segment of the url as /v3.0/...
+        .then(({ facebookId }) => Wreck.get(`https://graph.facebook.com/${facebookId}/friends?access_token=${clientId}|${clientSecret}`))
         .then(({ res, payload }) => {
 
-            // TODO What is the shape of the payload?
-            const { success } = JSON.parse(payload.toString());
+            const { data: friends } = JSON.parse(payload.toString());
 
-            // API still returns true if no perms to delete , so this case
-            // would mean issue connecting w/ FB, perms issue, etc. Something's really screwed
-            if (!success) {
-                throw new Error('Facebook disconnection failed');
+            if (!friends.length) {
+                return;
             }
 
-
-            // TODO Parse friends, ensure all returned are actually users on freecycle
-
+            // If user deauthorizes FC directly, but not here....
+            // then they won't be returned in the above call, so won't be considered in the confirmedUsers list below
+            return Promise.all([
+                // Confirm that Facebook users retrieved are registered on FC (hopefully edge-casey, but to be absolutely sure)
+                userService.fetchFacebookUsers(friends.map((({ id: facebookId }) => facebookId ))),
+                userService.fetchFriendships(userId, true), // Add includeRequests flag, so we DON'T include pending or waiting in our final display
+                friends
+            ])
+            .then(([confirmedUsers, friendships, friends]) => confirmedUsers
+                .filter((u) => !friendships.includes(u.id))
+                .map(({ facebookId, ...rest }) => ({ ...rest, facebookId, facebookUsername: internals.username(facebookId, friends) }))
+            );
         })
-        .then((friends) => {
+        .then((facebookFriends) => {
 
-            return reply.view('home/invite_friends', {
+            return reply.view('home/find_friends', {
                 data: {
-                    friends
+                    facebookFriends
                 },
-                title: 'Invite Friends',
+                title: 'Find Friends',
                 inBodyAds: [
                     'one',
                     'two'
@@ -102,10 +56,31 @@ module.exports = {
         })
         .catch((err) => {
 
+            // user isn't connected to Facebook
             if (err instanceof userService.UserDoesNotExistError) {
-                // What do we do here
+                return reply.view('home/find_friends', {
+                    data: {},
+                    title: 'Find Friends',
+                    inBodyAds: [
+                        'one',
+                        'two'
+                    ]
+                });
             }
+
+            throw err;
         });
-        **/
+    }
+};
+
+internals.username = (facebookId, facebookFriends) => {
+
+    // Ensures we don't depend on the name value existing in Facebook's data
+    // to get through our handler and display the view
+    try {
+        // ids in objects from Facebook are received as strings
+        return facebookFriends.find((f) => Number(f.id) === facebookId).name;
+    } catch (e) {
+        return '';
     }
 };

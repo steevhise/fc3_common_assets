@@ -28,7 +28,6 @@
             </fc-form>
           </div>
           <div class="column">
-            <!-- TODO Do we need to ensure that button opens with FC account? NO! There's no relationship with Freecycle data here, just a tunnel into FB -->
             <h4>Invite from Facebook</h4>
             <button class="btn-fb" onclick="openFBMessenger()">Invite Facebook Friends to Freecycle</button>
             <!-- TODO Replace messenger link w/ correct one -->
@@ -78,32 +77,37 @@
             </script>
           </div>
         </div>
-        <hr style="margin: 20px 0px;">
-        <div class="row">
-          <h3>Friends from Facebook</h3>
-          <p>You have Facebook friends who are also on the Freecycle Network. Add them here!</p>
-            <fc-form action="/api/friend">
-              <div class="columns">
-                {% for friend in data.facebookFriends %}
-                <div class="column large-5">
-                  <div class="column">
-                    <input type="checkbox" value="{{ friend.id }}"/>
-                    <label><strong>Facebook username:</strong>{{ friend.facebookUsername }}</label>
+        {% if data.facebookFriends && data.facebookFriends.length %}
+          <hr style="margin: 20px 0px;">
+          <div class="row">
+            <h3>Friends from Facebook</h3>
+            <p>You have Facebook friends who are also on the Freecycle Network. Add them here!</p>
+              <fc-form action="/api/friend">
+                <div class="columns">
+                  {% for friend in data.facebookFriends %}
+                  <div class="column large-5">
+                    <div class="column">
+                      <input type="checkbox" value="{{ friend.id }}"/>
+                      {% if friend.facebookUsername %}
+                        <label><strong>Facebook username:</strong>{{ friend.facebookUsername }}</label>
+                      {% endif %}
+                    </div>
+                    {% include './friend_card.html' with { friend: friend, clearWidth: true } %}
                   </div>
-                  {% include './friend_card.html' with { friend: friend, clearWidth: true } %}
+                  <!--
+                  TODO
+                  facebook friends — users we found in our system by looking up by facebook ID received from query to Facebook on behalf of current user
+                  all users should exist, be valid, not blocked you, etc.
+                  -->
+                  {% endfor %}
                 </div>
-                <!--
-                TODO
-                facebook friends — users we found in our system by looking up by facebook ID received from query to Facebook on behalf of current user
-                all users should exist, be valid, not blocked you, etc.
-                -->
-                {% endfor %}
-              </div>
-              <div class="row">
-                <button class="btn btn-default" type="submit">Send Friend Requests</button>
-              </div>
-            </fc-form>
-          </div>
+                <div class="row">
+                  <button class="btn btn-default" type="submit">Send Friend Requests</button>
+                </div>
+              </fc-form>
+            </div>
+          {% endif %}
+          <!-- -->
         </div>
       </div>
     </div>
