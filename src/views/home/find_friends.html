@@ -23,7 +23,7 @@
             <fc-form name="email-invite" action="/api/friend">
               <h4>Invite by Email</h4>
               <label for="invite-email">Email (single email or comma-separated list)</label>
-              <input id="invite-email" type="email" multiple required /> <!-- TODO Is multiple what we want? -->
+              <input id="invite-email"  name="emails" type="email" multiple required />
               <button class="btn btn-default" type="submit">Send Invitation</button>
             </fc-form>
           </div>
@@ -77,6 +77,11 @@
             </script>
           </div>
         </div>
+        <!--
+          facebook friends — users who are Facebook friends with current user, Freecycle users who
+          have connected Facebook to their FC accounts and granted the Facebook user_friends permission,
+          and are NOT friends with current user on Freecycle
+        -->
         {% if data.facebookFriends && data.facebookFriends.length %}
           <hr style="margin: 20px 0px;">
           <div class="row">
@@ -87,18 +92,13 @@
                   {% for friend in data.facebookFriends %}
                   <div class="column large-5">
                     <div class="column">
-                      <input type="checkbox" value="{{ friend.id }}"/>
+                      <input type="checkbox" name="ids" value="{{ friend.id }}"/>
                       {% if friend.facebookUsername %}
                         <label><strong>Facebook username:</strong>{{ friend.facebookUsername }}</label>
                       {% endif %}
                     </div>
                     {% include './friend_card.html' with { friend: friend, clearWidth: true } %}
                   </div>
-                  <!--
-                  TODO
-                  facebook friends — users we found in our system by looking up by facebook ID received from query to Facebook on behalf of current user
-                  all users should exist, be valid, not blocked you, etc.
-                  -->
                   {% endfor %}
                 </div>
                 <div class="row">
@@ -107,7 +107,6 @@
               </fc-form>
             </div>
           {% endif %}
-          <!-- -->
         </div>
       </div>
     </div>

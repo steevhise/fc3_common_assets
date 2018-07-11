@@ -6,24 +6,30 @@ module.exports = {
     path: '/api/friend',
     config: {
         description: 'Friend one or more users',
-        tags: ['api']
-        /*validate: {
+        tags: ['api'],
+        auth: {
+            mode: 'required'
+        },
+        validate: {
             payload: Joi.object({
                 emails: Joi.array().items(Joi.string().email()).single(),
                 ids: Joi.array().items(Joi.number()).single()
-            }).xor('emails', 'ids') // TODO Adjust error response
-        }*/
+            }).or('emails', 'ids') // TODO Adjust error response?
+        }
     },
     handler(request, reply) {
 
-        //const { emails, ids } = request.payload;
+        const { userService } = request.server;
+        const { emails, ids } = request.payload;
+        const { id: friender } = request.auth.credentials;
 
-        // If ids, just friend
-        // If emails, lookup, then more complicated bolognese
+        const friendees = [].concat(emails || [])
+            .concat(ids || []);
 
-        return reply('Friend requests sent!');
+        console.log(emails, ids, friendees);
+        //process.exit(0);
 
-        // friend({ friender, friendee })  expects 2 user ids
-        // Given emails, need to look up email, get user id
+        return userService.batchFriend({ friender, friendees })
+        .then(() => reply('Friend requests sent!'));
     }
 };
