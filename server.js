@@ -2,9 +2,11 @@
  * It's the Freecycle 3.0 main web application! w00t!  hurrah!
  */
 
+//  This has to be first, as explained here: https://www.elastic.co/guide/en/apm/agent/nodejs/current/hapi.html#hapi-initialization
+const Apm = require('elastic-apm-node');
+Apm.start();
+
 const Hapi = require('hapi');
-const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
-// const { Config } = require('@freecycle/freecycle_node_dal');
 const { Config } = require('@freecycle/freecycle_node_dal');
 
 exports.deployment = (start) => {
@@ -20,7 +22,7 @@ exports.deployment = (start) => {
             log: ['error'],
             request: ['error']
         },
-        cache: {         // TODO: can we test for presence of Redis server first and give a more kind error before server start?
+        cache: {
             engine: require('catbox-redis'),                            // TODO catbox-memory for development
             host: sequelizeDbConfig.redis.host || 'localhost',   // TODO: should be set in app-level config
             name: 'freecycleMain',
@@ -59,14 +61,8 @@ exports.deployment = (start) => {
                 maintenanceMode: config.maintenanceMode,
                 cookiePassword: 'abscdfvhgnjtrueyfhdmjkrutifhdjr4',
                 facebook: process.env.NODE_ENV === 'production' ? config.facebook.prod : config.facebook.test,
-                imagesURL: 'https://images.freecycle.org'
-            }
-        },
-        {
-            register: require('hapi-statsd'),
-            options: {
-                prefix: (process.env.NODE_ENV !== 'production') ? 'dev' : null,
-                host: server.info.host
+                imagesURL: 'https://images.freecycle.org',
+                legacyConfigPath                                // this is so we can get the Gearman config not read elsewhere.
             }
         },
         {
@@ -94,9 +90,12 @@ exports.deployment = (start) => {
 
         if (err.port === 6379) {
             // This means no Redis server to connect to.
-            err.message = `Server init failed: Must have local Redis server running on port 6379!\n${err.message}`;
+            err.message = `Server init failed: Must have local Redis server running on port 6379! ---- ${err.message}`;
+            throw err.message;
         }
-        throw err;   // Now whatever it is, throw it.
+        else {
+            throw err;   // Now whatever else it is, throw it.
+        }
     })
     .then(() => {
 
@@ -104,17 +103,9 @@ exports.deployment = (start) => {
             return server;
         }
 
-        // Send ops data from oppsy to statsd
-
-        const oppsy = new Oppsy(server);
-
-        oppsy.on('ops', (data) => {
-
-            server.statsd.gauge('system.cpu.load', data.osload[0]);
-            server.statsd.gauge('psmem.heapUsed', data.psmem.heapUsed);
-        });
-
-        oppsy.start(5000);
+        // we are sending ops data using Elastic APM agent.
+        // attach the agent to the server here so we send custom data at will from anywhere.
+        server.decorate('server', 'apm', Apm);
 
         return server.start()
             .then(() => console.log('Server running at:', server.info.uri))
