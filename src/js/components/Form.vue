@@ -38,7 +38,7 @@
                 const self = this;
                 $.post(this.action, this.serializedData).done(function(data) {
 
-                    self.$bus.$emit('alert', { level : 'success', message : data.message });
+                    self.$bus.$emit('alert', { level : 'success', message : data.message || data });
                     event.target.reset();
                 }).fail(function(error) {
 
