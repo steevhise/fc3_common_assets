@@ -1,4 +1,5 @@
 
+const Hoek = require('hoek');
 const Joi = require('joi');
 
 module.exports = {
@@ -11,10 +12,26 @@ module.exports = {
             mode: 'required'
         },
         validate: {
-            payload: Joi.object({
-                emails: Joi.array().items(Joi.string().email()).single(),
-                ids: Joi.array().items(Joi.number()).single()
-            }).or('emails', 'ids') // TODO Adjust error response?
+            payload: (value, options, next) => {
+
+                const processed = Hoek.shallow(value);
+                if (processed.emails) {
+                    // multiple emails input sends comma-separated list as a string :(
+                    processed.emails = value.emails.split(',').map((email) => email.trim());
+                }
+
+                const validation = Joi.object({
+                    emails: Joi.array().items(Joi.string().email()).single(),
+                    ids: Joi.array().items(Joi.number()).single()
+                }).or('emails', 'ids').validate(processed);
+
+                if (validation.error) {
+                    return next(validation.error);
+                }
+
+                return next(null, validation.value);
+            },
+            failAction: (_, reply) => reply('We were unable to send your friend requests due to momentary technical difficulties. Sorry!').code(503)
         }
     },
     handler(request, reply) {
@@ -26,10 +43,7 @@ module.exports = {
         const friendees = [].concat(emails || [])
             .concat(ids || []);
 
-        console.log(emails, ids, friendees);
-        //process.exit(0);
-
         return userService.batchFriend({ friender, friendees })
-        .then(() => reply('Friend requests sent!'));
+        .then(() => reply(`Friend request${ friendees.length > 1 ? 's' : ''} sent!`));
     }
 };
