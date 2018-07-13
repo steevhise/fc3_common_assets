@@ -2,7 +2,7 @@
 	<div>
 		<div class="row column message-reply-list-container">
 		    <h3>{{ category }}</h3>
-		    <ul class="message-reply-list">
+		    <ul v-if="topics && topics.length" class="message-reply-list">
 				<div v-for="topic in topics" :key="topic.id"> <!-- key is namespaced key id created in toTopicId -->
 			        <li class="message-reply-list-item" @click="onClickTopic(topic)">
 						<div class="message-list-item-left">
@@ -30,6 +30,7 @@
 					</li>
 				</div>
 		    </ul>
+			<div v-else><p style="text-align: center;">No conversations in this category</p></div>
 		</div>
 	</div>
 </template>
