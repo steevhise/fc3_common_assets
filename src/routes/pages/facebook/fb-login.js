@@ -6,13 +6,20 @@ module.exports = {
         id: 'pages_fblogin',
         description: 'Log in via FB',
         tags: ['login', 'exclude'],
-        auth: 'facebook'
+        auth: {
+            strategy: 'facebook',
+            mode: 'try' // Allows us to display a friendlier error response instead of our error page
+            // cancelled FB auth throws a 500, which triggers failed auth, which skips handler; try allows us to proceed to handler even on failure
+        }
     },
     handler: function (request, reply) {
 
-        // TODO Check if this is needed?
         if (!request.auth.isAuthenticated) {
-            return reply('Authentication failed due to: ' + request.auth.error.message);
+            reply.state('redirectedError', {
+                type: 'data',
+                message: 'Facebook login failed or was cancelled'
+            });
+            return reply.redirect('/login').temporary();
         }
 
         const { authService } = request.server;

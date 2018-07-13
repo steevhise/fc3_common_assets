@@ -11,6 +11,16 @@
               rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/main.css">
     {% endblock %}
+    {% if route.id === 'pages_signup' %}
+        {# OpenGraph markup for sharing the signup page to Facebook from the Find Friends page #}
+        <meta property="og:url" content="{{ facebook.contentDomain }}/signup" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Join the Freecycle Network" />
+        <meta property="og:description" content="The Freecycle Network™ is made up of 5,322 groups with 9,274,150 members around the world, and next door to you. It's a grassroots and entirely nonprofit movement of people who are giving (and getting) stuff for free in their own towns and neighborhoods. It's all about reuse and keeping good stuff out of landfills. Each local group is moderated by local volunteers (them's good people). Membership is free. To sign up, find your community by entering it into the search box above or by clicking on 'Browse Groups' above the search box. Have fun!" />
+        {# TODO We need a dark version of the FC logo (messenger has white background )#}
+        <meta property="og:image" content="{{ facebook.contentDomain }}/images/logo.png"/>
+        <meta property="fb:app_id" content="{{ facebook.appId }}"/>
+    {% endif %}
     <script>window.FC_MAINTENANCE_MODE = {% if maintenanceMode %}true{% else %}false{% endif %};</script>
 </head>
 <body data-fc-route="{{ route.id|lower }}" >

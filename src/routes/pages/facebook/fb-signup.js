@@ -6,14 +6,20 @@ module.exports = {
         id: 'pages_fbsignup',
         description: 'Signup in via FB',
         tags: ['exclude'],
-        auth: 'facebook'
+        auth: {
+            strategy: 'facebook',
+            mode: 'try' // Allows us to display a friendlier error response instead of our error page
+            // cancelled FB auth throws a 500, which triggers failed auth, which skips handler; try allows us to proceed to handler even on failure
+        }
     },
     handler: (request, reply) => {
 
-        // Handle auth errors TODO Do we end up here if user cancels facebook dialog?
-        // NOTE Uncaught 500 if you hit back once you arrive at dialog...hmmm
         if (!request.auth.isAuthenticated) {
-            return reply(`Authentication failed due to: ${request.auth.error.message}`);
+            reply.state('redirectedError', {
+                type: 'data',
+                message: 'Facebook login failed or was cancelled'
+            });
+            return reply.redirect('/signup').temporary();
         }
 
         const { authService } = request.server;
