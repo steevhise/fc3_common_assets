@@ -36,13 +36,16 @@
             handleSubmit(event) {
 
                 const self = this;
+
                 $.post(this.action, this.serializedData).done(function(data) {
 
                     self.$bus.$emit('alert', { level : 'success', message : data.message || data });
+                    self.$bus.$emit('formSuccess');
                     event.target.reset();
                 }).fail(function(error) {
 
-                    self.$bus.$emit('alert', { level : 'alert', message : error.responseText ? `${error.responseText}` : `${error.status} \n ${error.statusText}` });
+                    const err = error.responseJSON;
+                    self.$bus.$emit('alert', { level : 'alert', message : err.message, timer: 10000 });
                 })
             }
         }

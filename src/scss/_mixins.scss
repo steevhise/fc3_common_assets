@@ -15,7 +15,11 @@
   text-transform: uppercase;
   font-weight: bold;
   font-size: .8rem;
+  svg {
+    vertical-align: middle;
+  }
   span {
+    vertical-align: middle;
     padding-left: .6875rem;
   }
 }

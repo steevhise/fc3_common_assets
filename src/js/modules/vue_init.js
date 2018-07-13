@@ -18,6 +18,14 @@ import PostListItem from '../components/PostListItem.vue';
 import PostGridItem from '../components/PostGridItem.vue';
 import Icon from '../components/Icon.vue';
 import Data from '../components/Data.vue';
+import Messages from '../components/Messages.vue';
+import MessagesInput from '../components/MessagesInput.vue';
+import MessagesBoard from '../components/MessagesBoard.vue';
+import MessagesNotifier from '../components/MessagesNotifier.vue';
+import MessagesDetailInput from '../components/MessagesDetailInput.vue';
+import MessagesTopics from '../components/MessagesTopics.vue';
+import PostIcon from '../components/PostIcon.vue';
+import Spinner from '../components/Spinner.vue';
 
 export const FCVue = {
 	install(Vue, options) {
@@ -26,7 +34,7 @@ export const FCVue = {
 		Vue.prototype.$findOne = (haystack, arr) => {
 			return arr.some(val => haystack.includes(val));
 		};
-		
+
 		Vue.prototype.geoFormat = (lat, lng) => {
 			return { lat : Number(lat), lng : Number(lng) };
 		};
@@ -61,5 +69,13 @@ export const FCVue = {
 		Vue.component('fc-post-grid-item', PostGridItem);
 		Vue.component('fc-icon', Icon);
 		Vue.component('fc-data', Data);
+		Vue.component('fc-messages', Messages);
+		Vue.component('fc-messages-input', MessagesInput);
+		Vue.component('fc-messages-board', MessagesBoard);
+		Vue.component('fc-messages-notifier', MessagesNotifier);
+		Vue.component('fc-messages-detail-input', MessagesDetailInput);
+		Vue.component('fc-messages-topics', MessagesTopics);
+		Vue.component('fc-post-icon', PostIcon);
+		Vue.component('fc-spinner', Spinner);
 	}
 };
