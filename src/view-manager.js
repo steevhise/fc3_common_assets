@@ -50,6 +50,10 @@ module.exports = (server, options) => ({
             friendStatuses: request.server.userService.friendStatuses
         },
         date: new Date(),
-        facebookAppId: options.facebook.clientId
+        facebook: {
+            appId: options.facebook.clientId,
+            // Sorry... necessary for setting Facebook's open graph tags (see views/layout/layout.html)
+            contentDomain: options.dev ? 'https://staging.fc3.freecycle.org' : 'https://freecycle.org/signup'
+        }
     })
 });

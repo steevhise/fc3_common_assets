@@ -17,7 +17,8 @@
     export default {
         name: 'fc-facebook-message',
         props: {
-            facebookAppId: Number
+            facebookAppId: Number,
+            shareLink: String
         },
         data() {
 
@@ -45,7 +46,6 @@
 
         },
         computed: {
-            shareLink: () => `${window.location.origin}/signup`,
             // Follows the Mobile OS detection recommendation here: https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
             // To toggle the FB messenger linking mechanism
             // WARNING Likely very fragile
@@ -57,12 +57,12 @@
                 const { shareLink } = this;
                 // WARNING send dialog fails in local dev b/c FB can't crawl localhost
                 // To test, replace with a dummy, public HTML page using the same Open Graph tags as the page you want to share
-                return FB.ui({ method: 'send', link: 'https://coal-sandal.glitch.me/share.html' /*shareLink*/ });
+                return FB.ui({ method: 'send', link: shareLink });
             },
             openMobileMessenger() {
 
                 if (window.confirm('You must have the Facebook Messenger app installed to invite your Freecycle friends to Facebook. Otherwise, this link won\'t work')) {
-                  window.location =  `fb-messenger://share/?link=${encodeURIComponent('https://coal-sandal.glitch.me/share.html'/*this.shareLink*/)}&app_id=${this.facebookAppId}`;
+                  window.location =  `fb-messenger://share/?link=${encodeURIComponent(this.shareLink)}&app_id=${this.facebookAppId}`;
                 }
             }
         }

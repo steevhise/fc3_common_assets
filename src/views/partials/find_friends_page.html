@@ -12,7 +12,7 @@
                 <button class="btn btn-default" type="submit">Send Invitation</button>
             </fc-form>
         </div>
-        <fc-facebook-message :facebook-app-id="{{ facebookAppId }}"/>
+        <fc-facebook-message :facebook-app-id="{{ facebook.appId }}" share-link="{{ facebook.contentDomain }}/signup"/>
     </div>
     {% if facebookFriends && facebookFriends.length %}
         <hr style="margin: 20px 0px;">
