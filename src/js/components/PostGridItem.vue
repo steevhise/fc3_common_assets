@@ -31,14 +31,17 @@
 					<div class="post-grid-item-header-left">
 						<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
 					</div>
-					<div class="post-grid-item-header-right">
+					<div v-if="viewer" class="post-grid-item-header-right">
 						<select class="manage-post-select" v-if="viewer === post.userId && post.isApproved" :class="`btn-${postType}`" v-on:change="manageOp">
 							<option value="" disabled selected hidden>Manage Post</option>
 							<option value="edit">Edit</option>
 							<option value="delete">Delete</option>
+							<option value="replies">See Replies</option>
 						</select>
 						<p v-else-if="viewer === post.userId && !post.isApproved" class="callout alert">In Moderation</p>
-						<button v-else :class="`btn-${postType}`">Reply</button>
+						<fc-messages-detail-input v-else topic-type="post" :topic-id="post.id" :custom-trigger=replyButton >
+				          <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+				      	</fc-messages-detail-input>
 					</div>
 				</div>
 			</div>
@@ -58,6 +61,9 @@
 		computed: {
 			postType() {
 				return this.post.type.name.toLowerCase();
+			},
+			replyButton() {
+				return `<button class="btn-${this.postType}">Reply</button>`;
 			}
 		},
 		methods: {
@@ -65,10 +71,10 @@
 
 				const instance = this;
 				const operation = event.currentTarget.value;
+				const { protocol, host } = window.location;
 
 				switch (operation) {
 					case 'edit':
-						const { protocol, host } = window.location;
 						const url = `${protocol}//${host}${instance.path.home_post_edit}${instance.post.id}`;
 						window.location.assign(url);
 						break;
@@ -86,6 +92,10 @@
 							const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
 							window.$(`.post-grid-item:eq(${instance.index})`).find('.post-grid-item-content').prepend(error);
 						});
+						break;
+					case 'replies':
+						const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
+						window.location.assign(myReplies);
 						break;
 				}
 			}

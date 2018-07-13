@@ -2,7 +2,7 @@
     <transition name="fade" :duration="timer">
         <div id="callout" v-if="isVisible" :class="`callout ${this.level}`" data-closable="slide-out-right">
             <h5 v-if="header">{{header}}</h5>
-            <p>{{message}}</p>
+            <p v-html="message"></p>
         </div>
     </transition>
 </template>
