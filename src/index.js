@@ -64,7 +64,8 @@ exports.register = Util.callbackify((server, options) => {
         server.auth.strategy('session', 'cookie-freecycle', 'try', {
             isSecure: !options.dev,
             redirectTo: '/login',
-            redirectOnTry: false    // if mode is 'try' on a public page, don't redirect them if they're not logged in
+            redirectOnTry: false,    // if mode is 'try' on a public page, don't redirect them if they're not logged in
+            domain: '.freecycle.org'
         });
 
         // Declare an authentication strategy using the bell scheme for Facebook login
