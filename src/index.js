@@ -11,6 +11,9 @@ const SiteService = require('@freecycle/common-hapi-plugins/services/site');
 const AlertService = require('@freecycle/common-hapi-plugins/services/alert');
 const PageService = require('@freecycle/common-hapi-plugins/services/page');
 const TagService = require('@freecycle/common-hapi-plugins/services/tag');
+const MessagingService = require('@freecycle/common-hapi-plugins/services/messaging');
+const { loadGearmanConfig } = require('@freecycle/common-hapi-plugins/modules/helpers');
+const EmailService = require( '@freecycle/common-hapi-plugins/services/email');
 
 exports.register = Util.callbackify((server, options) => {
 
@@ -26,6 +29,8 @@ exports.register = Util.callbackify((server, options) => {
     server.decorate('server', 'alertService', new AlertService(server));
     server.decorate('server', 'pageService', new PageService(server));
     server.decorate('server', 'tagService', new TagService(server));
+    server.decorate('server', 'messagingService', new MessagingService(server, { imagesURL: options.imagesURL }));
+    server.decorate('server', 'emailService', new EmailService(server, loadGearmanConfig(options.legacyConfigPath), options.dev));
 
     const combine = (...arrays) => [].concat(...arrays);
 
@@ -39,6 +44,7 @@ exports.register = Util.callbackify((server, options) => {
         server.ext(combine(
             require('./extensions/errors'),
             require('./extensions/alert-count'), // Order matters here; alert-count is expected to run after the errors check
+            require('./extensions/unread-replies'),
             require('./extensions/maintenance')
         ));
 

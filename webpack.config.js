@@ -1,12 +1,11 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 //TODO: figure out minification, etc for Production
-
-//const devMode = true;
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
     mode: 'development',
@@ -18,7 +17,7 @@ module.exports = {
         poll: 2000,
         aggregateTimeout: 10000
     },
-    stats: 'normal',
+    stats: 'detailed',
     devServer: {
         hot: true
     },
@@ -46,11 +45,18 @@ module.exports = {
                 }
             },
             {
-                test: /\.scss?$/,
-                loader: ['style-loader', 'css-loader', 'sass-loader']
-            },
-            {
-                test: /\.css?$/, loaders: ['style-loader', 'css-loader', 'sass-loader']
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                    {
+                        loader : MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: Path.resolve(__dirname, 'public/assets')
+                        }
+                    },
+                    'css-loader',
+                    'sass-loader'
+                ],
+                
             }
         ]
     },
@@ -62,6 +68,11 @@ module.exports = {
     plugins: [
         new Webpack.LoaderOptionsPlugin({
             minimize: false
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'css/main.css',
+            // filename: '[name].css',
+            // chunkFilename: '[id].css'
         }),
         // for production remember to change these appropriately
         /*new Webpack.optimize.UglifyJsPlugin({
@@ -89,12 +100,6 @@ module.exports = {
             copyUnmodified: true,
             debug: 'warning'
         }),
-        /*new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
-            chunkFilename: '[id].css'
-        }),*/
         new VueLoaderPlugin()
             // no options, i guess.
     ]

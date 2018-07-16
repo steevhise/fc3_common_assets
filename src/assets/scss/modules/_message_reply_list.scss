@@ -4,26 +4,47 @@
   }
 }
 
+#chatbox {
+    width: 55rem;
+}
+
 .message-reply-list {
   @include listReset();
+}
+
+.messages-unread-admin-badge {
+  color: $black;
+  margin-left: .25rem;
+}
+
+.message-list-item-header {
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $dark-gray;
+  & > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  h4 {
+    max-width: 75%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+  }
+  .message-list-item-post-icon {
+    margin-left: 1rem;
+  }
 }
 
 .message-list-item-details {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 0px;
   overflow: hidden;
   transition: all 500ms ease;
   transform: scale3d(.95, .95, .95);
-  opacity: 0;
   will-change: max-height, height, opacity, transform;
-  &.open {
-    transition: opacity 500ms ease, transform 500ms ease, max-height 2000ms ease;
-    max-height: 10000px;
-    opacity: 1;
-    transform: scale3d(1, 1, 1);
-  }
   margin-top: rem-calc(-6px);
   margin-bottom: rem-calc(6px);
 
@@ -62,11 +83,17 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid $dark-gray;
+  cursor: pointer;
 
   .unread-amount {
     color: $dark-gray;
     flex: 1;
     text-align: right;
+  }
+
+  &.active {
+      color: white;
+      background-color: map-get($freecycle-palette,primary);
   }
 }
 
@@ -75,14 +102,12 @@
 }
 
 .message-list-item-details-chat-window {
-  min-height: 350px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   border-right: 1px solid $dark-gray;
   border-left: 1px solid $dark-gray;
   @media #{$medium-up} {
-    height: 350px;
     border-right: none;
     border-left: none;
   }
@@ -99,6 +124,13 @@
 
 .message-list-item-details-chat-message {
   align-self: flex-start;
+  max-width: 75%;
+  //display: flex;
+
+  &.message-from-self {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
 
   .chat-message-from {
     font-family: $header-font-family;
@@ -108,28 +140,57 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    align-self: inherit;
+    justify-content: inherit;
+
+    &.message-from-self {
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+
   }
+
   .chat-message-message {
     background: $black;
     color: $white;
-    margin-bottom: 0px;
+    display: flex;
+    margin-bottom: 0;
+    p { // Particularly for system messages, which contain markup
+      color: $white;
+      margin-bottom: 0;
+    }
     font-size: 1rem;
     padding: .875rem;
     font-weight: bold;
+
+    &.message-from-self {
+      display: flex;
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
   }
   .chat-message-time {
     font-size: .875rem;
     color: $dark-gray;
-  }
-  &.message-from-self {
-    align-self: flex-end;
 
-    .chat-message-message {
-      background: $white;
-      color: $black;
+    &.message-from-self {
+      display: flex;
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+  }
+
+  .chat-message-message {
+    background: $white;
+    color: $black;
+
+    &.message-from-self {
+      align-self: flex-end;
+      justify-content: flex-end;
     }
   }
 }
+
 
 .message-list-item-details-chat-form {
   padding: 1rem;
@@ -201,13 +262,6 @@
       flex: 3;
       flex-direction: row;
     }
-  }
-  &.open {
-
-    .icon-message-arrow {
-      transform: rotate(90deg);
-    }
-
   }
 }
 
