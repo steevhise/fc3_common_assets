@@ -66,13 +66,7 @@ exports.deployment = (start) => {
                 legacyConfigPath                                // this is so we can get the Gearman config not read elsewhere.
             }
         },
-        {
-            register: require('hapi-statsd'),
-            options: {
-                prefix: (process.env.NODE_ENV !== 'production') ? 'dev' : null,
-                host: server.info.host
-            }
-        },
+
         {
             register: require('good'),          // TODO: still not ported to hapi 17
             options: {
@@ -111,17 +105,7 @@ exports.deployment = (start) => {
             return server;
         }
 
-        // Send ops data from oppsy to statsd
 
-        const oppsy = new Oppsy(server);
-
-        oppsy.on('ops', (data) => {
-
-            server.statsd.gauge('system.cpu.load', data.osload[0]);
-            server.statsd.gauge('psmem.heapUsed', data.psmem.heapUsed);
-        });
-
-        oppsy.start(5000);
 
         return server.start()
             .then(() => console.log('Server running at:', server.info.uri))

@@ -109,7 +109,7 @@
           {% include '../partials/default_location.html' %}
         </div>
         <hr>
-        <h3 class="text-center columns">Email Preferences</h3>
+        <h3 class="text-center columns">Global Email Preferences</h3>
         {% for emailType in data.emailTypes %}
           <div class="row">
             {% if data.settings.emailTypePreferences|contains(emailType.id) %}
@@ -121,7 +121,7 @@
           </div>
         {% endfor %}
         {% if data.settings.townNotificationPreferences %}
-          <h3 class="text-center columns">Town Notification Preferences</h3>
+          <h3 class="text-center columns">Town Email Preferences</h3>
           {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.townNotificationPreferences } %}
         {% endif %}
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
