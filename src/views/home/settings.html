@@ -115,13 +115,25 @@
           {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
         {% endif %}
         <hr>
-        {% if data.settings.facebookId %}
-          <a href="/fb-disconnect?facebookId={{ data.settings.facebookId }}" class="btn-fb">Disconnect Facebook Account</a>
-        {% else %}
-          <a href="/fb-connect?userId={{ session.id }}" class="btn-fb">Connect Account to Facebook</a>
-        {% endif %}
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
+      <div style="text-align: center; margin-top: 2rem;">
+        {% if data.settings.facebookId %}
+            <hr>
+            <form method="POST" action="/fb-disconnect">
+              <button name="action" class="btn btn-fb" style="margin: 2px">
+                 <i class="icon fa fa-sign-out"></i> Disconnect Facebook Account
+               </button>
+            </form>
+        {% else %}
+            <hr>
+            <form method="POST" action="/fb-connect">
+              <button name="action" class="btn btn-fb" style="margin: 2px">
+                 <i class="icon fa fa-sign-in"></i> Connect Account to Facebook
+               </button>
+            </form>
+        {% endif %}
+      </div>
     </div>
     <div class="tabs-panel" id="myreplies"></div>
     <div class="tabs-panel" id="myposts"></div>

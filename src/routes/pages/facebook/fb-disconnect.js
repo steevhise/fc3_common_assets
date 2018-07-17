@@ -3,27 +3,25 @@ const Joi = require('joi');
 const Wreck = require('wreck');
 
 module.exports = {
-    method: 'GET',
+    method: 'POST',
     path: '/fb-disconnect',
     config: {
         id: 'pages_fbdisconnect',
         description: 'Disconnect your Freecycle account from a connected Facebook account',
         tags: ['login', 'exclude'],
-        auth: { mode: 'required' },
-        validate: {
-            query: {
-                facebookId: Joi.number().required() // facebook id number exceeds allowable size of Joi integer definition
-            }
-        }
+        auth: { mode: 'required' }
     },
     handler: function (request, reply) {
 
-        const { authService } = request.server;
-        const { facebookId } = request.query; // Passed in query string on settings page
+        const { authService, userService } = request.server;
+        const { id: userId } = request.auth.credentials;
         const { clientId, clientSecret } = request.server.registrations.fc3_main.options.facebook;
+        const context = {};
 
-        return Promise.resolve()
-        .then(() => {
+        return userService.fetchFacebookUser(userId)
+        .then(({ facebookId }) => {
+
+            context.facebookId = facebookId;
 
             // https://developers.facebook.com/docs/facebook-login/permissions/requesting-and-revoking#revoking
             // see Generating Access Tokens https://developers.facebook.com/docs/facebook-login/access-tokens/
@@ -39,11 +37,12 @@ module.exports = {
                 throw new Error('Facebook disconnection failed');
             }
 
-            return authService.facebookDisconnect(facebookId);
+            return authService.facebookDisconnect(context.facebookId);
         })
         .then(() => reply.redirect('/home/settings').temporary())
         .catch((err) => {
 
+            // error constructor is shared by user and auth services
             if (err instanceof authService.UserDoesNotExistError) {
                 reply.state('redirectedError', {
                     type: 'data',
