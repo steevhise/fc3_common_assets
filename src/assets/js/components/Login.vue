@@ -22,7 +22,8 @@
                                 <label>Email (we'll send an email with a link to reset your password to this address)</label>
                                 <input type="email" name="email" required>
                                 <div class="row text-center">
-                                    <button type="submit" class="btn btn-default small-5">Send</button>
+                                    <!-- MUST BE AN INPUT ELEMENT, NOT A BUTTON; button triggers 2 submit events for unknown reason :( -->
+                                    <input type="submit" class="btn btn-default small-5" value="Send"/>
                                 </div>
                             </fc-form>
                         </fc-modal>

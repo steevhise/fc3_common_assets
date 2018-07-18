@@ -1,3 +1,5 @@
+
+const Boom = require('boom');
 const Joi = require('joi');
 
 const internals = {};
@@ -15,7 +17,18 @@ module.exports = {
     },
     handler(request, reply) {
 
-        console.log(request.payload.email, 'EMAIL RECEIVED IN PAYLOAD!');
-        return reply({ message: `Password reset email successfully sent to ${request.payload.email}` });
+        const { authService } = request.server;
+        const { email } = request.payload;
+
+        return authService.sendPasswordReset(email)
+        .then(() => reply({ message: `Password reset email successfully sent to ${request.payload.email}` }))
+        .catch((err) => {
+
+            if (err instanceof authService.UserDoesNotExistError) {
+                return reply(Boom.badRequest('The provided email didn\'t match an account on our records'));
+            }
+
+            throw err;
+        });
     }
 };

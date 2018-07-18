@@ -70,7 +70,7 @@ module.exports = {
                 if (err instanceof internals.LoginRequired) {
                     return reply.view('login', {
                         title: 'Login Required',
-                        msg: 'Invalid username/email or password.'
+                        errors: [{ message: 'Invalid username/email or password.' }]
                     });
                 }
 
@@ -79,7 +79,8 @@ module.exports = {
         }
 
         return reply.view('login', {
-            title: 'Login Required'
+            title: 'Login Required',
+            passwordReset: request.info.referrer.includes('/login/password-reset')
         });
     }
 };
