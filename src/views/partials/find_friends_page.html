@@ -1,0 +1,25 @@
+<div class="row column">
+    <div class="row">
+        <h2 class="post-header-title text-center columns large-12">Find Your Friends</h2>
+    </div>
+    <div class="row">
+        <h3>Invite Friends</h3>
+        <div class="column">
+            <fc-form action="/api/friend">
+                <h4>Invite by Email</h4>
+                <label for="invite-email">Email (single email or comma-separated list)</label>
+                <input id="invite-email"  name="emails" type="email" multiple required />
+                <button class="btn btn-default" type="submit">Send Invitation</button>
+            </fc-form>
+        </div>
+        <fc-facebook-message :facebook-app-id="{{ facebook.appId }}" share-link="{{ facebook.contentDomain }}/signup"/>
+    </div>
+    {% if facebookFriends && facebookFriends.length %}
+        <hr style="margin: 20px 0px;">
+        <div class="row">
+            <h3>Friends from Facebook</h3>
+            <p>You have Facebook friends who are also on the Freecycle Network. Add them here!</p>
+            <fc-facebook-friends :facebook-friends="{{ facebookFriends | json }}" />
+        </div>
+    {% endif %}
+</div>

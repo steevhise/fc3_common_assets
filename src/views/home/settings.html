@@ -109,12 +109,31 @@
           {% include '../partials/default_location.html' %}
         </div>
 
+        {% if data.settings.emailDeliveryPreferences.length %}
           <hr>
           <h3 class="text-center columns">Town Notification Preferences</h3>
-        {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
-        <input type="submit" class="btn-fb" value="Link to Facebook"/>
+          {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
+        {% endif %}
+        <hr>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
+      <div style="text-align: center; margin-top: 2rem;">
+        {% if data.settings.facebookId %}
+            <hr>
+            <form method="POST" action="/fb-disconnect">
+              <button name="action" class="btn btn-fb" style="margin: 2px">
+                 <i class="icon fa fa-sign-out"></i> Disconnect Facebook Account
+               </button>
+            </form>
+        {% else %}
+            <hr>
+            <form method="POST" action="/fb-connect">
+              <button name="action" class="btn btn-fb" style="margin: 2px">
+                 <i class="icon fa fa-sign-in"></i> Connect Account to Facebook
+               </button>
+            </form>
+        {% endif %}
+      </div>
     </div>
     <div class="tabs-panel" id="myreplies"></div>
     <div class="tabs-panel" id="myposts"></div>
