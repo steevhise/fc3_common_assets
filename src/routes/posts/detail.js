@@ -38,7 +38,7 @@ module.exports = {
                 const { rejectReason } = post;
                 reply.state('redirectedError', {
                     message:
-                        `Your post is being moderated. ${ rejectReason ? `It was automatically flagged for moderation due to: ${ rejectReason}.` : ''}
+                        `Your post is being moderated. ${ rejectReason ? 'It was automatically flagged for moderation due content that may be questionable.' : ''}
                         You will be notified when the group\'s moderator has approved or rejected it.`,
                     path: request.route.path.replace('{postId}', request.params.postId),
                     type: 'postModeration'
