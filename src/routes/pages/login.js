@@ -78,9 +78,10 @@ module.exports = {
             });
         }
 
+        const { referrer } = request.info;
         return reply.view('login', {
             title: 'Login Required',
-            passwordReset: request.info.referrer.includes('/login/password-reset')
+            passwordReset: typeof referrer === 'string' && /\/login\/password-reset\/\w*$/.test(referrer)
         });
     }
 };
