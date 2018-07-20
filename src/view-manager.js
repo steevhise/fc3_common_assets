@@ -53,7 +53,7 @@ module.exports = (server, options) => ({
         facebook: {
             appId: options.facebook.clientId,
             // Sorry... necessary for setting Facebook's open graph tags (see views/layout/layout.html)
-            contentDomain: options.dev ? 'https://staging.fc3.freecycle.org' : 'https://freecycle.org/signup'
+            contentDomain: options.dev ? 'https://newdev.freecycle.org' : 'https://freecycle.org'
         }
     })
 });
