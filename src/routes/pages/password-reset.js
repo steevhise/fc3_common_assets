@@ -4,7 +4,9 @@ const RouteHelpers = require('../helpers');
 
 module.exports = {
     method: '*',
-    path: '/login/password-reset/{token}',
+    // Snake casing the path is required! this path must match the reset url specified
+    // in the password_reset email templates in core_modules
+    path: '/login/password_reset/{token}',
     config: {
         id: 'pages_password_reset',
         description: 'login on this page',
