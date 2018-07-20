@@ -26,9 +26,9 @@
 			:messages="currentMessages.reverse()"
 			:me="me"
 		/>
-		
-		<fc-spinner v-if="topicsInCategory.length === 0" size="huge" message="Loading..." ></fc-spinner>
-		
+
+		<fc-spinner v-if="!topicsLoaded" size="huge" message="Loading..." ></fc-spinner>
+
 		<fc-modal :custom-target="modalId" :custom-trigger="`<div style='display: none;' data-open='${modalId}'></div>`">
 			<fc-spinner v-if="currentMessages.length === 0" size="huge" message="Loading..."></fc-spinner>
 			<fc-messages-board
@@ -72,7 +72,8 @@
 		data() {
 			return {
 				currentCategory: null,
-				categories: Object.keys(TOPIC_CATEGORY_MAP)
+				categories: Object.keys(TOPIC_CATEGORY_MAP),
+				topicsLoaded: false
 			}
 		},
 		created() {
@@ -80,7 +81,11 @@
 			const { hash, search } = window.location;
 			const category = hash && this.categoryFromHash(hash);
 			this.selectTopicCategory(category || this.categories[0]);
-			this.loadTopics();
+
+			this.loadTopics()
+			.then(() => {
+				this.topicsLoaded = true;
+			});
 
 			$(window).on('load', () => {
 
@@ -140,7 +145,11 @@
 				// select the system topic automatically
 
 				if (!this.isSystem(prevTopic) && this.isSystem(currTopic)) {
-					this.selectTopic(currTopic);
+					this.topicsLoaded = false;
+					this.selectTopic(currTopic)
+					.then(() => {
+						this.topicsLoaded = true;
+					});
 				}
 
 				if (this.isSystem(prevTopic) && !this.isSystem(currTopic)) {

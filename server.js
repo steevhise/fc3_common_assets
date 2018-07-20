@@ -60,10 +60,7 @@ exports.deployment = (start) => {
                 dev: process.env.NODE_ENV !== 'production',
                 maintenanceMode: config.maintenanceMode,
                 cookiePassword: 'abscdfvhgnjtrueyfhdmjkrutifhdjr4',
-                facebook: {
-                    clientId: '117834011565165',
-                    clientSecret: 'fa596fcabbeb2651544ed73ea7c847e3'
-                },
+                facebook: process.env.NODE_ENV === 'production' ? config.facebook.prod : config.facebook.test,
                 imagesURL: 'https://images.freecycle.org',
                 legacyConfigPath                                // this is so we can get the Gearman config not read elsewhere.
             }

@@ -35,13 +35,25 @@
                                     </div>
                                     <!-- captcha here -->
                                     <div class="medium-12 columns align-center-middle ">
-                                        <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="">Terms of Service</a>
+                                        <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="/tos">Terms of Service</a>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
 
                                         <input class="btn btn-default" type="submit" value="Sign Up">
-                                            Or <a href="/fb_login"><i class="fa fa-facebook"></i> Sign up via Facebook</a>.
-                                        <!-- TODO: the link should be a swig tag: {{ path.pages_fblogin }} but it's not working at the moment-->
+										<fc-modal type="custom" custom-trigger='<button type="button" class="btn-fb"><i class="fa fa-facebook"></i> Sign up via Facebook.</button>'>
+                                            <form id="fb-tos" method="GET" action="/fb-signup">
+                                                <div>
+                                                    <label>Username</label>
+                                                    <input type="text" name="username" placeholder="Username" required />
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="/tos">Terms of Service</a>
+                                                </div>
+                                                <div>
+                                                    <button class="btn-fb" type="submit"><i class="fa fa-facebook"></i>Sign Up with Facebook</button>
+                                                </div>
+                                            </form>
+                                        </fc-modal>
                                     </div>
                                 </div>
                             </form>

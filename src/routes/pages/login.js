@@ -1,4 +1,6 @@
 
+const Hoek = require('hoek');
+
 const internals = {};
 
 module.exports = {
@@ -78,10 +80,17 @@ module.exports = {
             });
         }
 
+        // Might receive an error redirected from facebook login
+        const message = Hoek.reach(request, 'state.redirectedError.message');
+        reply.unstate('redirectedError');
+        const errors = null;
+        errors = message ? [{ message }] : errors;
+
         const { referrer } = request.info;
         return reply.view('login', {
             title: 'Login Required',
-            passwordReset: typeof referrer === 'string' && /\/login\/password_reset\/\w*$/.test(referrer)
+            passwordReset: typeof referrer === 'string' && /\/login\/password_reset\/\w*$/.test(referrer),
+            errors
         });
     }
 };
