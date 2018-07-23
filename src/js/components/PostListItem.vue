@@ -1,7 +1,7 @@
 <template>
 	<div class="post-list-item" >
 		<div class="post-list-item-photo">
-			<img :src="post.thumb" v-if="post.thumb">
+			<img width="128" :src="post.thumb" v-if="post.thumb">
 			<fc-icon name="logo" width="128" v-else></fc-icon>
 		</div>
 		<div class="post-list-item-content">
@@ -32,7 +32,7 @@
 			</div>
 			<div class="post-list-item-content-description">
 				<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
-				<p class="paragraph-small" v-html="post.description"></p>
+				<p> {{post.description | stripTags | truncate(120)}}</p>
 			</div>
 		</div>
 	</div>
