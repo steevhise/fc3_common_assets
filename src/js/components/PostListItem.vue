@@ -25,7 +25,7 @@
 						<option value="replies">See Replies</option>
 					</select>
 					<p v-else-if="viewer === post.userId && !post.isApproved" class="callout alert">In Moderation</p>
-					<fc-messages-detail-input v-else topic-type="post" :topic-id="post.id" :custom-trigger=replyButton >
+					<fc-messages-detail-input v-else topic-type="post" :topic-id="post.id" :custom-trigger="replyButton" >
 					  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
 				</div>
