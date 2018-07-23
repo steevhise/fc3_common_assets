@@ -173,7 +173,7 @@ module.exports = {
             Hoek.assert(settings, 'User does not exist');
 
             // Might receive an error redirected from connecting account w/ Facebook
-            const maybeError = Hoek.reach(request, 'state.redirectedError.message');
+            const maybeError = Hoek.reach(request, 'state.redirectedError');
             reply.unstate('redirectedError');
 
             return reply.view('home/settings', {

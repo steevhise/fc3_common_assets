@@ -56,7 +56,7 @@ module.exports = {
             if (err instanceof authService.UserAlreadyExistsError) {
                 reply.state('redirectedError', {
                     type: 'data',
-                    message: 'Sorry, that account is already connected to a Freecycle account'
+                    message: 'Sorry, that Facebook account is already connected to a Freecycle account'
                 });
                 return reply.redirect('/home/settings').temporary();
             }
