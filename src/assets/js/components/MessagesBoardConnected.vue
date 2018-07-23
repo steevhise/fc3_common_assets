@@ -14,14 +14,14 @@
 			</ul>
 		</div>
 		<fc-messages-topics
-			v-if="currentCategory !== 'Admin Messages'"
+			v-if="currentCategory !== 'Notifications'"
 			:category="currentCategory"
 			:topics="topicsInCategory"
 			:on-click-topic="selectTopic"
 			:topic-modal-id="modalId"
 		/>
 		<fc-messages
-			v-if="currentCategory === 'Admin Messages'"
+			v-if="currentCategory === 'Notifications'"
 			show-html
 			:messages="currentMessages.reverse()"
 			:me="me"
@@ -51,11 +51,11 @@
 	import { mapGetters, mapActions } from 'vuex';
 
 	const TOPIC_CATEGORY_MAP = {
-		'Posts': 'post',
-		'To My Posts': 'post',
+		'Replies To Others\' Posts': 'post',
+		'Replies To My Posts': 'post',
 		'Chats With Friends': 'friend',
 		'Group Moderators': 'group',
-		'Admin Messages': 'system'
+		'Notifications': 'system'
 	};
 
 	export default {
@@ -108,7 +108,7 @@
 					if (threadIdentifier = search.substring(1).match(/type=post&id=(\d+)/)) {
 						return Promise.resolve()
 						.then(() => this.selectTopic({ topic: { type: 'post', post: { id: threadIdentifier[1] } } }))
-						.then(() => this.selectTopicCategory('To My Posts'));
+						.then(() => this.selectTopicCategory('Replies To My Posts'));
 					}
 
 					if (threadIdentifier = search.substring(1).match(/thread=(\d+)/)) {
@@ -133,7 +133,7 @@
 				return this.getTopicsInCategory(this.currentCategory);
 			},
 			unreadAdminMessages() {
-				return this.getTopicsInCategory('Admin Messages').reduce((count, topic) => {
+				return this.getTopicsInCategory('Notifications').reduce((count, topic) => {
 					return count + topic.unreadCount;
 				}, 0);
 			}
@@ -210,7 +210,7 @@
 					}
 
 					if (type === 'post') {
-						if (category === 'To My Posts') {
+						if (category === 'Replies To My Posts') {
 							return this.me.id === topic.post.user.id;
 						}
 						else {
@@ -225,10 +225,10 @@
 
 				if (topic.type === 'post') {
 					if (this.me.id === topic.post.user.id) {
-						return 'To My Posts';
+						return 'Replies To My Posts';
 					}
 					else {
-						return 'Posts';
+						return 'Replies To Others\' Posts';
 					}
 				}
 
