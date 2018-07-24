@@ -5,7 +5,7 @@
 				<li v-for="category in categories" class="tabs-title">
 					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentCategory">
 						{{ category }}
-						<span class="messages-unread-admin-badge" v-if="category === 'Admin Messages' && unreadAdminMessages">
+						<span class="messages-unread-admin-badge" v-if="category === 'Notifications' && unreadAdminMessages">
 							<span v-if="unreadAdminMessages <= 9">({{ unreadAdminMessages }})</span>
 							<span v-if="unreadAdminMessages > 9">(9+)</span>
 						</span>
