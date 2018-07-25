@@ -50,7 +50,7 @@ module.exports = {
             options: {
                 abortEarly: false,
                 language: {
-                    key: '{{!key}} field '
+                    key: '{{!label}} field '
                 }
             }
         }
@@ -61,8 +61,8 @@ module.exports = {
 
         if (request.auth.isAuthenticated) {
 
-            // Redirect from successful Facebook signup (user is new, but authenticated)
-            if (request.query.facebook) {
+            // Redirect from successful signup, both FC and Facebook signups (user is new, but authenticated)
+            if (request.query.success) {
                 return reply.view('signup', {
                     title: 'Connect',
                     data: {
@@ -124,12 +124,7 @@ module.exports = {
 
             request.cookieAuth.set(userId, token);
 
-            return reply.view('signup', {
-                title: 'Connect',
-                data: {
-                    step2: {}
-                }
-            });
+            return reply.redirect('/signup?success=fc').temporary();
         })
         .catch((err) => {
 
