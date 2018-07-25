@@ -2,7 +2,7 @@
   <div class="row">   <!-- TODO: this needs to repeat for each group the user is in. -->
     <div class="medium-12 columns form-group">
       <label for="notice-settings">{{pref.name}}
-        <select class="select-notice-settings" name="emailDeliveryPreferences" data-width="100%">
+        <select class="select-notice-settings" name="townNotificationPreferences" data-width="100%">
           {% for option in notificationOptions %}
             {% if pref.value === option.value %}
               <option value="{{pref.townId}},{{option.value}}" selected="selected">{{option.type}}</option>

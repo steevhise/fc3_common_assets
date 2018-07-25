@@ -103,18 +103,28 @@
                       </select>
                   </label>
               </div>
-          </div>
+        </div>
         <div class="row">
           {% include '../partials/home_group.html' %}
           {% include '../partials/default_location.html' %}
         </div>
-
-        {% if data.settings.emailDeliveryPreferences.length %}
-          <hr>
-          <h3 class="text-center columns">Town Notification Preferences</h3>
-          {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.emailDeliveryPreferences } %}
-        {% endif %}
         <hr>
+        <h3 class="text-center columns">Global Email Preferences</h3>
+        {% for emailType in data.emailTypes %}
+          <div class="row">
+            {% if data.settings.emailTypePreferences|contains(emailType.id) %}
+              <input type="checkbox" id="email-type-{{emailType.id}}" name="emailTypePreferences" value="{{emailType.id}}" checked />
+            {% else %}
+              <input type="checkbox" id="email-type-{{emailType.id}}" name="emailTypePreferences" value="{{emailType.id}}" />
+            {% endif %}
+            <label for="email-type-{{emailType.id}}">{{emailType.name}}</label>
+          </div>
+        {% endfor %}
+        {% if data.settings.townNotificationPreferences %}
+          <h3 class="text-center columns">Town Email Preferences</h3>
+          {%  include '../partials/notification_prefs.html' with { notificationOptions: data.notificationOptions, preferences: data.settings.townNotificationPreferences } %}
+        {% endif %}
+        <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
       <div style="text-align: center; margin-top: 2rem;">
