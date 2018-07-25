@@ -1,5 +1,5 @@
 <template>
-	<span id="fc-messages-notifier" :class="{ pulse : unreadRepliesCount }">
+	<span id="fc-messages-notifier" :class="{ 'bg-light-gray' : unreadRepliesCount }">
 		{{ unreadRepliesCount }}
 	</span>
 </template>
