@@ -44,6 +44,7 @@ exports.register = Util.callbackify((server, options) => {
         server.ext(combine(
             require('./extensions/errors'),
             require('./extensions/alert-count'), // Order matters here; alert-count is expected to run after the errors check
+            require('./extensions/unread-replies'),
             require('./extensions/maintenance')
         ));
 
@@ -74,8 +75,8 @@ exports.register = Util.callbackify((server, options) => {
             password: options.cookiePassword,
             clientId: options.facebook.clientId,
             clientSecret: options.facebook.clientSecret,
-            isSecure: !options.dev,     // Terrible idea to be false but required if not using HTTPS especially if developing locally
-            providerParams: { display: 'popup' }
+            isSecure: !options.dev,
+            scope: ['email', 'user_friends']
         });
 
         server.views(require('./view-manager')(server, options));

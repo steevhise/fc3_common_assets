@@ -97,7 +97,8 @@ const actions = {
 		});
 	},
 	selectThread({ commit, dispatch, state }, threadId) {
-
+		let self = this;
+		self._vm.$bus.$emit('threads.loading');
 		const { topic } = state.threads[threadId];
 
 		return jQuery.post(`/api/messaging/threads/${threadId}/read`)
@@ -107,8 +108,30 @@ const actions = {
 				dispatch('loadTopic', { topic }),
 				jQuery.get(`/api/messaging/threads/${threadId}`).then((thread) => {
 					commit('selectThread', thread);
+					self._vm.$bus.$emit('threads.done');
 				})
 			]);
+		});
+	},
+	selectNestedThread({ commit, dispatch, state }, threadId) {
+
+		let thread, topic;
+
+		return Promise.all([
+			jQuery.post(`/api/messaging/threads/${threadId}/read`),
+			jQuery.get(`/api/messaging/threads/${threadId}`)
+		])
+		.then(([success, thr]) => {
+
+			thread = thr;
+			topic = thr.topic;
+
+			return dispatch('loadTopic', { topic });
+		})
+		.then(() => {
+
+			commit('selectTopic', { topic });
+			commit('selectThread', thread);
 		});
 	},
 	sendMessage({ commit, dispatch, state }, body) {

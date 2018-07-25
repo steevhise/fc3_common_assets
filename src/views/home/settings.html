@@ -1,7 +1,7 @@
 {% extends '../layout/layout.html' %}
 
 {% block content %}
-
+{# TODO: make this use horizontal_tabs like everywhere else #}
 <div class="horizontal_tabs">
   <!--  tabs  -->
   <ul class="tabs" id="h-example-tabs" data-tab data-update-history="true" data-options="deep_linking:true">
@@ -127,6 +127,23 @@
         <input type="submit" class="btn-fb" value="Link to Facebook"/>
         <input type="submit" class="btn-default" value="Save Changes"/>
       </form>
+      <div style="text-align: center; margin-top: 2rem;">
+        {% if data.settings.facebookId %}
+            <hr>
+            <form method="POST" action="/fb-disconnect">
+              <button name="action" class="btn btn-fb" style="margin: 2px">
+                 <i class="icon fa fa-sign-out"></i> Disconnect Facebook Account
+               </button>
+            </form>
+        {% else %}
+            <hr>
+            <form method="POST" action="/fb-connect">
+              <button name="action" class="btn btn-fb" style="margin: 2px">
+                 <i class="icon fa fa-sign-in"></i> Connect Account to Facebook
+               </button>
+            </form>
+        {% endif %}
+      </div>
     </div>
     <div class="tabs-panel" id="myreplies"></div>
     <div class="tabs-panel" id="myposts"></div>

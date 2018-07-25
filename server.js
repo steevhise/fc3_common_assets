@@ -2,9 +2,11 @@
  * It's the Freecycle 3.0 main web application! w00t!  hurrah!
  */
 
+//  This has to be first, as explained here: https://www.elastic.co/guide/en/apm/agent/nodejs/current/hapi.html#hapi-initialization
+const Apm = require('elastic-apm-node');
+Apm.start();
+
 const Hapi = require('hapi');
-const Oppsy = require('oppsy');             // TODO: not ported to hapi 17 yet! but in progress, apparently
-// const { Config } = require('@freecycle/freecycle_node_dal');
 const { Config } = require('@freecycle/freecycle_node_dal');
 
 exports.deployment = (start) => {
@@ -58,15 +60,11 @@ exports.deployment = (start) => {
                 dev: process.env.NODE_ENV !== 'production',
                 maintenanceMode: config.maintenanceMode,
                 cookiePassword: 'abscdfvhgnjtrueyfhdmjkrutifhdjr4',
-                facebook: {
-                    clientId: '117834011565165',
-                    clientSecret: 'fa596fcabbeb2651544ed73ea7c847e3'
-                },
+                facebook: process.env.NODE_ENV === 'production' ? config.facebook.prod : config.facebook.test,
                 imagesURL: 'https://images.freecycle.org',
                 legacyConfigPath                                // this is so we can get the Gearman config not read elsewhere.
             }
         },
-
         {
             register: require('good'),          // TODO: still not ported to hapi 17
             options: {
@@ -105,7 +103,9 @@ exports.deployment = (start) => {
             return server;
         }
 
-
+        // we are sending ops data using Elastic APM agent.
+        // attach the agent to the server here so we send custom data at will from anywhere.
+        server.decorate('server', 'apm', Apm);
 
         return server.start()
             .then(() => console.log('Server running at:', server.info.uri))

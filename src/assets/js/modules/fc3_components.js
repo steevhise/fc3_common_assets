@@ -49,6 +49,15 @@ Vue.component('fc-login', Login);
 import MessagesBoardConnected from '../components/MessagesBoardConnected.vue';
 Vue.component('fc-messages-board-connected', MessagesBoardConnected);
 
+import MessagesNotifierConnected from '../components/MessagesNotifierConnected.vue';
+Vue.component('fc-messages-notifier-connected', MessagesNotifierConnected);
+
+import FacebookFriends from '../components/FacebookFriends.vue';
+Vue.component('fc-facebook-friends', FacebookFriends);
+
+import FacebookMessage from '../components/FacebookMessage.vue';
+Vue.component('fc-facebook-message', FacebookMessage);
+
 Vue.component('fc-map-cluster', {
 	extends: VueGoogleMapsCluster,
 	mounted() {
@@ -95,7 +104,9 @@ export const MainVue = new Vue({
 			posts: {
 				layout: 'list',
 				filter: null,
-				tags: []
+				tags: [],
+				towns: [],
+				selectedTown: ''
 			},
 			towns: {
 				searchQuery: '',

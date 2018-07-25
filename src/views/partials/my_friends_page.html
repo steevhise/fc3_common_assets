@@ -1,5 +1,8 @@
 <div class="row">
   <h4 class="text-center page-sub-title">My Friends</h4>
+  <div class="row text-center" style="margin-top: 25px; margin-bottom: 25px;">
+    <a href="/home/my-friends/find" class="btn btn-action" >Find More Friends</a>
+  </div>
   {% include './friends_select.html' with { label:'Search Friends', options: friends } %}
   <div class="friends-cards">
     {% for friend in friends %}

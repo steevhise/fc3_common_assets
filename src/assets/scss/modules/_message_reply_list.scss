@@ -124,6 +124,13 @@
 
 .message-list-item-details-chat-message {
   align-self: flex-start;
+  max-width: 75%;
+  //display: flex;
+
+  &.message-from-self {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
 
   .chat-message-from {
     font-family: $header-font-family;
@@ -133,10 +140,20 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    align-self: inherit;
+    justify-content: inherit;
+
+    &.message-from-self {
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+
   }
+
   .chat-message-message {
     background: $black;
     color: $white;
+    display: flex;
     margin-bottom: 0;
     p { // Particularly for system messages, which contain markup
       color: $white;
@@ -145,20 +162,35 @@
     font-size: 1rem;
     padding: .875rem;
     font-weight: bold;
+
+    &.message-from-self {
+      display: flex;
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
   }
   .chat-message-time {
     font-size: .875rem;
     color: $dark-gray;
-  }
-  &.message-from-self {
-    align-self: flex-end;
 
-    .chat-message-message {
-      background: $white;
-      color: $black;
+    &.message-from-self {
+      display: flex;
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+  }
+
+  .chat-message-message {
+    background: $white;
+    color: $black;
+
+    &.message-from-self {
+      align-self: flex-end;
+      justify-content: flex-end;
     }
   }
 }
+
 
 .message-list-item-details-chat-form {
   padding: 1rem;
