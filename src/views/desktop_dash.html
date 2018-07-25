@@ -7,7 +7,22 @@
   <!--  tabs-content  -->
   <div class="tabs-content" data-tabs-content="h-example-tabs">
     <div class="tabs-panel is-active" id="dashboard">
-      {% include './partials/item_list.html'%}
+      {% if !data.friendships.length || !data.towns.length %}
+        <div class="row" style="text-align: center;">
+          <div style="margin-bottom: 2rem;">
+            <h4 {% if data.friendships.length || data.towns.length %}style="display: inline;"{% endif %}>Get Connected</h4>
+          {% if !data.friendships.length %}
+            <a class="btn btn-wanted" href="/home/my-friends/find">Add Friends</a>
+          {% endif %}
+          {% if !data.towns.length %}
+            <a class="btn btn-lend" href="/find-towns">Find Towns</a>
+          {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      {% if data.posts && data.posts.length %}
+        {% include './partials/item_list.html'%}
+      {% endif %}
     </div>
     <div class="tabs-panel" id="myreplies">
       {% for messageSet in messageSets %}

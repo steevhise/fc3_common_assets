@@ -39,9 +39,10 @@ module.exports = {
         return Promise.all([
             postService.forUser(credentials.id, criteria),
             tagService.fetchAll(),
-            userService.fetchTownMemberships(credentials.id)
+            userService.fetchTownMemberships(credentials.id),
+            userService.fetchFriendships(credentials.id)
         ])
-        .then(([posts, tags, towns]) => {
+        .then(([posts, tags, towns, friendships]) => {
 
             reply.view('desktop_dash', {
                 title: 'Dashboard',
@@ -49,6 +50,7 @@ module.exports = {
                     posts,
                     tags,
                     towns,
+                    friendships,
                     criteria: {
                         town: (!town && !friends) ? 'all' : town,
                         friends

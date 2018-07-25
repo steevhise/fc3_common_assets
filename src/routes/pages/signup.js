@@ -64,7 +64,7 @@ module.exports = {
             // Redirect from successful Facebook signup (user is new, but authenticated)
             if (request.query.facebook) {
                 return reply.view('signup', {
-                    title,
+                    title: 'Connect',
                     data: {
                         step2: {}
                     }
@@ -125,7 +125,7 @@ module.exports = {
             request.cookieAuth.set(userId, token);
 
             return reply.view('signup', {
-                title,
+                title: 'Connect',
                 data: {
                     step2: {}
                 }
