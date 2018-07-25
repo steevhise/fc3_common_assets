@@ -13,7 +13,7 @@
 				</div>
 				<fc-form action="/api/messaging/send">
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
-					<textarea name="body" rows="15" required @input="checkCharCount($event)"></textarea>
+					<input type="text" name="body" required @input="checkCharCount($event)">
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
 					<input class="btn btn-default" type="submit" value="Send">
 				</fc-form>
