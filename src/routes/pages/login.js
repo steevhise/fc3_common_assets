@@ -72,7 +72,7 @@ module.exports = {
                 if (err instanceof internals.LoginRequired) {
                     return reply.view('login', {
                         title: 'Login Required',
-                        msg: 'Invalid username/email or password.'
+                        errors: [{ message: 'Invalid username/email or password.' }]
                     });
                 }
 
@@ -81,12 +81,16 @@ module.exports = {
         }
 
         // Might receive an error redirected from facebook login
-        const msg = Hoek.reach(request, 'state.redirectedError.message');
+        const message = Hoek.reach(request, 'state.redirectedError.message');
         reply.unstate('redirectedError');
+        const errors = null;
+        errors = message ? [{ message }] : errors;
 
+        const { referrer } = request.info;
         return reply.view('login', {
             title: 'Login Required',
-            msg
+            passwordReset: typeof referrer === 'string' && /\/login\/password_reset\/\w*$/.test(referrer),
+            errors
         });
     }
 };
