@@ -123,3 +123,9 @@
   padding-right: 3rem;
 }
 
+.btn-alert {
+    background-color: #ec5840;
+    &:hover {
+      background-color: #cc4b37;
+    }
+}

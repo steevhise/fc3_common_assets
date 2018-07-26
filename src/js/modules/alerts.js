@@ -36,4 +36,10 @@ export class AlertItems {
 
 document.addEventListener("DOMContentLoaded", ()=> {
   const alertItems = new AlertItems(".alerts_existing");
+
+  $(".delete-alert-cancel").on('click', (e) => {
+
+    const modalId = $(e.currentTarget).parents(".reveal").attr("id");
+    $(`#${modalId}-close`).click();
+  });
 });
