@@ -123,6 +123,18 @@
   padding-right: 3rem;
 }
 
+.btn-subtle {
+    @extend .btn;
+    color: gray;
+    border: 4px solid gray;
+}
+
+.btn-subtle:hover {
+  color: white;
+  background-color: gray;
+  border: 4px solid gray;
+}
+
 .btn-alert {
     background-color: #ec5840;
     &:hover {
