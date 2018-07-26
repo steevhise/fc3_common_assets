@@ -31,12 +31,15 @@ module.exports = {
 
             // Post is valid, just hasn't passed moderation
             if (!post.isApproved) {
-                if (!isAuthenticated || viewerId !== credentials.id) {
+                if (!isAuthenticated || viewerId !== post.userId) {
                     return reply(Boom.notFound('That post was not found, and may have been closed.'));
                 }
 
+                const { rejectReason } = post;
                 reply.state('redirectedError', {
-                    message: 'Your post is being moderated. You will be notified when the group\'s moderator has approved it',
+                    message:
+                        `Your post is being moderated. ${ rejectReason ? 'It was automatically flagged for moderation due content that may be questionable.' : ''}
+                        You will be notified when the group\'s moderator has approved or rejected it.`,
                     path: request.route.path.replace('{postId}', request.params.postId),
                     type: 'postModeration'
                 });
