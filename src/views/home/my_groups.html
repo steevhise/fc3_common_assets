@@ -13,7 +13,19 @@
     </div>
     <div class="tabs-panel" id="myfriends"></div>
     <div class="tabs-panel is-active" id="mygroups">
-      {% include '../partials/my_groups_page.html'%}
+      {% if !data.locatedGroups || !data.locatedGroups.length %}
+        <div class="row">
+          <h4 class="text-center page-sub-title">{{ title }}</h4>
+          <div class="row text-center">
+            Looks like you haven't joined any towns yet. To view items being gifted or post an item yourself, you will need to join a local Town group.
+          </div>
+          <div class="row text-center" style="margin: 2rem 0;">
+            <a class="btn btn-lend" href="/find-towns">Find a town</a>
+          </div>
+        </div>
+      {% else %}
+        {% include '../partials/my_groups_page.html'%}
+      {% endif %}
     </div>
   </div>
   {% include '../partials/in_body_banner_row.html'%}

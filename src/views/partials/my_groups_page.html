@@ -1,5 +1,5 @@
 <div class="row">
-  <h4 class="text-center page-sub-title">My Towns</h4>
+  <h4 class="text-center page-sub-title">{{ title }}</h4>
   <div class="row text-center">
     Want to join another town? <a href="/find-towns">Find more here</a>
   </div>
@@ -48,3 +48,30 @@
     </table>
   </div>
 </div>
+
+{% if data.friendships && !data.friendships.length %}
+<div class="row" id="first-group" style="margin-top: -2rem; background-color: white;">
+  <div class="small-4" style="margin: auto; padding: 2rem;">
+      <div>
+        <strong>
+          <p>What's next? Have you setup your Friends Circle yet?</p>
+          <p>
+            Your Friends Circle is your own personal inner circle of friends with
+            whom you can not only gift items but also lend items out. Perfect for hobby
+            groups that regularly share items, for example
+          </p>
+        </strong>
+      </div>
+      <div style="margin: 2rem 0;">
+          <a class="btn btn-wanted" href="/home/my-friends/find">Add Friends</a>
+      </div>
+      <div style="margin-top: 6rem; font-style: italic;">
+          Return to my
+          <a class="btn btn-subtle right" href="/home/dashboard"
+              data-tooltip tabindex="1" title="Are you sure? Starting your Friends Circle helps make the most of the Freecycle Network">
+              Dashboard
+          </a>
+      </div>
+  </div>
+</div>
+{% endif %}
