@@ -134,3 +134,10 @@
   background-color: gray;
   border: 4px solid gray;
 }
+
+.btn-alert {
+    background-color: #ec5840;
+    &:hover {
+      background-color: #cc4b37;
+    }
+}
