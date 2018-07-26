@@ -40,6 +40,7 @@
                 <form method="POST">
                   <input type="hidden" name="deleteAlertTag" value="{{alert.tag.id}}" />
                   <button class="btn btn-default" type="submit">Delete Alert</button>
+                  <button class="btn btn-alert delete-alert-cancel" type="button">No, Cancel</button>
                 </form>
               </fc-modal>
               <div class="alert_name large-8 small-6">
@@ -50,7 +51,8 @@
                 {% endif %}
               </div>
               {% if alert.posts.length %}
-                <div class="message-arrow alert_result-count large-2 small-3">
+                <p>{{ alert.posts.length }} matches</p>
+                <div class="message-arrow alert_result-count large-2 small-3 {% if alert.tag.id === data.newAlertId %}open{% endif %}">
                   {% include '../icons/arrow.html' with {className:'icon-message-arrow'} only %}
                 </div>
               {% else %}
@@ -59,7 +61,7 @@
             </div>
           </div>
           {% if alert.posts.length %}
-            <div class="alert_result large-12" data-result-id={{loop.index}}>
+            <div class="alert_result large-12" data-result-id={{loop.index}} {% if alert.tag.id === data.newAlertId %}style="display: block;"{% endif %}>
               {% include '../partials/alert_result.html' with { posts: alert.posts } %}
               <hr class="alert_result-divider" />
             </div>
