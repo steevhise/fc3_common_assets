@@ -4,9 +4,16 @@
 			 no-op if component isn't used within a modal -->
 		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }" data-close >X</div>
 		<div v-if="topic" class="message-list-item-header">
-			<h4>{{title(topic)}}</h4>
-			<div class="message-list-item-post-icon" v-if="topic.topic.type === 'post'">
-					<fc-post-icon :post="topic.topic.post" />
+			<h4 v-if="topic.topic.type !== 'post'">{{title(topic)}}</h4>
+			<div  class="message-list-item-post-icon" v-if="topic.topic.type === 'post'">
+
+				<h4>{{title(topic)}}</h4>    <!-- for now - later topic will be covered by below -->
+
+				<!-- // TODO: make the header look like the standard post list item. i can't get it to work but below is a start.
+				 {{ console.log(topic.topic) }}
+				<fc-data :item="topic.topic" context="posts" :viewer="1" component="fc-post-list-item" :path="topic.topic.post.path"></fc-data>
+-->
+				<fc-post-icon :post="topic.topic.post" />
 			</div>
 		</div>
 		<div class="message-list-item-details">
@@ -37,7 +44,7 @@
 				/>
 				<div class="message-list-item-details-chat-form">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
-						<textarea ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required></textarea>
+						<input type="text" ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required>
 						<fc-spinner v-if="sendingMessage" size="medium" message="Sending..."></fc-spinner>
 						<button class="btn-default" v-else>Send</button>
 					</form>
