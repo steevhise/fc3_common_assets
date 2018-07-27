@@ -1,7 +1,7 @@
 <template>
 	<div class="post-list-item" >
 		<div class="post-list-item-photo">
-			<img :src="post.thumb" v-if="post.thumb">
+			<img width="128" :src="post.thumb" v-if="post.thumb">
 			<fc-icon name="logo" width="128" v-else></fc-icon>
 		</div>
 		<div class="post-list-item-content">
@@ -25,14 +25,14 @@
 						<option value="replies">See Replies</option>
 					</select>
 					<p v-else-if="viewer === post.userId && !post.isApproved" class="callout alert">In Moderation</p>
-					<fc-messages-detail-input v-else topic-type="post" :topic-id="post.id" :custom-trigger=replyButton >
+					<fc-messages-detail-input v-else topic-type="post" :topic-id="post.id" :custom-trigger="replyButton" >
 					  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
 				</div>
 			</div>
 			<div class="post-list-item-content-description">
 				<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
-				<p class="paragraph-small" v-html="post.description"></p>
+				<p> {{post.description | stripTags | truncate(120)}}</p>
 			</div>
 		</div>
 	</div>

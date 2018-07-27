@@ -8,7 +8,7 @@
 	export default {
 		name : 'fc-data',
 		props : {
-			limit: { type: Number, default: 10 },
+			limit: { type: Number, default: 50 },
 			component: { type: String, required: true },
 			data: { type: Object, default: {} },
 			viewer: { type: Number, default: 0 },
@@ -25,7 +25,7 @@
 		},
 		created() {
 			let self = this;
-
+			
 			this.$root.listView = true;
 
 			this.$root.$on('redrawVueMasonry', () => {
@@ -55,26 +55,33 @@
 			items() {
 				let self = this;
 				let results = [];
-				let currentPosts = this.$lodash.filter(self.data.posts, function(item, index) {
+				
+				results = self.$lodash.filter(self.data.posts, function(item, index) {
 					return !self.deletedPosts.includes(item.id);
 				});
 
-				results = this.$lodash.filter(currentPosts, function(item, index) {
+				results = self.$lodash.filter(results, function(item, index) {
 					return self.$lodash.inRange( index, 0, self.currLimit );
 				});
 
 				if (self.$root.posts.filter) {
-					results = this.$lodash.filter(currentPosts, function(item, index) {
+					results = self.$lodash.filter(results, function(item, index) {
 						return item.type.name.toLowerCase() == self.$root.posts.filter;
 					});
 				}
 
 				if (self.selectedTags.length > 0) {
-					results = this.$lodash.filter(currentPosts, function(item, index) {
+					results = self.$lodash.filter(results, function(item, index) {
 						return self.$findOne(self.$lodash.values(self.selectedTags), self.$lodash.values(self.$lodash.mapValues(item.tags, 'name')));
 					})
 				}
-
+				
+				if (self.$root.posts.selectedTown.length > 0) {
+					results = self.$lodash.filter(results, function(item, index) {
+						return item.group.name === self.$root.posts.selectedTown;
+					})
+				}
+				
 				self.$root.$emit('redrawVueMasonry');
 				return results;
 			}
@@ -88,7 +95,7 @@
 		},
 		mounted() {
 			let self = this;
-
+			this.$root.posts.towns = this.data.towns;
 			window.$('.tag-select').on('change', function() {
 				self.selectedTags = window.$('.tag-select').val();
 				self.$emit('redrawVueMasonry');

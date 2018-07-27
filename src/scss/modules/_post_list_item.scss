@@ -98,12 +98,11 @@
     padding-top: rem-calc(1px);
     overflow: hidden;
     position: relative;
-    text-overflow: ellipsis;
     line-height: 1.2em;
     font-size: rem-calc(10px);
     max-height: 4.6em;
     text-align: justify;
-    width: max-content;
+    width: 100%;
     max-width: 75%;
     margin-right: -1em;
     padding-right: 1em;
@@ -125,7 +124,6 @@
 
   // ellipsis after truncated text
   .post-list-item-content-description:before {
-    content: '...';
     font-weight: bold;
     position: absolute;
     right: 0;
