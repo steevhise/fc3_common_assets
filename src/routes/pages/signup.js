@@ -39,13 +39,7 @@ module.exports = {
                                 allowOnly: 'does not match password'
                             }
                         }
-                    }),
-                acceptedTerms: Joi.boolean()
-                    .valid(true)
-                    .falsy('0', 'false', '')
-                    .truthy('1', 'true')
-                    .required()
-                    .label('Terms of service')
+                    })
             },
             options: {
                 abortEarly: false,
@@ -95,7 +89,7 @@ module.exports = {
         // Below assumes we're POSTing to signup and not auth'd
 
         const { authService } = request.server;
-        const { validation, user, email, password, acceptedTerms } = request.payload;
+        const { validation, user, email, password } = request.payload;
         const fail = (errors) => {
 
             return reply.view('signup', {
@@ -114,7 +108,7 @@ module.exports = {
         return Promise.resolve()
         .then(() => {
 
-            return authService.signup({ username: user, email, password, acceptedTerms });
+            return authService.signup({ username: user, email, password });
         })
         .then((userId) => {
 
