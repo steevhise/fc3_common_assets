@@ -25,7 +25,7 @@
 		},
 		created() {
 			let self = this;
-			
+
 			this.$root.listView = true;
 
 			this.$root.$on('redrawVueMasonry', () => {
@@ -37,6 +37,10 @@
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
 				self.$root.$emit('redrawVueMasonry');
+				if (self.currLimit >= self.data.posts.length) {
+					// hide load more button if all posts are visible
+					window.$('#item-list-load-more').hide();
+				}
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -55,7 +59,7 @@
 			items() {
 				let self = this;
 				let results = [];
-				
+
 				results = self.$lodash.filter(self.data.posts, function(item, index) {
 					return !self.deletedPosts.includes(item.id);
 				});
@@ -75,13 +79,13 @@
 						return self.$findOne(self.$lodash.values(self.selectedTags), self.$lodash.values(self.$lodash.mapValues(item.tags, 'name')));
 					})
 				}
-				
+
 				if (self.$root.posts.selectedTown.length > 0) {
 					results = self.$lodash.filter(results, function(item, index) {
 						return item.group.name === self.$root.posts.selectedTown;
 					})
 				}
-				
+
 				self.$root.$emit('redrawVueMasonry');
 				return results;
 			}
