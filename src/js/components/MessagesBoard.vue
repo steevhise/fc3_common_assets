@@ -21,11 +21,11 @@
 					</li>
 				</ul>
 			</div>
-			
+
 			<div class="message-list-item-details-chat" v-if="loadingThreads" >
 				<fc-spinner size="huge" message="Loading..."></fc-spinner>
 			</div>
-			
+
 			<div v-else class="message-list-item-details-chat">
 				<fc-messages
 					:style="{
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-	import helpers from './helpers';
+	import { topicTitle } from './helpers';
 
 	export default {
 		name: 'fc-messages-board',
@@ -80,11 +80,11 @@
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
-			title: helpers.topicTitle,
+			title: topicTitle,
 			handleSubmit() {
 				let self = this;
 				self.sendingMessage = true;
-				
+
 				const body = this.$refs.messageBody.value;
 				const form = this.$refs.messageForm;
 

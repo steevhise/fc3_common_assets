@@ -37,7 +37,7 @@
 
 <script>
 	import moment from 'moment';
-	import helpers from './helpers';
+	import { topicTitle } from './helpers';
 
 	export default {
 		name: 'fc-messages-topics',
@@ -52,7 +52,7 @@
 		},
 		methods: {
 			ago: (time) => moment(time).fromNow(),
-			title: helpers.topicTitle,
+			title: topicTitle,
 			image: ({ topic }) => {
 
 				const byType = {
