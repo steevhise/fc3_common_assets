@@ -111,7 +111,7 @@
             </form>
         </fc-modal>
       </div>
-      {% if friendStatus !== 'BLOCKING' %}
+      {% if friendStatus !== 'BLOCKING' && data.profile.blockable %}
         {% include 'partials/friendship_action_button.html' with {
           username: data.profile.username,
           action: 'block',
@@ -179,8 +179,8 @@
               <tbody>
                 {% for group in data.profile.groups %}
                 <tr>
-                  <td><h4>{{group.group.name}}</h4></td>  <!-- TODO: take out extra "group" from data structure? -->
-                  <td>{{group.group.region.name}}</td>
+                  <td><a href="/town/{{group.id}}"><h4>{{group.name}}</h4></a></td>
+                  <td>{{group.region.name}}</td>
                   <!-- TODO: <td>{{group.group.country.name}}</td>  ?? -->
                 </tr>
               {% endfor %}

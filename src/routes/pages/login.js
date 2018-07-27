@@ -83,7 +83,7 @@ module.exports = {
         // Might receive an error redirected from facebook login
         const message = Hoek.reach(request, 'state.redirectedError.message');
         reply.unstate('redirectedError');
-        const errors = null;
+        let errors = null;
         errors = message ? [{ message }] : errors;
 
         const { referrer } = request.info;

@@ -1,6 +1,6 @@
-<select class="group-dropdown">
-    <option selected>All My Towns</option>
-    <option>Tucson</option>
-    <option>Sierra Vista</option>
-    <option>Benson</option>
+<select class="group-dropdown" v-model="$root.posts.selectedTown">
+    <option selected value="">All My Towns</option>
+    {%raw%}
+    <option v-for="town in $root.posts.towns" :key="town.id" :value="town.name">{{town.name}}</option>
+    {%endraw%}
 </select>

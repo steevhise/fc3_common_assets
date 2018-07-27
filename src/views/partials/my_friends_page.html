@@ -1,9 +1,11 @@
 <div class="row">
   <h4 class="text-center page-sub-title">My Friends</h4>
   <div class="row text-center" style="margin-top: 25px; margin-bottom: 25px;">
-    <a href="/home/my-friends/find" class="btn btn-action" >Find More Friends</a>
+    <a href="/home/my-friends/find" class="btn btn-action" >Find{% if friends && friends.length %} More{% endif %} Friends</a>
   </div>
-  {% include './friends_select.html' with { label:'Search Friends', options: friends } %}
+  {% if friends && friends.length %}
+    {% include './friends_select.html' with { label:'Search Friends', options: friends } %}
+  {% endif %}
   <div class="friends-cards">
     {% for friend in friends %}
     {% include './friend_card.html' with friend %}

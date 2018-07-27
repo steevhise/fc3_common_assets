@@ -1,3 +1,4 @@
+const Hoek = require('hoek');
 const Joi = require('joi');
 const RouteHelpers = require('../helpers');
 
@@ -46,7 +47,7 @@ module.exports = {
 
                     return reply.continue();
                 })
-                .catch(reply);
+                .catch((err) => reply(err).takeover());
             }
         ]
     }),
@@ -54,6 +55,7 @@ module.exports = {
 
         const { alertService, tagService } = request.server;
         const { id: userId } = request.auth.credentials;
+        const newAlertId = Hoek.reach(request, 'payload.newAlertTag');
 
         return Promise.all([
             tagService.fetchAll(),
@@ -65,20 +67,21 @@ module.exports = {
             const formattedSuccess = request.payload ? internals.formatPostSuccessMessage(request.payload, tags) : null;
 
             return alertService.seeAlerts(userId)
-            .then(() => (
+            .then(() => {
 
-                reply.view('home/alerts', {
+                return reply.view('home/alerts', {
                     title: 'Alerts',
                     data: {
                         alerts,
+                        newAlertId,
                         formattedSuccess,
                         unalertedTags
                     },
                     inBodyAds: [
                         'one', 'two'
                     ]
-                })
-            ));
+                });
+            });
         });
     }
 };
@@ -90,7 +93,7 @@ internals.formatPostSuccessMessage = (payload, tags) => {
     let message = null;
 
     if (newAlertTag) {
-        message = `You will now receive alerts for posts tagged as ${tags.find((t) => t.id === newAlertTag).name}`;
+        message = 'You will now receive alerts for posts matching this search term. Matching results are displayed below.';
     }
     else if (deleteAlertTag) {
         message = 'Alert deleted!';
