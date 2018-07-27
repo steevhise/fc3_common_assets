@@ -5,23 +5,23 @@
 				<li v-for="category in categories" class="tabs-title">
 					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentCategory">
 						{{ category }}
-						<span class="messages-unread-admin-badge" v-if="category === 'Admin Messages' && unreadAdminMessages">
-							<span v-if="unreadAdminMessages <= 9">({{ unreadAdminMessages }})</span>
-							<span v-if="unreadAdminMessages > 9">(9+)</span>
+						<span class="messages-unread-admin-badge" v-if="unreadCategoryMessages[category]">
+							<span v-if="unreadCategoryMessages[category] <= 9">({{ unreadCategoryMessages[category] }})</span>
+							<span v-if="unreadCategoryMessages[category] > 9">(9+)</span>
 						</span>
 					</a>
 				</li>
 			</ul>
 		</div>
 		<fc-messages-topics
-			v-if="currentCategory !== 'Admin Messages'"
+			v-if="currentCategory !== 'Notifications'"
 			:category="currentCategory"
 			:topics="topicsInCategory"
 			:on-click-topic="selectTopic"
 			:topic-modal-id="modalId"
 		/>
 		<fc-messages
-			v-if="currentCategory === 'Admin Messages'"
+			v-if="currentCategory === 'Notifications'"
 			show-html
 			:messages="currentMessages.reverse()"
 			:me="me"
@@ -51,11 +51,11 @@
 	import { mapGetters, mapActions } from 'vuex';
 
 	const TOPIC_CATEGORY_MAP = {
-		'Posts': 'post',
-		'To My Posts': 'post',
+		'Replies To Others\' Posts': 'post',
+		'Replies To My Posts': 'post',
 		'Chats With Friends': 'friend',
 		'Group Moderators': 'group',
-		'Admin Messages': 'system'
+		'Notifications': 'system'
 	};
 
 	export default {
@@ -108,7 +108,7 @@
 					if (threadIdentifier = search.substring(1).match(/type=post&id=(\d+)/)) {
 						return Promise.resolve()
 						.then(() => this.selectTopic({ topic: { type: 'post', post: { id: threadIdentifier[1] } } }))
-						.then(() => this.selectTopicCategory('To My Posts'));
+						.then(() => this.selectTopicCategory('Replies To My Posts'));
 					}
 
 					if (threadIdentifier = search.substring(1).match(/thread=(\d+)/)) {
@@ -132,10 +132,14 @@
 			topicsInCategory() {
 				return this.getTopicsInCategory(this.currentCategory);
 			},
-			unreadAdminMessages() {
-				return this.getTopicsInCategory('Admin Messages').reduce((count, topic) => {
-					return count + topic.unreadCount;
-				}, 0);
+			unreadCategoryMessages() {
+
+				const categoryUnreadMap = {};
+				Object.keys(TOPIC_CATEGORY_MAP).forEach((category) => {
+
+					categoryUnreadMap[category] = this.getUnreadForCategory(category)
+				});
+				return categoryUnreadMap;
 			}
 		},
 		watch: {
@@ -200,7 +204,7 @@
 					}
 
 					if (type === 'post') {
-						if (category === 'To My Posts') {
+						if (category === 'Replies To My Posts') {
 							return this.me.id === topic.post.user.id;
 						}
 						else {
@@ -215,10 +219,10 @@
 
 				if (topic.type === 'post') {
 					if (this.me.id === topic.post.user.id) {
-						return 'To My Posts';
+						return 'Replies To My Posts';
 					}
 					else {
-						return 'Posts';
+						return 'Replies To Others\' Posts';
 					}
 				}
 
@@ -228,6 +232,12 @@
 			isSystem(topic) {
 
 				return topic && topic.topic.type === 'system';
+			},
+			getUnreadForCategory(category) {
+
+				return this.getTopicsInCategory(category).reduce((count, topic) => {
+					return count + topic.unreadCount;
+				}, 0);
 			}
 		}
 	}

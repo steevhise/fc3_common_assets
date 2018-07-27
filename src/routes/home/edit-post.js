@@ -210,15 +210,6 @@ internals.handleUpdateError = (request) => {
             return;
         }
 
-        if (err instanceof postService.CheckHotwordsError) {
-            request.app.formValidation.push({
-                type: 'form',
-                message: 'Your post seems to contain content that violates our terms of service.'
-            });
-
-            return;
-        }
-
         throw err;
     };
 };

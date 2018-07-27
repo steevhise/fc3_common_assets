@@ -7,7 +7,7 @@
 			<fc-login v-if="this.type == 'login'"></fc-login>
 			<div v-else-if="this.type == 'custom'" v-html="content"></div>
 			<slot v-pre v-else></slot>
-			<button style="display: none;" data-close type="button">Close</button>
+			<button :id="`${this.getTarget}-close`" style="display: none;" data-close type="button">Close</button>
 		</div>
 	</div>
 </template>
@@ -42,7 +42,7 @@
 				if (fReveal.attr('aria-hidden') === 'false' && data.level === 'success') {
 					// Unfortunate workaround for the fact that foundation's close method appears to be unavailable
 					// in our project (guessing a missing library (modal requires motion-ui))
-					fReveal.find('button').trigger('click');
+					fReveal.find(`${this.getTarget}-close`).trigger('click');
 				}
 			});
 		}

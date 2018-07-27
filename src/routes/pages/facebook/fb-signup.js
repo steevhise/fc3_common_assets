@@ -48,7 +48,7 @@ module.exports = {
             request.cookieAuth.set(userId, token);
 
             // If we connected FB to existing FC account, we redirect as if user had just logged in
-            const redirect = userModel.constructor === request.server.context.models.UserStatic ? '/home/dashboard' : '/signup?facebook=success';
+            const redirect = userModel.constructor === request.server.context.models.UserStatic ? '/home/dashboard' : '/signup?success=facebook';
             return reply.redirect(redirect).temporary();
         })
         .catch((err) => {

@@ -1,14 +1,8 @@
 <template>
 	<div id="signup-wrapper">
         <div class="row collapse">
-            <div class="medium-3 columns">
-                <ul id="signup-tabs" data-tabs="" class="tabs vertical page-tabs-nav" role="tablist">
-                    <li class="tabs-title" v-bind:class="{ 'is-active': step1 }" role="presentation"><a>Registration</a></li>
-                    <li class="tabs-title" v-bind:class="{ 'is-active': step2 }" role="presentation"><a>Connect</a></li>
-                </ul>
-            </div>
-            <div class="medium-8 columns last">
-                <div class="tabs-content column vertical page-tabs-panels">
+            <div>
+                <div class="tabs-content vertical page-tabs-panels">
                     <div class="tabs-panel page-tabs-panel" v-bind:class="{ 'is-active': step1 }">
                         <div class="container">
                             <form method="POST" id="signupForm">
@@ -34,7 +28,7 @@
                                         </label>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
-                                        <p>By clicking Sign Up you agree to our <a href="/tos">Terms of Service</a> and our <a href="/about/privacy">Privacy Policy</a></p>
+                                        <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
 
@@ -46,7 +40,7 @@
                                                     <input type="text" name="username" placeholder="Username" required />
                                                 </div>
                                                 <div>
-                                                    <p>By clicking Sign Up you agree to our <a href="/tos">Terms of Service</a> and our <a href="/about/privacy">Privacy Policy</a></p>
+                                                    <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
                                                 </div>
                                                 <div>
                                                     <button class="btn-fb" type="submit"><i class="fa fa-facebook"></i>Sign Up with Facebook</button>
@@ -61,28 +55,23 @@
                     <div class="tabs-panel page-tabs-panel" v-bind:class="{ 'is-active': step2 }">
                         <div class="container">
                             <p>
-                                What next? Click on button below to connect with friends, join a town, or update your profile.
+                                <strong>
+                                    Congratulations! You're now a member of the largest re-use community on the planet!
+                                    Now let's get started. To view items being gifted or post an item yourself, you will need
+                                    to join a local Town group.
+                                </strong>
                             </p>
-                            <div class="clearfix">
-                                <div class="medium-4 columns float-left">
-                                    <a class="btn btn-lend" href="/home/my-towns/">Find A Town</a>
-                                </div>
-                                <div class="medium-4 columns float-left">
-                                    <a class="btn btn-wanted" href="/home/my-friends/">Find A Friend</a>
-                                </div>
-                                <div class="medium-4 columns float-left">
-                                    <a class="btn btn-borrow">Update Profile</a> <!-- TODO: pass current user to component in order to get to their profile. -->
-                                </div>
+                            <div style="margin: 2rem 0;">
+                                <a class="btn btn-lend" href="/find-towns">Find A Town</a>
+                            </div>
+                            <div style="margin-top: 6rem; font-style: italic;">
+                                Never mind, just take me to my
+                                <a class="btn btn-subtle right" href="/home/dashboard"
+                                    data-tooltip tabindex="1" title="Are you sure? You must join a town before you can reply to any posts">
+                                    Dashboard
+                                </a>
                             </div>
                         </div>
-
-                        <!--
-                            TODO:
-                            - complete / test step 3
-                            - add options to join town
-                            - add options to find friends
-                            - add options to fill out profile page.
-                        -->
                     </div>
                 </div>
             </div>

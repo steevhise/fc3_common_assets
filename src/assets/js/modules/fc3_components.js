@@ -104,7 +104,9 @@ export const MainVue = new Vue({
 			posts: {
 				layout: 'list',
 				filter: null,
-				tags: []
+				tags: [],
+				towns: [],
+				selectedTown: ''
 			},
 			towns: {
 				searchQuery: '',
