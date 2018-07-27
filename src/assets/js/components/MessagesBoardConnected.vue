@@ -29,7 +29,7 @@
 
 		<fc-spinner v-if="!topicsLoaded" size="huge" message="Loading..." ></fc-spinner>
 
-		<fc-modal :custom-target="modalId" :custom-trigger="`<div style='display: none;' data-open='${modalId}'></div>`">
+		<fc-modal :custom-target="modalId">
 			<fc-spinner v-if="currentMessages.length === 0" size="huge" message="Loading..."></fc-spinner>
 			<fc-messages-board
 				v-if="currentMessages.length > 0"
@@ -158,16 +158,6 @@
 
 				if (this.isSystem(prevTopic) && !this.isSystem(currTopic)) {
 					this.deselectTopic();
-				}
-			},
-			currentTopic: function (currTopic, prevTopic) {
-
-				// From unselected to selected (reloading the current topic e.g. in selectThread also triggers this watcher)
-				if (currTopic && !this.isSystem(currTopic) && !prevTopic) {
-					// Defers opening the modal till after onClickTopic wiring has resolved
-					// Ensures modal opens with current thread (instead of opens w/ outdated, then rerenders)
-					const modalTrigger = $(`[data-open='${this.modalId}']`);
-					modalTrigger.click();
 				}
 			}
 		},
