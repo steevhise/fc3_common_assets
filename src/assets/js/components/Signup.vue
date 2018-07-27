@@ -28,7 +28,7 @@
                                         </label>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
-                                        <p>By clicking Sign Up you agree to our <a href="/tos">Terms of Service</a> and our <a href="/about/privacy">Privacy Policy</a></p>
+                                        <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
 
@@ -40,7 +40,7 @@
                                                     <input type="text" name="username" placeholder="Username" required />
                                                 </div>
                                                 <div>
-                                                    <p>By clicking Sign Up you agree to our <a href="/tos">Terms of Service</a> and our <a href="/about/privacy">Privacy Policy</a></p>
+                                                    <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
                                                 </div>
                                                 <div>
                                                     <button class="btn-fb" type="submit"><i class="fa fa-facebook"></i>Sign Up with Facebook</button>
