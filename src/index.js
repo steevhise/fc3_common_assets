@@ -42,6 +42,7 @@ exports.register = Util.callbackify((server, options) => {
 
         // declare some server extensions
         server.ext(combine(
+            require('./extensions/guarantee-user-info'),
             require('./extensions/errors'),
             require('./extensions/alert-count'), // Order matters here; alert-count is expected to run after the errors check
             require('./extensions/unread-replies'),
@@ -64,7 +65,8 @@ exports.register = Util.callbackify((server, options) => {
         server.auth.strategy('session', 'cookie-freecycle', 'try', {
             isSecure: !options.dev,
             redirectTo: '/login',
-            redirectOnTry: false    // if mode is 'try' on a public page, don't redirect them if they're not logged in
+            redirectOnTry: false,    // if mode is 'try' on a public page, don't redirect them if they're not logged in
+            domain: '.freecycle.org'
         });
 
         // Declare an authentication strategy using the bell scheme for Facebook login
@@ -75,7 +77,8 @@ exports.register = Util.callbackify((server, options) => {
             password: options.cookiePassword,
             clientId: options.facebook.clientId,
             clientSecret: options.facebook.clientSecret,
-            isSecure: !options.dev,
+            isSecure: true, // set to false for local dev
+            forceHttps: true, // set to false for local dev
             scope: ['email', 'user_friends']
         });
 

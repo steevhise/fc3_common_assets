@@ -7,10 +7,7 @@ module.exports = (server, options) => ([
         }
     },
     {
-        register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle'),
-        options: {
-            domain: 'freecycle.org'
-        }
+        register: require('@freecycle/common-hapi-plugins/plugins/auth-cookie-freecycle')
     }
     /*
     {

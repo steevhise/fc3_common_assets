@@ -70,10 +70,15 @@ module.exports = {
                 password: Joi.string()
                     .empty('')
                     .label('Password'),
-                emailDeliveryPreferences: Joi.array()
+                townNotificationPreferences: Joi.array()
                     .single()
                     .items(Joi.string().regex(/^[\d]+,(?:0|1|2|3)$/)) // townId,value
-                    .label('Email delivery preferences'),
+                    .label('Town notification preferences'),
+                emailTypePreferences: Joi.array()
+                    .single()
+                    .items(Joi.number().integer())
+                    .default([])
+                    .label('Email preferences'),
                 confpassword: Joi.string()
                     .valid(Joi.ref('password'))
                     .empty('')
@@ -108,7 +113,7 @@ module.exports = {
 
                 const { authService, userService } = request.server;
                 const { id: userId, email } = request.auth.credentials;
-                const { image, password, confpassword, emailDeliveryPreferences, ...settings } = request.payload;
+                const { image, password, confpassword, townNotificationPreferences, ...settings } = request.payload;
 
                 // Updating email will affect the user's verified status, so only update if it changed
                 if (settings.email && email && email.toLowerCase() === settings.email.toLowerCase()) {
@@ -119,8 +124,8 @@ module.exports = {
                 //
                 // ['234,2', '984,0'] -> [{ townId: 234, value: 1 }, { townId: 984, value: 0 }]
 
-                if (emailDeliveryPreferences && emailDeliveryPreferences.length) {
-                    settings.emailDeliveryPreferences = emailDeliveryPreferences.map((n) => ({
+                if (townNotificationPreferences && townNotificationPreferences.length) {
+                    settings.townNotificationPreferences = townNotificationPreferences.map((n) => ({
                         townId: Number(n.split(',')[0]),
                         value: Number(n.split(',')[1]),
                     }));
@@ -164,16 +169,19 @@ module.exports = {
     },
     handler: function (request, reply) {
 
-        const { userService } = request.server;
+        const { userService, emailService } = request.server;
         const { credentials } = request.auth;
 
-        return userService.fetchSettings(credentials.id)
-        .then((settings) => {
+        return Promise.all([
+            userService.fetchSettings(credentials.id),
+            emailService.fetchEmailTypes()
+        ])
+        .then(([settings, emailTypes]) => {
 
             Hoek.assert(settings, 'User does not exist');
 
             // Might receive an error redirected from connecting account w/ Facebook
-            const maybeError = Hoek.reach(request, 'state.redirectedError.message');
+            const maybeError = Hoek.reach(request, 'state.redirectedError');
             reply.unstate('redirectedError');
 
             return reply.view('home/settings', {
@@ -181,6 +189,7 @@ module.exports = {
                 errors: maybeError ? [maybeError] : [],
                 data: {
                     settings,
+                    emailTypes,
                     languageOptions: [ // TODO
                         { code: 'en', name: 'English' },
                         { code: 'es', name: 'Spanish' },

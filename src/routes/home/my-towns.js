@@ -15,8 +15,11 @@ module.exports = {
         const { userService } = request.server;
         const { id: userId } = request.auth.credentials;
 
-        return userService.fetchSettings(userId)
-        .then(({ homeTown, towns: groups }) => {
+        return Promise.all([
+            userService.fetchSettings(userId),
+            userService.fetchFriendships(userId)
+        ])
+        .then(([{ homeTown, towns: groups }, friendships]) => {
 
             const homedata = groups.find((group) => group.id === homeTown);
             const locatedGroups = groups.map((group) => {
@@ -28,13 +31,14 @@ module.exports = {
                 };
             }).sort((g1, g2) => g1.distance - g2.distance);
 
-            const geomap = internals.generateMapData(locatedGroups);
+            const geomap = locatedGroups && locatedGroups.length >= 1 ? internals.generateMapData(locatedGroups) : null;
 
             reply.view('home/my_groups', {
                 title: 'My Towns',
                 data: {
                     locatedGroups,
-                    geomap
+                    geomap,
+                    friendships
                 },
                 inBodyAds: [
                     'one',

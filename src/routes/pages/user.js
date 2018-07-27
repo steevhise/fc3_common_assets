@@ -28,9 +28,11 @@ module.exports = [{
                 throw Boom.notFound('User not found');
             }
 
+            profile.groups = profile.groups.map(({ group }) => group);
+
             // Don't publicize groups in region 32
             if (!isAuthenticated || credentials.id !== profile.id) {
-                profile.groups = profile.groups.filter(({ group }) => group.region.id !== Constants.SEMI_PRIVATE_REGION);
+                profile.groups = profile.groups.filter((group) => group.region.id !== Constants.SEMI_PRIVATE_REGION);
             }
 
             return reply.view('user', {
