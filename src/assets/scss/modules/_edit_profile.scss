@@ -1,7 +1,7 @@
 .profile-pic {
   display: block;
   text-align: center;
-  
+
   img {
     border-radius: 50%;
   }
@@ -9,7 +9,7 @@
 
 .edit-profile {
   text-align: center;
-  
+
   input {
     text-transform: uppercase;
     font-weight: bold;
@@ -17,36 +17,36 @@
     [type="password"] {
       text-transform: none;
     }
-    [type="text"], 
+    [type="text"],
     [type="select"],
     [type="password"] {
       font-size: 1rem;
     }
   }
-  
+
   .input-group-button input {
     padding: .89rem;
   }
-  
+
   .btn-default {
     border: none;
   }
-  
+
   .btn-verification {
     padding: 0.89rem;
     margin: 1rem 0 0 0;
   }
-  
+
   .default-location {
     position: relative;
-    
+
     .default-location-locate {
       position: absolute;
       margin-top: -48px;
       right: 1.5rem;
     }
   }
-  
+
   // overriding select2 styles to match site
   span.select2-selection.select2-selection--single,
   span#select2-home-group-9u-container {
@@ -55,11 +55,11 @@
     padding: 0.375rem;
     text-align: center !important;
   }
-  
+
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #14261a;
   }
-  
+
   .select2-selection__rendered {
     text-align: center !important;
     display: block !important;
@@ -68,5 +68,6 @@
 
 .btn-fb {
   @extend .btn-wanted;
+  background-color: #4267B2;
   border: none;
 }

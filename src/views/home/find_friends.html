@@ -1,0 +1,25 @@
+{% extends '../layout/layout.html' %}
+
+{% block content %}
+{% parent %}
+<div class="horizontal_tabs">
+  <!--  tabs-content  -->
+  <div class="tabs-content" data-tabs-content="h-example-tabs">
+    <div class="tabs-panel" id="dashboard">
+
+    </div>
+    <div class="tabs-panel" id="myreplies">
+    </div>
+    <div class="tabs-panel" id="myposts">
+    </div>
+    <div class="tabs-panel is-active" id="myfriends">
+      {% include '../partials/find_friends_page.html' with { facebookFriends: data.facebookFriends } %}
+    </div>
+    <div class="tabs-panel" id="mygroups">
+    </div>
+  </div>
+  {% include '../partials/in_body_banner_row.html'%}
+</div>
+
+
+{% endblock %}

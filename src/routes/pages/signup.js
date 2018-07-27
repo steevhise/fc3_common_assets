@@ -60,12 +60,32 @@ module.exports = {
         const title = 'Sign up for Freecycle';
 
         if (request.auth.isAuthenticated) {
+
+            // Redirect from successful Facebook signup (user is new, but authenticated)
+            if (request.query.facebook) {
+                return reply.view('signup', {
+                    title,
+                    data: {
+                        step2: {}
+                    }
+                });
+            }
+
             return reply.redirect('/home/dashboard').temporary();
         }
 
         if (!request.payload) {
+
+            // Unsuccessful fb-signup
+            let errors;
+            if (request.state.redirectedError) {
+                errors = [request.state.redirectedError];
+                reply.unstate('redirectedError');
+            }
+
             return reply.view('signup', {
                 title,
+                errors: errors || [],
                 data: {
                     step1: {}
                 }
@@ -104,7 +124,12 @@ module.exports = {
 
             request.cookieAuth.set(userId, token);
 
-            return reply.redirect(request.url.path).temporary();
+            return reply.view('signup', {
+                title,
+                data: {
+                    step2: {}
+                }
+            });
         })
         .catch((err) => {
 

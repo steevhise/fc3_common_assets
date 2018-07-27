@@ -49,6 +49,11 @@ module.exports = (server, options) => ({
         consts: {
             friendStatuses: request.server.userService.friendStatuses
         },
-        date: new Date()
+        date: new Date(),
+        facebook: {
+            appId: options.facebook.clientId,
+            // Sorry... necessary for setting Facebook's open graph tags (see views/layout/layout.html)
+            contentDomain: options.dev ? 'https://newdev.freecycle.org' : 'https://freecycle.org'
+        }
     })
 });
