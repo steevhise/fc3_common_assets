@@ -5,7 +5,7 @@
 				<li v-for="category in categories" class="tabs-title">
 					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentCategory">
 						{{ category }}
-						<span class="messages-unread-admin-badge" v-if="unreadCategoryMessages && unreadCategoryMessages[category]">
+						<span class="messages-unread-admin-badge" v-if="unreadCategoryMessages[category]">
 							<span v-if="unreadCategoryMessages[category] <= 9">({{ unreadCategoryMessages[category] }})</span>
 							<span v-if="unreadCategoryMessages[category] > 9">(9+)</span>
 						</span>
@@ -135,7 +135,10 @@
 			unreadCategoryMessages() {
 
 				const categoryUnreadMap = {};
-				Object.keys(TOPIC_CATEGORY_MAP).map((category) => categoryUnreadMap[category] = this.getUnreadForCategory(category))
+				Object.keys(TOPIC_CATEGORY_MAP).forEach((category) => {
+
+					categoryUnreadMap[category] = this.getUnreadForCategory(category)
+				});
 				return categoryUnreadMap;
 			}
 		},
