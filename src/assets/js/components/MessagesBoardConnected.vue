@@ -5,9 +5,9 @@
 				<li v-for="category in categories" class="tabs-title">
 					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentCategory">
 						{{ category }}
-						<span class="messages-unread-admin-badge" v-if="category === 'Notifications' && unreadAdminMessages">
-							<span v-if="unreadAdminMessages <= 9">({{ unreadAdminMessages }})</span>
-							<span v-if="unreadAdminMessages > 9">(9+)</span>
+						<span class="messages-unread-admin-badge" v-if="unreadCategoryMessages[category]">
+							<span v-if="unreadCategoryMessages[category] <= 9">({{ unreadCategoryMessages[category] }})</span>
+							<span v-if="unreadCategoryMessages[category] > 9">(9+)</span>
 						</span>
 					</a>
 				</li>
@@ -132,10 +132,14 @@
 			topicsInCategory() {
 				return this.getTopicsInCategory(this.currentCategory);
 			},
-			unreadAdminMessages() {
-				return this.getTopicsInCategory('Notifications').reduce((count, topic) => {
-					return count + topic.unreadCount;
-				}, 0);
+			unreadCategoryMessages() {
+
+				const categoryUnreadMap = {};
+				Object.keys(TOPIC_CATEGORY_MAP).forEach((category) => {
+
+					categoryUnreadMap[category] = this.getUnreadForCategory(category)
+				});
+				return categoryUnreadMap;
 			}
 		},
 		watch: {
@@ -238,6 +242,12 @@
 			isSystem(topic) {
 
 				return topic && topic.topic.type === 'system';
+			},
+			getUnreadForCategory(category) {
+
+				return this.getTopicsInCategory(category).reduce((count, topic) => {
+					return count + topic.unreadCount;
+				}, 0);
 			}
 		}
 	}

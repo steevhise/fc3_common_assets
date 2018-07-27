@@ -77,7 +77,8 @@ exports.register = Util.callbackify((server, options) => {
             password: options.cookiePassword,
             clientId: options.facebook.clientId,
             clientSecret: options.facebook.clientSecret,
-            isSecure: !options.dev,
+            isSecure: true, // set to false for local dev
+            forceHttps: true, // set to false for local dev
             scope: ['email', 'user_friends']
         });
 
