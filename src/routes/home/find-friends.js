@@ -1,3 +1,5 @@
+
+const Hoek = require('hoek');
 const Wreck = require('wreck');
 
 const internals = {};
@@ -57,7 +59,14 @@ module.exports = {
         .catch((err) => {
 
             // user isn't connected to Facebook
-            if (err instanceof userService.UserDoesNotExistError) {
+            // we still load the page, just without the Find Facebook friends feature displayed
+            const wreckError = Hoek.reach(err, 'data.isResponseError');
+            if (err instanceof userService.UserDoesNotExistError || wreckError) {
+
+                if (wreckError) {
+                    console.warn('**WARNING** Wreck request failed. Could be either a bug (app permissions or invalid facebook id data on our end) or just expected behavior (e.g user manually revoked FC permission to read its data (or they expired))');
+                }
+
                 return reply.view('home/find_friends', {
                     data: {},
                     title: 'Find Friends',
