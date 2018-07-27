@@ -39,12 +39,6 @@ module.exports = {
                 description: Joi.string()
                     .required()
                     .label('Description'),
-                type: Joi.number()
-                    .valid([
-                        postService.TAKEN,
-                        postService.RECEIVED
-                    ])
-                    .label('Type'),
                 currentType: Joi.number()
                     .required() // Something's wrong if we've somehow ended up w/ a type-less post :)
                     .valid([

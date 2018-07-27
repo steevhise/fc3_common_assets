@@ -66,18 +66,6 @@
                       {% endfor %}
                     </select>
                 </div>
-                {% if data.post.type.typeId === 1 || data.post.type.typeId === 3 %}
-                  <div class="form-group text-center">
-                    {% if data.post.type.typeId === 1 %} {# offer -> taken #}
-                      <input type="checkbox" name="type" value="2" />
-                      <span class="button-palette-group-title">Taken</a>
-                    {% endif %}
-                    {% if data.post.type.typeId === 3 %} {# wanted -> received #}
-                      <input type="checkbox" name="type" value="4" />
-                      <span class="button-palette-group-title">Received</a>
-                    {% endif %}
-                  </div>
-                {% endif %}
                 <div class="form-group text-center">
                     {% include "../partials/loading_button.html" with { text: "Edit Post" } %}
                 </div>
