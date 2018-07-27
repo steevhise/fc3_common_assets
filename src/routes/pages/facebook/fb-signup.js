@@ -24,14 +24,13 @@ module.exports = {
 
         const { authService } = request.server;
         const { profile } = request.auth.credentials;
-        const { acceptedTerms, username } = request.auth.credentials.query; // Submitted as query params via sub-form in Signup.vue
+        const { username } = request.auth.credentials.query; // Submitted as query param via sub-form in Signup.vue
 
         return authService.facebookSignup({
             firstName: profile.name.first,
             lastName: profile.name.last,
             email: profile.email,
             username,
-            acceptedTerms,
             facebookId: profile.id
         })
         .then((userModel) => {
