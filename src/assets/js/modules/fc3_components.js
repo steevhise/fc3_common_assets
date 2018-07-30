@@ -154,6 +154,16 @@ export const MainVue = new Vue({
 			} else {
 				return this.towns.markers;
 			}
+		},
+		getMarkerIcon() {
+			return { 
+				path: 'M10.75,0A6.25,6.25,0,0,0,4.5,6.25c0,6,6.25,13.75,6.25,13.75S17,12.22,17,6.25A6.25,6.25,0,0,0,10.75,0Zm0,9.7a3.38,3.38,0,1,1,3.38-3.38A3.37,3.37,0,0,1,10.75,9.7Z',
+				fillColor: '#34b233',
+				fillOpacity: 1,
+				strokeColor: 'white',
+				strokeWeight: 1,
+				scale: 2
+			}
 		}
 	},
 	created() {
