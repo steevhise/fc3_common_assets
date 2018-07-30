@@ -11,17 +11,14 @@
           {% endif %}
         </h3>
         <!-- Items list -->
-        <div class="recent-list-items">
-            <div class="recent-grid-view">
-                <div class="grid-sizer"></div>
-                <div class="gutter-sizer"></div>
-                {% for post in posts %}
+        <div class="grid-x">
+            <div class="grid-sizer"></div>
+            <div class="gutter-sizer"></div>
+            {% for post in posts %}
+            <div class="cell">
                 {% include './post_grid_item.html' with post %}
-                {% endfor %}
             </div>
-        </div>
-        <div class="recent-list-load-more text-center" style="clear: both; position: relative; top: 10px;" >
-            <button class="btn-action">Load More</button>
+            {% endfor %}
         </div>
     </div>
 </div>
