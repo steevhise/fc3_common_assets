@@ -42,6 +42,7 @@
                      <fc-map-infowindow :options="map.infoWindow.options" :position="geoFormat(town.latitude, town.longitude)" :id="`marker-${town.id}`" :ref="`marker-${town.id}`" >
                          {%raw%}
                              <h3 v-html="town.name"></h3>
+                             <a :href="`/town/${town.id}`">More Details</a>
                          {%endraw%}
                      </fc-map-infowindow>
                      <fc-map-marker :position="geoFormat(town.latitude, town.longitude)" :clickable="true" @click="$emit(`marker-${town.id}`);" :animation="4" ></fc-map-marker>
@@ -64,10 +65,13 @@
         <tbody>
         {#{% for group in groupList %}#}
           <tr v-for="(town, index) in townResults()">
-            <td><h4 v-html="town.name"></h4></td>
-            {#NOTE: group.name and group.distance is not available in the current scope.#}
-            <td>{{group.name}}</td>
-            <td>{{group.distance}} miles</td>
+            <td>
+              <a :href="`/town/${town.id}`">
+                <h4 v-html="town.name"></h4>
+              </a>
+            </td>
+            <td></td> {#state should go here but we don't have state data#}
+            <td>miles</td> {# TODO: calculate distance and show that information here. #}
           </tr>
         {#{% endfor %}#}
         </tbody>
