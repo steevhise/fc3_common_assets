@@ -45,7 +45,7 @@
                              <a :href="`/town/${town.id}`">More Details</a>
                          {%endraw%}
                      </fc-map-infowindow>
-                     <fc-map-marker :position="geoFormat(town.latitude, town.longitude)" :clickable="true" @click="$emit(`marker-${town.id}`);" :animation="4" ></fc-map-marker>
+                     <fc-map-marker :position="geoFormat(town.latitude, town.longitude)" :icon="getMarkerIcon(town)" :clickable="true" @click="$emit(`marker-${town.id}`);" :animation="4" ></fc-map-marker>
                  </div>
              </fc-map-cluster>
              
