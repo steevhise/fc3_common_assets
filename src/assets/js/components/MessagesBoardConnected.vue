@@ -19,6 +19,7 @@
 			:topics="topicsInCategory"
 			:on-click-topic="selectTopic"
 			:topic-modal-id="modalId"
+			:topics-loaded="topicsLoaded"
 		/>
 		<fc-messages
 			v-if="currentCategory === 'Notifications'"
