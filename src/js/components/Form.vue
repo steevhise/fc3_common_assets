@@ -17,7 +17,11 @@
                 type: String,
                 default: () => `/actions/`
             },
-            data: {}
+            data: {},
+            customAlert: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {
@@ -39,8 +43,13 @@
 
                 $.post(this.action, this.serializedData).done(function(data) {
 
-                    self.$bus.$emit('alert', { level : 'success', message : data.message || data });
-                    self.$bus.$emit('formSuccess');
+                    if (self.customAlert) {
+                        // Allow caller to handle alert in a custom way (allows parent to take over)
+                        self.$bus.$emit('formSuccess', { data });
+                    } else {
+                        self.$bus.$emit('alert', { level : 'success', message : data.message || data });
+                    }
+
                     event.target.reset();
                 }).fail(function(error) {
 
