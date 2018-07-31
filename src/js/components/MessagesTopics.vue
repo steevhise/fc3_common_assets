@@ -3,7 +3,7 @@
 		<div class="row column message-reply-list-container">
 		    <h3>{{ category }}</h3>
 		    <ul v-if="topics && topics.length" class="message-reply-list">
-				<div v-for="topic in topics" :key="topic.id">
+				<div v-for="topic in topics">
 			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
 						<div class="message-list-item-left">
 						    <div class="message-title">
@@ -28,11 +28,6 @@
 						    </div>
 						</div>
 					</li>
-					<!--
-						Hack for opening a topic to a specific thread (see usage in MessagesBoardConnected)
-						without also selecting a topic and overriding the thread selection
-					-->
-					<div style="display: none;" :data-open="topicModalId" :data-topic-id="topic.id"></div>
 				</div>
 		    </ul>
 			<div v-else><p style="text-align: center;">No conversations in this category</p></div>
