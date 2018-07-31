@@ -13,6 +13,10 @@
 				</li>
 			</ul>
 		</div>
+
+		<!-- Placed here so page's scroll position on modal close (when modal opened with this control) is at top of replies page -->
+		<div id='general-chatbox-opener' style='display: none;' :data-open="this.modalId"></div>
+
 		<fc-messages-topics
 			v-if="currentCategory !== 'Notifications'"
 			:category="currentCategory"
@@ -29,7 +33,7 @@
 
 		<fc-spinner v-if="!topicsLoaded" size="huge" message="Loading..." ></fc-spinner>
 
-		<fc-modal :custom-target="modalId" custom-trigger="<div id='general-chatbox-opener' style='display: none;'></div">
+		<fc-modal :custom-target="modalId">
 			<fc-spinner v-if="currentMessages.length === 0" size="huge" message="Loading..."></fc-spinner>
 			<fc-messages-board
 				v-if="currentMessages.length > 0"
