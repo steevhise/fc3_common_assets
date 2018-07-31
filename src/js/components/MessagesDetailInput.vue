@@ -13,7 +13,7 @@
 				</div>
 				<fc-form action="/api/messaging/send" :custom-alert="true" >
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
-					<textarea name="body" required @input="checkCharCount($event)"></textarea>
+					<input type="text" name="body" required @input="checkCharCount($event)" />
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
 					<input class="btn btn-default" type="submit" value="Send">
 				</fc-form>
@@ -50,7 +50,7 @@
 		created() {
 			this.$bus.$on('formSuccess', (data) => {
 
-				const { message } = JSON.parse(data);
+				const { message } = data;
 				this.charCount = 0;
 				this.$bus.$emit('alert', { level : 'success', message, timer: 20000 });
 			});

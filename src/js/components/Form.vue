@@ -45,7 +45,7 @@
 
                     if (self.customAlert) {
                         // Allow caller to handle alert in a custom way (allows parent to take over)
-                        self.$bus.$emit('formSuccess', { data });
+                        self.$bus.$emit('formSuccess', data);
                     } else {
                         self.$bus.$emit('alert', { level : 'success', message : data.message || data });
                     }
