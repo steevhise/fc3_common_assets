@@ -172,15 +172,6 @@ const getters = {
 			threads: (topic.threads || []).map((id) => threads[id])
 		};
 	},
-	topicId({ topics }) {
-		return (topic) => {
-			const id =  Object.keys(topics).find((topicId) => toTopicId(topic) === topicId);
-			if (!id) {
-				console.warn('Provided topic wasn\'t found in the currently loaded set');
-			}
-			return id;
-		};
-	},
 	topics({ topics }) {
 		return Object.values(topics);
 	},

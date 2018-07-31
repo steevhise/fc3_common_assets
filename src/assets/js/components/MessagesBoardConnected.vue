@@ -29,7 +29,7 @@
 
 		<fc-spinner v-if="!topicsLoaded" size="huge" message="Loading..." ></fc-spinner>
 
-		<fc-modal :custom-target="modalId">
+		<fc-modal :custom-target="modalId" custom-trigger="<div id='general-chatbox-opener' style='display: none;'></div">
 			<fc-spinner v-if="currentMessages.length === 0" size="huge" message="Loading..."></fc-spinner>
 			<fc-messages-board
 				v-if="currentMessages.length > 0"
@@ -122,7 +122,6 @@
 		computed: {
 			...mapGetters([
 				'topics',
-				'topicId',
 				'currentTopic',
 				'currentThread',
 				'currentMessages'
@@ -211,9 +210,6 @@
 					}
 
 					return true;
-				}).map((topic) => {
-
-					return { id: this.topicId(topic), ...topic };
 				});
 			},
 			categoryFromTopic(topic) {
@@ -245,10 +241,8 @@
 				const openOnThread = () => {
 					this.selectTopicCategory(this.categoryFromTopic(this.currentTopic.topic));
 					// nextTick guarantees DOM element corresponding to selector below exists
-
 					this.$nextTick(function () {
-						const modalTrigger = $(`[data-topic-id='${this.topicId(this.currentTopic)}']`);
-						modalTrigger.click();
+						$('#general-chatbox-opener').click();
 					});
 				}
 
