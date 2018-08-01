@@ -4,7 +4,7 @@ const Joi = require('joi');
 
 module.exports = [{
     method: 'GET',
-    path: '/user/{username}',
+    path: '/member/{username}',
     config: {
         id: 'user',
         description: 'The user\'s profile, viewed by others.'
@@ -51,8 +51,19 @@ module.exports = [{
     }
 },
 {
+    // Small backwards compatibility measure; we switched from calling accounts users to members
+    // just to ensure profile views work if we missed a link somewhere :)
+    method: 'GET',
+    path: '/user/{username}',
+    config: {
+        id: 'user_old',
+        description: 'The user\'s profile, viewed by others.'
+    },
+    handler: (request, reply) => reply.redirect(`/member/${request.params.username}`)
+},
+{
     method: 'POST',
-    path: '/user/{identifier}/friendship',
+    path: '/member/{identifier}/friendship',
     config: {
         id: 'user-friendship-action',
         description: 'An endpoint for the current user to take action on their friendship with another user.',
