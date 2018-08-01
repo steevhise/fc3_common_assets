@@ -33,6 +33,10 @@ document.addEventListener("DOMContentLoaded", ()=> {
                 $(el).show();
             }
         });
+
+        if ($(".friend-card:hidden").length === 0) {
+            $(".friends-load-more button").hide();
+        }
     });
 });
 
