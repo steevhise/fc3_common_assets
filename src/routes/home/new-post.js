@@ -116,7 +116,7 @@ module.exports = {
                 }
 
                 const { id: userId } = request.auth.credentials;
-                const { validation, acceptedTerms, ...post } = request.payload;
+                const { validation, ...post } = request.payload;
 
                 return Promise.resolve()
                     .then(() => postService.create(userId, post))

@@ -54,7 +54,7 @@
                         </div>
                         <div class="row">
                             <div class="columns medium-12">
-                              Date last edited: {{ data.page.lastModified|relativeDate }}
+                              {% if data.page.lastModified %} Date last edited: {{ data.page.lastModified|relativeDate }} {% endif %}
                               {% if data.page.lastEditor %}by {{ data.page.lastEditor.username }}</div>{% endif %}
                         </div>
                     </div>

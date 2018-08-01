@@ -27,9 +27,8 @@
                                             <input type="password" name="confpassword" placeholder="Confirm Password">
                                         </label>
                                     </div>
-                                    <!-- captcha here -->
                                     <div class="medium-12 columns align-center-middle ">
-                                        <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="/tos">Terms of Service</a>
+                                        <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
 
@@ -41,7 +40,7 @@
                                                     <input type="text" name="username" placeholder="Username" required />
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" name="acceptedTerms" value="1" /> I agree to the <a href="/tos">Terms of Service</a>
+                                                    <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
                                                 </div>
                                                 <div>
                                                     <button class="btn-fb" type="submit"><i class="fa fa-facebook"></i>Sign Up with Facebook</button>

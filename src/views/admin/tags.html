@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="columns medium-6">
                             <input type="hidden" name="id" value="{{ data.tag.id }}" placeholder="Tag Id">
-                            <div>Created: {{ data.tag.created|formatDate('ddd, MM/DD/YYYY hh:mm a') }}</div>
+                            {% if data.tag.created %} <div>Created: {{ data.tag.created|formatDate('ddd, MM/DD/YYYY hh:mm a') }}</div> {% endif %}
                             <div>
                                 <strong>Posts Tagged:</strong> {{ data.tag.postCount }}
                             </div>

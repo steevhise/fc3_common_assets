@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", ()=> {
 
+    const selectbox = $(".select-friends");
+
+    selectbox.select2({
+        minimumInputLength: 3
+    });
+
+    selectbox.change(function() {
+
+        location.assign(`${location.protocol}//${location.host}/member/${$(".select-friends option:selected").val()}`);
+    });
+
     // 9 b/c page is a 3 column layout, defaulting to 3x3 display
     if ($(".friend-card").length >= 9) {
         $(".friends-load-more").show();
