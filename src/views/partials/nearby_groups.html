@@ -1,9 +1,9 @@
 <div class="row">
     <div class="nearby-groups">
         {% if noCoordinates || groups.length === 0 %}
-            <span class="nearby-groups-buttons">
-                <a href="/find-towns?{{currentGroup.region.region_name|url_encode}}" class="btn-default nearby-groups-button">Other Towns in {{currentGroup.region.region_name|escape}}</a>
-            </span>
+            <strong style="margin-right: 1rem;">
+                Sorry, looks like there are no other groups within a 50 mile radius of {{ currentGroup.group_name }}.
+            </strong>
         {% else %}
             <!--  nearby location groups  -->
             <span class="nearby-groups-label">Nearby towns...</span>
