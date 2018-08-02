@@ -104,7 +104,7 @@
 				const matchId = (p) => p.id === post.id;
 				post.type = type;
 				posts[$lodash.findIndex(posts, matchId)] = post;
-				this.$bus.$emit('alert', { level: 'success', message: `<p>Post ${post.description} marked as ${type.name}</p>`, timer: 8000 });
+				this.$bus.$emit('alert', { level: 'success', message: `<p>Post <strong>${post.subject}</strong> marked as ${type.name}</p>`, timer: 8000 });
 			}
 		},
 		mounted() {

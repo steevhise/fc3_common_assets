@@ -9,7 +9,7 @@
 				<div class="post-list-item-header-left">
 					<div class="post-list-item-category-icon">
 						<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-						<span :class="`text-${lowercase(lowercase(postType))}`">{{lowercase(postType)}}</span>
+						<span :class="`text-${lowercase(postType)}`">{{lowercase(postType)}}</span>
 					</div>
 					<div class="post-list-item-header-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
