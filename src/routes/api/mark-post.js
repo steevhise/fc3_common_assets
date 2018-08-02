@@ -1,4 +1,4 @@
-const Hoek = require('hoek');
+
 const Joi = require('joi');
 
 module.exports = {
@@ -16,18 +16,18 @@ module.exports = {
                     'RECEIVED'
                 ])
             }
-        }
+        },
+        auth:  { mode: 'required' }
     }),
     handler: (request, reply) => {
 
         const { postService } = request.server;
         const { postId } = request.params;
         const { newType } = request.payload;
-        const userId = Hoek.reach(request, 'auth.credentials.id');
+        const { id: userId } = request.auth.credentials;
 
         return postService.update(postId, userId, { type: postService[newType] })
         .then(() => postService.fetchByIdentifier(postId, { open: true, approved: true, allowExpired: true, viewerId: userId }))
-        .then(({ type }) => reply(type))
-        .catch(reply);
+        .then(({ type }) => reply(type));
     }
 };
