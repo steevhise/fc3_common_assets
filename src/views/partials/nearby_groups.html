@@ -1,10 +1,6 @@
 <div class="row">
     <div class="nearby-groups">
-        {% if noCoordinates || groups.length === 0 %}
-            <strong style="margin-right: 1rem;">
-                Sorry, looks like there are no other groups within a 50 mile radius of {{ currentGroup.group_name }}.
-            </strong>
-        {% else %}
+        {% if groups.length %}
             <!--  nearby location groups  -->
             <span class="nearby-groups-label">Nearby towns...</span>
             <span class="nearby-groups-buttons">
