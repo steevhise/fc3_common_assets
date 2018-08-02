@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<div class="row column message-reply-list-container">
+		<div v-if="topicsLoaded" class="row column message-reply-list-container">
 		    <h3>{{ category }}</h3>
-		    <ul v-if="topics && topics.length" class="message-reply-list">
+		    <ul v-if="topics.length" class="message-reply-list">
 				<div v-for="topic in topics" :key="topic.id"> <!-- key is namespaced key id created in toTopicId -->
-			        <li class="message-reply-list-item" @click="onClickTopic(topic)">
+			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
 						<div class="message-list-item-left">
 						    <div class="message-title">
 						    	<img v-if="image(topic)" class="message-image" :src="image(topic)"/>
@@ -45,7 +45,8 @@
 			category: String,
 			topics: Array,
 			onClickTopic: Function,
-			topicModalId: String
+			topicModalId: String,
+			topicsLoaded: Boolean
 		},
 		data() {
 			return {}

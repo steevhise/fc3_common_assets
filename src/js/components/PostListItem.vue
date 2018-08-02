@@ -1,7 +1,7 @@
 <template>
 	<div class="post-list-item" >
 		<div class="post-list-item-photo">
-			<img :src="post.thumb" v-if="post.thumb">
+			<img width="128" :src="post.thumb" v-if="post.thumb">
 			<fc-icon name="logo" width="128" v-else></fc-icon>
 		</div>
 		<div class="post-list-item-content">
@@ -18,7 +18,7 @@
 				</div>
 				<div v-if="viewer" class="post-list-item-header-right">
 					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
-					<select class="manage-post-select post-list-select" v-if="viewer === post.userId && post.isApproved" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+					<select v-if="viewer === post.userId && post.isApproved" class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
 						<option value="" disabled selected hidden>Manage Post</option>
 						<option value="edit">Edit Post</option>
 						<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
@@ -33,7 +33,7 @@
 			</div>
 			<div class="post-list-item-content-description">
 				<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
-				<p class="paragraph-small" v-html="post.description"></p>
+				<p> {{post.description | stripTags | truncate(120)}}</p>
 			</div>
 		</div>
 	</div>

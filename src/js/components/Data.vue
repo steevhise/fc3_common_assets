@@ -42,6 +42,10 @@
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
 				self.$root.$emit('redrawVueMasonry');
+				if (self.currLimit >= self.data.posts.length) {
+					// hide load more button if all posts are visible
+					window.$('#item-list-load-more').hide();
+				}
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -62,6 +66,7 @@
 				let results = [];
 
 				results = self.$lodash.filter(this.posts, function(item, index) {
+
 					return !self.deletedPosts.includes(item.id);
 				});
 

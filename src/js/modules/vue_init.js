@@ -19,7 +19,6 @@ import PostGridItem from '../components/PostGridItem.vue';
 import Icon from '../components/Icon.vue';
 import Data from '../components/Data.vue';
 import Messages from '../components/Messages.vue';
-import MessagesInput from '../components/MessagesInput.vue';
 import MessagesBoard from '../components/MessagesBoard.vue';
 import MessagesNotifier from '../components/MessagesNotifier.vue';
 import MessagesDetailInput from '../components/MessagesDetailInput.vue';
@@ -57,6 +56,33 @@ export const FCVue = {
 			return utc.tz(timezone).fromNow();
 		});
 
+		// this filter strips html tags from text and returns the raw text
+		Vue.filter('stripTags', function(text) {
+			let regex = /(<([^>]+)>)|&nbsp;/ig;
+			return text.replace(regex, "");
+		});
+
+		// this filter is used to truncate a text and add ellipsis or a specified clamping mechanism.
+		Vue.filter('truncate', function (text, length, clamp) {
+			clamp = clamp || '...';
+			length = length || 30;
+
+			if (text.length <= length) return text;
+
+			var tcText = text.slice(0, length - clamp.length);
+			var last = tcText.length - 1;
+
+
+			while (last > 0 && tcText[last] !== ' ' && tcText[last] !== clamp[0]) last -= 1;
+
+			// Fix for case when text dont have any `space`
+			last = last || length - clamp.length;
+
+			tcText = tcText.slice(0, last);
+
+			return tcText + clamp;
+		});
+
 		// register components
 		Vue.component('fc-test', Test);
 		Vue.component('fc-editor', Editor);
@@ -70,7 +96,6 @@ export const FCVue = {
 		Vue.component('fc-icon', Icon);
 		Vue.component('fc-data', Data);
 		Vue.component('fc-messages', Messages);
-		Vue.component('fc-messages-input', MessagesInput);
 		Vue.component('fc-messages-board', MessagesBoard);
 		Vue.component('fc-messages-notifier', MessagesNotifier);
 		Vue.component('fc-messages-detail-input', MessagesDetailInput);

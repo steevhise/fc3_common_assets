@@ -32,7 +32,7 @@
 						<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
 					</div>
 					<div v-if="viewer" class="post-grid-item-header-right">
-						<select class="manage-post-select post-grid-select" v-if="viewer === post.userId && post.isApproved" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+						<select v-if="viewer === post.userId && post.isApproved" class="manage-post-select post-grid-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
 							<option value="" disabled selected hidden>Manage Post</option>
 							<option value="edit">Edit</option>
 							<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>

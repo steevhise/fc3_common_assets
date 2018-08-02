@@ -1,5 +1,5 @@
 <template>
-	<div class="message-list-item-details-chat-window">
+	<div class="message-list-item-details-chat-window" ref="chatWindow">
 		<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 			<p class="chat-message-from" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 				<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender && message.sender.id) }"></span>
@@ -28,6 +28,13 @@
 		data() {
 			return {
 			}
+		},
+		mounted() {
+
+			// Sets window to bottom of conversation, so user sees most recent message
+			// on opening a thread and on sending a message
+			const { chatWindow } = this.$refs;
+			chatWindow.scrollTop = chatWindow.scrollHeight;
 		},
 		methods: {
 			ago: (time) => moment(time).fromNow(),
