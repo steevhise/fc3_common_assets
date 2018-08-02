@@ -17,7 +17,7 @@
       </div>
       <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
       <div class="profile-pic">
-        <img src="{{data.settings.image}}" style="max-width: 50%;" alt="Current profile image"/>
+        <img src="{{data.settings.image}}/thumb" style="max-width: 50%;" alt="Current profile image"/>
       </div>
       <form class="edit-profile" method="post" enctype="multipart/form-data">
         <div class="row">
@@ -41,8 +41,11 @@
         </div>
         <div class="row">
           <div class="medium-12 columns form-group">
-            <label class="upload-pic btn btn-default text-white" for="image">Upload a New Image</label>
-              <input type="file" name="image" id="image" accept="image/*" class="show-for-sr" />
+            <img id="profile-upload-preview" style="max-width: 40%" />
+          </div>
+          <div class="medium-12 columns form-group">
+            <label class="upload-pic btn btn-default text-white" for="profile-pic-upload">Upload a New Image</label>
+            <input type="file" name="image" id="profile-pic-upload" accept="image/*" class="show-for-sr" />
           </div>
         </div>
         <div class="row">
