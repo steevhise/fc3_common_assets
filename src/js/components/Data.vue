@@ -1,6 +1,10 @@
 <template>
 	<div id="fc-data">
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer" v-on:post-deleted="removeItem(index)" ></component>
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer"
+			v-on:post-deleted="removeItem(index)"
+			v-on:post-marked="updatePostType"
+		>
+		</component>
 	</div>
 </template>
 
@@ -17,6 +21,7 @@
 		},
 		data() {
 			return {
+				posts: this.data.posts || [],
 				currLimit: this.limit,
 				postFilter: null,
 				selectedTags: [],
@@ -60,7 +65,8 @@
 				let self = this;
 				let results = [];
 
-				results = self.$lodash.filter(self.data.posts, function(item, index) {
+				results = self.$lodash.filter(this.posts, function(item, index) {
+
 					return !self.deletedPosts.includes(item.id);
 				});
 
@@ -95,6 +101,15 @@
 			removeItem: function (index) {
 				// change to component data triggers re-compute of items
 				this.deletedPosts.push(this.items[index].id);
+			},
+			updatePostType: function ({ type, post }) {
+
+				const { $lodash, posts } = this;
+
+				const matchId = (p) => p.id === post.id;
+				post.type = type;
+				posts[$lodash.findIndex(posts, matchId)] = post;
+				this.$bus.$emit('alert', { level: 'success', message: `<p>Post <strong>${post.subject}</strong> marked as ${type.name}</p>`, timer: 8000 });
 			}
 		},
 		mounted() {
