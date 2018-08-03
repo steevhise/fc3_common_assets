@@ -22,20 +22,21 @@ module.exports = {
         .then(([{ homeTown, towns: groups }, friendships]) => {
 
             const homedata = groups.find((group) => group.id === homeTown);
-            const locatedGroups = groups.map((group) => {
+            const ascHomeDistance = (g1, g2) => g1.distance - g2.distance;
+            const locatedGroups = homedata ?
+                    groups.map((g) => ({ ...g, distance: internals.measureFromHome(homedata, g) }))
+                        .sort(ascHomeDistance)
+                :
+                    groups.sort(internals.groupNameSort);
 
-                const distance = Math.round(internals.measureFromHome(homedata, group));
-                return {
-                    ...group,
-                    distance
-                };
-            }).sort((g1, g2) => g1.distance - g2.distance);
+            const geomap = locatedGroups.length >= 1 ? internals.generateMapData(locatedGroups) : null;
 
-            const geomap = locatedGroups && locatedGroups.length >= 1 ? internals.generateMapData(locatedGroups) : null;
+            console.log(homedata, groups, 'what this look like?');
 
             reply.view('home/my_groups', {
                 title: 'My Towns',
                 data: {
+                    homeTown: homedata,
                     locatedGroups,
                     geomap,
                     friendships
@@ -69,7 +70,7 @@ internals.measureFromHome = function (homeGroup, group) {
         { latitude: homeGroup.latitude, longitude: homeGroup.longitude },
         { latitude: group.latitude, longitude: group.longitude },
         conf
-    ); // TODO How do we adapt to different units?
+    ).toFixed(0); // TODO How do we adapt to different units?
 };
 
 // see map component for notes on configuration and settings expected
@@ -98,6 +99,22 @@ internals.generateMapData = (points) => {
         settings,
         markers
     };
+};
+
+internals.groupNameSort = (a, b) => {
+
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase();
+
+    if (nameA < nameB) {
+        return -1;
+    }
+    if (nameA > nameB) {
+        return 1;
+    }
+
+    // names must be equal
+    return 0;
 };
 
 

@@ -32,7 +32,9 @@
       <tr>
         <th>Local Town</th>
         <th>State</th>
-        <th>Distance</th> <!-- TODO Call out units here? -->
+        {% if data.homeTown %}
+          <th>Distance (miles)</th>
+        {% endif %}
       </tr>
       </thead>
       <tbody>
@@ -41,7 +43,18 @@
           <td><h4><a href="/town/{{group.id}}">{{group.name}}</a></h4></td>
           <td>{{group.region.name}}</td>
           <!-- TODO This assumes unit is miles; update to work w/ km when used -->
-          <td>{% if group.distance == 8000 %}N/A (no location info available){% else %}{{group.distance}}{% endif %}</td>
+          {# see note in routes/home/my-towns.js for why 8000 #}
+          {% if data.homeTown %}
+            <td>
+              {% if group.distance == 8000 %}
+                N/A (no location info available)
+              {% elseif group.id === data.homeTown.id %}
+                Home Town!
+              {% else %}
+                {{group.distance}}
+              {% endif %}
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
       </tbody>
