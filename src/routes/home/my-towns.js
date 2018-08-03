@@ -31,8 +31,6 @@ module.exports = {
 
             const geomap = locatedGroups.length >= 1 ? internals.generateMapData(locatedGroups) : null;
 
-            console.log(homedata, groups, 'what this look like?');
-
             reply.view('home/my_groups', {
                 title: 'My Towns',
                 data: {
