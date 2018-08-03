@@ -54,21 +54,15 @@ internals.measureFromHome = function (homeGroup, group) {
     const conf = { unit: 'mile' }; // TODO Any way to toggle this based on user setting?
 
     // hack for sorting groups w/ lat, lng (0,0) (null value) to bottom of list sent to view
-    // these values are > than the earth's diameter (longest possible distance between points) in corresponding units
-    const diameterPlus = {
-        mile: 8000,
-        km: 13000
-    };
-
     if (group.latitude === 0 && group.longitude === 0) {
-        return diameterPlus[conf.unit];
+        return Infinity;
     }
 
-    return Haversine(
+    return Number.parseFloat(Haversine(
         { latitude: homeGroup.latitude, longitude: homeGroup.longitude },
         { latitude: group.latitude, longitude: group.longitude },
         conf
-    ).toFixed(0); // TODO How do we adapt to different units?
+    ).toFixed(0)); // TODO How do we adapt to different units?
 };
 
 // see map component for notes on configuration and settings expected
