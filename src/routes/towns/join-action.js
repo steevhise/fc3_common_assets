@@ -46,7 +46,7 @@ module.exports = {
                 return reply.redirect('/home/my-friends/find').temporary();
             }
 
-            return reply.redirect().temporary();
+            return reply.redirect('/home/my-towns').temporary();
         })
         .catch((err) => {
 
