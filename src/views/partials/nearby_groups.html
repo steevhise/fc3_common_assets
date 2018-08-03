@@ -10,7 +10,7 @@
             <span class="nearby-groups-buttons">
 
                     {% for group in groups %}
-                        <a href="/town/{{group.uniqueName}}" class="btn-default nearby-groups-button">{{group.name}}</a>
+                        <a href="/town/{{group|groupIdentifier}}" class="btn-default nearby-groups-button">{{group.name}}</a>
                     {% endfor %}
 
             </span>

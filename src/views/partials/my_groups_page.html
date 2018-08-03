@@ -38,7 +38,7 @@
       <tbody>
       {% for group in data.locatedGroups %}
         <tr>
-          <td><h4><a href="/town/{{group.id}}">{{group.name}}</a></h4></td>
+          <td><h4><a href="/town/{{group|groupIdentifier}}">{{group.name}}</a></h4></td>
           <td>{{group.region.name}}</td>
           <!-- TODO This assumes unit is miles; update to work w/ km when used -->
           <td>{% if group.distance == 8000 %}N/A (no location info available){% else %}{{group.distance}}{% endif %}</td>

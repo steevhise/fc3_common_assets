@@ -179,7 +179,7 @@
               <tbody>
                 {% for group in data.profile.groups %}
                 <tr>
-                  <td><a href="/town/{{group.id}}"><h4>{{group.name}}</h4></a></td>
+                  <td><a href="/town/{{group|groupIdentifier}}"><h4>{{group.name}}</h4></a></td>
                   <td>{{group.region.name}}</td>
                   <!-- TODO: <td>{{group.group.country.name}}</td>  ?? -->
                 </tr>
