@@ -15,6 +15,23 @@ module.exports = {
         return userService.fetchFriends(userId)
         .then((friends) => {
 
+            // Real simple "alphanumeric sort", bic'd from MDN
+            friends.sort((a, b) => {
+
+                const nameA = a.username.toUpperCase(); // ignore upper and lowercase
+                const nameB = b.username.toUpperCase();
+
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+
+                // names must be equal
+                return 0;
+            });
+
             reply.view('home/my_friends', {
                 data: {
                     friends

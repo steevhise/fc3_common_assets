@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
     selectbox.change(function() {
 
-        location.assign(`${location.protocol}//${location.host}/user/${$(".select-friends option:selected").val()}`);
+        location.assign(`${location.protocol}//${location.host}/member/${$(".select-friends option:selected").val()}`);
     });
 
     // 9 b/c page is a 3 column layout, defaulting to 3x3 display
@@ -33,6 +33,10 @@ document.addEventListener("DOMContentLoaded", ()=> {
                 $(el).show();
             }
         });
+
+        if ($(".friend-card:hidden").length === 0) {
+            $(".friends-load-more button").hide();
+        }
     });
 });
 

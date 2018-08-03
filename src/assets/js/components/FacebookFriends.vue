@@ -7,7 +7,7 @@
                     <input type="checkbox" name="ids" :value="friend.id"/>
                     <label v-if="friend.facebookUsername"><strong>Facebook username:</strong>{{ friend.facebookUsername }}</label>
                 </div>
-            <a class="friend-card columns" :data-friend-id="friend.id" :href="`/user/${ friend.username }`">
+            <a class="friend-card columns" :data-friend-id="friend.id" :href="`/member/${ friend.username }`">
                 <div class="friend-card-inner">
                     <div class="friend-card-avatar">
                         <img :src="friend.image"/>

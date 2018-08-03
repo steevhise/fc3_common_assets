@@ -1,5 +1,5 @@
 {% if action %}
-<form method="post" action="/user/{{username}}/friendship">
+<form method="post" action="/member/{{username}}/friendship">
   <button name="action" value="{{action}}" {% if confirm %}onclick="return confirm('Are you sure?')"{% endif %} class="btn btn-action" style="margin: 2px">
     <i class="icon fa fa-{{icon}}"></i>{{label}}
   </button>
