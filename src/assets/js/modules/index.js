@@ -13,3 +13,4 @@ export {default as MyFriends} from "./my_friends";
 export {default as CreateAlert} from "./create_alert.js";
 export {default as AdminPages} from "./admin_pages";
 export {default as AdminTags} from "./admin_tags";
+export {default as ProfileImageUpload} from "./profile_image_upload";

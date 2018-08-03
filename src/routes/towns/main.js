@@ -53,8 +53,6 @@ module.exports = {
         })
         .then(([group, groups, posts, membershipChecks]) => {
 
-            const { latitude, longitude } = group;
-            const noCoordinates = (latitude === 0 && longitude === 0) ? true : false;
             const tags = Hoek.unique(Hoek.flatten(posts.map(({ tags }) => tags)), 'id');
 
             // Handles a predictable membership action error
@@ -77,7 +75,6 @@ module.exports = {
                     posts,
                     groups,
                     tags,
-                    noCoordinates,
                     ...membershipChecks
                 },
                 showFilterSelectors: true,
