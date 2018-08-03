@@ -65,9 +65,9 @@
         {#{% for group in groupList %}#}
           <tr v-for="(town, index) in townResults()">
             <td><h4 v-html="town.name"></h4></td>
+            <td><p v-html="town.region.region_name" ></p></td>
             {#NOTE: group.name and group.distance is not available in the current scope.#}
-            <td>{{group.name}}</td>
-            <td>{{group.distance}} miles</td>
+            <td>miles</td>
           </tr>
         {#{% endfor %}#}
         </tbody>

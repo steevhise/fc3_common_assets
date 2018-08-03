@@ -13,6 +13,10 @@
 				</li>
 			</ul>
 		</div>
+
+		<!-- Placed here so page's scroll position on modal close (when modal opened with this control) is at top of replies page -->
+		<div id='general-chatbox-opener' style='display: none;' :data-open="this.modalId"></div>
+
 		<fc-messages-topics
 			v-if="currentCategory !== 'Notifications'"
 			:category="currentCategory"
@@ -100,25 +104,22 @@
 					return this.deselectTopic();
 				});
 
-				// Do this onload to ensure Reveal modal is setup
 				if (search) {
 
-					let threadIdentifier;
-					// expects query param of type={{ thread type }}&id={{ type id }}
-					if (threadIdentifier = search.substring(1).match(/type=post&id=(\d+)/)) {
-						return Promise.resolve()
-						.then(() => this.selectTopic({ topic: { type: 'post', post: { id: threadIdentifier[1] } } }))
-						.then(() => this.selectTopicCategory('Replies To My Posts'));
+					// These checks fix an odd timing issue, where the topic window
+					// sometimes wouldn't open on revisiting the page w/ the same query string
+
+					if (this.topicsLoaded) {
+						return this.linkToThread(search);
 					}
 
-					if (threadIdentifier = search.substring(1).match(/thread=(\d+)/)) {
-						return this.selectNestedThread(threadIdentifier[1])
-						.then(() => {
+					const unwatch = this.$watch('topicsLoaded', (curr, prev) => {
+						unwatch();
 
-							const { topic } = this.currentTopic;
-							return this.selectTopicCategory(this.categoryFromTopic(topic))
-						});
-					}
+						if (curr && !prev) {
+							return this.linkToThread(search);
+						}
+					});
 				}
 			});
 		},
@@ -238,6 +239,38 @@
 				return this.getTopicsInCategory(category).reduce((count, topic) => {
 					return count + topic.unreadCount;
 				}, 0);
+			},
+			linkToThread(search) {
+
+				const openOnThread = () => {
+					this.selectTopicCategory(this.categoryFromTopic(this.currentTopic.topic));
+					// nextTick guarantees DOM element corresponding to selector below exists
+					this.$nextTick(function () {
+						$('#general-chatbox-opener').click();
+					});
+				}
+
+				const notFound = (message) => (err) => {
+					if (err.status === 404) {
+						this.$bus.$emit('alert', { level : 'alert', message, timer: 10000 });
+					}
+					console.error(err);
+				};
+
+				let threadIdentifier;
+				// expects query param of type={{ thread type }}&id={{ type id }}
+				if (threadIdentifier = search.substring(1).match(/type=post&id=(\d+)/)) {
+					return Promise.resolve()
+					.then(() => this.selectTopic({ topic: { type: 'post', post: { id: threadIdentifier[1] } } }))
+					.then(() => openOnThread())
+					.catch(notFound('You don\'t have any replies about that post'));
+				}
+
+				if (threadIdentifier = search.substring(1).match(/thread=(\d+)/)) {
+					return this.selectNestedThread(threadIdentifier[1])
+					.then(() => openOnThread())
+					.catch(notFound('That conversation is no longer open'));
+				}
 			}
 		}
 	}
