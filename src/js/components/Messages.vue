@@ -1,9 +1,12 @@
 <template>
 	<div class="message-list-item-details-chat-window" ref="chatWindow">
+		<h3 v-if="category === 'Notifications'" class="row columns  large-1">{{ category }}</h3>
+		<p v-if="category === 'Notifications'"></p>
 		<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 			<p class="chat-message-from" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 				<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender && message.sender.id) }"></span>
 				<span v-if="message.sender">{{ message.sender.username }}</span>&nbsp;<span v-if="message.sender && message.sender.privilege" v-bind:style="{ color: color(message.sender.privilege) }">({{ message.sender.privilege === 4 ? 'Lead Moderator' : 'Moderator' }})</span>
+				<span v-if="!message.sender">system notifier</span>&nbsp;
 			</p>
 			<p class="chat-message-message" v-if="!showHtml">{{message.body}}</p>
 			<p class="chat-message-message" v-if="showHtml" v-html="message.body"></p>
@@ -18,6 +21,7 @@
 	export default {
 		name: 'fc-messages',
 		props: {
+		    category: String,
 			messages: Array,
 			me: Object,
 			showHtml: {
