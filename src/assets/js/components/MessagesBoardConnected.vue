@@ -4,7 +4,9 @@
 			<ul class="tabs">
 				<li v-for="category in categories" class="tabs-title">
 					<a :href="href(category)" @click="selectTopicCategory(category)" :aria-selected="category === currentCategory">
-						{{ category }}
+						<span v-if="category === 'Notifications'" class="text-lighten-less">{{ category }}</span>
+						<span v-else-if="category === 'Contact a Moderator'" class="text-lighten-less">Contact Moderator</span>
+						<span v-else >{{ category }}</span>
 						<span class="messages-unread-admin-badge" v-if="unreadCategoryMessages[category]">
 							<span v-if="unreadCategoryMessages[category] <= 9">({{ unreadCategoryMessages[category] }})</span>
 							<span v-if="unreadCategoryMessages[category] > 9">(9+)</span>
@@ -27,6 +29,7 @@
 		/>
 		<fc-messages
 			v-if="currentCategory === 'Notifications'"
+			:category="currentCategory"
 			show-html
 			:messages="currentMessages.reverse()"
 			:me="me"
@@ -56,10 +59,10 @@
 	import { mapGetters, mapActions } from 'vuex';
 
 	const TOPIC_CATEGORY_MAP = {
-		'Replies To Others\' Posts': 'post',
-		'Replies To My Posts': 'post',
-		'Chats With Friends': 'friend',
-		'Group Moderators': 'group',
+		'Replies to Others\' Posts': 'post',
+		'Replies to My Posts': 'post',
+		'Chat with Friends': 'friend',
+		'Contact a Moderator': 'group',
 		'Notifications': 'system'
 	};
 
