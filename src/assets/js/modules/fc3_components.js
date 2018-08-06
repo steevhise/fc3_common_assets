@@ -9,7 +9,7 @@ import { MessagingStore } from "../vuex_stores/messaging";
 
 
 // Vue Configuration & Plugins
-Vue.config.silent = true;
+Vue.config.silent = false;
 
 // Vuex Store
 Vue.use(Vuex);
@@ -138,18 +138,20 @@ export const MainVue = new Vue({
 	methods: {
 		searchTowns() {
 			let self = this;
-			let results = [];
-
-			results = this.$lodash.filter(self.towns.markers, function(item, index) {
-				return self.$lodash.includes(item.name, self.towns.searchQuery);
-			});
+			let results = self.towns.markers || [];
+			
+			if (self.towns.searchQuery.length > 0) {
+				results = this.$lodash.filter(self.towns.markers, function(item, index) {
+					return self.$lodash.includes([item.name, item.region.region_name], self.towns.searchQuery);
+				});
+			}
 
 			self.towns.filteredMarkers = results;
 
 			self.$root.$emit('renderCluster');
 		},
 		townResults(towns) {
-			if (this.towns.searchQuery) {
+			if (this.towns.searchQuery.length > 0) {
 				return this.towns.filteredMarkers;
 			} else {
 				return this.towns.markers;
