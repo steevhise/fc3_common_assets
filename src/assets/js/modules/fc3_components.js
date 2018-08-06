@@ -83,12 +83,17 @@ Vue.component('fc-map-infowindow', {
 			isOpen: false
 		}
 	},
+	computed: {
+		opened() {
+			return this.$root.map.currentMarker === this.id;
+		}
+	},
 	mounted() {
-		var self = this;
-		this.$root.$on(`${this.id}`, function() {
-			self.$root.map.currentMarker = self.id
-			self.isOpen = true;
+		let self = this;
+		this.$root.$on(`${this.id}`, function(data) {
+			self.$root.map.currentMarker = self.id;
 			self.$infoWindowObject.open(self.$map);
+			$('.item-list-list-view').trigger('click');
 		});
 	}
 });
@@ -158,7 +163,7 @@ export const MainVue = new Vue({
 					return town.regionId === membership.region.id;
 				});
 			});
-			
+
 			if (this.towns.searchQuery.length > 0) {
 				return this.towns.filteredMarkers;
 			} else {
