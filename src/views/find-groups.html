@@ -35,7 +35,7 @@
   <div class="row tabs-content small-centered large-12 column" data-tabs-content="find-groups_detail">
     <div id="find-groups_map" class="table-example row tabs-panel is-active">
       {# {% include "./partials/geomap.html" with geomap %} #}
-      <div class="flex-video" :onload="$emit('loadTowns', {{data.groups|json}})">
+      <div class="flex-video" :onload="$emit('loadTowns', {{data|json}})">
          <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="7" :center="map.center">
              <fc-map-cluster ref="mapcluster">
                  <div v-for="(town, index) in townResults()">
@@ -51,7 +51,6 @@
          </fc-map> 
       </div>
     </div>
-
     <div id="find-groups_list" class="table-example row tabs-panel">
       <table>
         <thead>
@@ -62,14 +61,21 @@
         </tr>
         </thead>
         <tbody>
-        {#{% for group in groupList %}#}
+          {%raw%}
           <tr v-for="(town, index) in townResults()">
-            <td><h4 v-html="town.name"></h4></td>
-            <td><p v-html="town.region.region_name" ></p></td>
-            {#NOTE: group.name and group.distance is not available in the current scope.#}
+            <td>
+              <h4 v-html="town.name">
+                <a :href="`/town/${town.id}`">{{town.name}}</a>
+              </h4>
+              <a v-if="!town.membership">+ Join Town</a>
+              <p v-else-if="town.membership.isPending == 1" style="color: yellow;" >Join Pending</p>
+              <p v-else>Already a Member</p>
+            </td>
+            <td v-if="town.region"><p v-html="town.region.region_name" ></p></td>
+            <!--NOTE: group.name and group.distance is not available in the current scope.-->
             <td>miles</td>
           </tr>
-        {#{% endfor %}#}
+          {%endraw%}
         </tbody>
       </table>
     </div>

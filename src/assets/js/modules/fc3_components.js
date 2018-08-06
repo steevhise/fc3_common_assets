@@ -9,7 +9,7 @@ import { MessagingStore } from "../vuex_stores/messaging";
 
 
 // Vue Configuration & Plugins
-Vue.config.silent = false;
+Vue.config.silent = true;
 
 // Vuex Store
 Vue.use(Vuex);
@@ -111,7 +111,8 @@ export const MainVue = new Vue({
 			towns: {
 				searchQuery: '',
 				markers: [],
-				filteredMarkers: []
+				filteredMarkers: [],
+				memberships: []
 			},
 			map: {
 				currentMarker: null,
@@ -151,6 +152,13 @@ export const MainVue = new Vue({
 			self.$root.$emit('renderCluster');
 		},
 		townResults(towns) {
+			// add isMember key
+			this.towns.markers.forEach(town => {
+				town.membership = this.$lodash.find(this.towns.memberships, membership => {
+					return town.regionId === membership.region.id;
+				});
+			});
+			
 			if (this.towns.searchQuery.length > 0) {
 				return this.towns.filteredMarkers;
 			} else {
@@ -166,8 +174,9 @@ export const MainVue = new Vue({
 			}, 1000);
 		});
 
-		this.$on('loadTowns', function(markers) {
-			self.towns.markers = markers;
+		this.$on('loadTowns', function(towns) {
+			self.towns.markers = towns.groups;
+			self.towns.memberships = towns.memberships;
 		});
 
 		this.$on('requestGeoPermissions', function() {
