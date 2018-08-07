@@ -166,6 +166,15 @@ export const MainVue = new Vue({
 			}
 		}
 	},
+	filters: {
+		groupIdentifier(group) {
+			if (!group) {
+				return group;
+			}
+			
+			return group.yahoo_group_name || group.uniqueName || group.group_id || group.id || '';
+		}
+	},
 	created() {
 		let self = this;
 		this.$on('renderCluster', function() {
