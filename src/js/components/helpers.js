@@ -1,3 +1,5 @@
+import Moment from "moment";
+
 const topicTitle = ({ topic }) => {
 
   const byType = {
@@ -17,7 +19,9 @@ const postItemConfig = {
   props: ['item', 'path', 'index', 'viewer'],
   data() {
     return {
-      post: this.item
+      post: this.item,
+      // TODO STUB, assume will be removed
+      share: null
     }
   },
   computed: {
@@ -34,10 +38,28 @@ const postItemConfig = {
           return 'RECEIVED';
       }
 
-      return null;//`${this.postType[0].toUpperCase()}${this.postType.slice(1)}`;
+      return null;
     },
     replyButton() {
       return `<button class="btn-${this.lowercase(this.postType)}">Reply</button>`;
+    },
+    // TODO STUB
+    lent() {
+      return this.share && !this.share.return_date
+    },
+    // TODO STUB
+    overdue() {
+
+      if (!this.lent) {
+        return false;
+      }
+
+      const { due_date, lend_date } = this.share;
+      const normalize = (moment) => moment.utc().startOf('day').toDate();
+      const due = normalize(Moment(due_date, 'YYYY-MM-DD'));
+      const now = normalize(Moment());
+
+      return due > now;
     }
   },
   methods: {
@@ -50,6 +72,13 @@ const postItemConfig = {
       const operation = event.currentTarget.value;
       const { protocol, host } = window.location;
       const layout = window.$(event.currentTarget).hasClass('post-grid-select') ? 'grid' : 'list';
+
+      const displayError = (message) => {
+        const errorBlock = document.createElement('p');
+        const errormsg = document.createTextNode(message);
+        const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
+        window.$(`.post-${layout}-item:eq(${instance.index})`).find(`.post-${layout}-item-content`).prepend(error);
+      };
 
       switch (operation) {
         case 'edit':
@@ -64,12 +93,7 @@ const postItemConfig = {
           .done((data, status) => {
             instance.$emit('post-deleted');
           })
-          .fail(() => {
-            const errorBlock = document.createElement('p');
-            const errormsg = document.createTextNode('We couldn\'t delete your post at this time. Sorry!');
-            const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
-            window.$(`.post-${layout}-item:eq(${instance.index})`).find(`.post-${layout}-item-content`).prepend(error);
-          });
+          .fail(() => displayError('We couldn\'t delete your post at this time. Sorry!'));
           break;
         case 'replies':
           const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
@@ -80,12 +104,16 @@ const postItemConfig = {
           .done((data, status) => {
             instance.$emit('post-marked', { type: data, post: instance.post });
           })
-          .fail(() => {
-            const errorBlock = document.createElement('p');
-            const errormsg = document.createTextNode('We couldn\'t mark your post at this time. Sorry!');
-            const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
-            window.$(`.post-${layout}-item:eq(${instance.index})`).find(`.post-${layout}-item-content`).prepend(error);
+          .fail(() => displayError('We couldn\'t mark your post at this time. Sorry!'));
+          break;
+        case 'lend':
+          $(`friend-select-form-${instance.post.id}`).click(); // Open friend select form
+          instance.$bus.$on('friend-selected', (share) => {
+            instance.$bus.$emit('post-lent', ({ share, post: instance.post }));
           });
+          break;
+        case 'return':
+          // TODO Hit API
           break;
       }
     }

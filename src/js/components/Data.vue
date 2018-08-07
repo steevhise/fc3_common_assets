@@ -3,6 +3,7 @@
 		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
+			v-on:post-lent="postLent"
 		>
 		</component>
 	</div>
@@ -96,6 +97,7 @@
 				return results;
 			}
 		},
+		// Essentially, fake reloads; manually mutate state to reflect actual changes to data we'd receive from server on page reload
 		methods: {
 			// TODO Might work as inline call, but separated here just for clarity (avoiding longish attribute content for v-on)
 			removeItem: function (index) {
@@ -110,6 +112,15 @@
 				post.type = type;
 				posts[$lodash.findIndex(posts, matchId)] = post;
 				this.$bus.$emit('alert', { level: 'success', message: `<p>Post <strong>${post.subject}</strong> marked as ${type.name}</p>`, timer: 8000 });
+			},
+			postLent: function({ share, post }) {
+
+				const { $lodash, posts } = this;
+
+				const matchId = (p) => p.id === post.id;
+				post.share = share;
+				posts[$lodash.findIndex(posts, matchId)] = post;
+				this.$bus.$emit('alert', { level : 'success', message: `You lent <strong>${post.subject}</strong>!`, timer: 20000 });
 			}
 		},
 		mounted() {

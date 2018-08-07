@@ -32,17 +32,29 @@
 						<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
 					</div>
 					<div v-if="viewer" class="post-grid-item-header-right">
-						<select v-if="viewer === post.userId && post.isApproved" class="manage-post-select post-grid-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
-							<option value="" disabled selected hidden>Manage Post</option>
-							<option value="edit">Edit</option>
-							<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
-							<option value="delete">Delete</option>
-							<option value="replies">See Replies</option>
-						</select>
-						<p v-else-if="viewer === post.userId && !post.isApproved" class="callout alert">Awaiting Approval</p>
-						<fc-messages-detail-input v-else-if="['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType)" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
-				          <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-				      	</fc-messages-detail-input>
+						<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
+						<p v-if="!post.isApproved" class="callout alert">Awaiting Approval</p>
+						<template v-else-if="viewer === post.userId">
+							<template v-if="postType === 'LEND'">
+								<fc-friend-select v-if="!lent"  :user-id="viewer" :post-id="post.id"/>
+								<p v-else-if="overdue" class="callout alert">Item Overdue; Due back on {{ share.return_date }}</p> <!-- TODO STUB -->
+								<!-- TODO Add in thread link when approach clarified -->
+								<p v-else class="callout success">On Loan; Due back on {{ share.return_date }}</p> <!-- TODO STUB -->
+							</template>
+							<select v-else class="manage-post-select post-grid-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+								<option value="" disabled selected hidden>Manage Post</option>
+								<option value="edit">Edit Post</option>
+								<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
+								<option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'" :label="lent ? 'Item Returned' : 'Loan Item'" />
+								<option value="delete">Delete Post</option>
+								<option value="replies">See Replies</option>
+							</select>
+						</template>
+						<!-- TODO STUB; Fake refs to share data -->
+						<template v-else-if="lent && viewer === share.borrower_id">
+							<p v-if="overdue" class="callout warning">Item Overdue; Due back on {{ share.return_date }}</p>
+							<p v-else class="callout success">BORROWING; Due back on {{ share.return_date }}</p>
+						</template>
 					</div>
 				</div>
 			</div>
