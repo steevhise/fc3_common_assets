@@ -25,7 +25,7 @@
 						<option value="delete">Delete Post</option>
 						<option value="replies">See Replies</option>
 					</select>
-					<p v-else-if="viewer === post.userId && !post.isApproved" class="callout alert">In Moderation</p>
+					<p v-else-if="viewer === post.userId && !post.isApproved" class="callout alert">Awaiting Approval</p>
 					<fc-messages-detail-input v-else-if="['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType)" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
 					  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
