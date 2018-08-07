@@ -28,7 +28,7 @@
                                         </label>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
-                                        <p>By clicking "Sign Up" you agree to our <a href="/pages/tos">Terms of Service</a> and our <a href="/pages/about/privacy">Privacy Policy</a>.</p>
+                                        <p>By clicking "Sign Up" you agree to our <a target="_blank" href="/pages/tos">Terms of Service</a> and our <a target="_blank" href="/pages/about/privacy">Privacy Policy</a>.</p>
                                     </div>
                                     <div class="medium-12 columns align-center-middle ">
 
