@@ -22,20 +22,19 @@ module.exports = {
         .then(([{ homeTown, towns: groups }, friendships]) => {
 
             const homedata = groups.find((group) => group.id === homeTown);
-            const locatedGroups = groups.map((group) => {
+            const ascHomeDistance = (g1, g2) => g1.distance - g2.distance;
+            const locatedGroups = homedata ?
+                    groups.map((g) => ({ ...g, distance: internals.measureFromHome(homedata, g) }))
+                        .sort(ascHomeDistance)
+                :
+                    groups.sort(internals.groupNameSort);
 
-                const distance = Math.round(internals.measureFromHome(homedata, group));
-                return {
-                    ...group,
-                    distance
-                };
-            }).sort((g1, g2) => g1.distance - g2.distance);
-
-            const geomap = locatedGroups && locatedGroups.length >= 1 ? internals.generateMapData(locatedGroups) : null;
+            const geomap = locatedGroups.length >= 1 ? internals.generateMapData(locatedGroups) : null;
 
             reply.view('home/my_groups', {
                 title: 'My Towns',
                 data: {
+                    homeTown: homedata,
                     locatedGroups,
                     geomap,
                     friendships
@@ -55,21 +54,15 @@ internals.measureFromHome = function (homeGroup, group) {
     const conf = { unit: 'mile' }; // TODO Any way to toggle this based on user setting?
 
     // hack for sorting groups w/ lat, lng (0,0) (null value) to bottom of list sent to view
-    // these values are > than the earth's diameter (longest possible distance between points) in corresponding units
-    const diameterPlus = {
-        mile: 8000,
-        km: 13000
-    };
-
     if (group.latitude === 0 && group.longitude === 0) {
-        return diameterPlus[conf.unit];
+        return Infinity;
     }
 
-    return Haversine(
+    return Number.parseFloat(Haversine(
         { latitude: homeGroup.latitude, longitude: homeGroup.longitude },
         { latitude: group.latitude, longitude: group.longitude },
         conf
-    ); // TODO How do we adapt to different units?
+    ).toFixed(0)); // TODO How do we adapt to different units?
 };
 
 // see map component for notes on configuration and settings expected
@@ -98,6 +91,22 @@ internals.generateMapData = (points) => {
         settings,
         markers
     };
+};
+
+internals.groupNameSort = (a, b) => {
+
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase();
+
+    if (nameA < nameB) {
+        return -1;
+    }
+    if (nameA > nameB) {
+        return 1;
+    }
+
+    // names must be equal
+    return 0;
 };
 
 

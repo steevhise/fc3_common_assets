@@ -13,26 +13,32 @@
             <li class="item-list-header-filter-icon item-list-grid-view tabs-title ">
                 <a href="#mygroups_list">{% include '../icons/list.html' %} <span>List</span></a>
             </li>
-            <li class="item-list-header-filter-icon item-list-list-view tabs-title is-active">
-                  <a href="#mygroups_map">{% include '../icons/map_compass.html' %} <span>Map</span></a>
-            </li>
+            {% if data.geomap %}
+              <li class="item-list-header-filter-icon item-list-list-view tabs-title is-active">
+                    <a href="#mygroups_map">{% include '../icons/map_compass.html' %} <span>Map</span></a>
+              </li>
+            {% endif %}
         </ul>
     </div>
   </div>
 </div>
 
 <div class="row tabs-content small-centered large-12 column" data-tabs-content="mygroups_detail">
-  <div id="mygroups_map" class="table-example row tabs-panel is-active">
-    {% include "./geomap.html" with { geomap: data.geomap } %}
-  </div>
+  {% if data.geomap %}
+    <div id="mygroups_map" class="table-example row tabs-panel is-active">
+      {% include "./geomap.html" with { geomap: data.geomap } %}
+    </div>
+  {% endif %}
 
-  <div id="mygroups_list" class="table-example row tabs-panel">
+  <div id="mygroups_list" class="table-example row tabs-panel {% if !data.geomap %} is-active {% endif %}">
     <table>
       <thead>
       <tr>
         <th>Local Town</th>
         <th>State</th>
-        <th>Distance</th> <!-- TODO Call out units here? -->
+        {% if data.homeTown %}
+          <th>Distance (miles)</th>
+        {% endif %}
       </tr>
       </thead>
       <tbody>
@@ -41,7 +47,17 @@
           <td><h4><a href="/town/{{group|groupIdentifier}}">{{group.name}}</a></h4></td>
           <td>{{group.region.name}}</td>
           <!-- TODO This assumes unit is miles; update to work w/ km when used -->
-          <td>{% if group.distance == 8000 %}N/A (no location info available){% else %}{{group.distance}}{% endif %}</td>
+          {% if data.homeTown %}
+            <td>
+              {% if group.distance === Infinity %}
+                N/A (no location info available)
+              {% elseif group.id === data.homeTown.id %}
+                Home Town!
+              {% else %}
+                {{group.distance}}
+              {% endif %}
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
       </tbody>
