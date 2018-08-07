@@ -10,7 +10,7 @@
     #}
     <div class="start-group row">
         <div class="row">
-            <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
+            <h2 class="post-header-title text-center columns large-12"><fc-icon name="towns"></fc-icon>{{ title }}</h2>
         </div>
         <div class="row content">
             <div class="columns">
@@ -27,7 +27,7 @@
                                 I have checked the Freecycle map and there is no existing group very close to me.
                             </p>
                             <p>
-                                <input type="submit" value="Continue" />
+                                <input type="submit" class="btn-default" value="Continue" />
                             </p>
                         </form>
                     {% endif %}
@@ -35,7 +35,7 @@
                         <form method="post">
                             <p>
                                 You must be willing to moderate your new group and put in the effort required to promote and grow the group within your community.
-                                Please <a href="#">click here</a> for more information on being a moderator.
+                                Please <a target="_blank" href="https://wiki.freecycle.org/New_Moderator_Orientation">click here</a> for more information on being a moderator.
                             </p>
                             <p>
                                 <input name="step2" type="hidden"/>
@@ -44,10 +44,10 @@
                             </p>
                             <p>
                                 {% if isAuthenticated %}
-                                    <input type="submit" value="Continue" />
+                                    <input type="submit" class="btn-default" value="Continue" />
                                 {% endif %}
                                 {% if !isAuthenticated %}
-                                    <fc-modal custom-trigger="<input type='submit' value='Continue and Login' onclick='return false'>">
+                                    <fc-modal custom-trigger="<input type='submit' class='btn-default' value='Continue and Login' onclick='return false'>">
                                         <fc-login values-from-form=".start-group form"></fc-login>
                                     </fc-modal>
                                 {% endif %}
@@ -57,34 +57,39 @@
                     {% if data.step3 %}
                         <form method="post">
                             <p>
-                                <label for="country">
-                                    *Enter the country this town would be located in
-                                </label>
-                                <input type="text" name="country" value="{{data.step3.country}}"/>
-                                <label for="Region">
-                                    *Enter the region, province, or state this town would be located in
-                                </label>
-                                <input type="text" name="region" value="{{data.step3.region}}"/>
                                 <label for="city">
-                                    *Town or City where you live
+                                    Enter the Town or City where the new Town Group would be located
                                 </label>
                                 <input type="text" name="city" value="{{data.step3.city}}"/>
-                                <label for="address">
-                                    *Residential street address where you live
+
+                                <label for="Region">
+                                    Enter the region, province, or state where this town is located
                                 </label>
-                                <input type="text" name="address" value="{{data.step3.address}}"/>
+                                <input type="text" name="region" value="{{data.step3.region}}"/>
+
+                                <label for="country">
+                                    Enter the country where this town is located
+                                </label>
+                                <input type="text" name="country" value="{{data.step3.country}}"/>
+
                                 <label for="name">
-                                    *First and Last name
+                                    Your First and Last name
                                 </label>
                                 <input type="text" name="name" value="{{data.step3.name}}"/>
+
+                                <label for="address">
+                                    Your residential street address
+                                </label>
+                                <input type="text" name="address" value="{{data.step3.address}}"/>
+
                                 <label for="comment">
-                                    *Why should a new town be created here?
+                                    Why should a new town group be created here?
                                 </label>
                                 <textarea name="comment">{{data.step3.comment}}</textarea>
                             </p>
                             <p>
-                                <div class="row start-group-button">
-                                    <input type="submit" value="Submit"/>
+                                <div class="row start-group-button text-center">
+                                    <input type="submit" class="btn-default" value="Submit"/>
                                 </div>
                             </p>
                         </form>
