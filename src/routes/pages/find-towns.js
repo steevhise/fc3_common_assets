@@ -1,3 +1,6 @@
+
+const Hoek = require('hoek');
+
 const internals = {};
 
 module.exports = {
@@ -7,14 +10,30 @@ module.exports = {
         id: 'find_groups',
         description: 'Search for towns.',
         pre: [
-            {
-                assign: 'groupsWithLocationInfo',
-                method: (request, reply) => {
+            [
+                {
+                    assign: 'groupsWithLocationInfo',
+                    method: (request, reply) => {
 
-                    return request.server.groupService.fetchAllWithLocationInfo()
-                    .then(reply, reply);
+                        return request.server.groupService.fetchAllWithLocationInfo()
+                        .then(reply, reply);
+                    }
+                },
+                {
+                    assign: 'memberships',
+                    method: (request, reply) => {
+
+                        const userId = Hoek.reach(request, 'auth.credentials.id');
+
+                        if (!userId) {
+                            return reply.continue();
+                        }
+
+                        return request.server.userService.fetchTownMemberships(userId, true)
+                        .then(reply);
+                    }
                 }
-            }
+            ]
         ]
         // TODO Note that on /town/{{id}} (routes/towns/main.js), when a searched town has no set coordinates (lat, lng = 0,0)
         // We display a button that links to this page, setting the query string
@@ -30,7 +49,7 @@ module.exports = {
 
             const { redirectedError } = request.state;
 
-            if (redirectedError.type === 'groupNotFound') {
+            if (redirectedError.type === 'groupNotFound' || redirectedError.type === 'membershipActionFailed') {
                 errors.push({
                     message: redirectedError.message
                 });
@@ -43,7 +62,8 @@ module.exports = {
         reply.view('find-groups', {
             title: 'Find Towns',
             data: {
-                ...request.pre.groupsWithLocationInfo
+                ...request.pre.groupsWithLocationInfo,
+                memberships: request.pre.memberships
             },
             inBodyAds: [
                 'one',
