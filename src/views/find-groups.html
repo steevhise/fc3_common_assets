@@ -36,22 +36,22 @@
     <div id="find-groups_map" class="table-example row tabs-panel is-active">
       {# {% include "./partials/geomap.html" with geomap %} #}
       <div class="flex-video" :onload="$emit('loadTowns', {{data|json}})">
-         <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="7" :center="map.center">
-             <fc-map-cluster ref="mapcluster" v-cloak>
+         <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="map.zoom" :center="map.center">
+             <fc-map-cluster ref="mapcluster" v-cloak>1
                  <div v-for="(town, index) in townResults()" :key="town.id">
                      <fc-map-infowindow :options="map.infoWindow.options" :position="geoFormat(town.latitude, town.longitude)" :opened="false" :id="`marker-${town.id}`" :ref="`marker-${town.id}`" >
                          {%raw%}
                             <h3>
-								<a :href="`/town/${town.id}`">{{town.name}}</a>
-							</h3>
-						 	<form v-if="!town.membership" method="post" :action="`/town/${town.id}/join`">
-                            	<button class="btn btn-default" v-if="!town.membership"><i class="icon fa fa-plus"></i> Join Town</button>
-						 	</form>
+                              <a :href="`/town/${town.uniqueName}`">{{town.name}}</a>
+                            </h3>
+                          <form v-if="!town.membership" method="post" :action="`/town/${town.id}/join`">
+                              <button class="btn btn-default" v-if="!town.membership"><i class="icon fa fa-plus"></i> Join Town</button>
+                          </form>
                             <span v-else-if="town.membership.isPending == 1" >Join Pending</span>
                             <span v-else>Already a Member</span>
                          {%endraw%}
                      </fc-map-infowindow>
-                     <fc-map-marker :position="geoFormat(town.latitude, town.longitude)" :clickable="true" @click="$emit(`marker-${town.id}`, town);" :animation="4" ></fc-map-marker>
+                     <fc-map-marker :position="geoFormat(town.latitude, town.longitude)" :icon="getMarkerIcon(town)" :clickable="true" @click="$emit(`marker-${town.id}`, town);" :animation="4" ></fc-map-marker>
                  </div>
              </fc-map-cluster>
              
@@ -69,25 +69,25 @@
         </thead>
         <tbody>
           {%raw%}
-          <tr v-for="(town, index) in townResults()" :key="town.id" v-cloak>
-            <td>
-              <h4>
-                <a :href="`/town/${town.id}`">{{town.name}}</a>
-              </h4>
-                <form v-if="!town.membership" method="post" :action="`/town/${town.id}/join`" style="display: inline;">
-					<button class="btn btn-default" v-if="!town.membership"><i class="icon fa fa-plus"></i> Join Town</button>
-				</form>
-                <span v-else-if="town.membership.isPending === 1" >Join Pending</span>
-                <span v-else>Already a Member</span>
-                |
-                <a @click="$emit(`marker-${town.id}`, town)">View Map</a>
-            </td>
-            <td v-if="town.region">
-                <p>{{town.region.region_name}}</p>
-            </td>
-            <!--NOTE: group.name and group.distance is not available in the current scope.-->
-            <td>miles</td>
-          </tr>
+            <tr v-for="(town, index) in townResults()" :key="town.id" v-cloak>
+              <td>
+                <h4>
+                  <a :href="`/town/${town.uniqueName}`">{{town.name}}</a>
+                </h4>
+                  <form v-if="!town.membership" method="post" :action="`/town/${town.id}/join`" style="display: inline;">
+                    <button class="btn btn-default"><i class="icon fa fa-plus"></i> Join Town</button>
+                  </form>
+                  <span v-else-if="town.membership.isPending === 1" >Join Pending</span>
+                  <span v-else>Already a Member</span>
+                  |
+                  <a @click="$emit(`marker-${town.id}`, town)">View Map</a>
+              </td>
+              <td v-if="town.region">
+                  <p>{{town.region.region_name}}</p>
+              </td>
+              <!--NOTE: group.name and group.distance is not available in the current scope.-->
+              <td>miles</td>
+            </tr>
           {%endraw%}
         </tbody>
       </table>

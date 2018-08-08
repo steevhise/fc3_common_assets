@@ -121,10 +121,8 @@ export const MainVue = new Vue({
 			},
 			map: {
 				currentMarker: null,
-				center: {
-					lat: 33.24,
-					lng: -117.36
-				},
+				center: {},
+				zoom: 7,
 				markers: [],
 				infoWindow: {
 					options: {
@@ -169,19 +167,48 @@ export const MainVue = new Vue({
 			} else {
 				return this.towns.markers;
 			}
+		},
+		getMarkerIcon(town) {
+			let color = town.membership !== undefined ? '#FF5722' : '#34b233';
+			
+			return { 
+				path: 'M10.75,0A6.25,6.25,0,0,0,4.5,6.25c0,6,6.25,13.75,6.25,13.75S17,12.22,17,6.25A6.25,6.25,0,0,0,10.75,0Zm0,9.7a3.38,3.38,0,1,1,3.38-3.38A3.37,3.37,0,0,1,10.75,9.7Z',
+				fillColor: color,
+				fillOpacity: 1,
+				strokeColor: 'white',
+				strokeWeight: 1,
+				scale: 2
+			}
+		}
+	},
+	filters: {
+		groupIdentifier(group) {
+			if (!group) {
+				return group;
+			}
+			
+			return group.yahoo_group_name || group.uniqueName || group.group_id || group.id || '';
 		}
 	},
 	created() {
 		let self = this;
 		this.$on('renderCluster', function() {
-			setTimeout(() => {
-				this.$refs.mapcluster.$clusterObject.fitMapToMarkers();
-			}, 1000);
+			if (! (self.towns.memberships.length > 0) ) {
+				setTimeout(() => {
+					this.$refs.mapcluster.$clusterObject.fitMapToMarkers();
+				}, 1000);
+			}
 		});
 
 		this.$on('loadTowns', function(towns) {
 			self.towns.markers = towns.groups;
 			self.towns.memberships = towns.memberships;
+			
+			// set the map center based on the first item in the user's group membership
+			self.map.center = {
+				lat: towns.memberships[0].latitude ? towns.memberships[0].latitude : 33.24,
+				lng: towns.memberships[0].longitude ? towns.memberships[0].longitude : -117.36
+			}
 		});
 
 		this.$on('requestGeoPermissions', function() {
