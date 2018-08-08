@@ -29,6 +29,15 @@
   {% parent %}
     {# We programmatically add errors here via the image uploader component #}
     <div class="form-errors-container"></div>
+  {% if !(session.connected.friends || session.connected.groups) %}
+      <div class="row" style="text-align: center; margin-top: 2rem;">
+        <p>You need to join a local town or find some friends before you can post your own items</p>
+        <div>
+          <a class="btn btn-wanted" href="/home/my-friends/find">Add Friends</a>
+          <a class="btn btn-lend" href="/find-towns">Find Towns</a>
+        </div>
+      </div>
+  {% else %}
     <div class="new_post row">
         <div class="row">
             <h2 class="post-header-title text-center columns large-12">{{ title }}</h2>
@@ -39,7 +48,10 @@
                 <input type="hidden" name="crumb" value="{{crumb}}"/>
                 <div class="form-group">
                         <div class="switch large" style="position:relative;left:10em;margin-top:0px;margin-bottom:0px;bottom:-4em;">
-                            <input class="switch-input" id="friendCircleSwitch" type="checkbox" name="friendsCircle">
+                            <input class="switch-input" id="friendCircleSwitch" type="checkbox" name="friendsCircle"
+                              {% if !session.connected.groups %} checked {% endif %}
+                              {% if (session.connected.groups || session.connected.friends) && !(session.connected.groups && session.connected.friends) %} disabled {% endif %}
+                              >
                             <label class="switch-paddle" for="friendCircleSwitch">
                                 <span class="switch-text-active" style="position:relative;right:-90px;">Friends Circle</span>
                                 <span class="switch-text-inactive" style="position:relative;right:85px;top:-3.5em;">Town Group</span>
@@ -116,6 +128,7 @@
         </div>
         <hr class="section-divider" />
     </div>
+  {% endif %}
     {% include '../partials/in_body_banner_row.html'%}
 
 {% endblock %}
