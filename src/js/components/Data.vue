@@ -1,6 +1,10 @@
 <template>
 	<div id="fc-data">
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer" v-on:post-deleted="removeItem(index)" ></component>
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer"
+			v-on:post-deleted="removeItem(index)"
+			v-on:post-marked="updatePostType"
+		>
+		</component>
 	</div>
 </template>
 
@@ -17,6 +21,7 @@
 		},
 		data() {
 			return {
+				posts: this.data.posts || [],
 				currLimit: this.limit,
 				postFilter: null,
 				selectedTags: [],
@@ -25,7 +30,7 @@
 		},
 		created() {
 			let self = this;
-			
+
 			this.$root.listView = true;
 
 			this.$root.$on('redrawVueMasonry', () => {
@@ -37,6 +42,10 @@
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
 				self.$root.$emit('redrawVueMasonry');
+				if (self.currLimit >= self.data.posts.length) {
+					// hide load more button if all posts are visible
+					window.$('#item-list-load-more').hide();
+				}
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -55,8 +64,9 @@
 			items() {
 				let self = this;
 				let results = [];
-				
-				results = self.$lodash.filter(self.data.posts, function(item, index) {
+
+				results = self.$lodash.filter(this.posts, function(item, index) {
+
 					return !self.deletedPosts.includes(item.id);
 				});
 
@@ -75,13 +85,13 @@
 						return self.$findOne(self.$lodash.values(self.selectedTags), self.$lodash.values(self.$lodash.mapValues(item.tags, 'name')));
 					})
 				}
-				
+
 				if (self.$root.posts.selectedTown.length > 0) {
 					results = self.$lodash.filter(results, function(item, index) {
 						return item.group.name === self.$root.posts.selectedTown;
 					})
 				}
-				
+
 				self.$root.$emit('redrawVueMasonry');
 				return results;
 			}
@@ -91,6 +101,15 @@
 			removeItem: function (index) {
 				// change to component data triggers re-compute of items
 				this.deletedPosts.push(this.items[index].id);
+			},
+			updatePostType: function ({ type, post }) {
+
+				const { $lodash, posts } = this;
+
+				const matchId = (p) => p.id === post.id;
+				post.type = type;
+				posts[$lodash.findIndex(posts, matchId)] = post;
+				this.$bus.$emit('alert', { level: 'success', message: `<p>Post <strong>${post.subject}</strong> marked as ${type.name}</p>`, timer: 8000 });
 			}
 		},
 		mounted() {

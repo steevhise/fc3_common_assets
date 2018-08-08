@@ -55,7 +55,7 @@
 </template>
 
 <script>
-	import helpers from './helpers';
+	import { topicTitle } from './helpers';
 
 	export default {
 		name: 'fc-messages-board',
@@ -87,7 +87,7 @@
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
-			title: helpers.topicTitle,
+			title: topicTitle,
 			handleSubmit() {
 				let self = this;
 				self.sendingMessage = true;

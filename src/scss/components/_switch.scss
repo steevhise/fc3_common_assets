@@ -1,11 +1,4 @@
-.switch-text-active {
-  @include switch-text-active;
-  right: -80px;
-  position: relative;}
-
-.switch-text-inactive {
-  @include switch-text-inactive;
-  position: relative;
-  right: 75px;
-  top: -3.5em;
+.switch-input[disabled] ~ .switch-paddle {
+  background-color: lightgray;
+  cursor: not-allowed;
 }
