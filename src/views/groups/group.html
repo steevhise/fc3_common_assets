@@ -27,8 +27,7 @@
       <div class="nearby-wrapper">
         {% include '../partials/nearby_groups.html' with {
             currentGroup: data.group,
-            groups: data.groups,
-            noCoordinates: data.noCoordinates
+            groups: data.groups
           }
         %}
       </div>
@@ -36,12 +35,12 @@
 
     {% elseif route.id === 'groups_notices' %}
 
-      {% include './notices.html' with { notices: data.notices, groupId: data.group.group_id } %}
+      {% include './notices.html' with { notices: data.notices, groupIdentifier: data.group|groupIdentifier } %}
 
     {% elseif route.id === 'groups_notices_detail' %}
 
       <div class="row">
-          <a href="/town/{{ data.group.group_id }}/notices" class="notices-back btn-default header-button">Back to Notices</a>
+          <a href="/town/{{ data.group|groupIdentifier }}/notices" class="notices-back btn-default header-button">Back to Notices</a>
           <div class="group-notice-detail">
             <h2>{{ data.notice.description|default(data.notice.filename)|safe }}<h2>
             {% if data.notice.mimetype === 'text/html' %}

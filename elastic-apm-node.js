@@ -6,5 +6,5 @@ module.exports = {
     secretToken: '',
 
     // Set custom APM Server URL (default: http://localhost:8200)
-    serverUrl: ''
+    serverUrl: 'http://pandora.freecycle.org:8200'
 };

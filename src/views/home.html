@@ -14,7 +14,9 @@
       <hr>
     </div>
   </div>
-  {% include './partials/recent_list.html' with { posts: data.posts } %}
+  <div class="row">
+      {% include './partials/recent_list.html' with { posts: data.posts } %}
+    </div>
   <div class="row">
     <hr class="row section-divider"/>
   </div>

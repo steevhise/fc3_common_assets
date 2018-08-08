@@ -104,7 +104,7 @@ module.exports = {
         const view = (data) => {
 
             return reply.view('start_a_group', {
-                title: 'Start a Town',
+                title: 'Start a Town Group',
                 data
             });
         };

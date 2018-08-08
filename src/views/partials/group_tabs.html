@@ -1,11 +1,11 @@
 <div class="row group-tabs-container">
 	{% include './group_hamburger_menu.html' %}
-	{% set groupId = group.group_id %}
+	{% set groupIdentifier = group|groupIdentifier %}
 	<ul class="tabs group-menu-links" id="g-example-tabs" data-tab data-options="deep_linking:true">
 		{# The hardcoded hrefs here must match the path settings of our town routes (/routes/towns ) #}
-		<li class="tabs-title"><a id="group_posts" href="/town/{{ groupId }}">Posts</a></li>
-		<li class="tabs-title"><a id="group_notices" href="/town/{{ groupId }}/notices">Notices</a></li>
-		<li class="tabs-title"><a id="group_info" href="/town/{{ groupId }}/info">Town Info</a></li>
+		<li class="tabs-title"><a id="group_posts" href="/town/{{ groupIdentifier }}">Posts</a></li>
+		<li class="tabs-title"><a id="group_notices" href="/town/{{ groupIdentifier }}/notices">Notices</a></li>
+		<li class="tabs-title"><a id="group_info" href="/town/{{ groupIdentifier }}/info">Town Info</a></li>
 	</ul>
 </div>
 

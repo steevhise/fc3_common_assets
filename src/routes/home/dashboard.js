@@ -31,8 +31,13 @@ module.exports = {
         const { credentials } = request.auth;
         const { town, friends } = request.query;
 
+        const criteria = {
+            town: (town === 'all' || (!town && !friends)) ? postService.ALL_TOWNS : town,
+            friends
+        };
+
         return Promise.all([
-            postService.forUser(credentials.id),
+            postService.forUser(credentials.id, criteria),
             tagService.fetchAll(),
             userService.fetchTownMemberships(credentials.id),
             userService.fetchFriendships(credentials.id)
