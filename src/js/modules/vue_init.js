@@ -14,6 +14,7 @@ import Form from '../components/Form.vue';
 import Callout from '../components/Callout.vue';
 import Help from '../components/Help.vue';
 import FeaturedIn from '../components/FeaturedIn.vue';
+import LendFriendsSelect from '../components/LendFriendsSelect.vue';
 import PostListItem from '../components/PostListItem.vue';
 import PostGridItem from '../components/PostGridItem.vue';
 import Icon from '../components/Icon.vue';
@@ -91,6 +92,7 @@ export const FCVue = {
 		Vue.component('fc-callout', Callout);
 		Vue.component('fc-help', Help);
 		Vue.component('fc-featuredin', FeaturedIn);
+		Vue.component('fc-lend-friends-select', LendFriendsSelect);
 		Vue.component('fc-post-list-item', PostListItem);
 		Vue.component('fc-post-grid-item', PostGridItem);
 		Vue.component('fc-icon', Icon);

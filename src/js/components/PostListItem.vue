@@ -22,12 +22,16 @@
 					<p v-if="!post.isApproved" class="callout alert">Awaiting Approval</p>
 					<template v-else-if="viewer === post.userId">
 						<template v-if="postType === 'LEND'">
-							<fc-friend-select v-if="!lent"  :user-id="viewer" :post-id="post.id"/>
-							<p v-else-if="overdue" class="callout alert">Item Overdue; Due back on {{ share.return_date }}</p> <!-- TODO STUB -->
+							<div v-if="!lent"  data-open="friend-select-form"
+								style="display: none;"
+								v-on:click="onClickModalTrigger"
+								:id="`friend-select-trigger-${post.id}`"
+							></div>
+							<p v-else-if="overdue" class="callout alert">Item Overdue!<span v-if="post.share.dueDate"> It was due on {{ post.share.dueDate }}</span></p>
 							<!-- TODO Add in thread link when approach clarified -->
-							<p v-else class="callout success">On Loan; Due back on {{ share.return_date }}</p> <!-- TODO STUB -->
+							<p v-else-if="lent" class="callout success">On Loan!<span v-if="post.share.dueDate"> Due back on {{ post.share.dueDate }}</span></p>
 						</template>
-						<select v-else class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
 							<option value="" disabled selected hidden>Manage Post</option>
 							<option value="edit">Edit Post</option>
 							<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
@@ -36,10 +40,9 @@
 							<option value="replies">See Replies</option>
 						</select>
 					</template>
-					<!-- TODO STUB; Fake refs to share data -->
-					<template v-else-if="lent && viewer === share.borrower_id">
-						<p v-if="overdue" class="callout warning">Item Overdue; Due back on {{ share.return_date }}</p>
-						<p v-else class="callout success">BORROWING; Due back on {{ share.return_date }}</p>
+					<template v-else-if="lent && viewer === post.share.borrowerId">
+						<p v-if="overdue" class="callout warning">Item Overdue!<span v-if="post.share.dueDate"> It was due on {{ post.share.dueDate }}</span></p>
+						<p v-else class="callout success">BORROWING!<span v-if="post.share.dueDate"> Due back on {{ post.share.dueDate }}</span></p>
 					</template>
 					<fc-messages-detail-input v-else-if="['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType)" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
 					  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
