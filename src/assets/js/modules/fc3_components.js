@@ -146,7 +146,7 @@ export const MainVue = new Vue({
 			
 			if (self.towns.searchQuery.length > 0) {
 				results = this.$lodash.filter(self.towns.markers, function(item, index) {
-					return self.$lodash.includes([item.name, item.region.region_name], self.towns.searchQuery);
+					return self.$lodash.includes([item.name.toLowerCase(), item.region.region_name.toLowerCase()], self.towns.searchQuery.toLowerCase());
 				});
 			}
 
