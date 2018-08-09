@@ -42,7 +42,7 @@
 				if (fReveal.attr('aria-hidden') === 'false' && data.level === 'success') {
 					// Unfortunate workaround for the fact that foundation's close method appears to be unavailable
 					// in our project (guessing a missing library (modal requires motion-ui))
-					fReveal.find(`${this.getTarget}-close`).trigger('click');
+					fReveal.find(`#${this.getTarget}-close`).trigger('click');
 				}
 			});
 		}
