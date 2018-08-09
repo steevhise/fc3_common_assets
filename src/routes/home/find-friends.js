@@ -87,8 +87,7 @@ internals.username = (facebookId, facebookFriends) => {
     // Ensures we don't depend on the name value existing in Facebook's data
     // to get through our handler and display the view
     try {
-        // ids in objects from Facebook are received as strings
-        return facebookFriends.find((f) => Number(f.id) === facebookId).name;
+        return facebookFriends.find((f) => f.id === facebookId).name;
     } catch (e) {
         return '';
     }
