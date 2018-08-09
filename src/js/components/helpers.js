@@ -1,3 +1,5 @@
+import Moment from "moment";
+
 const topicTitle = ({ topic }) => {
 
   const byType = {
@@ -17,7 +19,7 @@ const postItemConfig = {
   props: ['item', 'path', 'index', 'viewer'],
   data() {
     return {
-      post: this.item
+      post: this.item,
     }
   },
   computed: {
@@ -34,10 +36,27 @@ const postItemConfig = {
           return 'RECEIVED';
       }
 
-      return null;//`${this.postType[0].toUpperCase()}${this.postType.slice(1)}`;
+      return null;
     },
     replyButton() {
       return `<button class="btn-${this.lowercase(this.postType)}">Reply</button>`;
+    },
+    lent() {
+      return this.post.share && !this.post.share.returnDate
+    },
+    overdue() {
+
+      const { dueDate } = this.post.share;
+
+      if (!this.lent || !dueDate) {
+        return false;
+      }
+
+      const normalize = (moment) => moment.utc().startOf('day').toDate().getTime();
+      const due = normalize(Moment(dueDate, 'YYYY-MM-DD'));
+      const now = normalize(Moment());
+
+      return now > due;
     }
   },
   methods: {
@@ -46,48 +65,61 @@ const postItemConfig = {
     },
     manageOp: function (event) {
 
-      const instance = this;
+      const self = this;
       const operation = event.currentTarget.value;
       const { protocol, host } = window.location;
       const layout = window.$(event.currentTarget).hasClass('post-grid-select') ? 'grid' : 'list';
 
+      const displayError = (message) => {
+        const errorBlock = document.createElement('p');
+        const errormsg = document.createTextNode(message);
+        const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
+        window.$(`.post-${layout}-item:eq(${self.index})`).find(`.post-${layout}-item-content`).prepend(error);
+      };
+
       switch (operation) {
         case 'edit':
-          const url = `${protocol}//${host}${instance.path.home_post_edit}${instance.post.id}`;
+          const url = `${protocol}//${host}${self.path.home_post_edit}${self.post.id}`;
           window.location.assign(url);
           break;
         case 'delete':
           window.$.ajax({
             method: 'DELETE',
-            url: `/api/posts/${instance.post.id}`
+            url: `/api/posts/${self.post.id}`
           })
           .done((data, status) => {
-            instance.$emit('post-deleted');
+            self.$emit('post-deleted');
           })
-          .fail(() => {
-            const errorBlock = document.createElement('p');
-            const errormsg = document.createTextNode('We couldn\'t delete your post at this time. Sorry!');
-            const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
-            window.$(`.post-${layout}-item:eq(${instance.index})`).find(`.post-${layout}-item-content`).prepend(error);
-          });
+          .fail(() => displayError('We couldn\'t delete your post at this time. Sorry!'));
           break;
         case 'replies':
           const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
           window.location.assign(myReplies);
           break;
         case 'mark':
-          window.$.post(`/api/posts/${instance.post.id}/mark`, { newType: instance.closedType })
+          window.$.post(`/api/posts/${self.post.id}/mark`, { newType: self.closedType })
           .done((data, status) => {
-            instance.$emit('post-marked', { type: data, post: instance.post });
+            self.$emit('post-marked', { type: data, post: self.post });
           })
-          .fail(() => {
-            const errorBlock = document.createElement('p');
-            const errormsg = document.createTextNode('We couldn\'t mark your post at this time. Sorry!');
-            const error = window.$(errorBlock).append(errormsg).addClass('callout alert');
-            window.$(`.post-${layout}-item:eq(${instance.index})`).find(`.post-${layout}-item-content`).prepend(error);
-          });
+          .fail(() => displayError('We couldn\'t mark your post at this time. Sorry!'));
+          break;
+        case 'lend':
+          $(`#friend-select-trigger-${self.post.id}`).click(); // Open friend select form, fires onClickModalTrigger
+          break;
+        case 'return':
+          $.post(`/api/posts/${self.post.id}/return`)
+          .done((data, status) => {
+            self.$emit('post-returned', { post: self.post });
+          })
+          .fail(() => displayError('Marking your post as returned failed at this time. We apologize for the inconvenience!'));
           break;
       }
+
+      // Finally, reset the manage post dropdown
+      event.currentTarget.selectedIndex = 0;
+    },
+    onClickModalTrigger() {
+      this.$bus.$emit('friend-select:trigger', { post: this.post });
     }
   }
 };

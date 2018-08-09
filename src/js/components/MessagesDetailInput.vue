@@ -11,7 +11,7 @@
 					-->
 					<slot></slot>
 				</div>
-				<fc-form action="/api/messaging/send" :custom-alert="true" >
+				<fc-form action="/api/messaging/send" :custom-alert-el="_uid" >
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
 					<input type="text" name="body" required @input="checkCharCount($event)" />
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
@@ -48,7 +48,7 @@
 			};
 		},
 		created() {
-			this.$bus.$on('formSuccess', (data) => {
+			this.$bus.$on(`formSuccess-${this._uid}`, (data) => {
 
 				const { message } = data;
 				this.charCount = 0;
