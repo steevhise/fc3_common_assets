@@ -59,7 +59,8 @@
     "vuex": "^3.0.1",
     "webpack": "4.10.2",
     "webpack-cli": "^3.0.2",
-    "wreck": "^14.0.2"
+    "wreck": "^14.0.2",
+    "fuse.js": "3.2.1"
   },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",

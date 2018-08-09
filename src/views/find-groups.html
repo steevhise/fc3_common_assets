@@ -37,7 +37,7 @@
       {# {% include "./partials/geomap.html" with geomap %} #}
       <div class="flex-video" :onload="$emit('loadTowns', {{data|json}})">
          <fc-map style="height: auto; width: 100%; position: static; left:0; top:0;" ref="map" :zoom="map.zoom" :center="map.center">
-             <fc-map-cluster ref="mapcluster" v-cloak>1
+             <fc-map-cluster ref="mapcluster" v-cloak>
                  <div v-for="(town, index) in townResults()" :key="town.id">
                      <fc-map-infowindow :options="map.infoWindow.options" :position="geoFormat(town.latitude, town.longitude)" :opened="false" :id="`marker-${town.id}`" :ref="`marker-${town.id}`" >
                          {%raw%}
