@@ -1,6 +1,8 @@
+const OS = require('os');
+
 module.exports = {
     // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
-    serviceName: 'TFN' + process.env.NODE_ENV,
+    serviceName: 'TFN' + OS.type(),
 
     // Use if APM Server requires a token
     secretToken: '',

@@ -1,6 +1,6 @@
 {
   "name": "fc3_main",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "The new Freecycle site - Freecycle 3.0!",
   "main": "src/index.js",
   "repository": "https://github.com/freecycle/fc3_main",
@@ -8,8 +8,8 @@
     "node": "6.9.x"
   },
   "dependencies": {
-    "@freecycle/common-hapi-plugins": "0.2.26",
-    "@freecycle/fc3_common_assets": "0.2.14",
+    "@freecycle/common-hapi-plugins": "0.2.28",
+    "@freecycle/fc3_common_assets": "0.2.15",
     "@freecycle/freecycle_graphql_schema": "^0.2.12",
     "@freecycle/freecycle_node_dal": "^0.2.12",
     "ansi-regex": "^3.0.0",
