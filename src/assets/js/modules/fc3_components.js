@@ -158,8 +158,8 @@ export const MainVue = new Vue({
 			// add isMember key
 			this.towns.markers.forEach(town => {
 				town.membership = this.$lodash.find(this.towns.memberships, membership => {
-					return town.regionId === membership.region.id;
-				});
+					return town.id === membership.id;
+				})
 			});
 
 			if (this.towns.searchQuery.length > 0) {
