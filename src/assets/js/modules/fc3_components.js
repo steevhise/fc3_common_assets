@@ -93,10 +93,15 @@ Vue.component('fc-map-infowindow', {
 	},
 	mounted() {
 		let self = this;
-		this.$root.$on(`${this.id}`, function(data) {
-			self.$root.map.currentMarker = self.id;
-			self.$infoWindowObject.open(self.$map);
+		this.$root.$on(`${this.id}`, (town) => {
+			this.$root.map.currentMarker = this.id;
+			this.$infoWindowObject.open(this.$map);
 			$('.item-list-list-view').trigger('click');
+			
+			// zoom in the map to the selected marker
+			this.$root.$refs.map.$mapObject.setZoom(10);
+			// pan to the map and ensure the new center point is the clicked marker.
+			this.$root.$refs.map.$mapObject.panTo({ lat: town.latitude, lng: town.longitude });
 		});
 	}
 });
@@ -158,7 +163,7 @@ export const MainVue = new Vue({
 				}).search(this.towns.searchQuery);
 			}
 
-			// self.$root.$emit('renderCluster');
+			self.$root.$emit('renderCluster');
 		},
 		townResults(towns) {
 			if (this.towns.searchQuery.length > 0) {
