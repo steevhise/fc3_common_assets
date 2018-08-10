@@ -39,10 +39,16 @@ const postItemConfig = {
       return null;
     },
     replyButton() {
+
       return `<button class="btn-${this.lowercase(this.postType)}">Reply</button>`;
     },
     lent() {
+
       return this.post.share && !this.post.share.returnDate
+    },
+    due() {
+
+      return this.post.share.dueDate && Moment(this.post.share.dueDate).format('M-D-YYYY');
     },
     overdue() {
 
@@ -56,7 +62,7 @@ const postItemConfig = {
       const due = normalize(Moment(dueDate, 'YYYY-MM-DD'));
       const now = normalize(Moment());
 
-      return now > due;
+      return due < now;
     }
   },
   methods: {

@@ -128,7 +128,7 @@
 
 				// $set / $delete (see postReturned below) must be used for setting / deleting the share property
 				// b/c Vue's reactivity system doesn't watch these types of mutations i.e. regular mutation doesn't trigger
-				// component rerender 
+				// component rerender
 				this.$set(post, 'share', share);
 				posts[$lodash.findIndex(posts, matchId)] = post;
 				this.$bus.$emit('alert', { level : 'success', message: `You lent <strong>${post.subject}</strong>!`, timer: 20000 });

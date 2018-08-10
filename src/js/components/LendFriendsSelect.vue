@@ -11,8 +11,9 @@
 						<option v-for="friend in friends"
 							:key="friend.id"
 							:value="friend.id"
-							:label="`${friend.username} ${friend.firstName && friend.lastName && `(${friend.firstName} ${friend.lastName})`}`"
-						/>
+						>
+							{{ friend.username }}<span v-if="friend.firstName && friend.lastName">({{ friend.firstName }} {{ friend.lastName }})</span>
+						</option>
 					</select>
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
 					<input class="btn btn-default" type="submit" value="Lend to Friend!">
@@ -48,7 +49,6 @@
 
 			this.$bus.$on(`formSuccess-${this._uid}`, (share) => {
 
-				console.log('WE GET HERE!!!', share);
 				this.$emit('friend-selected', { share, post: this.post });
 			});
 
