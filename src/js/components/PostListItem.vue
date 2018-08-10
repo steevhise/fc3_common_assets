@@ -38,7 +38,7 @@
 							<option value="edit">Edit Post</option>
 							<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
 							<option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
-								<span v-if="lent">Item Returned</span><span v-else>Loan Item</span>
+								<span v-if="lent">Item Returned</span><span v-else>Lend Item</span>
 							</option>
 							<option value="delete">Delete Post</option>
 							<option value="replies">See Replies</option>
