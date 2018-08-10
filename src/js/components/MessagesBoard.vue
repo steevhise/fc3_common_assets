@@ -39,7 +39,7 @@
 						height: '425px',
 						overflowY: 'scroll'
 					}"
-					:messages="messages"
+					:messages="messagesInit"
 					:me="me"
 				/>
 				<div class="message-list-item-details-chat-form">
@@ -83,7 +83,13 @@
 			});
 			this.$bus.$on('threads.done', () => {
 				this.loadingThreads = false;
-			})
+			});
+		},
+		computed: {
+			messagesInit() {
+
+				return this.messages.length > 0 ? this.messages : [{ id: 0, body: 'There are no messages in this thread yet.'}];
+			}
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
