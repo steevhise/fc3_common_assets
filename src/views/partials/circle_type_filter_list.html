@@ -1,11 +1,14 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <ul class="item-list-header-filter-list">
     <li class="item-list-header-filter-icon item-list-city-circle has-tip" title="Show only posts from Groups" data-tooltip >
-        {% include "../icons/towns.html" with { height: '20px', width: '20px' } %}
-        <span> {% include "../icons/my.html" with { style: "position:relative; top: 10px; height: 20px; width: 23px;" } %} Towns</span>
+        <!-- TODO: these need to be switched to fc-icon component -->
+        {% include "../icons/towns.html" with { height: '40px', width: '40px' } %}
+        <span> {% include "../icons/my.html" with { style: "position:relative; top: 10px; height: 40px; width: 46px;" } %} Towns</span>
     </li>
-    <li class="item-list-header-filter-icon item-list-friend-circle" class="has-tip" title="Show only posts in your Friends Circle">
+    <li class="item-list-header-filter-icon item-list-friend-circle" class="has-tip" title="Show only posts in your Friends Circle" data-tooltip>
+        <a href="{{ path.home_dashboard }}?friends=yes">
         {% include '../icons/friend_circle.html' with {className:'icon-friend-circle'} only %}
         <span>Friends Circle</span>
+        </a>
     </li>
 </ul>

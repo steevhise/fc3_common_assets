@@ -5,12 +5,13 @@
             <div class="item-list-header-filter">
                 {% if filterType === 'circle' %}
                     {% include './circle_type_filter_list.html' %}
-                {% elseif !isGroup %}
-                    {% include './group_dropdown.html' %}
                 {% else %}
                     {# just to place post type filter on left side of filters display on group pages #}
                     {% include './listing_type_filter_list.html' %}
                 {% endif %}
+                {%  if !isGroup %}
+                    {% include './group_dropdown.html' %}
+                {%  endif %}
             </div>
             <div class="item-list-header-controls">
                 {% if !isGroup %}
