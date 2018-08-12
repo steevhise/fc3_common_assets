@@ -24,7 +24,7 @@
 				</div>
 				<div class="post-grid-item-content">
 					<a :href="path.posts_detail + post.id">
-						<h4 v-html="post.subject"></h4>
+						<h6 v-html="post.subject"></h6>
 					</a>
 				</div>
 				<div class="post-grid-item-footer">
