@@ -1,6 +1,6 @@
 <!--Note: this file is provided by the fc3_common_assets package */-->
 <template>
-    <form :method="method" :action="action" :id="id" @change="serializeData()" @submit.prevent="handleSubmit($event)">
+    <form :method="method" :action="action" @change="serializeData()" @submit.prevent="handleSubmit($event)">
         <slot :formData="formData" ></slot>
     </form>
 </template>
@@ -17,7 +17,12 @@
                 type: String,
                 default: () => `/actions/`
             },
-            data: {}
+            data: {},
+            customAlertEl: {
+                // takes the unique id of the element listening for form success; prevents multiple forms on same page
+                // reacting to each other's success events
+                type: Number
+            }
         },
         data() {
             return {
@@ -39,8 +44,13 @@
 
                 $.post(this.action, this.serializedData).done(function(data) {
 
-                    self.$bus.$emit('alert', { level : 'success', message : data.message || data });
-                    self.$bus.$emit('formSuccess');
+                    if (self.customAlertEl) {
+                        // Allow caller to handle alert in a custom way (allows parent to take over)
+                        self.$bus.$emit(`formSuccess-${self.customAlertEl}`, data);
+                    } else {
+                        self.$bus.$emit('alert', { level : 'success', message : data.message || data });
+                    }
+
                     event.target.reset();
                 }).fail(function(error) {
 

@@ -33,13 +33,15 @@
             <div class="post-grid-item-header-left">
                 <span class="text-lighten">{{ post.date | mreldate }}</span>
             </div>
-            <div class="post-grid-item-header-right">
-                <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                  custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
-                >
-                  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-                </fc-messages-detail-input>
-            </div>
+            {% if me && me.id !== post.id %}
+                <div class="post-grid-item-header-right">
+                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                      custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
+                    >
+                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                    </fc-messages-detail-input>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

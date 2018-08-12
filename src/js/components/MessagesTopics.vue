@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<div class="row column message-reply-list-container">
+		<div v-if="topicsLoaded" class="row column message-reply-list-container">
 		    <h3>{{ category }}</h3>
 		    <ul v-if="topics && topics.length" class="message-reply-list">
-				<div v-for="topic in topics" :key="topic.id"> <!-- key is namespaced key id created in toTopicId -->
+				<div v-for="topic in topics">
 			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
 						<div class="message-list-item-left">
 						    <div class="message-title">
@@ -37,7 +37,7 @@
 
 <script>
 	import moment from 'moment';
-	import helpers from './helpers';
+	import { topicTitle } from './helpers';
 
 	export default {
 		name: 'fc-messages-topics',
@@ -45,14 +45,15 @@
 			category: String,
 			topics: Array,
 			onClickTopic: Function,
-			topicModalId: String
+			topicModalId: String,
+			topicsLoaded: Boolean
 		},
 		data() {
 			return {}
 		},
 		methods: {
 			ago: (time) => moment(time).fromNow(),
-			title: helpers.topicTitle,
+			title: topicTitle,
 			image: ({ topic }) => {
 
 				const byType = {

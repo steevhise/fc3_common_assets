@@ -21,14 +21,16 @@
                     <span>{{ post.group.name }}</span>
                 </div>
             </div>
-            <div class="post-list-item-header-right">
-                <span class="text-lighten">{{ post.date | mreldate }}</span>
-                <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                  custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
-                >
-                  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
-                </fc-messages-detail-input>
-            </div>
+            {% if me && me.id !== post.id %}
+                <div class="post-list-item-header-right">
+                    <span class="text-lighten">{{ post.date | mreldate }}</span>
+                    <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+                      custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
+                    >
+                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                    </fc-messages-detail-input>
+                </div>
+            {% endif %}
         </div>
         <div class="post-list-item-content-description">
             <h4><a href="{{ path.posts_detail }}{{ post.id }}">{{ post.subject }}</a></h4>

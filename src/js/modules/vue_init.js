@@ -14,12 +14,12 @@ import Form from '../components/Form.vue';
 import Callout from '../components/Callout.vue';
 import Help from '../components/Help.vue';
 import FeaturedIn from '../components/FeaturedIn.vue';
+import LendFriendsSelect from '../components/LendFriendsSelect.vue';
 import PostListItem from '../components/PostListItem.vue';
 import PostGridItem from '../components/PostGridItem.vue';
 import Icon from '../components/Icon.vue';
 import Data from '../components/Data.vue';
 import Messages from '../components/Messages.vue';
-import MessagesInput from '../components/MessagesInput.vue';
 import MessagesBoard from '../components/MessagesBoard.vue';
 import MessagesNotifier from '../components/MessagesNotifier.vue';
 import MessagesDetailInput from '../components/MessagesDetailInput.vue';
@@ -56,13 +56,13 @@ export const FCVue = {
 			// Then, convert to the given timezone (default_tz set on group post is on, most likely)
 			return utc.tz(timezone).fromNow();
 		});
-		
+
 		// this filter strips html tags from text and returns the raw text
 		Vue.filter('stripTags', function(text) {
 			let regex = /(<([^>]+)>)|&nbsp;/ig;
 			return text.replace(regex, "");
 		});
-		
+
 		// this filter is used to truncate a text and add ellipsis or a specified clamping mechanism.
 		Vue.filter('truncate', function (text, length, clamp) {
 			clamp = clamp || '...';
@@ -92,12 +92,12 @@ export const FCVue = {
 		Vue.component('fc-callout', Callout);
 		Vue.component('fc-help', Help);
 		Vue.component('fc-featuredin', FeaturedIn);
+		Vue.component('fc-lend-friends-select', LendFriendsSelect);
 		Vue.component('fc-post-list-item', PostListItem);
 		Vue.component('fc-post-grid-item', PostGridItem);
 		Vue.component('fc-icon', Icon);
 		Vue.component('fc-data', Data);
 		Vue.component('fc-messages', Messages);
-		Vue.component('fc-messages-input', MessagesInput);
 		Vue.component('fc-messages-board', MessagesBoard);
 		Vue.component('fc-messages-notifier', MessagesNotifier);
 		Vue.component('fc-messages-detail-input', MessagesDetailInput);
