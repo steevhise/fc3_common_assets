@@ -2,7 +2,9 @@
 	<div class="post-list-item" >
 		<div class="post-list-item-photo">
 			<img width="128" :src="post.thumb" v-if="post.thumb">
-			<fc-icon name="logo" width="128" v-else></fc-icon>
+			<div v-else class="post-image-placeholder" style="width: 100%; height: 100%; position: relative; border: 2px solid #ede7de;" >
+				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`" style="margin: 0 auto; display: block; text-align: center; position: relative; top: 40px;" ></fc-icon>
+			</div>
 		</div>
 		<div class="post-list-item-content">
 			<div class="post-list-item-content-header">
