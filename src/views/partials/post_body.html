@@ -11,6 +11,24 @@
                   <div class="post-detail-item-category-icon">
                     {% include "./post_type.html" with { post : post } %}
                   </div>
+                  {% if post.share && !post.share.returnDate %}
+                    {% if post|lendOverdue %}
+                      <p class="callout warning">
+                        Item Overdue!{% if post.share.dueDate %} It was due on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}
+                        {% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">Message your friend</a>{% endif %}
+                      </p>
+                    {% else %}
+                      <p class="callout success">
+                        {% if me.id === post.user.id %}
+                          On Loan!
+                        {% elseif me.id === post.share.borrowerId %}
+                          BORROWED
+                        {% endif %}
+
+                        {% if post.share.dueDate %}Due back on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
+                      </p>
+                    {% endif %}
+                  {% endif %}
                 </div>
                 <div class="post-detail-item-header-right">
                   {# TODO add share and report button ?? #}
@@ -25,12 +43,14 @@
                   <li>{{ post.date|mreldate(datetimeOpts)|capitalize }} ( {{ post.date|mdate(datetimeOpts, 'ddd, MM/DD/YYYY hh:mm a')}} )</li>
                 </ul>
                 <ul class="post-items">
-                  <li>
-                    <a href="{{path.groups_main}}{{post.group.uniqueName}}">
-                      <icon class="fa fa-home"></icon>
-                      <span>{{ post.group.uniqueName }}</span>
-                    </a>
-                  </li>
+                  {% if post.group %}
+                    <li>
+                      <a href="{{path.groups_main}}{{post.group.uniqueName}}">
+                        <icon class="fa fa-home"></icon>
+                        <span>{{ post.group.uniqueName }}</span>
+                      </a>
+                    </li>
+                  {% endif %}
                   <li>
                     <a href="{{path.user}}{{post.user.username}}">
                       <icon class="fa fa-user">
@@ -44,6 +64,12 @@
                       <a href="{{tag.url}}" >{{tag.name}}</a>{% if !loop.last %}, {% endif %}
                     {% endfor %}
                   </li>
+                  {% if post.static && post.static.lendDuration %}
+                    <li>
+                      <strong>Lend Duration</strong>
+                      <span>{{ post.static.lendDuration }} Days</span>
+                    </li>
+                  {% endif %}
                 </ul>
               </div>
             </div>
