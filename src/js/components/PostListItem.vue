@@ -15,6 +15,9 @@
 						<fc-icon name="map_pin"></fc-icon>
 						<span>{{ post.group.name }}</span>
 					</div>
+					<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
+						<strong>Lend Duration: </strong>5 days
+					</div>
 				</div>
 				<div v-if="viewer" class="post-list-item-header-right">
 					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
