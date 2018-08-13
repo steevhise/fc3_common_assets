@@ -9,7 +9,7 @@
 							<span :class="`text-${lowercase(postType)}`">{{lowercase(postType)}}</span>
 						</div>
 						<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
-							<strong>Lend Duration: </strong>5 days
+							<strong>Lend Duration: </strong>{{ post.static.lendDuration }} days
 						</div>
 					</div>
 					<div class="post-grid-item-header-right">
