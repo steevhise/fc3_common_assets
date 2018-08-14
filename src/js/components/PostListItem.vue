@@ -48,7 +48,10 @@
 						</select>
 					</template>
 					<template v-else-if="lent && viewer === post.share.borrowerId">
-						<p v-if="overdue" class="callout warning">Item Overdue!<span v-if="due"> It was due on {{ due }}</span></p>
+						<p v-if="overdue" class="callout warning">
+							Item Overdue!<span v-if="due"> It was due on {{ due }}</span>
+							<a :href="`/home/my-replies?type=post&id=${post.id}`">Let your friend know what's up</a>
+						</p>
 						<p v-else class="callout success">BORROWING!<span v-if="due"> Due back on {{ due }}</span></p>
 					</template>
 					<fc-messages-detail-input v-else-if="['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType)" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">

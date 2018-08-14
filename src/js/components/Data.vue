@@ -1,14 +1,15 @@
 <template>
 	<div id="fc-data">
+		<fc-lend-friends-select
+			v-on:friend-selected="postLent"
+		/>
+		<fc-lend-message ref="lendMessage"/>
 		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
 			v-on:post-returned="postReturned"
 		>
 		</component>
-		<fc-lend-friends-select
-			v-on:friend-selected="postLent"
-		/>
 	</div>
 </template>
 
@@ -121,7 +122,7 @@
 				posts[$lodash.findIndex(posts, matchId)] = post;
 				this.$bus.$emit('alert', { level: 'success', message: `<p>Post <strong>${post.subject}</strong> marked as ${type.name}</p>`, timer: 8000 });
 			},
-			postLent: function({ share, post }) {
+			postLent: function({ share, post, threadId }) {
 
 				const { $lodash, posts } = this;
 				const matchId = (p) => p.id === post.id;
@@ -132,6 +133,10 @@
 				this.$set(post, 'share', share);
 				posts[$lodash.findIndex(posts, matchId)] = post;
 				this.$bus.$emit('alert', { level : 'success', message: `You lent <strong>${post.subject}</strong>!`, timer: 20000 });
+
+				this.$refs.lendMessage.post = post;
+				this.$refs.lendMessage.lendThreadId = threadId;
+				$('#lendMessageTrigger').click(); // open optional lend message form (fc-lend-message)
 			},
 			postReturned: function({ post }) {
 
