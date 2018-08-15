@@ -10,7 +10,7 @@
 
 <div class="header-links">
 
-    {% if session.connected.groups || session.connected.friends %}
+    {% if connections.groups || connections.friends %}
         <a href="{{ path.home_post_new }}"><button class="btn-default header-button">Make A Post</button></a>
     {% endif %}
     <a href="{{ path.pages_logout }}"><button class="btn-default header-button">logout</button></a>
