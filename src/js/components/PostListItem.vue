@@ -3,7 +3,7 @@
 		<div class="post-list-item-photo">
 			<img height="128" :src="post.thumb" v-if="post.thumb">
 			<div v-else class="post-image-placeholder" >
-				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`" style="position: absolute; width:100%; height: 100%; left: 60; top:50;" ></fc-icon>
+				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`" style="position: absolute; width:100%; height: 100%; left: 60px; top:50px;" ></fc-icon>
 			</div>
 		</div>
 		<div class="post-list-item-content">
