@@ -1,13 +1,19 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <ul class="item-list-header-filter-list">
     <li class="item-list-header-filter-icon item-list-city-circle has-tip" title="Show only posts from Groups" data-tooltip >
-        <!-- TODO: these need to be switched to fc-icon component -->
-        {% include "../icons/towns.html" with { height: '40px', width: '40px' } %}
-        <span> {% include "../icons/my.html" with { style: "position:relative; top: 10px; height: 40px; width: 46px;" } %} Towns</span>
+        <a href="{{ path.home_dashboard }}">
+            <span style="position: relative; width: 100%; height: 0; top: 0px; padding: 0px 0px 100%;">
+                <fc-icon name="towns" style="position: absolute; left:0; top:0; width: 100%; height: 100%;"></fc-icon>
+            </span>
+            <span>
+                <fc-icon name="my" style="position:relative; top: 10px; height: 20px; width: 23px;"></fc-icon>Towns
+            </span>
+        </a>
     </li>
     <li class="item-list-header-filter-icon item-list-friend-circle" class="has-tip" title="Show only posts in your Friends Circle" data-tooltip>
-        <a href="{{ path.home_dashboard }}?friends=yes">
-        {% include '../icons/friend_circle.html' with {className:'icon-friend-circle'} only %}
+        <a href="{{ path.home_dashboard }}?friends=1">
+            <!-- TODO:  need to be switched to fc-icon component -->
+            {% include '../icons/friend_circle.html' with {className:'icon-friend-circle'} only %}
         <span>Friends Circle</span>
         </a>
     </li>
