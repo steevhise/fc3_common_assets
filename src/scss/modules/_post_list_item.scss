@@ -4,6 +4,7 @@
   padding: rem-calc(5px);
   margin-bottom: rem-calc(6px);
   display: flex;
+  flex: 1;
   flex-direction: column;
 
   @media #{$medium-up} {
@@ -11,16 +12,27 @@
   }
 
   .post-list-item-photo {
-    flex: 1;
+    //flex: 1;
     display: flex;
     height: auto;
-    width: auto;
-    //align-items: center;
+    width: 128px;
+    align-items: center;
     padding-bottom: rem-calc(5px);
     @media #{$medium-up} {
       padding-bottom: rem-calc(0);
     }
-    
+
+    .post-image-placeholder {
+      border: none;
+      position: relative;
+      height:0;
+      width: 100%;
+      padding: 0;
+      padding-bottom: 92%;
+      margin: auto;
+
+    }
+
     img {
         margin-left: auto;
         margin-right: auto;
