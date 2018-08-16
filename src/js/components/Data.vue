@@ -80,10 +80,6 @@
 					return !self.deletedPosts.includes(item.id);
 				});
 
-				results = self.$lodash.filter(results, function(item, index) {
-					return self.$lodash.inRange( index, 0, self.currLimit );
-				});
-
 				if (self.$root.posts.filter) {
 					results = self.$lodash.filter(results, function(item, index) {
 						return item.type.name.toLowerCase() == self.$root.posts.filter;
@@ -101,7 +97,11 @@
 						return item.group.name === self.$root.posts.selectedTown;
 					})
 				}
-
+				
+				results = self.$lodash.filter(results, function(item, index) {
+					return self.$lodash.inRange( index, 0, self.currLimit );
+				});
+				
 				self.$root.$emit('redrawVueMasonry');
 				return results;
 			}
