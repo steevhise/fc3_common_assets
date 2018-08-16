@@ -83,7 +83,7 @@
 			});
 			this.$bus.$on('threads.done', () => {
 				this.loadingThreads = false;
-			})
+			});
 		},
 		methods: {
 			color: (id) => colors[id % colors.length],
