@@ -261,6 +261,8 @@ class ImageUploader {
                     this.displayError(err.message, this.formErrors);
                 }.bind(self));
 
+                $('[data-loading].is-loading').removeClass('is-loading');
+
                 return window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
