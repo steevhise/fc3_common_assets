@@ -27,10 +27,10 @@
 				</div>
 				<div class="post-grid-item-content">
 					<a :href="path.posts_detail + post.id">
-						<h4 v-html="post.subject"></h4>
+						<h6 v-html="post.subject"></h6>
 					</a>
 				</div>
-				<div class="post-grid-item-footer">
+				<div class="row" style="text-align: center;" >
 					<div class="post-grid-item-header-left">
 						<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
 					</div>

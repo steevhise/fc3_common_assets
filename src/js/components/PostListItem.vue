@@ -20,6 +20,10 @@
 					<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
 						<strong>Lend Duration: </strong>{{ post.static.lendDuration }} days
 					</div>
+                    <div class="post-list-item-header-icon" v-if="post.location" style="margin-left: 15px;" >
+                        <i class="icon fa fa-map-signs"></i>
+                        <span>{{ post.location }}</span>
+                    </div>
 				</div>
 				<div v-if="viewer" class="post-list-item-header-right">
 					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
