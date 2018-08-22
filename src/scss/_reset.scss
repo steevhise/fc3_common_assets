@@ -15,4 +15,7 @@ a {
   transition:all 250ms ease;
 }
 
-
+// removes the blue outline color on focused elements.
+:focus {
+  outline-color: transparent;
+}
