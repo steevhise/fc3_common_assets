@@ -1,20 +1,21 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <ul class="item-list-header-filter-list">
-    <li class="item-list-header-filter-icon item-list-city-circle has-tip" title="Show only posts from Groups" data-tooltip >
-        <a href="{{ path.home_dashboard }}">
-            <span style="position: relative; width: 100%; height: 0; top: 0px; padding: 0px 0px 100%;">
-                <fc-icon name="towns" style="position: absolute; left:0; top:0; width: 100%; height: 100%;"></fc-icon>
-            </span>
-            <span>
-                <fc-icon name="my" style="position:relative; top: 10px; height: 20px; width: 23px;"></fc-icon>Towns
-            </span>
-        </a>
+    <li class="item-list-header-filter-icon item-list-city-circle has-tip" title="Show only posts from Towns" data-tooltip >
+        <span style="position: relative; display: flex; width: 100%; height: 0; top: 0px; padding: 0px 0px 100%;">
+            <a href="{{ path.home_dashboard }}">
+                <fc-icon name="towns" style="display: inline; position: absolute; left:20px; top:20px; width: 70%; height: 100%;"></fc-icon>
+                <fc-icon name="my" style="display: inline; position:absolute; top: 0px; height: 1.5rem; width: 1.6rem;"></fc-icon>Towns
+            </a>
+        </span>
+
     </li>
     <li class="item-list-header-filter-icon item-list-friend-circle" class="has-tip" title="Show only posts in your Friends Circle" data-tooltip>
-        <a href="{{ path.home_dashboard }}?friends=1">
-            <!-- TODO:  need to be switched to fc-icon component -->
-            {% include '../icons/friend_circle.html' with {className:'icon-friend-circle'} only %}
-        <span>Friends Circle</span>
-        </a>
+        <span style="position: relative; margin-left:3em; display: flex; width: 100%; height: 0px; top: 5em; padding: 0px 0px 100%;">
+            <a href="{{ path.home_dashboard }}friends">
+                <fc-icon name="friend_circle" class="icon-friend-circle" style="display: inline; position: absolute; left: -3em; top: 0px; width: 2em; height: 100%;"></fc-icon>
+                Friends&nbsp;Circle
+            </a>
+        </span>
+
     </li>
 </ul>
