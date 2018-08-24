@@ -44,18 +44,9 @@
 				}, 100)
 			});
 
-			// Case where post list starts off with fewer posts than page limit
-			if (self.currLimit >= self.posts.length) {
-				// hide load more button if all posts are visible
-				window.$('#item-list-load-more').hide();
-			}
-
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
 				self.$root.$emit('redrawVueMasonry');
-				if (self.currLimit >= self.posts.length) {
-					window.$('#item-list-load-more').hide();
-				}
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -69,6 +60,15 @@
 					this.$root.posts.filter = type;
 				}
 			});
+		},
+		watch: {
+			items(newVal, oldVal) {
+				if (this.currLimit > this.items.length) {
+					window.$('#item-list-load-more').hide();
+				} else {
+					window.$('#item-list-load-more').show();
+				}
+			}
 		},
 		computed: {
 			items() {
