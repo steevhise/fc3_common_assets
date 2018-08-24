@@ -1,12 +1,15 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <ul class="item-list-header-filter-list ">
-    <li class="item-list-header-filter-icon item-list-city-circle  {% if data.criteria.friends %}inactive{% endif %}" title="Show only posts from Towns" data-tooltip >
-        <a href="{{ path.home_dashboard }}"><span style="position: relative;display: flex; align-items: center; width: 8rem;left: 2em;top: 0px;justify-content: space-evenly;" class="has-tip">
-            <fc-icon name="towns" style="display: inline; position: relative; width: 2em;"></fc-icon>
-            <fc-icon name="my" style="display: inline; position: relative; width: 2em; top:.3em"></fc-icon>Towns</span></a>
+    <li class="item-list-header-filter-icon">
+        <fc-icon name="my" style="cursor: default; display: inline; position: relative; width: 2.5em; top:.35em"></fc-icon>
+    </li>
+    <li class="item-list-header-filter-icon item-list-city-circle stateful {% if data.criteria.friends %}inactive{% endif %}" title="Show only posts from Towns" data-tooltip >
+        {% if data.criteria.friends %}<a href="{{ path.home_dashboard }}">{% endif %}<span style="position: relative;display: flex; align-items: center; width: 6rem; right: 1em; top: 0;
+justify-content: space-evenly;" class="has-tip">
+            <fc-icon name="towns" style="display: inline; position: relative; width: 2em;"></fc-icon>Towns</span>{% if data.criteria.friends %}</a>{% endif %}
     </li>
     <li class="item-list-header-filter-icon item-list-friend-circle {% if !data.criteria.friends %}inactive{% endif %}">
-        <a href="{{ path.home_dashboard }}friends"><span style="position: relative; margin-left:5em; display: flex; width: 100%; top: 0em;" class="has-tip" title="Show only posts in your Friends Circle" data-tooltip>
-                <fc-icon name="friend_circle" class="icon-friend-circle" style="display: inline; position: absolute; left: -1.5em; top: 0px; width: 2em; height: 100%;"></fc-icon>Friends&nbsp;Circle</span></a>
+        {% if !data.criteria.friends %}<a href="{{ path.home_dashboard }}friends">{% endif %}<span style="position: relative; margin-left:1em; display: flex; width: 100%; top: 0em;" class="has-tip" title="Show only posts in your Friends Circle" data-tooltip>
+                <fc-icon name="friend_circle" class="icon-friend-circle" style="display: inline; position: absolute; left: -1.5em; top: -1px; width: 2em; height: 100%;"></fc-icon>Friends&nbsp;Circle</span>{% if !data.criteria.friends %}</a>{% endif %}
     </li>
 </ul>
