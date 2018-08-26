@@ -1,13 +1,5 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <ul class="item-list-header-filter-list">
-    <li :class="`item-list-header-filter-icon item-list-offer-filter ${$root.posts.filter == 'offer' ? '' : 'inactive'}`" @click.prevent="$root.$emit('handlePostFilter', 'offer')" >
-        {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
-        <span class="text-offer">Offer</span>
-    </li>
-    <li :class="`item-list-header-filter-icon item-list-wanted-filter ${$root.posts.filter == 'wanted' ? '' : 'inactive'}`" @click.prevent="$root.$emit('handlePostFilter', 'wanted')" >
-        {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
-        <span class="text-wanted">Wanted</span>
-    </li>
     {# below is a crazy way of saying "if dashboard and friends circle, or My Posts page, then show the Lend and Borrow types" #}
     {% if data.criteria.friends or (!isGroup && !data.criteria.friends && !filterType) %}
     <li :class="`item-list-header-filter-icon item-list-lend-filter ${$root.posts.filter == 'lend' ? '' : 'inactive'}`" @click.prevent="$root.$emit('handlePostFilter', 'lend')" >
@@ -19,4 +11,12 @@
         <span class="text-borrow">Borrow</span>
     </li>
     {% endif %}
+    <li :class="`item-list-header-filter-icon item-list-offer-filter ${$root.posts.filter == 'offer' ? '' : 'inactive'}`" @click.prevent="$root.$emit('handlePostFilter', 'offer')" >
+        {% include '../icons/chevron.html' with {className:'icon-chevron-offer'} only %}
+        <span class="text-offer">Offer</span>
+    </li>
+    <li :class="`item-list-header-filter-icon item-list-wanted-filter ${$root.posts.filter == 'wanted' ? '' : 'inactive'}`" @click.prevent="$root.$emit('handlePostFilter', 'wanted')" >
+        {% include '../icons/chevron.html' with {className:'icon-chevron-wanted'} only %}
+        <span class="text-wanted">Wanted</span>
+    </li>
 </ul>
