@@ -60,7 +60,10 @@
         </div>
     </div>
     <br/>
+    {#NOTE: The limit is controlled via Data.vue props.limit#}
+    {%if data.posts.length >= 50 %}
     <div id="item-list-load-more" class="row item-list-load-more">
         <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
     </div>
+    {%endif%}
 </div>
