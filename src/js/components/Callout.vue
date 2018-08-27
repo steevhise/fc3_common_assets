@@ -20,7 +20,13 @@
             }
         },
         created() {
+            // handle event for legacy bus events.
             this.$bus.$on('alert', (data) => {
+                this.init(data);
+            });
+            
+            // handle event for root events
+            this.$root.$on('alert', (data) => {
                 this.init(data);
             });
         },
