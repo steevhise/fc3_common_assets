@@ -4,15 +4,25 @@
         <input class="search input-group-field" type="search" placeholder="Search for items..."/>
     </div>
 
+{% if session %}
     <div class="search-location">
+{% else %}
+    <div class="is-hidden">
+{% endif %}
         <span class="search-map-icon">
-            {% include '../icons/map_pin.html' %}
+            <fc-icon name="map_pin" class="search-map-icon"></fc-icon>
         </span>
 
-        <span class="location">Tucson, AZ</span>
-
-        <span class="search-icon">
-            {% include '../icons/search.html' %}
-        </span>
+        <div class="item-list-header-filter location">
+            <select class="post-search-dropdown">
+                <option selected value="">All My Towns</option>
+                {%raw%}
+                <option v-for="town in $root.posts.towns" :key="town.id" :value="town.name">{{town.name}}</option>
+                {%endraw%}
+            </select>
+        </div>
     </div>
+    <span class="search-icon">
+            {% include '../icons/search.html' %}
+    </span>
 </div>

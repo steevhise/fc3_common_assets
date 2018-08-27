@@ -6,6 +6,7 @@
   align-items: stretch;
   justify-content: center;
   width: 100%;
+  height: 2.5rem;
   position: relative;
 
   .search-input {
@@ -16,7 +17,7 @@
       border: none;
       box-shadow: none;
       font-size: rem-calc(14px);
-      height: 36px;
+      height: 2.5rem;
       margin: 0 1rem 0 0.5rem;
 
       @include breakpoint(header) {
@@ -34,8 +35,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 2.5rem;
-    border-top: 2px solid $medium-gray;
+    height: 2rem;
+    border: none;
 
     .search-map-icon {
       @include icon();
