@@ -49,6 +49,11 @@
       }
     }
 
+    .post-search-dropdown {
+      height:99%;
+      border: none;
+    }
+
     .location {
       @include heading-text();
       flex: 0;
@@ -68,8 +73,7 @@
 
   .search-icon {
     position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
+    left: 0.3rem;
     line-height: 0.5rem;
 
     svg {
@@ -79,7 +83,7 @@
     }
 
     @include breakpoint(header) {
-      top: 10px;
+      top: 0;
       position: inherit;
     }
   }

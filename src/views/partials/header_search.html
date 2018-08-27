@@ -1,9 +1,11 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-<div class="header-search">
+{% set omitOnPages = [ 'home_post_new', 'home_post_edit' ] %}   {# TODO: any other pages shouldnt have search on top? #}
+<div class="header-search" {% if omitOnPages|contains(route.id)  %}style="visibility: hidden;"{% else %}{% endif %}>
     <div class="search-input">
         <input class="search input-group-field" type="search" placeholder="Search for items..."/>
     </div>
 
+    {# logged-out users won't see location interface #}
 {% if session %}
     <div class="search-location">
 {% else %}
@@ -17,7 +19,7 @@
             <select class="post-search-dropdown">
                 <option selected value="">All My Towns</option>
                 {%raw%}
-                <option v-for="town in $root.posts.towns" :key="town.id" :value="town.name">{{town.name}}</option>
+                <option v-for="town in $root.posts.towns" :key="town.id" :value="town.name">{{town.name|truncate(30)}}</option>
                 {%endraw%}
             </select>
         </div>
