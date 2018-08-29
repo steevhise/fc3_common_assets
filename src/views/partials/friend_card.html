@@ -1,4 +1,5 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
+<!-- todo: i don't think this needs to be in common assets... -->
 <a class="friend-card columns large-4" data-friend-id="{{ friend.id }}" href="/member/{{ friend.username }}">
   <div class="friend-card-inner">
     <div class="friend-card-avatar">
@@ -7,6 +8,7 @@
     <div class="friend-card-name">
       <h4 class="friend-card-real-name">{{ friend.firstName }} {{ friend.lastName }}</h4>
       <h5 class="friend-card-user-name">{{ friend.username }}</h5>
+        {#
       <h5 class="thumbsup">
           {% include '../icons/like.html' %}
           {{ friend.info.reputation|default(0) }} thumbs up
@@ -14,7 +16,18 @@
             |
             {% include './user_verified.html' with { text: "Verified", fontSize: "16px" } %}
           {% endif %}
+
       </h5>
+        #}
+        <h5>
+            {{ friend.info.about }}
+        </h5>
+
+        {% if friend.info.signup_date %}
+        <h5 class="thumbsup">
+            Became Member {{ friend.info.signup_date | mreldate }}
+        </h5>
+        {% endif %}
     </div>
   </div>
 </a>
