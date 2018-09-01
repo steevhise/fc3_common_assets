@@ -60,7 +60,7 @@
 						</p>
 						<p v-else class="callout success">BORROWING!<span v-if="due"> Due back on {{ due }}</span></p>
 					</template>
-					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || (route.id !== 'groups_main')) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType)" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
+					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
 					  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
 				</div>
