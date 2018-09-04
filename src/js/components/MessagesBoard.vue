@@ -46,9 +46,15 @@
 				/>
 				<div class="message-list-item-details-chat-form">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
-						<input type="text" ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required>
-						<fc-spinner v-if="sendingMessage" size="medium" message="Sending..."></fc-spinner>
-						<button class="btn-default" v-else>Send</button>
+						<div class="row" style="width: 100%;">
+							<div class="columns small-10">
+								<input type="text" ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required>
+							</div>
+							<div class="columns small-2">
+								<fc-spinner v-if="sendingMessage" size="medium" message="Sending..."></fc-spinner>
+								<button class="btn-default" v-else>Send</button>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>
