@@ -4,7 +4,7 @@
 			v-on:friend-selected="postLent"
 		/>
 		<fc-lend-message ref="lendMessage"/>
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer"
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
 			v-on:post-returned="postReturned"
@@ -22,6 +22,7 @@
 			data: { type: Object, default: {} },
 			viewer: { type: Number, default: 0 },
 			path: { type: Object, default: {} },
+			route: { type: Object, default: {} },
 			context: { type: String, default: "item" }
 		},
 		data() {
@@ -30,7 +31,8 @@
 				currLimit: this.limit,
 				postFilter: null,
 				selectedTags: [],
-				deletedPosts: []
+				deletedPosts: [],
+				isMember: this.data.isMember || false
 			}
 		},
 		created() {
@@ -97,11 +99,11 @@
 						return item.group.name === self.$root.posts.selectedTown;
 					})
 				}
-				
+
 				results = self.$lodash.filter(results, function(item, index) {
 					return self.$lodash.inRange( index, 0, self.currLimit );
 				});
-				
+
 				self.$root.$emit('redrawVueMasonry');
 				return results;
 			}

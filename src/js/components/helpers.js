@@ -16,7 +16,7 @@ const topicTitle = ({ topic }) => {
 };
 
 const postItemConfig = {
-  props: ['item', 'path', 'index', 'viewer'],
+  props: ['item', 'path', 'index', 'viewer', 'isMember', 'route'],
   data() {
     return {
       post: this.item,
