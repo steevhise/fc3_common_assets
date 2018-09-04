@@ -91,13 +91,17 @@
 				if (self.selectedTags.length > 0) {
 					results = self.$lodash.filter(results, function(item, index) {
 						return self.$findOne(self.$lodash.values(self.selectedTags), self.$lodash.values(self.$lodash.mapValues(item.tags, 'name')));
-					})
+					});
 				}
 
 				if (self.$root.posts.selectedTown.length > 0) {
 					results = self.$lodash.filter(results, function(item, index) {
-						return item.group.name === self.$root.posts.selectedTown;
-					})
+						if (item.group && item.group.name.length > 0) {
+							return item.group.name === self.$root.posts.selectedTown;
+						} else {
+							return false;
+						}
+					});
 				}
 
 				results = self.$lodash.filter(results, function(item, index) {
