@@ -17,7 +17,7 @@
                     {# just to place post type filter on left side of filters display, only on group pages #}
                     {% include './listing_type_filter_list.html' %}
                 {%  else %}
-                    {% if !data.criteria.friends %}
+                    {% if sessionId && !data.criteria.friends && !data.criteria.towns %}
                         {% include './group_dropdown.html' %}
                     {% endif %}
                 {%  endif %}
