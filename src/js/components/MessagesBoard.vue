@@ -2,7 +2,9 @@
 	<div>
 		<!-- data-close comes from Foundation's Reveal modal (part of enclosing fc-modal component on my replies page
 			 no-op if component isn't used within a modal -->
-		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }" data-close >X</div>
+		<div @click="onClickClose" style="position: absolute; top: 0; right: 10px;" data-close >
+			<i class="fa fa-times-circle" style="margin: 10px; font-size: 22px; color: #34b233;" ></i>
+		</div>
 		<div v-if="topic" class="message-list-item-header">
 			<h4 v-if="topic.topic.type !== 'post'">{{title(topic)}}</h4>
 			<div  class="message-list-item-post-icon" v-if="topic.topic.type === 'post'">
