@@ -18,14 +18,15 @@
 
             <div class="item-list-header-filter location">
                 <select class="post-search-dropdown" name="town">
-                    <option selected value="">Any Towns</option>
+                    <option selected value="any">Any Towns</option>
+                    <option value="all">All My Towns</option>
                     {%raw%}
                     <option v-for="town in $root.posts.towns" :key="town.id" :value="town.id">{{town.name|truncate(30)}}</option>
                     {%endraw%}
                 </select>
             </div>
         </div>
-        <button type="submit"   class="search-icon">
+        <button type="submit" class="search-icon">
                 {% include '../icons/search.html' %}
         </button>
     </div>
