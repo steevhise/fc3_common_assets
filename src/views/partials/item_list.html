@@ -17,7 +17,8 @@
                     {# just to place post type filter on left side of filters display, only on group pages #}
                     {% include './listing_type_filter_list.html' %}
                 {%  else %}
-                    {% if !data.criteria.friends %}
+                {# the only times we don't want the dropdown is anon user (search page), friends circle, or we already gave a specific group id.    #}
+                    {% if sessionId && !data.criteria.friends && ['ALL_TOWNS', 'all', 'any', '']|contains(data.criteria.town) %}
                         {% include './group_dropdown.html' %}
                     {% endif %}
                 {%  endif %}
