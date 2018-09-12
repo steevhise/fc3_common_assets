@@ -1,5 +1,7 @@
 <template>
-	<div class="post-list-item" >
+	<div class="post-list-item">
+		poster:{{post.userId}}
+		<span v-if="blockedUsers" v-once>blocked: {{blockedUsers|json}}</span>
 		<div class="post-list-item-photo">
 			<img height="128" :src="post.thumb" v-if="post.thumb">
 			<div v-else class="post-image-placeholder" >

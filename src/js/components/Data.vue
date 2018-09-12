@@ -23,6 +23,7 @@
 			viewer: { type: Number, default: 0 },
 			path: { type: Object, default: {} },
 			route: { type: Object, default: {} },
+		    blockedUsers: { type: Array, default: [] },
 			context: { type: String, default: "item" }
 		},
 		data() {
