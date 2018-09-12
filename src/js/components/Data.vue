@@ -4,7 +4,7 @@
 			v-on:friend-selected="postLent"
 		/>
 		<fc-lend-message ref="lendMessage"/>
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users="blockedUsers" :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
 			v-on:post-returned="postReturned"
