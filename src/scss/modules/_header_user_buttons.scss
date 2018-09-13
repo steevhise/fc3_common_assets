@@ -28,3 +28,10 @@
     vertical-align: middle;
   }
 }
+
+.header-user-button:hover {
+  color: #2199e8;
+  svg {
+    fill: #2199e8;
+  }
+}
