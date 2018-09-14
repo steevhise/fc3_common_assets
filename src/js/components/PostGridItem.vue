@@ -14,22 +14,37 @@
 					</div>
 					<div class="post-grid-item-header-right">
 						<div class="post-grid-item-header-icon" v-if="post.group">
-							<span>{{post.group.name}}</span>
-							<fc-icon name="map_pin"></fc-icon>
-							<span>{{post.location }}</span>
+							<i class="fa fa-city"></i>
+							<span :alt="post.group.name" :title="post.group.name">{{post.group.name|truncate(13)}}</span>
 						</div>
 					</div>
 
 				</div>
 				<div class="post-grid-item-photo">
-					<img style="width: 100%; height: auto;" :src="post.image" v-if="post.image">
-					<fc-icon name="logo" v-else></fc-icon>
+					<div v-if="post.image" :style="`width: 100%; height: 200px; background-size: cover; background-position: center center; background-repeat: no-repeat; background-image: url(${post.image});`"></div>
+					<div v-else>
+						<fc-icon name="logo"></fc-icon>
+					</div>
 				</div>
+				<hr/>
 				<div class="post-grid-item-content">
-					<a :href="path.posts_detail + post.id">
-						<h6 v-html="post.subject"></h6>
+					<a :href="path.posts_detail + post.id" :alt="post.subject" :title="post.subject" >
+						<h4 style="font-size: 20px; border: none;" >{{post.subject|truncate(25)}}</h4>
 					</a>
 				</div>
+				<div class="post-grid-item-addinfo row">
+					<ul class="accordion" data-accordion data-allow-all-closed="true" data-deep-link="false" data-update-history="false" data-deep-link-smudge="false">
+						<li class="accordion-item" data-accordion-item>
+							<a class="accordion-title" style="text-align: center; font-size: 16px; color: #34b233;">Details</a>
+							<div class="accordion-content" data-tab-content>
+								<div class="row" style="font-size:12px;">
+									Crossroads: <span><i class="fa fa-map-signs"></i> {{post.location }}</span> 
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<hr/>
 				<div class="row" style="text-align: center;" >
 					<div class="post-grid-item-header-left">
 						<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
@@ -84,6 +99,9 @@
 
 	export default {
 		name: 'fc-post-grid-item',
-		...postItemConfig
+		...postItemConfig,
+		mounted() {
+			this.$root.$emit('initAccordions', '.accordion');
+		}
 	}
 </script>
