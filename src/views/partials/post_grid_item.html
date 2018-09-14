@@ -9,24 +9,22 @@
             </div>
             <div class="post-grid-item-header-right">
                 <div class="post-grid-item-header-icon">
+                    <i class="fa fa-map-pin"></i>
                     <span>{{post.group.name}}</span>
+                    {# 
                     {% include '../icons/map_pin.html' %}
-                    <span>{{post.location|title }}</span>
+                    <span>{{post.location|title }}</span> 
+                    #}
                 </div>
             </div>
 
         </div>
-        <div class="post-grid-item-photo">
-            {% if post.image %}
-                <img style="width: 100%; height: auto;" src="{{post.image}}"/>
-            {%else%}
-                {% include "../icons/logo.html" %}
-            {% endif %}
-
-        </div>
+        
+        <div class="post-grid-item-photo" style=" width: 100%; height: 200px; background-size: cover; background-position: center center; background-repeat: no-repeat; background-image: url({{post.image}});" ></div>
+        
         <div class="post-grid-item-content">
-            <a href="{{path.posts_detail}}{{post.id}}">
-                <h4>{{ post.subject|sanitizeHtml|raw }}</h4>
+            <a href="{{path.posts_detail}}{{post.id}}" title="{{post.subject|sanitizeHtml|raw}}" alt="{{post.subject|sanitizeHtml|raw}}" >
+                <h4 style="font-size: 20px;" v-html="$options.filters.truncate('{{post.subject|sanitizeHtml|raw}}', 25)" ></h4>
             </a>
         </div>
         <div class="post-grid-item-footer">
