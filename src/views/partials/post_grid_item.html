@@ -10,11 +10,7 @@
             <div class="post-grid-item-header-right">
                 <div class="post-grid-item-header-icon">
                     <i class="fa fa-map-pin"></i>
-                    <span>{{post.group.name}}</span>
-                    {# 
-                    {% include '../icons/map_pin.html' %}
-                    <span>{{post.location|title }}</span> 
-                    #}
+                    <span v-html="$options.filters.truncate('{{post.group.name}}', 13)" alt="{{post.group.name}}" title="{{post.group.name}}" ></span>
                 </div>
             </div>
 
@@ -24,9 +20,23 @@
         
         <div class="post-grid-item-content">
             <a href="{{path.posts_detail}}{{post.id}}" title="{{post.subject|sanitizeHtml|raw}}" alt="{{post.subject|sanitizeHtml|raw}}" >
-                <h4 style="font-size: 20px;" v-html="$options.filters.truncate('{{post.subject|sanitizeHtml|raw}}', 25)" ></h4>
+                <h4 style="font-size: 20px; border: none;" v-html="$options.filters.truncate('{{post.subject|sanitizeHtml|raw}}', 25)" ></h4>
             </a>
         </div>
+        <hr/>
+        <div class="post-grid-item-addinfo row">
+            <ul class="accordion" data-accordion data-allow-all-closed="true">
+                <li class="accordion-item" data-accordion-item>
+                    <a href="#" class="accordion-title" style="text-align: center; font-size: 16px; color: #34b233;">Details</a>
+                    <div class="accordion-content" data-tab-content>
+                        <div class="row" style="font-size:12px;">
+                            Crossroads: <span><i class="fa fa-map-signs"></i> {{post.location|title }}</span> 
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <hr/>
         <div class="post-grid-item-footer">
             <div class="post-grid-item-header-left">
                 <span class="text-lighten">{{ post.date | mreldate }}</span>
