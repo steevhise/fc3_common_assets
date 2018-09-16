@@ -2,7 +2,9 @@
 	<div>
 		<!-- data-close comes from Foundation's Reveal modal (part of enclosing fc-modal component on my replies page
 			 no-op if component isn't used within a modal -->
-		<div @click="onClickClose" :style="{ position: 'absolute', top: 0, left: 0 }" data-close >X</div>
+		<div @click="onClickClose" style="position: absolute; top: 0; right: 10px;" data-close >
+			<i class="fa fa-times-circle" style="margin: 10px; font-size: 22px; color: #34b233; cursor: pointer;" ></i>
+		</div>
 		<div v-if="topic" class="message-list-item-header">
 			<h4 v-if="topic.topic.type !== 'post'">{{title(topic)}}</h4>
 			<div  class="message-list-item-post-icon" v-if="topic.topic.type === 'post'">
@@ -44,9 +46,15 @@
 				/>
 				<div class="message-list-item-details-chat-form">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
-						<input type="text" ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required>
-						<fc-spinner v-if="sendingMessage" size="medium" message="Sending..."></fc-spinner>
-						<button class="btn-default" v-else>Send</button>
+						<div class="row" style="width: 100%;">
+							<div class="columns small-10">
+								<input type="text" ref="messageBody" placeholder="Write a Message (1000 characters max)" maxlength="1000" required>
+							</div>
+							<div class="columns small-2">
+								<fc-spinner v-if="sendingMessage" size="medium" message="Sending..."></fc-spinner>
+								<button class="btn-default" v-else>Send</button>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>

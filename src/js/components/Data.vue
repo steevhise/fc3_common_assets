@@ -4,7 +4,7 @@
 			v-on:friend-selected="postLent"
 		/>
 		<fc-lend-message ref="lendMessage"/>
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users="blockedUsers" :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
 			v-on:post-returned="postReturned"
@@ -23,6 +23,7 @@
 			viewer: { type: Number, default: 0 },
 			path: { type: Object, default: {} },
 			route: { type: Object, default: {} },
+		    blockedUsers: { type: Array, default: [] },
 			context: { type: String, default: "item" }
 		},
 		data() {
@@ -91,13 +92,17 @@
 				if (self.selectedTags.length > 0) {
 					results = self.$lodash.filter(results, function(item, index) {
 						return self.$findOne(self.$lodash.values(self.selectedTags), self.$lodash.values(self.$lodash.mapValues(item.tags, 'name')));
-					})
+					});
 				}
 
 				if (self.$root.posts.selectedTown.length > 0) {
 					results = self.$lodash.filter(results, function(item, index) {
-						return item.group.name === self.$root.posts.selectedTown;
-					})
+						if (item.group && item.group.name.length > 0) {
+							return item.group.name === self.$root.posts.selectedTown;
+						} else {
+							return false;
+						}
+					});
 				}
 
 				results = self.$lodash.filter(results, function(item, index) {

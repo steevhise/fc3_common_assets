@@ -36,7 +36,7 @@
 					</div>
 					<div v-if="viewer" class="post-grid-item-header-right">
 						<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-						<p v-if="!post.isApproved" class="callout alert">Awaiting Approval</p>
+						<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved">Awaiting Approval</button>
 						<template v-else-if="viewer === post.userId">
 							<template v-if="postType === 'LEND'">
 								<div v-if="!lent"  data-open="friend-select-form"
@@ -68,7 +68,7 @@
 							</p>
 							<p v-else class="callout success">BORROWING!<span v-if="due"> Due back on {{ due }}</span></p>
 						</template>
-						<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || (route.id !== 'groups_main')) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType)" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
+						<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
 						  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
 						</fc-messages-detail-input>
 					</div>

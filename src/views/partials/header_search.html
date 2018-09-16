@@ -1,30 +1,33 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 {% set omitOnPages = [ 'home_post_new', 'home_post_edit' ] %}   {# TODO: any other pages shouldnt have search on top? #}
-<div class="header-search" {% if omitOnPages|contains(route.id)  %}style="visibility: hidden;"{% else %}{% endif %}>
-    <div class="search-input">
-        <input class="search input-group-field" type="search" placeholder="Search for items..."/>
-    </div>
-
-    {# logged-out users won't see location interface #}
-{% if session %}
-    <div class="search-location">
-{% else %}
-    <div class="is-hidden">
-{% endif %}
-        <span class="search-map-icon">
-            <fc-icon name="map_pin" class="search-map-icon"></fc-icon>
-        </span>
-
-        <div class="item-list-header-filter location">
-            <select class="post-search-dropdown">
-                <option selected value="">All My Towns</option>
-                {%raw%}
-                <option v-for="town in $root.posts.towns" :key="town.id" :value="town.name">{{town.name|truncate(30)}}</option>
-                {%endraw%}
-            </select>
+<form class="post-search" method="post" action="/search-posts">
+    <div class="header-search" {% if omitOnPages|contains(route.id)  %}style="visibility: hidden;"{% else %}{% endif %}>
+        <div class="search-input">
+            <input class="search input-group-field" name="searchText" type="search" value="{{ search }}" placeholder="Search for items..."/>
         </div>
+
+        {# logged-out users won't see location interface #}
+    {% if session %}
+        <div class="search-location">
+    {% else %}
+        <div class="is-hidden">
+    {% endif %}
+            <span class="search-map-icon">
+                <fc-icon name="map_pin" class="search-map-icon"></fc-icon>
+            </span>
+
+            <div class="item-list-header-filter location">
+                <select class="post-search-dropdown" name="town">
+                    <option selected value="any">Any Towns</option>
+                    <option value="all">All My Towns</option>
+                    {%raw%}
+                    <option v-for="town in $root.posts.towns" :key="town.id" :value="town.id">{{town.name|truncate(30)}}</option>
+                    {%endraw%}
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="search-icon">
+                {% include '../icons/search.html' %}
+        </button>
     </div>
-    <span class="search-icon">
-            {% include '../icons/search.html' %}
-    </span>
-</div>
+</form>
