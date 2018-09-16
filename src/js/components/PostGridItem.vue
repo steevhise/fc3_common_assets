@@ -32,13 +32,13 @@
 						<h4 style="font-size: 20px; border: none;" >{{post.subject|truncate(25)}}</h4>
 					</a>
 				</div>
-				<div class="post-grid-item-addinfo row">
+				<div class="post-grid-item-addinfo row is-hidden">
 					<ul class="accordion" data-accordion data-allow-all-closed="true" data-deep-link="false" data-update-history="false" data-deep-link-smudge="false">
 						<li class="accordion-item" data-accordion-item>
 							<a class="accordion-title" style="text-align: center; font-size: 16px; color: #34b233;">Details</a>
 							<div class="accordion-content" data-tab-content>
 								<div class="row" style="font-size:12px;">
-									Crossroads: <span><i class="fa fa-map-signs"></i> {{post.location }}</span> 
+									Crossroads: <span><i class="fa fa-map-signs"></i> {{post.location }}</span>
 								</div>
 							</div>
 						</li>
