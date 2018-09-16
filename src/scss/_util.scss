@@ -34,3 +34,11 @@
 #callout {
   z-index: 5000 !important;
 }
+
+// custom class to set the hoverstate of an element
+.hover-state {
+  transition: all .3s ease-in-out;
+}
+.hover-state:hover {
+  transform: scale(1.1);
+}

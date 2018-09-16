@@ -29,9 +29,9 @@
                 {% endif %}
                 <label class="text-lighten item-list-header-controls-label">View: </label>
                 <ul class="item-list-header-controls-list">
-                    <li :class="`item-list-header-filter-icon item-list-grid-view ${$root.posts.layout !== 'grid' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'grid'">
+                    <li :class="`item-list-header-filter-icon item-list-grid-view hover-state ${$root.posts.layout !== 'grid' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'grid'">
                         {% include '../icons/grid.html' %} <span>Grid</span></li>
-                    <li :class="`item-list-header-filter-icon item-list-list-view ${$root.posts.layout !== 'list' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'list'" >
+                    <li :class="`item-list-header-filter-icon item-list-list-view hover-state ${$root.posts.layout !== 'list' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'list'" >
                         {% include '../icons/list.html' %} <span>List</span></li>
                 </ul>
             </div>
