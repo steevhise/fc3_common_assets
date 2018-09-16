@@ -49,23 +49,42 @@
               </div>
           {% endif %}
         </div>
-        <!-- Items list -->
-        <div class="item-list-items" style="height: auto;" >
-            <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
-                <div class="grid-sizer"></div>
-                <div class="gutter-sizer"></div>
-                <fc-data v-masonry-tile :data="{{data|json|striptags}}" :viewer="{{sessionId}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}" :route="{{path|json}}"></fc-data>
+        {% if data.posts && data.posts.length %}
+            <!-- Items list -->
+            <div class="item-list-items" style="height: auto;" >
+                <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
+                    <div class="grid-sizer"></div>
+                    <div class="gutter-sizer"></div>
+                    <fc-data v-masonry-tile :data="{{data|json|striptags}}" :viewer="{{sessionId}}" context="posts" component="fc-post-grid-item" :path="{{path|json}}" :route="{{path|json}}"></fc-data>
+                </div>
+                <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout == 'list'">
+                    <fc-data :data="{{data|json|striptags}}" context="posts" :viewer="{{sessionId}}" component="fc-post-list-item" :path="{{path|json}}" :route="{{route|json}}" blocked-users="{{data.blockedUsers|json}}"></fc-data>
+                </div>
             </div>
-            <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout == 'list'">
-                <fc-data :data="{{data|json|striptags}}" context="posts" :viewer="{{sessionId}}" component="fc-post-list-item" :path="{{path|json}}" :route="{{route|json}}" blocked-users="{{data.blockedUsers|json}}"></fc-data>
+            <br/>
+            {#NOTE: The limit of number of items shown is controlled via Data.vue props.limit#}
+            {%if data.posts.length >= 50 %}
+            <div id="item-list-load-more" class="row item-list-load-more">
+                <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
             </div>
-        </div>
+            {% endif %}
+        {% else %}
+            {% if filterType === 'circle' %}
+                <div class="row">
+                {% if data.criteria.friends %}
+                    {% if !connections.friends %}
+                        you've got no friends! waaah. stuff about Friends Circle here... blah blah...
+                    {% else %}
+                        you've got friends, but you haven't posted anything, and neither have they.
+                    {% endif %}
+                {% else %}
+                    no town posts  ( either cuz you belong to no towns or your towns are lame ) - wanna find a town, or more towns?
+                    <a href="{{path.find_groups}}">click here</a>.
+                {% endif %}
+                </div>
+            {% endif %}
+            <!--for some other reason, there's no posts here-->
+        {% endif %}
     </div>
-    <br/>
-    {#NOTE: The limit is controlled via Data.vue props.limit#}
-    {%if data.posts.length >= 50 %}
-    <div id="item-list-load-more" class="row item-list-load-more">
-        <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
-    </div>
-    {%endif%}
+
 </div>
