@@ -2,25 +2,14 @@
 	<div class="row">
 		<div class="post-grid-item" style="padding: 5px;" >
 			<div class="post-grid-item-inner">
-				<div class="post-grid-item-header">
-					<div class="post-grid-item-header-left">
-						<div class="post-grid-item-category-icon">
-							<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-							<span :class="`text-${lowercase(postType)}`">{{lowercase(postType)}}</span>
-						</div>
-						<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
-							<strong>Lend Duration: </strong>{{ post.static.lendDuration }} days
-						</div>
-					</div>
-					<div class="post-grid-item-header-right">
-						<div class="post-grid-item-header-icon" v-if="post.group">
-							<span>{{post.group.name}}</span>
-							<fc-icon name="map_pin"></fc-icon>
-							<span>{{post.location }}</span>
-						</div>
-					</div>
-
-				</div>
+				<fc-item-header
+					:post-type="postType"
+					:post-location="post.location"
+					:group-name="post.group.name"
+					:lend-duration="post.static.lendDuration"
+					:post="post">
+				</fc-item-header>
+				
 				<div class="post-grid-item-photo">
 					<img style="width: 100%; height: auto;" :src="post.image" v-if="post.image">
 					<fc-icon name="logo" v-else></fc-icon>
