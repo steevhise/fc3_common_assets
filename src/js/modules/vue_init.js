@@ -27,6 +27,7 @@ import MessagesDetailInput from '../components/MessagesDetailInput.vue';
 import MessagesTopics from '../components/MessagesTopics.vue';
 import PostIcon from '../components/PostIcon.vue';
 import Spinner from '../components/Spinner.vue';
+import ItemHeader from '../components/ItemHeader.vue';
 
 export const FCVue = {
 	install(Vue, options) {
@@ -106,5 +107,6 @@ export const FCVue = {
 		Vue.component('fc-messages-topics', MessagesTopics);
 		Vue.component('fc-post-icon', PostIcon);
 		Vue.component('fc-spinner', Spinner);
+		Vue.component('fc-item-header', ItemHeader);
 	}
 };
