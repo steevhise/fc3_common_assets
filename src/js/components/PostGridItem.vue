@@ -6,7 +6,7 @@
 					:post-type="postType"
 					:post-location="post.location"
 					:group-name="post.group.name"
-					:lend-duration="post.static.lendDuration"
+					:lend-duration="post.static ? post.static.lendDuration : null"
 					:post="post">
 				</fc-item-header>
 				
