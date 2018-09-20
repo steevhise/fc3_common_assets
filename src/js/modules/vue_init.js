@@ -27,6 +27,7 @@ import MessagesDetailInput from '../components/MessagesDetailInput.vue';
 import MessagesTopics from '../components/MessagesTopics.vue';
 import PostIcon from '../components/PostIcon.vue';
 import Spinner from '../components/Spinner.vue';
+import ItemHeader from '../components/ItemHeader.vue';
 
 export const FCVue = {
 	install(Vue, options) {
@@ -84,6 +85,11 @@ export const FCVue = {
 
 			return tcText + clamp;
 		});
+		
+		// convert a given string to lowerCase
+		Vue.filter('lower', function(text) {
+			return String(text).toLowerCase();
+		});
 
 		// register components
 		Vue.component('fc-test', Test);
@@ -106,5 +112,6 @@ export const FCVue = {
 		Vue.component('fc-messages-topics', MessagesTopics);
 		Vue.component('fc-post-icon', PostIcon);
 		Vue.component('fc-spinner', Spinner);
+		Vue.component('fc-item-header', ItemHeader);
 	}
 };

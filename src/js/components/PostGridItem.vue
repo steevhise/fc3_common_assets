@@ -18,8 +18,8 @@
 							<span :alt="post.group.name" :title="post.group.name">{{post.group.name|truncate(13)}}</span>
 						</div>
 					</div>
-
 				</div>
+				
 				<div class="post-grid-item-photo">
 					<div v-if="post.image" :style="`width: 100%; height: 200px; background-size: cover; background-position: center center; background-repeat: no-repeat; background-image: url(${post.image});`"></div>
 				</div>
