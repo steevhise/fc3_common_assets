@@ -10,7 +10,7 @@
             <div class="post-grid-item-header-right">
                 <div class="post-grid-item-header-icon">
                     <i class="fa fa-map-pin"></i>
-                    <span v-html="$options.filters.truncate('{{post.group.name}}', 13)" alt="{{post.group.name}}" title="{{post.group.name}}" ></span>
+                    <span alt="{{post.group.name}}" title="{{post.group.name}}" >{{post.group.name}}</span>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
         
         <div class="post-grid-item-content">
             <a href="{{path.posts_detail}}{{post.id}}" title="{{post.subject|sanitizeHtml|raw}}" alt="{{post.subject|sanitizeHtml|raw}}" >
-                <h4 style="font-size: 20px; border: none;" v-html="$options.filters.truncate('{{post.subject|sanitizeHtml|raw}}', 25)" ></h4>
+                <h4 style="font-size: 20px; border: none;">{{post.subject|sanitizeHtml|raw}}</h4>
             </a>
         </div>
         <hr/>
