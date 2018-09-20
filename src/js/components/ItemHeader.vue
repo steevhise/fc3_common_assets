@@ -2,8 +2,8 @@
 	<div class="post-grid-item-header">
 		<div class="post-grid-item-header-left">
 			<div class="post-grid-item-category-icon">
-				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-				<span :class="`text-${lowercase(postType)}`">{{lowercase(postType)}}</span>
+				<fc-icon name="chevron" :classname="`icon-chevron-${postType.toLowerCase()}`"></fc-icon>
+				<span :class="`text-${postType.toLowerCase()}`">{{postType.toLowerCase()}}</span>
 			</div>
 			<div v-if="lendDuration" style="margin: 0 2rem">
 				<strong>Lend Duration: </strong>{{lendDuration}} days
