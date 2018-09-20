@@ -70,16 +70,22 @@
             {% endif %}
         {% else %}
             {% if filterType === 'circle' %}
-                <div class="row">
+                <div class="row text-center" style="margin-top:1em;">
                 {% if data.criteria.friends %}
                     {% if !connections.friends %}
-                        you've got no friends! waaah. stuff about Friends Circle here... blah blah...
+                        {% include './partials/no_friends_cta.html' %}
                     {% else %}
-                        you've got friends, but you haven't posted anything, and neither have they.
+                        <p>
+                            You've got <a href="{{ path.home_myfriends }}">friends</a>, but they haven't posted anything recently, and neither have you.
+                        </p>
                     {% endif %}
                 {% else %}
-                    no town posts  ( either cuz you belong to no towns or your towns are lame ) - wanna find a town, or more towns?
-                    <a href="{{path.find_groups}}">click here</a>.
+                    {% if !connections.towns %}
+                        Join a local Town group to see and make posts.  <a href="{{ path.find_groups }}" class="btn-default">Find a Town</a>
+
+                    {% else %}
+                        There are no posts in your towns.
+                    {% endif %}
                 {% endif %}
                 </div>
             {% endif %}
