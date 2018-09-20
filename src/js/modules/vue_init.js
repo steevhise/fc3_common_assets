@@ -85,6 +85,11 @@ export const FCVue = {
 
 			return tcText + clamp;
 		});
+		
+		// convert a given string to lowerCase
+		Vue.filter('lower', function(text) {
+			return String(text).toLowerCase();
+		});
 
 		// register components
 		Vue.component('fc-test', Test);
