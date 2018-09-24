@@ -81,9 +81,9 @@ export default {
 </script>
 
 <style>
-.ckeditor::after {
-    content: "";
-    display: table;
-    clear: both;
-}
+    .ckeditor::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 </style>
