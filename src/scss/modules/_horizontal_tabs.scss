@@ -1,9 +1,9 @@
 .horizontal_tabs {
-  margin-top: 1rem;
+  margin-top: 0rem;
 
   .tabs {
     @include tabsReset();
-    border-top: 2px solid $medium-gray;
+    //border-top: 2px solid $medium-gray;
     border-bottom: 2px solid $medium-gray;
     display: flex;
     align-items: center;
