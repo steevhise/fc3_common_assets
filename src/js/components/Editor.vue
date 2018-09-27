@@ -46,9 +46,9 @@ export default {
         instance() {
             return CKEDITOR.instances[this.id];
         },
-		editorConfig() {
-			return Object.assign(this.defaultConfig, this.config);
-		}
+	editorConfig() {
+		return Object.assign(this.defaultConfig, this.config);
+	}
     },
     beforeUpdate() {
         if (this.value !== this.instance.getData()) {
