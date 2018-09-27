@@ -1,7 +1,7 @@
  <!--Note: this file is provided by the fc3_common_assets package */-->
 <template>
     <div class="ckeditor">
-        <textarea :name="name" :id="id" :value="value" :types="types" :config="config" :placeholder="placeholder" ></textarea>
+        <textarea :name="name" :id="id" :value="value" :types="types" :config="editorConfig" :placeholder="placeholder" ></textarea>
     </div>
 </template>
 
@@ -45,7 +45,10 @@ export default {
     computed: {
         instance() {
             return CKEDITOR.instances[this.id];
-        }
+        },
+		editorConfig() {
+			return Object.assign(this.defaultConfig, this.config);
+		}
     },
     beforeUpdate() {
         if (this.value !== this.instance.getData()) {
@@ -57,9 +60,9 @@ export default {
             console.log('CKEDITOR is undefined');
         } else {
             if (this.types === 'inline') {
-                CKEDITOR.inline(this.id, this.config);
+                CKEDITOR.inline(this.id, this.editorConfig);
             } else {
-                CKEDITOR.replace(this.id, this.config);
+                CKEDITOR.replace(this.id, this.editorConfig);
             }
             this.instance.on('change', () => {
                 let html = this.instance.getData();
