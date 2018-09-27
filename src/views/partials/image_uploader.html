@@ -1,9 +1,15 @@
 <div>
-    <p>Up to 3 images. Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload</p>
+    <p class="paragraph-small text-lighten-less" style="margin-bottom: 0;">Up to 3 images. Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload</p>
     <div class="upload-errors-container"></div>
-    <div class="dropbox">
+    <div class="dropbox text-center">
         <input name="images" type="file" id="images" multiple accept="image/jpeg,image/png" class="input-file" />
-        <p class="enabled-upload">Drag your files here to begin upload</p>
+        <div class="enabled-upload">
+        <br>
+            <h4>Drag your image files here,</h4> or
+            <p style="padding:0;">
+            <button class="btn-subtle text-center">click on this and select files</button>
+            </p>
+        </div>
         <p class="disabled-upload" hidden>You've uploaded the max allowed images</p>
     </div>
     <div class="uploaded-files row">

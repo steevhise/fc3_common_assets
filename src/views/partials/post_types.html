@@ -8,7 +8,7 @@
     <button data-value="{{postType.value}}" data-post-typebutton class="{% if isActive %}active{% endif %}">
         <div class="post-list-item-category-icon icon-container">
             {% include '../icons/chevron.html' with { className: 'icon-chevron-' + slug } only %}
-            <span class="text-offer">{{postType.name}}</span>
+            <span class="text-{{slug}}">{{postType.name}}</span>
         </div>
     </button>
 {% endfor %}
