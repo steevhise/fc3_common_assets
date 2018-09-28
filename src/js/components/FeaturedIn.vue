@@ -1,6 +1,6 @@
 <template>
 	<div id="fc-featuredin">
-		<img v-for="(feature, index) in randomFeatures" :key="index" v-if="index < 4" :src="`/images/${feature}.png`" class="columns medium-3" >
+		<img v-for="(feature, index) in randomFeatures" :key="index" v-if="index < 4" :src="`/images/${feature}.png`" :title="format(feature)" :alt="format(feature)" class="columns medium-3" >
 	</div>
 </template>
 
@@ -18,6 +18,13 @@
 		},
 		mounted() {
 			
+		},
+		methods: {
+			// format the feature for title and alt attributes
+			// this is a good practice for accessibility compliance and SEO
+			format(str) {
+				return str.replace('_', ' ').toUpperCase();
+			}
 		},
 		computed: {
 			randomFeatures() {
