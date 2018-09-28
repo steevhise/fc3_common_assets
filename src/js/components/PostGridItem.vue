@@ -18,7 +18,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="post-grid-item-photo">
 				<div v-if="post.image" :style="`width: 100%; height: 200px; background-size: cover; background-position: center center; background-repeat: no-repeat; background-image: url(${post.image});`"></div>
 			</div>
@@ -47,7 +47,7 @@
 				</div>
 				<div v-if="viewer" class="post-grid-item-header-right">
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved">Awaiting Approval</button>
+					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved != undefined">Awaiting Approval</button>
 					<template v-else-if="viewer === post.userId">
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
