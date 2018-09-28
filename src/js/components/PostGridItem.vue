@@ -14,7 +14,7 @@
 				<div class="post-grid-item-header-right">
 					<div class="post-grid-item-header-icon" v-if="post.group">
 						<i class="fa fa-city"></i>
-						<span :alt="post.group.name" :title="post.group.name">{{post.group.name|truncate(13)}}</span>
+						<span :alt="post.group.name" :title="post.group.name"><a :href="`/town/${post.group.uniqueName}`">{{post.group.name|truncate(16)}}</a></span>
 					</div>
 				</div>
 			</div>
