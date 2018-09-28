@@ -1,5 +1,5 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-<div class="post-grid-item" style="padding: 5px;" >
+<div class="post-grid-item" style="padding: 5px; min-height: 615px; width: 100% !important;" >
     <div class="post-grid-item-inner">
         <div class="post-grid-item-header">
             <div class="post-grid-item-header-left">
@@ -8,9 +8,9 @@
                 </div>
             </div>
             <div class="post-grid-item-header-right">
-                <div class="post-grid-item-header-icon">
+                <div class="post-grid-item-header-icon" style="width: 150px;" >
                     <i class="fa fa-map-pin"></i>
-                    <span alt="{{post.group.name}}" title="{{post.group.name}}" >{{post.group.name}}</span>
+                    <span alt="{{post.group.name}}" title="{{post.group.name}}" v-html="$options.filters.truncate(String('{{post.group.name|e('js')}}'), 20)" ></span>
                 </div>
             </div>
 
