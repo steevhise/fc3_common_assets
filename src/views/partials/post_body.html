@@ -1,133 +1,133 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-  <div class="post-detail-item">
-    <div class="row">
-      <div class="columns medium-8">
-        <h4 class="section-title text-center">{{post.subject}}</h4>
-        <div class="post-detail-item-content">
-          <div class="post-detail-item-content-header">
-            <div class="columns medium-12">
-              <div class="row">
-                <div class="post-detail-item-header-left">
-                  <div class="post-detail-item-category-icon">
-                    {% include "./post_type.html" with { post : post } %}
-                  </div>
-                  {% if post.share && !post.share.returnDate %}
-                    {% if post|lendOverdue %}
-                      <p class="callout warning">
-                        Item Overdue!{% if post.share.dueDate %} It was due on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}
-                        {% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">Message your friend</a>{% endif %}
-                      </p>
-                    {% else %}
-                      <p class="callout success">
-                        {% if me.id === post.user.id %}
-                          On Loan!
-                        {% elseif me.id === post.share.borrowerId %}
-                          BORROWED
-                        {% endif %}
+<div class="post-detail-item">
+	<div class="row">
+		<div class="columns medium-8">
+		<h4 class="section-title text-center">{{post.subject}}</h4>
+		<div class="post-detail-item-content">
+			<div class="post-detail-item-content-header">
+			<div class="columns medium-12">
+				<div class="row">
+				<div class="post-detail-item-header-left">
+					<div class="post-detail-item-category-icon">
+					{% include "./post_type.html" with { post : post } %}
+					</div>
+					{% if post.share && !post.share.returnDate %}
+					{% if post|lendOverdue %}
+						<p class="callout warning">
+						Item Overdue!{% if post.share.dueDate %} It was due on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}
+						{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">Message your friend</a>{% endif %}
+						</p>
+					{% else %}
+						<p class="callout success">
+						{% if me.id === post.user.id %}
+							On Loan!
+						{% elseif me.id === post.share.borrowerId %}
+							BORROWED
+						{% endif %}
 
-                        {% if post.share.dueDate %}Due back on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
-                      </p>
-                    {% endif %}
-                  {% endif %}
-                </div>
-                <div class="post-detail-item-header-right">
-                  {# TODO add share and report button ?? #}
-                </div>
-              </div>
-              <div class="clearfix" style="margin-top: 10px;"></div>
-              <div class="row">
-                <ul class="post-items">
-                  {% set datetimeOpts = { time: post.time, timezone: post.group.timezone }%}
-                  <li>#{{post.id}}</li>
-                  <li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
-                  <li>{{ post.date|mreldate(datetimeOpts)|capitalize }} ( {{ post.date|mdate(datetimeOpts, 'ddd, MM/DD/YYYY hh:mm a')}} )</li>
-                </ul>
-                <ul class="post-items">
-                  {% if post.group %}
-                    <li>
-                      <a href="{{path.groups_main}}{{post.group.uniqueName}}">
-                        <icon class="fa fa-home"></icon>
-                        <span>{{ post.group.uniqueName }}</span>
-                      </a>
-                    </li>
-                  {% endif %}
-                  <li>
-                    <a href="{{path.user}}{{post.user.username}}">
-                      <icon class="fa fa-user">
-                      <span>{{ post.user.username|upper }}</span>
-                    </a>
-                  </li>
-                  <li>
-                    {% for tag in post.tags %}
-                      {# TODO where ought this link go? #}
-                      {% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
-                      <a href="{{tag.url}}" >{{tag.name}}</a>{% if !loop.last %}, {% endif %}
-                    {% endfor %}
-                  </li>
-                  {% if post.static && post.static.lendDuration %}
-                    <li>
-                      <strong>Lend Duration</strong>
-                      <span>{{ post.static.lendDuration }} Days</span>
-                    </li>
-                  {% endif %}
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="post-detail-item-content-description align-left">
-            <div class="container">
-              <p>{{ post.description|sanitizeHtml|raw }}</p>
-            </div>
-            <br/>
-            <div class="container">
-            {% if session %}
-              {% if session.id === post.user.id %}
-                  <a href="/home/edit-post/{{post.id}}" class="btn-action">Edit</a>
-              {% elseif post.blocked %}
-                  {# show nothing if the poster has blocked me #}
-              {% elseif post.canReply %}
-                  <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                    custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'
-                  >
-                    <p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
-                  </fc-messages-detail-input>
-              {% else %}
-              <a href="{{path.groups_main}}{{post.group.uniqueName}}">
-                Join the {{ post.group.name }} group</a> to reply to this post.
-              {% endif %}
-            {% else %}
-              <fc-modal id="login" custom-trigger="<a>Login to reply to this post</a>">
-                <fc-login></fc-login>
-              </fc-modal>
-            {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
+						{% if post.share.dueDate %}Due back on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
+						</p>
+					{% endif %}
+					{% endif %}
+				</div>
+				<div class="post-detail-item-header-right">
+					{# TODO add share and report button ?? #}
+				</div>
+				</div>
+				<div class="clearfix" style="margin-top: 10px;"></div>
+				<div class="row">
+				<ul class="post-items">
+					{% set datetimeOpts = { time: post.time, timezone: post.group.timezone }%}
+					<li>#{{post.id}}</li>
+					<li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
+					<li>{{ post.date|mreldate(datetimeOpts)|capitalize }} ( {{ post.date|mdate(datetimeOpts, 'ddd, MM/DD/YYYY hh:mm a')}} )</li>
+				</ul>
+				<ul class="post-items">
+					{% if post.group %}
+					<li>
+						<a href="{{path.groups_main}}{{post.group.uniqueName}}">
+						<icon class="fa fa-home"></icon>
+						<span>{{ post.group.uniqueName }}</span>
+						</a>
+					</li>
+					{% endif %}
+					<li>
+					<a href="{{path.user}}{{post.user.username}}">
+						<icon class="fa fa-user">
+						<span>{{ post.user.username|upper }}</span>
+					</a>
+					</li>
+					<li>
+					{% for tag in post.tags %}
+						{# TODO where ought this link go? #}
+						{% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
+						<a href="{{tag.url}}" >{{tag.name}}</a>{% if !loop.last %}, {% endif %}
+					{% endfor %}
+					</li>
+					{% if post.static && post.static.lendDuration %}
+					<li>
+						<strong>Lend Duration</strong>
+						<span>{{ post.static.lendDuration }} Days</span>
+					</li>
+					{% endif %}
+				</ul>
+				</div>
+			</div>
+			</div>
+			<div class="post-detail-item-content-description align-left">
+			<div class="container">
+				<p>{{ post.description|sanitizeHtml|raw }}</p>
+			</div>
+			<br/>
+			<div class="container">
+			{% if session %}
+				{% if session.id === post.user.id %}
+					<a href="/home/edit-post/{{post.id}}" class="btn-action">Edit</a>
+				{% elseif post.blocked %}
+					{# show nothing if the poster has blocked me #}
+				{% elseif post.canReply %}
+					<fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
+					custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'
+					>
+					<p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
+					</fc-messages-detail-input>
+				{% else %}
+				<a href="{{path.groups_main}}{{post.group.uniqueName}}">
+				Join the {{ post.group.name }} group</a> to reply to this post.
+				{% endif %}
+			{% else %}
+				<fc-modal id="login" custom-trigger="<a>Login to reply to this post</a>">
+				<fc-login></fc-login>
+				</fc-modal>
+			{% endif %}
+			</div>
+			</div>
+		</div>
+		</div>
 
-      <div class="columns medium-4">
-          {% if post.images %}
-            {# Use carousel only if multiple images #}
-            {% if post.images.length > 1 %}
-              {% include "./post_images_carousel.html" with { images: post.images } %}
-              <div class="row text-center">
-                <fc-modal type="custom" custom-trigger='<a @click.prevent="">View images full size</a>'>
-                  {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
-                </fc-modal>
-              </div>
-            {% elseif post.images.length === 1 %}
-              <div class="row">
-                <div class="post-detail-item-photo">
-                  <img src="{{ post.images[0] }}">
-                </div>
-              </div>
-              <div class="row text-center">
-                <fc-modal type="custom" custom-trigger='<a @click.prevent="">View image full size</a>'>
-                  <img src="{{ post.images[0] }}" />
-                </fc-modal>
-              </div>
-            {% endif %}
-          {% endif %}
-      </div>
-    </div>
-  </div>
+		<div class="columns medium-4">
+			{% if post.images %}
+			{# Use carousel only if multiple images #}
+			{% if post.images.length > 1 %}
+				{% include "./post_images_carousel.html" with { images: post.images } %}
+				<div class="row text-center">
+				<fc-modal type="custom" custom-trigger='<a @click.prevent="">View images full size</a>'>
+					{% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
+				</fc-modal>
+				</div>
+			{% elseif post.images.length === 1 %}
+				<div class="row">
+				<div class="post-detail-item-photo">
+					<img src="{{ post.images[0] }}">
+				</div>
+				</div>
+				<div class="row text-center">
+				<fc-modal type="custom" custom-trigger='<a @click.prevent="">View image full size</a>'>
+					<img src="{{ post.images[0] }}" />
+				</fc-modal>
+				</div>
+			{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
