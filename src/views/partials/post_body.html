@@ -1,56 +1,59 @@
 {# Note: This file is provided by the fc3_common_assets package #}
-<div class="post-detail-item">
-	<div class="row">
+<div class="post-detail-item" style="width: 100%; padding: 20px;" >
+	<div class="row" style= >
 		<div class="columns medium-8">
-			<h4 class="section-title text-center">
-				{{post.subject}}
-			</h4>
+			<div class="row">
+				<div class="columns small-6 left">
+					<div class="post-detail-item-category-icon">
+						{% include "./post_type.html" with { post : post } %}
+					</div>
+					{% if post.share && !post.share.returnDate %}
+					{% if post|lendOverdue %}
+					<p class="callout warning">
+						Item Overdue!{% if post.share.dueDate %} It was due on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{%
+						endif %}
+						{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">Message your friend</a>{%
+						endif %}
+					</p>
+					{% else %}
+					<p class="callout success">
+						{% if me.id === post.user.id %}
+						On Loan!
+						{% elseif me.id === post.share.borrowerId %}
+						BORROWED
+						{% endif %}
+
+						{% if post.share.dueDate %}Due back on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
+					</p>
+					{% endif %}
+					{% endif %}
+				</div>
+				<div class="columns small-6 right">
+					
+				</div>
+			</div>
+			<div class="row" style="margin-left: 10px;" >
+				<h4 class="section-title left">
+					{{post.subject}}
+				</h4>
+			</div>
 			<div class="post-detail-item-content">
 				<div class="post-detail-item-content-header" style="border: none;" >
 					<div class="columns medium-12">
-						<div class="row">
-							<div class="post-detail-item-header-left">
-								<div class="post-detail-item-category-icon">
-									{% include "./post_type.html" with { post : post } %}
-								</div>
-								{% if post.share && !post.share.returnDate %}
-								{% if post|lendOverdue %}
-								<p class="callout warning">
-									Item Overdue!{% if post.share.dueDate %} It was due on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{%
-									endif %}
-									{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">Message your friend</a>{%
-									endif %}
-								</p>
-								{% else %}
-								<p class="callout success">
-									{% if me.id === post.user.id %}
-									On Loan!
-									{% elseif me.id === post.share.borrowerId %}
-									BORROWED
-									{% endif %}
-
-									{% if post.share.dueDate %}Due back on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
-								</p>
-								{% endif %}
-								{% endif %}
-							</div>
-							<div class="post-detail-item-header-right">
-								{# TODO add share and report button ?? #}
-							</div>
-						</div>
+						
 						<div class="clearfix"  style="margin-top: 10px;"></div>
 						<div class="row">
-							<ul class="post-items">
+							<ul class="post-items" style="margin-left: 0px; color: #c9c6c0;" >
 								{% set datetimeOpts = { time: post.time, timezone: post.group.timezone }%}
 								<li><span><i class="fa fa-map-signs"></i> {{post.location|title }}</span></li>
-								<li><span>{{ post.date|mreldate(datetimeOpts)|capitalize }}</span></li>
+								<li><span>{{ post.date|mreldate(datetimeOpts)|title }}</span></li>
 								<li><span>{{ post.date|mdate(datetimeOpts, 'MM/DD/YYYY')}}</span></li>
 								<li><span>#{{post.id}}</span></li>
 							</ul>
-							<div class="row">
+							<div class="row" style="margin: 0px;" >
 								<hr/>
 							</div>
-							<ul class="post-items">
+							<ul class="post-items" style="margin-left: 0px;" >
 								{% if post.group %}
 								<li>
 									<a href="{{path.groups_main}}{{post.group.uniqueName}}">
@@ -112,7 +115,7 @@
 			</div>
 		</div>
 
-		<div class="columns medium-4">
+		<div class="columns medium-4 right">
 			{% if post.images %}
 			{# Use carousel only if multiple images #}
 			{% if post.images.length > 1 %}
