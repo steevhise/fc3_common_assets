@@ -2,9 +2,11 @@
 <div class="post-detail-item">
 	<div class="row">
 		<div class="columns medium-8">
-			<h4 class="section-title text-center">{{post.subject}}</h4>
+			<h4 class="section-title text-center">
+				{{post.subject}}
+			</h4>
 			<div class="post-detail-item-content">
-				<div class="post-detail-item-content-header">
+				<div class="post-detail-item-content-header" style="border: none;" >
 					<div class="columns medium-12">
 						<div class="row">
 							<div class="post-detail-item-header-left">
@@ -40,11 +42,14 @@
 						<div class="row">
 							<ul class="post-items">
 								{% set datetimeOpts = { time: post.time, timezone: post.group.timezone }%}
-								<li>#{{post.id}}</li>
-								<li>{{ post.location }}</li> {# TODO eventually we'll need to include the region/country when available #}
-								<li>{{ post.date|mreldate(datetimeOpts)|capitalize }} ( {{ post.date|mdate(datetimeOpts, 'ddd, MM/DD/YYYY hh:mm a')}}
-									)</li>
+								<li><span><i class="fa fa-map-signs"></i> {{post.location|title }}</span></li>
+								<li><span>{{ post.date|mreldate(datetimeOpts)|capitalize }}</span></li>
+								<li><span>{{ post.date|mdate(datetimeOpts, 'MM/DD/YYYY')}}</span></li>
+								<li><span>#{{post.id}}</span></li>
 							</ul>
+							<div class="row">
+								<hr/>
+							</div>
 							<ul class="post-items">
 								{% if post.group %}
 								<li>
@@ -82,6 +87,7 @@
 						<p>{{ post.description|sanitizeHtml|raw }}</p>
 					</div>
 					<br />
+					<hr/>
 					<div class="container">
 						{% if session %}
 						{% if session.id === post.user.id %}
