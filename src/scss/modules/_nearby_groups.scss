@@ -1,3 +1,4 @@
+// TODO: why is this here? it's not common, should be in fc3_main. oh but see below...
 .nearby-groups {
   height: auto;
   display: flex;
@@ -45,7 +46,7 @@
 .nearby-groups-browse-all {
   display: flex;
   position: relative;
-  top: -5px;
+  //top: -5px;
   margin-top: 0.5rem;
 
   /*    TODO: refactor this icon, it's commonly re-used   */
@@ -70,4 +71,5 @@
   @include heading-text();
   flex: 1;
   margin-left: 0.75rem;
+  font-size: 1rem;
 }
