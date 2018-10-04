@@ -58,7 +58,7 @@
 								<li>
 									<a href="{{path.groups_main}}{{post.group.uniqueName}}">
 										<fc-icon name="towns" style="cursor: default; display: inline; position: relative; top: 3px;" width="20"></fc-icon>
-										<span>{{ post.group.uniqueName }}</span>
+										<span>{{ post.group.uniqueName|upper }}</span>
 									</a>
 								</li>
 								{% endif %}
@@ -69,6 +69,7 @@
 									</a>
 								</li>
 								<li>
+									<fc-icon name="tag" style="cursor: default; display: inline; position: relative;"></fc-icon> <span style="font-weight: bold;">TAGS</span>&nbsp;
 									{% for tag in post.tags %}
 									{# TODO where ought this link go? #}
 									{% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
