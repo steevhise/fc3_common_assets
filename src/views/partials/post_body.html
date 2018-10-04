@@ -57,15 +57,15 @@
 								{% if post.group %}
 								<li>
 									<a href="{{path.groups_main}}{{post.group.uniqueName}}">
-										<icon class="fa fa-home"></icon>
+										<fc-icon name="towns" style="cursor: default; display: inline; position: relative; top: 3px;" width="16"></fc-icon>
 										<span>{{ post.group.uniqueName }}</span>
 									</a>
 								</li>
 								{% endif %}
 								<li>
 									<a href="{{path.user}}{{post.user.username}}">
-										<icon class="fa fa-user">
-											<span>{{ post.user.username|upper }}</span>
+										<i class="fa fa-user" style="margin-right: 2px;"></i>
+										<span>{{ post.user.username|upper }}</span>
 									</a>
 								</li>
 								<li>
