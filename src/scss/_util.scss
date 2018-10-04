@@ -47,3 +47,11 @@
 .fc-disabled {
   filter: grayscale(100%)
 }
+
+// add custom class for avatar styling
+.fc-avatar {
+  background-color: #ede7de;
+  border-radius: 50% 50% 50% 50%;
+  height: 100px;
+  padding: 4px;
+}
