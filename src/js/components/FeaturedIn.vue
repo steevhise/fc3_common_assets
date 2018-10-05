@@ -1,4 +1,5 @@
 <template>
+	<!-- This should be in fc3_main -->
 	<div id="fc-featuredin">
 		<img v-for="(feature, index) in randomFeatures" :key="index" v-if="index < 4" :src="`/images/${feature}.png`" :title="format(feature)" :alt="format(feature)" class="columns medium-3" >
 	</div>
@@ -17,7 +18,7 @@
 			}
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			// format the feature for title and alt attributes
@@ -52,6 +53,7 @@
 <style scoped>
 	#fc-featuredin {
 		text-align: center;
+		display: flex;
 	}
 	#fc-featuredin img {
 		width: 300px !important;
