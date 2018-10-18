@@ -11,9 +11,10 @@
 					-->
 					<slot></slot>
 				</div>
+				<!-- TODO: finish the custom default message body stuff -->
 				<fc-form action="/api/messaging/send" :custom-alert-el="_uid" >
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
-					<input type="text" name="body" required @input="checkCharCount($event)" />
+					<input type="text" name="body" v-model="this.defaultBody" required @input="checkCharCount($event)" />
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
 					<input class="btn btn-default" type="submit" value="Send">
 				</fc-form>
@@ -34,7 +35,8 @@
 		name: 'fc-messages-detail-input',
 		props: {
 			topicType: String,
-			topicId: Number,
+			topicId: Number,           // if zero then what? might be trying to report a user but they dont have a home group.
+		    defaultBody: String,
 			customTrigger: { default: ''},
 			limit: { default: 1000 }
 		},
