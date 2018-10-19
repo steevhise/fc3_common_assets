@@ -14,7 +14,7 @@
 				<!-- TODO: finish the custom default message body stuff -->
 				<fc-form action="/api/messaging/send" :custom-alert-el="_uid" >
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
-					<input type="text" name="body" v-model="this.defaultBody" required @input="checkCharCount($event)" />
+					<input type="text" name="body" v-bind:value="this.defaultBody" required @input="checkCharCount($event)" />
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
 					<input class="btn btn-default" type="submit" value="Send">
 				</fc-form>
@@ -113,6 +113,7 @@
 
 				const input = event.target;
 				const textContent = event.target.value;
+				this.defaultBody = textContent;
 				this.charCount = textContent.length;
 				this.updateCharCountDisplay(this, input);
 			},
