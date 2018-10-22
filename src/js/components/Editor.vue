@@ -13,6 +13,7 @@
             { name: 'basicstyles', items: [ 'Bold', 'Italic', 'RemoveFormat' ] }
         ],
         removePlugins: 'elementspath',
+        entities: false,
         height: 300
     };
 
@@ -46,9 +47,11 @@ export default {
         instance() {
             return CKEDITOR.instances[this.id];
         },
-	editorConfig() {
-	    return Object.assign(defaultConfig, this.config);
-	}
+        editorConfig() {
+              console.log(defaultConfig, this.config);
+              console.log(Object.assign(defaultConfig, this.config));
+            return Object.assign(defaultConfig, this.config);
+        }
     },
     beforeUpdate() {
         if (this.value !== this.instance.getData()) {
