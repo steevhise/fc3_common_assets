@@ -29,8 +29,8 @@
 					{% endif %}
 				</div>
 				<div class="columns small-6 right">
-					<social-sharing :url="`$root.currentUrl`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
-						<div style="cursor: pointer">
+					<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
+						<div style="cursor: pointer; float: right;">
 							<network network="facebook">
 								<i class="fa fa-facebook"></i>Facebook
 							</network>
