@@ -29,7 +29,16 @@
 					{% endif %}
 				</div>
 				<div class="columns small-6 right">
-					
+					<social-sharing :url="`$root.currentUrl`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
+						<div style="cursor: pointer">
+							<network network="facebook">
+								<i class="fa fa-facebook"></i>Facebook
+							</network>
+							<network network="twitter">
+								<i class="fa fa-twitter"></i>Twitter
+							</network>
+						</div>
+					</social-sharing>
 				</div>
 			</div>
 			<div class="row" style="margin-left: 10px;" >
@@ -99,7 +108,7 @@
 						{% elseif post.blocked %}
 						{# show nothing if the poster has blocked me #}
 						{% elseif post.canReply %}
-						<fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}" custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'>
+						<fc-messages-detail-input topic-type="post" :topic-id="Number({{ post.id }})" custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'>
 							<p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
 						</fc-messages-detail-input>
 						{% else %}
