@@ -8,13 +8,13 @@
   { id : "my-groups", href : "/home/my-towns", text : "My Towns" }
 ]%}
 
-<div class="title-bar" data-responsive-toggle="main_nav" data-hide-for="medium">
+<div class="title-bar" class="show-for-small" style="display: none;" data-responsive-toggle="main_nav" data-hide-for="medium">
 	<button class="menu-icon" tpe="button" data-toggle="main_nav"></button>
 	<div class="title-bar-title">Menu</div>
 </div>
 
 <div id="main_nav" class="horizontal_tabs">
-	<ul class="tabs" id="h-example-tabs" class="dropdown-menu" data-dropdown-menu data-tab data-options="deep_linking:true">
+	<ul class="tabs" id="h-example-tabs" class="dropdown-menu " data-dropdown-menu data-tab data-options="deep_linking:true">
 		{% for link in links %}
 			<li class="tabs-title"><a id="{{ link.id }}" href="{{ link.href }}">{{ link.text }}</a></li>
 		{% endfor %}
