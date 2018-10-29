@@ -28,18 +28,6 @@
 					{% endif %}
 					{% endif %}
 				</div>
-				<div class="columns small-6 right">
-					<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
-						<div style="cursor: pointer; float: right;">
-							<network network="facebook">
-								<i class="fa fa-facebook"></i>Facebook
-							</network>
-							<network network="twitter">
-								<i class="fa fa-twitter"></i>Twitter
-							</network>
-						</div>
-					</social-sharing>
-				</div>
 			</div>
 			<div class="row" style="margin-left: 10px;" >
 				<h4 class="section-title left">
@@ -104,22 +92,33 @@
 					<div class="container" style="margin-top: 40px; position: relative;">
 						{% if session %}
 						{% if session.id === post.user.id %}
-						<a href="/home/edit-post/{{post.id}}" class="btn-action">Edit</a>
+						<a href="/home/edit-post/{{post.id}}" class="btn-action" style="float: left; margin-right: 10px;">Edit</a>
 						{% elseif post.blocked %}
 						{# show nothing if the poster has blocked me #}
 						{% elseif post.canReply %}
-						<fc-messages-detail-input topic-type="post" :topic-id="Number({{ post.id }})" custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'>
+						<fc-messages-detail-input topic-type="post" :topic-id="Number({{ post.id }})" custom-trigger='<button class="btn-{{ post.type.name|lower }}" style="float: left; margin-right: 10px;" >{{ postAction|default('Reply') }}</button>'>
 							<p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
 						</fc-messages-detail-input>
 						{% else %}
-						<a href="{{path.groups_main}}{{post.group.uniqueName}}">
+						<a href="{{path.groups_main}}{{post.group.uniqueName}}" style="float: left; margin-right: 10px;" >
 							Join the {{ post.group.name }} group</a> to reply to this post.
 						{% endif %}
 						{% else %}
-						<fc-modal id="login" custom-trigger="<a>Login to reply to this post</a>">
+						<fc-modal id="login" custom-trigger='<a style="float: left; margin-right: 10px;" >Login to reply to this post</a>'>
 							<fc-login></fc-login>
 						</fc-modal>
 						{% endif %}
+						<div class="btn-borrow fab" style="float: left; margin-right: 10px; line-height: 1; height: 44px; width: 68px;" >
+							<span class="text">Share</span>
+							<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
+								<div>
+									<network network="facebook"> <div class="option fb"> <i class="fa fa-facebook"></i> </div> </network>
+									<network network="twitter"> <div class="option twitter"> <i class="fa fa-twitter"></i> </div> </network>
+								</div>
+							</social-sharing>
+							<div class="option delete"><i class="fa fa-trash"></i></div>
+							<div class="close"><i class="fa fa-times"></i></div>
+						</div>
 					</div>
 				</div>
 			</div>
