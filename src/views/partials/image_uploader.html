@@ -17,6 +17,10 @@
             {% for image in images %}
                 <div class="img-block" data-upload-order="{{loop.index0}}">
                     <img src="{{image}}" />
+                    <div class="rotate-buttons">
+                        <button class="btn-default rotate-clockwise">Counter-clockwise</button>
+                        <button class="btn-default rotate-counterclockwise">Clockwise</button>
+                    </div>
                     <button class="btn-default del-img" type="button">Remove</button>
                 </div>
             {% endfor %}

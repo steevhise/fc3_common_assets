@@ -42,8 +42,15 @@ class ImageUploader {
             currentUploads.forEach(function(imgBlock) {
                 let img = imgBlock.querySelector('img');
                 let deleteButton = imgBlock.querySelector('.del-img');
+
                 self.filesList.push(img.src); // fill upload queue with bunk placeholders; submit routine will check for these
                 deleteButton.addEventListener('click', self.deleteUpload.bind(self)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
+
+                let rotateClockwiseButton = imgBlock.querySelector('.rotate-clockwise');
+                let rotateCounterClockwiseButton = imgBlock.querySelector('.rotate-counterclockwise');
+                let uploadOrder = imgBlock.dataset.uploadOrder;
+                rotateClockwiseButton.addEventListener('click', self.rotateImage.bind(self, uploadOrder, 90));
+                rotateCounterClockwiseButton.addEventListener('click', self.rotateImage.bind(self, uploadOrder, -90));
             });
 
             // disable input if full
@@ -325,6 +332,10 @@ class ImageUploader {
                 self.filesList.splice(uploadOrder, 1, resizedFile);
             }, file.type);
         });
+
+        rotateImage() {
+
+        }
     }
 }
 
