@@ -16,3 +16,4 @@ export {default as PostEditNew} from './post_edit_new';
 export {default as ImageUploader} from './image_uploader';
 export {default as Loading} from './loading';
 export {default as PostImageModalCarousel} from './post_image_modal_carousel';
+export {default as FAB} from './fab';
