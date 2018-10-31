@@ -28,18 +28,6 @@
 					{% endif %}
 					{% endif %}
 				</div>
-				<div class="columns small-6 right is-hidden">
-					<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
-						<div style="cursor: pointer; float: right;">
-							<network network="facebook">
-								<i class="fa fa-facebook"></i>Facebook
-							</network>
-							<network network="twitter">
-								<i class="fa fa-twitter"></i>Twitter
-							</network>
-						</div>
-					</social-sharing>
-				</div>
 			</div>
 			<div class="row" style="margin-left: 10px;" >
 				<h4 class="section-title left">
@@ -67,7 +55,7 @@
 								<li>
 									<a href="{{path.groups_main}}{{post.group.uniqueName}}">
 										<fc-icon name="towns" style="cursor: default; display: inline; position: relative; top: 3px;" width="20"></fc-icon>
-										<span>{{ post.group.uniqueName|upper }}</span>
+										<span>{{ post.group.name|upper }}</span>
 									</a>
 								</li>
 								{% endif %}
@@ -96,36 +84,47 @@
 					</div>
 				</div>
 				<div class="post-detail-item-content-description align-left">
-					<div class="container"  style="font-style: bold;">
-						<strong>{{ post.description|sanitizeHtml|raw }}</strong>
+					<div class="container"  style="font-style: normal;">
+						<p>{{ post.description|sanitizeHtml|raw }}</p>
 					</div>
 					<br />
 					<hr/>
-					<div class="container" style="margin-top: 40px; position: relative;">
+					<div class="container" style="margin-top: 40px; position: relative;vertical-align: center;">
 						{% if session %}
 						{% if session.id === post.user.id %}
-						<a href="/home/edit-post/{{post.id}}" class="btn-action">Edit</a>
+						<a href="/home/edit-post/{{post.id}}" class="btn-action" style="float: left; margin-right: 10px;">Edit</a>
 						{% elseif post.blocked %}
 						{# show nothing if the poster has blocked me #}
 						{% elseif post.canReply %}
-						<div style="display: flex;">
-							<span style="flex:1;"><fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}" custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ postAction|default('Reply') }}</button>'>
-								<p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
-							</fc-messages-detail-input></span>
-							<span style="flex:1;"><fc-messages-detail-input default-body="I am reporting post #{{ post.id }}" topic-type="group" topic-id="{{ post.group.id || 0 }}" custom-trigger='<button class="btn-default">{{ postAction|default('Report') }}</button>'>
-							<p><strong>Report this post to a Moderator:</strong> {{ post.description|sanitizeHtml|raw }}</p>
-								</fc-messages-detail-input></span>
-						</div>
+                            <div style="display: flex; width:17rem;">
+                                <span style="flex:1;"><fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}" custom-trigger='<button class="btn-{{ post.type.name|lower }}" style="float: left; margin-right: 10px;">{{ postAction|default('Reply') }}</button>'>
+                                    <p><strong>New Message Re:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
+                                </fc-messages-detail-input></span>
+                                <span style="flex:1;"><fc-messages-detail-input default-body="I am reporting post #{{ post.id }}" topic-type="group" topic-id="{{ post.group.id || 0 }}" custom-trigger='<button class="btn btn-alert">{{ postAction|default('Report') }}</button>'>
+                                <p><strong>Report this post to a Moderator:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
+                                    </fc-messages-detail-input></span>
+
 
 						{% else %}
-						<a href="{{path.groups_main}}{{post.group.uniqueName}}">
-							Join the {{ post.group.name }} group</a> to reply to this post.
+                            <a href="{{path.groups_main}}{{post.group.uniqueName}}" style="float: left; margin-right: 10px;" >
+                                Join the {{ post.group.name }} group</a> to reply to this post.
 						{% endif %}
 						{% else %}
-						<fc-modal id="login" custom-trigger="<a>Login to reply to this post</a>">
+						<fc-modal id="login" custom-trigger='<a style="float: left; margin-right: 10px;" >Login to reply to this post</a>'>
 							<fc-login></fc-login>
 						</fc-modal>
 						{% endif %}
+                            <div class="btn-action fab text-center" style="flex:1; float: left; padding-right: 5px; padding-left:5px; line-height: 1; height: 3.25em; width: 7em;" >
+                                <span class="text">Share</span>
+                                <social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
+                                    <div>
+                                        <network network="facebook"> <div class="option fb"> <i class="fa fa-facebook"></i> </div> </network>
+                                        <network network="twitter"> <div class="option twitter"> <i class="fa fa-twitter"></i> </div> </network>
+                                    </div>
+                                </social-sharing>
+                                <div class="option delete"><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
