@@ -37,7 +37,7 @@
 			<div class="post-detail-item-content">
 				<div class="post-detail-item-content-header" style="border: none;" >
 					<div class="columns medium-12">
-						
+
 						<div class="clearfix"  style="margin-top: 10px;"></div>
 						<div class="row">
 							<ul class="post-items" style="margin-left: 0px; color: #c9c6c0;" >
@@ -108,7 +108,7 @@
 							<fc-login></fc-login>
 						</fc-modal>
 						{% endif %}
-						<div class="btn-borrow fab" style="float: left; margin-right: 10px; line-height: 1; height: 44px; width: 68px;" >
+						<div class="btn-borrow fab text-center" style="float: left; padding-right: 5px; padding-left:5px; line-height: 1; height: 3.25em; width: 7em;" >
 							<span class="text">Share</span>
 							<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
 								<div>
@@ -116,8 +116,8 @@
 									<network network="twitter"> <div class="option twitter"> <i class="fa fa-twitter"></i> </div> </network>
 								</div>
 							</social-sharing>
-							<div class="option delete"><i class="fa fa-trash"></i></div>
-							<div class="close"><i class="fa fa-times"></i></div>
+							<!--<div class="option delete"><i class="fa fa-trash"></i></div>-->
+							<div class="option delete"><i class="fa fa-times"></i></div>
 						</div>
 					</div>
 				</div>
