@@ -16,16 +16,18 @@
 */
 class ImageUploader {
 
-    constructor(form, uploadedFiles, uploadErrors, formErrors) {
+    constructor({ imageForm, uploadedFiles, uploadLimit = 3, uploadErrors, formErrors, successRedirect }) {
 
-        if (!form || !uploadedFiles || !uploadErrors || !formErrors) {
+        if (!imageForm || !uploadedFiles || !uploadErrors || !formErrors || !successRedirect) {
             throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
         }
 
-        this.form = form;
+        this.form = imageForm;
         this.uploadedFiles = uploadedFiles;
+        this.uploadLimit = uploadLimit;
         this.uploadErrors = uploadErrors;
         this.formErrors = formErrors;
+        this.successRedirect = successRedirect;
         this.filesList = [];
 
         // Load any detected files into filesList (in the case of editing)
@@ -54,7 +56,7 @@ class ImageUploader {
             });
 
             // disable input if full
-            if (currentUploads.length === 3) {
+            if (currentUploads.length === this.uploadLimit) {
                 const input = document.querySelector('#images');
                 const enabledMsg = document.querySelector('.enabled-upload');
                 const disabledMsg = document.querySelector('.disabled-upload');
@@ -66,6 +68,11 @@ class ImageUploader {
                 dropbox.style.backgroundColor = 'lightgray';
             }
         }
+
+        const constraintsEl = document.querySelector('.image-uploader-rules');
+        const constraintsText = document.createTextNode(`Up to ${this.uploadLimit} image${this.uploadLimit > 1 ? 's' : ''} allowed. Only jpg/jpegs and pngs.
+            Images larger than 1MB will be scaled down for faster upload`);
+        constraintsEl.appendChild(constraintsText);
     }
 
 
@@ -101,6 +108,8 @@ class ImageUploader {
 
     deleteUpload(e) {
 
+        e.preventDefault();
+
         // WARNING: This assumes that ImageUploader.fileList and blocks in .uploaded-files are ordered identically
         // Files will be deleted incorrectly if this assumption proves wrong... hmmm
         const imgBlock = e.currentTarget.parentNode; // parent of button clicked i.e. image block div
@@ -112,7 +121,7 @@ class ImageUploader {
         // Later used to diff images in db w/ images sent back from edit form
         if (typeof this.filesList[delIndex] === 'string'){
             // regex is likely overkill; just searching for a sequence of digits should be fine, just felt afraid of potential false positives??? :)
-            this.deletedImages.push(this.filesList[delIndex].match(/images\/(\d+)\/?/)[1]);
+            this.deletedImages.push(this.filesList[delIndex].match(/(images|user)\/(\d+)\/?/)[2]);
         }
 
         // Remove the image from the upload queue
@@ -129,8 +138,8 @@ class ImageUploader {
             block.dataset.uploadOrder--;
         });
 
-        // Re-enable uploader if now less than 3 images uploaded
-        if (this.filesList.length < 3) {
+        // Re-enable uploader if now less than set limit # of images uploaded
+        if (this.filesList.length < this.uploadLimit) {
             const enabledMsg = document.querySelector('.enabled-upload');
             const disabledMsg = document.querySelector('.disabled-upload');
             const dropbox = document.querySelector('.dropbox');
@@ -144,6 +153,8 @@ class ImageUploader {
     }
 
     handleFileInput(e) {
+
+        e.preventDefault();
 
         const uploadErrContainer = this.uploadErrors;
         const self = this;
@@ -160,7 +171,7 @@ class ImageUploader {
         }
 
         // Should never be hit, with the input being disabled on this condition in the loop below; totally defensive
-        if (this.filesList.length === 3) {
+        if (this.filesList.length === this.uploadLimit) {
             return this.displayError('You\'ve already uploaded max allowed images', uploadErrContainer);
         }
 
@@ -175,16 +186,16 @@ class ImageUploader {
                 return this.displayError(`We can't process ${f.name} because it's a ${f.type}. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
             }
 
-            // User's attempting to upload >3 images at once
-            if (this.filesList.length === 3) {
-                return this.displayError(`Upload for ${f.name} failed; you've already uploaded 3 images`, uploadErrContainer);
+            // User's attempting to upload > uploadLimit images at once
+            if (this.filesList.length === this.uploadLimit) {
+                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);
             }
 
             // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another, overwrites the input's file list
             const numUploads = this.filesList.push(f);
 
             // Disable the uploader if limit has been reached
-            if (numUploads === 3) {
+            if (numUploads === this.uploadLimit) {
                 const input = document.querySelector('#images');
                 const enabledMsg = document.querySelector('.enabled-upload');
                 const disabledMsg = document.querySelector('.disabled-upload');
@@ -219,6 +230,7 @@ class ImageUploader {
     handleSubmit(e) {
 
         e.preventDefault();
+
         const body = new FormData(this.form);
         const self = this; // expected to be instance of ImageUploader
 
@@ -232,9 +244,10 @@ class ImageUploader {
 
         // We overwrite copied data entirely and use filesList as source of truth
         body.delete('images');
+
         this.filesList.forEach((file, index) => {
 
-            if (typeof file === 'string') { // The case of a loaded image e.g. on edit, where we file filesList w/ src's of previously set images
+            if (typeof file === 'string') { // The case of a loaded image e.g. on edit, where we fill filesList w/ src's of previously set images
                 return;
             }
 
@@ -245,11 +258,16 @@ class ImageUploader {
             return body.append('images', file, file.name);
         });
 
+        // TODO Do something more abstract / intelligent here
         // This accesses the value of the CKEDITOR Vue component, which isn't set on the FormData object
         // editor-0 is the default editor name (as configured in fc3_common_assets Editor.vue component)
         // This access is reliable ASSUMING only 1 instance per page ... sorry
         // https://docs.ckeditor.com/ckeditor4/latest/guide/dev_savedata.html
-        body.set('description', CKEDITOR.instances['editor-0'].getData()); // eslint-disable-line no-undef
+        /* eslint-disable no-undef */
+        if (CKEDITOR.instances['editor-0']) {
+            body.set('description', CKEDITOR.instances['editor-0'].getData());
+        }
+        /* eslint-enable no-undef */
 
         // On edit form, send back ids of any previously set images that were deleted
         if (this.deletedImages && this.deletedImages.length) {
@@ -276,7 +294,9 @@ class ImageUploader {
                 })
             }
 
-            location.assign(`${location.protocol}//${location.host}/posts/${resp.postId}`);
+            // Defaults to reloading the current page
+            const lastPathSegment = typeof self.successRedirect === 'function' ? self.successRedirect(resp) : self.successRedirect;
+            location.assign((lastPathSegment ? `${location.protocol}//${location.host}${lastPathSegment}` : location));
         });
 
         // Network error
@@ -341,15 +361,30 @@ class ImageUploader {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Sorry, a bit gross
+    // We harcode custom redirect handlers here i.e. where we need to know
+    // data from the response to determine where to navigate on form success
+    // to avoid doing anything with dynamic function creation (new Function) or eval
+    // on a function string set on the image uploader element's data attribute for successRedirect
+    // All functions here should take a parsed response (const resp = JSON.parse(req.responseText))
+    // and return some URL_safe value to be placed in the URL to which we redirect on success
+    const SUCCESS_HANDLERS = {
+        newPost: (resp) => `/posts/${resp.postId}`
+    };
+
     if (document.querySelector('.image-upload-form')) {
 
         try {
-            const imageUploader = new ImageUploader(
-                document.querySelector('.image-upload-form'),
-                document.querySelector('.uploaded-files'),
-                document.querySelector('.upload-errors-container'),
-                document.querySelector('.form-errors-container')
-            );
+            // image uploader MUST be registered on a form element enclosing the uploader element
+            const imageForm = document.querySelector('form.image-upload-form');
+            const imageUploader = new ImageUploader({
+                imageForm,
+                uploadedFiles: document.querySelector('.uploaded-files'),
+                uploadLimit: imageForm.dataset.uploadLimit && Number.parseInt(imageForm.dataset.uploadLimit, 10),
+                uploadErrors: document.querySelector('.upload-errors-container'),
+                formErrors: document.querySelector('.form-errors-container'),
+                successRedirect: imageForm.dataset.successRedirect || SUCCESS_HANDLERS[imageForm.dataset.pageName]
+            });
             // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
             document.querySelector('#images').addEventListener('change', imageUploader.handleFileInput.bind(imageUploader));
             document.querySelector('.image-upload-form').addEventListener('submit', imageUploader.handleSubmit.bind(imageUploader));
