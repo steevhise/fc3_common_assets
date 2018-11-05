@@ -92,7 +92,7 @@
 					<div class="container" style="margin-top: 40px; position: relative;">
 						{% if session %}
 						{% if session.id === post.user.id %}
-						<a href="/home/edit-post/{{post.id}}" class="btn-action" style="float: left; margin-right: 10px;">Edit</a>
+						<a href="/home/edit-post/{{post.id}}" class="btn-action" style="float: left; margin-right: 10px; line-height: 1;">Edit</a>
 						{% elseif post.blocked %}
 						{# show nothing if the poster has blocked me #}
 						{% elseif post.canReply %}
@@ -100,11 +100,13 @@
 							<p><strong>New Message Re:</strong> {{ post.description|sanitizeHtml|raw }}</p>
 						</fc-messages-detail-input>
 						{% else %}
-						<a href="{{path.groups_main}}{{post.group.uniqueName}}" style="float: left; margin-right: 10px;" >
-							Join the {{ post.group.name }} group</a> to reply to this post.
+						<div style="float: left; margin-right: 10px; position: relative; top: 8px; height: 40px;">
+							<a href="{{path.groups_main}}{{post.group.uniqueName}}" style="float: left; margin-right: 10px;" >
+								Join the {{ post.group.name }} group</a> to reply to this post.
+						</div>
 						{% endif %}
 						{% else %}
-						<fc-modal id="login" custom-trigger='<a style="float: left; margin-right: 10px;" >Login to reply to this post</a>'>
+						<fc-modal id="login" custom-trigger='<a style="float: left; margin-right: 10px; padding: 0.7rem; height: 40px; position: relative; top: -2px;" >Login to reply to this post</a>'>
 							<fc-login></fc-login>
 						</fc-modal>
 						{% endif %}
