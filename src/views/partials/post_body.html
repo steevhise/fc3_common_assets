@@ -108,9 +108,9 @@
 							<fc-login></fc-login>
 						</fc-modal>
 						{% endif %}
-						<div class="btn-borrow fab text-center" style="float: left; padding-right: 5px; padding-left:5px; line-height: 1; height: 3.25em; width: 7em;" >
+						<div class="btn-action fab text-center" style="float: left; padding-right: 5px; padding-left:5px; line-height: 1; height: 3.25em; width: 7em;" >
 							<span class="text">Share</span>
-							<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject}}" description="{{post.description|sanitizeHtml|raw|striptags}}" hashtags="freecycle,freecycle3" inline-template>
+							<social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject|e('js')}}" description="{{post.description|sanitizeHtml|raw|striptags|e('js')}}" hashtags="freecycle,freecycle3" inline-template>
 								<div>
 									<network network="facebook"> <div class="option fb"> <i class="fa fa-facebook"></i> </div> </network>
 									<network network="twitter"> <div class="option twitter"> <i class="fa fa-twitter"></i> </div> </network>
