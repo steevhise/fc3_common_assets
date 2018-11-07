@@ -16,22 +16,29 @@
 */
 class ImageUploader {
 
-    constructor({ imageForm, uploadedFiles, uploadLimit = 3, uploadErrors, formErrors, successRedirect }) {
+    constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors }) {
 
-        if (!imageForm || !uploadedFiles || !uploadErrors || !formErrors || !successRedirect) {
+        if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors) {
             throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
         }
 
         this.form = imageForm;
-        this.uploadedFiles = uploadedFiles;
+        this.uploadedFilesContainer = uploadedFilesContainer;
         this.uploadLimit = uploadLimit;
         this.uploadErrors = uploadErrors;
         this.formErrors = formErrors;
-        this.successRedirect = successRedirect;
         this.filesList = [];
+        this.listeners = {
+            fileInput: this.handleFileInput.bind(this),
+            submit: this.handleSubmit.bind(this)
+        };
+
+        // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
+        document.querySelector('#images').addEventListener('change', this.listeners.fileInput);
+        document.querySelector('.image-upload-form').addEventListener('submit', this.listeners.submit);
 
         // Load any detected files into filesList (in the case of editing)
-        const currentUploads = Array.from(this.uploadedFiles.children);
+        const currentUploads = Array.from(this.uploadedFilesContainer.children);
         if (currentUploads.length) {
 
             this.deletedImages = [];
@@ -42,17 +49,29 @@ class ImageUploader {
             // like we do when we manually create them in displayImage
             const self = this;
             currentUploads.forEach(function(imgBlock) {
-                let img = imgBlock.querySelector('img');
-                let deleteButton = imgBlock.querySelector('.del-img');
+                const img = imgBlock.querySelector('img');
+                const deleteButton = imgBlock.querySelector('.del-img');
 
-                self.filesList.push(img.src); // fill upload queue with bunk placeholders; submit routine will check for these
+                self.filesList.push({ file: img.src, rotation: 0 }); // fill upload queue with bunk placeholders; submit routine will check for these
                 deleteButton.addEventListener('click', self.deleteUpload.bind(self)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
 
-                let rotateClockwiseButton = imgBlock.querySelector('.rotate-clockwise');
-                let rotateCounterClockwiseButton = imgBlock.querySelector('.rotate-counterclockwise');
-                let uploadOrder = imgBlock.dataset.uploadOrder;
-                rotateClockwiseButton.addEventListener('click', self.rotateImage.bind(self, uploadOrder, 90));
-                rotateCounterClockwiseButton.addEventListener('click', self.rotateImage.bind(self, uploadOrder, -90));
+                const rotateClockwiseButton = imgBlock.querySelector('.rotate-clockwise');
+                const rotateCounterClockwiseButton = imgBlock.querySelector('.rotate-counterclockwise');
+
+                rotateClockwiseButton.addEventListener('click', (e) => {
+
+                    e.preventDefault();
+                    // NOTE Called here so reflective of state of elements at call time, not init time; is that right / necessary?
+                    const uploadOrder = imgBlock.dataset.uploadOrder;
+                    self.rotateImage(90, uploadOrder);
+                });
+                rotateCounterClockwiseButton.addEventListener('click', (e) => {
+
+                    e.preventDefault();
+
+                    const uploadOrder = imgBlock.dataset.uploadOrder;
+                    self.rotateImage(-90, uploadOrder);
+                });
             });
 
             // disable input if full
@@ -85,13 +104,17 @@ class ImageUploader {
         container.appendChild(errEl);
     }
 
-    // insertOrder is the index in ImageUploader.filesList at which the image was inserted
+    // uploadOrder is the index in ImageUploader.filesList at which the image was inserted
     displayImage(src, uploadOrder) {
         // Display image block w/ delete button
         // Register click listener on delete button
+        const self = this;
         const block = document.createElement('div');
         const img = document.createElement('img');
         const deleteButton = document.createElement('button');
+        const rotateClockwiseButton = document.createElement('button');
+        const rotateCounterClockwiseButton = document.createElement('button');
+        const rotationContainer = document.createElement('div');
 
         img.src = src;
         block.setAttribute('data-upload-order', uploadOrder);
@@ -101,9 +124,33 @@ class ImageUploader {
         deleteButton.addEventListener('click', this.deleteUpload.bind(this)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
         deleteButton.innerHTML = 'Remove';
 
+
+        rotateClockwiseButton.setAttribute('class', 'btn-default rotate-clockwise');
+        rotateCounterClockwiseButton.setAttribute('class', 'btn-default rotate-counterclockwise');
+        rotateClockwiseButton.appendChild(document.createTextNode('Clockwise'));
+        rotateCounterClockwiseButton.appendChild(document.createTextNode('Counter-clockwise'));
+        rotateClockwiseButton.addEventListener('click', (e) => {
+
+            e.preventDefault();
+            // NOTE Called here so reflective of state of elements at call time, not init time; is that right / necessary?
+            const uploadOrder = block.dataset.uploadOrder;
+            self.rotateImage(90, uploadOrder);
+        });
+        rotateCounterClockwiseButton.addEventListener('click', (e) => {
+
+            e.preventDefault();
+
+            const uploadOrder = block.dataset.uploadOrder;
+            self.rotateImage(-90, uploadOrder);
+        });
+        rotationContainer.setAttribute('class', 'rotate-buttons');
+        rotationContainer.appendChild(rotateCounterClockwiseButton);
+        rotationContainer.appendChild(rotateClockwiseButton);
+
         block.appendChild(img);
+        block.appendChild(rotationContainer);
         block.appendChild(deleteButton);
-        this.uploadedFiles.appendChild(block);
+        this.uploadedFilesContainer.appendChild(block);
     }
 
     deleteUpload(e) {
@@ -119,9 +166,9 @@ class ImageUploader {
 
         // Case of a pre-existing image i.e. where item in queue is a string
         // Later used to diff images in db w/ images sent back from edit form
-        if (typeof this.filesList[delIndex] === 'string'){
+        if (typeof this.filesList[delIndex].file === 'string'){
             // regex is likely overkill; just searching for a sequence of digits should be fine, just felt afraid of potential false positives??? :)
-            this.deletedImages.push(this.filesList[delIndex].match(/(images|user)\/(\d+)\/?/)[2]);
+            this.deletedImages.push(this.filesList[delIndex].file.match(/(images|user)\/(\d+)\/?/)[2]);
         }
 
         // Remove the image from the upload queue
@@ -167,6 +214,7 @@ class ImageUploader {
         // TODO Sensible way to handle this case? Error messaging?
         // TODO Move higher up the call chain? If no HTML5 APIs detected, bail on init, disable files input and display message
         if (!e.target.files || !window.FileReader) {
+            console.error('Current browser doesn\'t support the native FileReader API, which the image uploader depends on');
             return;
         }
 
@@ -192,7 +240,7 @@ class ImageUploader {
             }
 
             // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another, overwrites the input's file list
-            const numUploads = this.filesList.push(f);
+            const numUploads = this.filesList.push({ file: f, rotation: 0 });
 
             // Disable the uploader if limit has been reached
             if (numUploads === this.uploadLimit) {
@@ -227,11 +275,9 @@ class ImageUploader {
 
     }
 
-    handleSubmit(e) {
+    handleNewPostSubmit(e) {
 
         e.preventDefault();
-
-        const body = new FormData(this.form);
         const self = this; // expected to be instance of ImageUploader
 
         // Reset the form validation errors
@@ -239,35 +285,124 @@ class ImageUploader {
             this.formErrors.removeChild(this.formErrors.firstChild)
         }
 
-        // TODO Handle case of editing...hmmm.....additions to filesList WON'T be files, just placeholders denoting
-        // that there's an image present.... or, possible to
-
-        // We overwrite copied data entirely and use filesList as source of truth
+        // GET ALL FORM DATA EXCEPT IMAGES
+        const body = new FormData(self.form);
         body.delete('images');
 
-        this.filesList.forEach((file, index) => {
+        // GET IMAGE ONLY FORM DATA
+        const imgUploadBody = new FormData;
+        imgUploadBody.set('type', body.get('type'));
+
+        this.filesList.forEach(({ file }, index) => {
 
             if (typeof file === 'string') { // The case of a loaded image e.g. on edit, where we fill filesList w/ src's of previously set images
                 return;
             }
 
             if (index === 0) {
-                return body.set('images', file, file.name);
+                return imgUploadBody.set('images', file, file.name);
             }
 
-            return body.append('images', file, file.name);
+            return imgUploadBody.append('images', file, file.name);
         });
 
-        // TODO Do something more abstract / intelligent here
-        // This accesses the value of the CKEDITOR Vue component, which isn't set on the FormData object
-        // editor-0 is the default editor name (as configured in fc3_common_assets Editor.vue component)
-        // This access is reliable ASSUMING only 1 instance per page ... sorry
-        // https://docs.ckeditor.com/ckeditor4/latest/guide/dev_savedata.html
-        /* eslint-disable no-undef */
-        if (CKEDITOR.instances['editor-0']) {
-            body.set('description', CKEDITOR.instances['editor-0'].getData());
+        // TODO, set id w/ rotation? allows reliable associating w/ img?
+        imgUploadBody.set('rotations', JSON.stringify(this.filesList.map(({ file, rotation }) => {
+
+            // Object is used for updating uploaded images in place
+            if (typeof file === 'string') {
+                return {
+                    rotation: rotation,
+                    id: file.match(/(images|user)\/(\d+)\/?/)[2]
+                };
+            }
+
+            return rotation;
+        })));
+
+        const newPostReq = new XMLHttpRequest();
+
+        // TODO Make configurable / not hardcoded
+        newPostReq.open('POST', 'http://localhost:8000/home/new-post');
+        newPostReq.addEventListener('load', function () {
+
+            if (newPostReq.status !== 200) {
+
+                const resp = JSON.parse(newPostReq.responseText);
+                const errors = Array.isArray(resp) ? resp : [resp];
+                errors.forEach((e) => {
+                    this.displayError(e.message, this.formErrors);
+                    $('[data-loading].is-loading').removeClass('is-loading');
+                });
+
+                return window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                })
+            }
+
+            const { postId } = JSON.parse(newPostReq.responseText);
+            const imgUploadReq = new XMLHttpRequest();
+            imgUploadReq.open('POST', `http://localhost:8000/api/images/post/${postId}`);
+            imgUploadReq.addEventListener('load', function () {
+
+                if (imgUploadReq.status !== 200) {
+
+                    const resp = JSON.parse(imgUploadReq.responseText);
+                    const errors = Array.isArray(resp) ? resp : [resp];
+                    errors.forEach((e) => {
+                        this.displayError(e.message, this.formErrors);
+                        $('[data-loading].is-loading').removeClass('is-loading');
+                    });
+
+                    return window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    })
+                }
+
+                // ON SUCCESS, REDIRECT TO /posts/postId
+            });
+
+            imgUploadReq.addEventListener('error', function (err) {
+                this.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+                $('[data-loading].is-loading').removeClass('is-loading');
+
+                return window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                })
+            }.bind(self));
+
+            // SUBMIT IMAGES TO POST IMG ROUTE
+            imgUploadReq.send(imgUploadBody);
+        });
+        // Network error
+        newPostReq.addEventListener('error', function (err) {
+            this.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+            $('[data-loading].is-loading').removeClass('is-loading');
+
+            return window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+        }.bind(self));
+
+        // SUBMIT TO ROUTE, RECEIVE BACK POST ID
+        newPostReq.send(body);
+    }
+
+    handleSubmit(e) {
+
+        e.preventDefault();
+        const self = this; // expected to be instance of ImageUploader
+
+        const body = new FormData();
+
+        // Reset the form validation errors
+        while (this.formErrors.firstChild) {
+            this.formErrors.removeChild(this.formErrors.firstChild)
         }
-        /* eslint-enable no-undef */
 
         // On edit form, send back ids of any previously set images that were deleted
         if (this.deletedImages && this.deletedImages.length) {
@@ -276,17 +411,18 @@ class ImageUploader {
         }
 
         const req = new XMLHttpRequest();
-        req.open('POST', location);
+        // TODO Make more easily configurable
+        req.open('POST', 'http://localhost:8000/api/images/user');
         req.addEventListener('load', function () {
 
-            const resp = JSON.parse(req.responseText);
+            if (req.status !== 200) {
 
-            if (!resp.ok) {
-                resp.errors.forEach(function (err) {
-                    this.displayError(err.message, this.formErrors);
-                }.bind(self));
-
-                $('[data-loading].is-loading').removeClass('is-loading');
+                const resp = JSON.parse(req.responseText);
+                const errors = Array.isArray(resp) ? resp : [resp];
+                errors.forEach((e) => {
+                    this.displayError(e.message, this.formErrors);
+                    $('[data-loading].is-loading').removeClass('is-loading');
+                });
 
                 return window.scrollTo({
                     top: 0,
@@ -294,14 +430,24 @@ class ImageUploader {
                 })
             }
 
-            // Defaults to reloading the current page
-            const lastPathSegment = typeof self.successRedirect === 'function' ? self.successRedirect(resp) : self.successRedirect;
-            location.assign((lastPathSegment ? `${location.protocol}//${location.host}${lastPathSegment}` : location));
+            // On successfully uploading images, submit the rest of the form data to our non-API route
+            document.querySelector('.image-upload-form').removeEventListener('submit', self.listeners.submit);
+            // Excludes images from form submission to non-API route
+            document.querySelector('.image-upload-form input[name=images]').remove();
+
+            // TODO DOES THIS HOLD TRUE FOR ALL FORMS?
+            document.querySelector('.image-upload-form input[type=submit]').click();
         });
 
         // Network error
         req.addEventListener('error', function (err) {
             this.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+            $('[data-loading].is-loading').removeClass('is-loading');
+
+            return window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
         }.bind(self));
 
         req.send(body);
@@ -349,45 +495,35 @@ class ImageUploader {
 
                 // replace file in filesList w/ new file, ensuring resized file,
                 // not originally-sized (too large) file is sent to the server
-                self.filesList.splice(uploadOrder, 1, resizedFile);
+                self.filesList.splice(uploadOrder, 1, { file: resizedFile, rotation: 0 });
             }, file.type);
-        });
+        })
+    }
 
-        rotateImage() {
+    rotateImage(rotation, uploadOrder) {
 
-        }
+        // track rotation
+        const currentRotation = this.filesList[uploadOrder].rotation;
+        const isFull = Math.abs(rotation % 360);
+        this.filesList[uploadOrder].rotation = isFull !== 0 ? currentRotation + rotation : 0;
+        this.uploadedFilesContainer.children[uploadOrder].querySelector('img').style.transform = `rotate(${currentRotation + rotation}deg)`;
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Sorry, a bit gross
-    // We harcode custom redirect handlers here i.e. where we need to know
-    // data from the response to determine where to navigate on form success
-    // to avoid doing anything with dynamic function creation (new Function) or eval
-    // on a function string set on the image uploader element's data attribute for successRedirect
-    // All functions here should take a parsed response (const resp = JSON.parse(req.responseText))
-    // and return some URL_safe value to be placed in the URL to which we redirect on success
-    const SUCCESS_HANDLERS = {
-        newPost: (resp) => `/posts/${resp.postId}`
-    };
 
     if (document.querySelector('.image-upload-form')) {
 
         try {
             // image uploader MUST be registered on a form element enclosing the uploader element
             const imageForm = document.querySelector('form.image-upload-form');
-            const imageUploader = new ImageUploader({
+            new ImageUploader({
                 imageForm,
-                uploadedFiles: document.querySelector('.uploaded-files'),
+                uploadedFilesContainer: document.querySelector('.uploaded-files'),
                 uploadLimit: imageForm.dataset.uploadLimit && Number.parseInt(imageForm.dataset.uploadLimit, 10),
                 uploadErrors: document.querySelector('.upload-errors-container'),
-                formErrors: document.querySelector('.form-errors-container'),
-                successRedirect: imageForm.dataset.successRedirect || SUCCESS_HANDLERS[imageForm.dataset.pageName]
+                formErrors: document.querySelector('.form-errors-container')
             });
-            // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
-            document.querySelector('#images').addEventListener('change', imageUploader.handleFileInput.bind(imageUploader));
-            document.querySelector('.image-upload-form').addEventListener('submit', imageUploader.handleSubmit.bind(imageUploader));
         } catch (error) {
             console.warn('Image Uploader not intialized'); // eslint-disable-line no-console
         }
