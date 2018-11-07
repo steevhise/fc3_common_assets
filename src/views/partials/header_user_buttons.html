@@ -2,7 +2,14 @@
   <ul class="header-user-buttons-list header-user-buttons-list-left">
 
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="Profile" href="/member/{{ session.username }}">{% include '../icons/user.html' %}</a>
+      <!ul class="dropdown nested vertical menu" data-dropdown-menu>
+        <a data-tooltip class="has-tip" title="Profile" href="/member/{{ session.username }}">{% include '../icons/user.html' %}</a>
+      {# ok i thought this would be easier.. trying for a nested vertical dropdown...   <li><a href="/home/dashboard">My Dashboard</a></li>
+        <li><a href="/home/my-posts">My Posts</a></li>
+        <li>My Messages</li>
+        <li>My Friends</li>
+        <li>My Towns</li>
+      </ul>      #}
     </li>
 
     <li class="header-user-button">

@@ -27,7 +27,8 @@
         data() {
             return {
                 formData: this.data ? JSON.parse(this.data) : {},
-                serializedData: null
+                serializedData: null,
+                isSubmitted: false
             }
         },
         mounted() {
