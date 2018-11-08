@@ -183,3 +183,8 @@ $white: #fff;
 @keyframes ripple {
 	100% {opacity: 0; transform: scale(2.5);}
 }
+
+// fixes styling issue when we have to use an input as a button.
+input.btn {
+	border: none;
+}
