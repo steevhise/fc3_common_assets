@@ -99,7 +99,7 @@ const postItemConfig = {
           .fail(() => displayError('We couldn\'t delete your post at this time. Sorry!'));
           break;
         case 'replies':
-          const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
+          const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}#replies-to-my-posts`; // hash is a hack to make sure right category is highlighted
           window.location.assign(myReplies);
           break;
         case 'mark':
