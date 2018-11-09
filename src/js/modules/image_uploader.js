@@ -16,11 +16,23 @@
 */
 class ImageUploader {
 
-    constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors }) {
+    constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors, requestType }) {
 
-        if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors) {
+        if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors || !requestType) {
             throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
         }
+
+        let postId;
+        if (requestType === 'post') {
+            postId = location.pathname.match(/post\/(\d+)/)[1];
+        }
+
+        const UPLOAD_API_ENDPOINTS = {
+            newPost: 'images/post',
+            // DEPENDS ON POST ID BEING PRESENT IN URL OF PAGE ON WHICH EXISTING POST UPDATE FORM IS SET
+            post: `images/post/${postId}`,
+            user: 'images/user'
+        };
 
         this.form = imageForm;
         this.uploadedFilesContainer = uploadedFilesContainer;
@@ -28,17 +40,23 @@ class ImageUploader {
         this.uploadErrors = uploadErrors;
         this.formErrors = formErrors;
         this.filesList = [];
+        this.submitEndpoint = UPLOAD_API_ENDPOINTS[requestType];
+        // We do this to allow removing listeners (which we do for every request type except new posts)
+        // Removing event listeners requires the inputting the same function as used to add the listener
+        // This config gives us an easy reference to that input
         this.listeners = {
             fileInput: this.handleFileInput.bind(this),
-            submit: this.handleSubmit.bind(this)
+            submit: this.handleSubmit.bind(this),
+            newPostSubmit: this.handleNewPostSubmit.bind(this)
         };
 
         // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
         document.querySelector('#images').addEventListener('change', this.listeners.fileInput);
-        document.querySelector('.image-upload-form').addEventListener('submit', this.listeners.submit);
+        document.querySelector('.image-upload-form').addEventListener('submit', requestType === 'newPost' ? this.listeners.newPostSubmit : this.listeners.submit);
 
         // Load any detected files into filesList (in the case of editing)
         const currentUploads = Array.from(this.uploadedFilesContainer.children);
+
         if (currentUploads.length) {
 
             this.deletedImages = [];
@@ -285,11 +303,22 @@ class ImageUploader {
             this.formErrors.removeChild(this.formErrors.firstChild)
         }
 
-        // GET ALL FORM DATA EXCEPT IMAGES
+        // Get all form data except images
         const body = new FormData(self.form);
         body.delete('images');
 
-        // GET IMAGE ONLY FORM DATA
+        // TODO Do something more abstract / intelligent here
+        // This accesses the value of the CKEDITOR Vue component, which isn't set on the FormData object
+        // editor-0 is the default editor name (as configured in fc3_common_assets Editor.vue component)
+        // This access is reliable ASSUMING only 1 instance per page ... sorry
+        // https://docs.ckeditor.com/ckeditor4/latest/guide/dev_savedata.html
+        /* eslint-disable no-undef */
+        if (CKEDITOR.instances['editor-0']) {
+            body.set('description', CKEDITOR.instances['editor-0'].getData());
+        }
+        /* eslint-enable no-undef */
+
+        // Get image-only form data
         const imgUploadBody = new FormData;
         imgUploadBody.set('type', body.get('type'));
 
@@ -306,14 +335,14 @@ class ImageUploader {
             return imgUploadBody.append('images', file, file.name);
         });
 
-        // TODO, set id w/ rotation? allows reliable associating w/ img?
         imgUploadBody.set('rotations', JSON.stringify(this.filesList.map(({ file, rotation }) => {
 
+            // Setting id allows reliable lookup of img on backend
             // Object is used for updating uploaded images in place
             if (typeof file === 'string') {
                 return {
                     rotation: rotation,
-                    id: file.match(/(images|user)\/(\d+)\/?/)[2]
+                    imageId: file.match(/(images|user)\/(\d+)\/?/)[2]
                 };
             }
 
@@ -322,16 +351,15 @@ class ImageUploader {
 
         const newPostReq = new XMLHttpRequest();
 
-        // TODO Make configurable / not hardcoded
-        newPostReq.open('POST', 'http://localhost:8000/home/new-post');
+        newPostReq.open('POST', `${location.origin}/home/new-post`);
         newPostReq.addEventListener('load', function () {
 
             if (newPostReq.status !== 200) {
 
                 const resp = JSON.parse(newPostReq.responseText);
-                const errors = Array.isArray(resp) ? resp : [resp];
+                const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                 errors.forEach((e) => {
-                    this.displayError(e.message, this.formErrors);
+                    self.displayError(e.message, self.formErrors);
                     $('[data-loading].is-loading').removeClass('is-loading');
                 });
 
@@ -343,15 +371,15 @@ class ImageUploader {
 
             const { postId } = JSON.parse(newPostReq.responseText);
             const imgUploadReq = new XMLHttpRequest();
-            imgUploadReq.open('POST', `http://localhost:8000/api/images/post/${postId}`);
+            imgUploadReq.open('POST', `${location.origin}/api/${self.submitEndpoint}/${postId}`);
             imgUploadReq.addEventListener('load', function () {
 
                 if (imgUploadReq.status !== 200) {
 
                     const resp = JSON.parse(imgUploadReq.responseText);
-                    const errors = Array.isArray(resp) ? resp : [resp];
+                    const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                     errors.forEach((e) => {
-                        this.displayError(e.message, this.formErrors);
+                        self.displayError(e.message, self.formErrors);
                         $('[data-loading].is-loading').removeClass('is-loading');
                     });
 
@@ -362,10 +390,11 @@ class ImageUploader {
                 }
 
                 // ON SUCCESS, REDIRECT TO /posts/postId
+                location.assign(`${location.origin}/posts/${postId}`);
             });
 
             imgUploadReq.addEventListener('error', function (err) {
-                this.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+                self.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
                 $('[data-loading].is-loading').removeClass('is-loading');
 
                 return window.scrollTo({
@@ -379,7 +408,7 @@ class ImageUploader {
         });
         // Network error
         newPostReq.addEventListener('error', function (err) {
-            this.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+            self.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
             $('[data-loading].is-loading').removeClass('is-loading');
 
             return window.scrollTo({
@@ -410,17 +439,44 @@ class ImageUploader {
             body.set('deletedImages', JSON.stringify(this.deletedImages.map((id) => Number(id))));
         }
 
+        this.filesList.forEach(({ file }, index) => {
+
+            if (typeof file === 'string') { // The case of a loaded image e.g. on edit, where we fill filesList w/ src's of previously set images
+                return;
+            }
+
+            if (index === 0) {
+                return body.set('images', file, file.name);
+            }
+
+            return body.append('images', file, file.name);
+        });
+
+        body.set('rotations', JSON.stringify(this.filesList.map(({ file, rotation }) => {
+
+            // Setting id allows reliable lookup of img on backend
+            // Object is used for updating uploaded images in place
+            if (typeof file === 'string') {
+                return {
+                    rotation: rotation,
+                    imageId: file.match(/(images|user)\/(\d+)\/?/)[2]
+                };
+            }
+
+            return rotation;
+        })));
+
         const req = new XMLHttpRequest();
         // TODO Make more easily configurable
-        req.open('POST', 'http://localhost:8000/api/images/user');
+        req.open('POST', `${location.origin}/api/${self.submitEndpoint}`);
         req.addEventListener('load', function () {
 
             if (req.status !== 200) {
 
                 const resp = JSON.parse(req.responseText);
-                const errors = Array.isArray(resp) ? resp : [resp];
+                const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                 errors.forEach((e) => {
-                    this.displayError(e.message, this.formErrors);
+                    self.displayError(e.message, self.formErrors);
                     $('[data-loading].is-loading').removeClass('is-loading');
                 });
 
@@ -435,13 +491,13 @@ class ImageUploader {
             // Excludes images from form submission to non-API route
             document.querySelector('.image-upload-form input[name=images]').remove();
 
-            // TODO DOES THIS HOLD TRUE FOR ALL FORMS?
-            document.querySelector('.image-upload-form input[type=submit]').click();
+            // Sorry, sucks; accounts for different submit buttons across forms
+            document.querySelector('.image-upload-form input[type=submit], .image-upload-form button[type=submit]').click();
         });
 
         // Network error
         req.addEventListener('error', function (err) {
-            this.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+            self.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
             $('[data-loading].is-loading').removeClass('is-loading');
 
             return window.scrollTo({
@@ -506,7 +562,7 @@ class ImageUploader {
         const currentRotation = this.filesList[uploadOrder].rotation;
         const isFull = Math.abs(rotation % 360);
         this.filesList[uploadOrder].rotation = isFull !== 0 ? currentRotation + rotation : 0;
-        this.uploadedFilesContainer.children[uploadOrder].querySelector('img').style.transform = `rotate(${currentRotation + rotation}deg)`;
+        document.querySelector('[data-upload-order="' + uploadOrder + '"]').querySelector('img').style.transform = `rotate(${currentRotation + rotation}deg)`;
     }
 }
 
@@ -522,7 +578,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 uploadedFilesContainer: document.querySelector('.uploaded-files'),
                 uploadLimit: imageForm.dataset.uploadLimit && Number.parseInt(imageForm.dataset.uploadLimit, 10),
                 uploadErrors: document.querySelector('.upload-errors-container'),
-                formErrors: document.querySelector('.form-errors-container')
+                formErrors: document.querySelector('.form-errors-container'),
+                requestType: imageForm.dataset.requestType
             });
         } catch (error) {
             console.warn('Image Uploader not intialized'); // eslint-disable-line no-console
