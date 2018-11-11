@@ -83,6 +83,15 @@ const postItemConfig = {
         window.$(`.post-${layout}-item:eq(${self.index})`).find(`.post-${layout}-item-content`).prepend(error);
       };
 
+      const clearErrors = () => {
+          window.$(`.post-${layout}-item:eq(${self.index})`)
+            .find(`.post-${layout}-item-content .alert`)
+            .remove();
+      }
+
+      // Remove any error blocks when kicking off a new operation (prevents duplicate messages displayed)
+      clearErrors();
+
       switch (operation) {
         case 'edit':
           const url = `${protocol}//${host}${self.path.home_post_edit}${self.post.id}`;
@@ -99,8 +108,12 @@ const postItemConfig = {
           .fail(() => displayError('We couldn\'t delete your post at this time. Sorry!'));
           break;
         case 'replies':
-          const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}#replies-to-my-posts`; // hash is a hack to make sure right category is highlighted
-          window.location.assign(myReplies);
+          window.$.get(`/api/messaging/topics/post/${this.post.id}`)
+          .done((data, status) => {
+            const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
+            window.location.assign(myReplies);
+          })
+          .fail(() => displayError('There are no replies for that post yet!'));
           break;
         case 'mark':
           window.$.post(`/api/posts/${self.post.id}/mark`, { newType: self.closedType })
