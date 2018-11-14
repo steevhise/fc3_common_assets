@@ -1,15 +1,23 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-<!--<div class="small-12 columns footer-menu">
-    <div class="row">
-        {% for val in footerMenuItems %}
-            <div class="small-12 medium-6 large-3 columns footer-menu-item">
-                <div class="footer-menu-item-inner">
-                    <a href="{{ val.path }}" {{ val.extraAttrs|raw }}>{{val.name}}</a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>-->
+
+{#  extraAttrs is if we want an onClick or an id or whatever in the link tag #}
+{% set footerMenuItems =  [
+        { name: t('About Us'), path: '/pages/about' },
+        { name: t('Press Room'), path: '/pages/pressroom' },
+        { name: t('News'), path: 'https://newswire.freecycle.org' },
+        { name: t('Find A Town'), path: '/find-towns' },
+        { name: t('Privacy'), path: '/pages/privacy' },
+        { name: t('Terms of Service'), path: '/pages/tos' },
+        { name: t('Guidelines'), path: '/pages/guidelines' },
+        { name: 'Donate', path: '/pages/donate' },
+        { name: 'Sponsor', path: '/pages/sponsor' },
+        { name: 'Volunteer', path: '/pages/volunteer' },
+        { name: 'Help', path: '#', extraAttrs: 'onclick="openBeacon();return false;"' },
+        { name: 'Knowledge Base', path: 'https://freecycle.helpscoutdocs.com/collection/7-freecycle-help' },
+        { name: 'Contact', path: '/pages/contact' },
+        { name: 'Site map', path: '/sitemap' }
+    ]
+%}
 
 <div class="footer-menu">
     <ul>
