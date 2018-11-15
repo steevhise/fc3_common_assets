@@ -16,9 +16,9 @@
 <div class="header-links">
 
     {% if connections.groups || connections.friends %}
-        <a href="{{ path.home_post_new }}"><button class="btn-default header-button">Make A Post</button></a>
+        <a href="{{ path.home_post_new }}"><button class="btn-default header-button">{{ t('Make A Post') }}</button></a>
     {% endif %}
-    <a href="{{ path.pages_logout }}"><button class="btn-default header-button">logout</button></a>
+    <a href="{{ path.pages_logout }}"><button class="btn-default header-button">{{ t('logout') }}</button></a>
 
 
 </div>

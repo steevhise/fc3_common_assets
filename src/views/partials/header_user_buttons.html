@@ -4,11 +4,12 @@
     <li class="header-user-button">
       <!ul class="dropdown nested vertical menu" data-dropdown-menu>
         <a data-tooltip class="has-tip" title="Profile" href="/member/{{ session.username }}">{% include '../icons/user.html' %}</a>
-      {# ok i thought this would be easier.. trying for a nested vertical dropdown...   <li><a href="/home/dashboard">My Dashboard</a></li>
-        <li><a href="/home/my-posts">My Posts</a></li>
-        <li>My Messages</li>
-        <li>My Friends</li>
-        <li>My Towns</li>
+      {# ok i thought this would be easier.. trying for a nested vertical dropdown...   <li><a href="/home/dashboard">{{
+    t('My Dashboard') }}</a></li>
+        <li><a href="/home/my-posts">{{ t('My Posts') }}</a></li>
+        <li>{{ t('My Messages') }}</li>
+        <li>{{ t('My Friends') }}</li>
+        <li>{{ t('My Towns') }}</li>
       </ul>      #}
     </li>
 
@@ -22,7 +23,7 @@
 
     {# TODO: make this only display if current user is a moderator
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="Moderator" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}
+      <a data-tooltip class="has-tip" title="{{ t('Moderator') }}" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}
       <span>3</span></a>
     </li>
     #}
@@ -33,7 +34,7 @@
     </li>
 
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="Messages" href="{{ path.home_myreplies }}">{% include '../icons/messages.html' %}
+      <a data-tooltip class="has-tip" title="{{ t('Messages') }}" href="{{ path.home_myreplies }}">{% include '../icons/messages.html' %}
         <fc-messages-notifier-connected :static-unreads="{{ unreadReplies || 0 }}" :on-my-replies="{{ route.id === 'home_myreplies' }}"/>
       </a>
     </li>
