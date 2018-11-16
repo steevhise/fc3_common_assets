@@ -11,7 +11,11 @@
 
   .search-input {
     flex: 1;
-
+    input.search::placeholder {
+      position: relative;
+      left: 20px;
+    }
+    
     input.search {
       background: none;
       border: none;

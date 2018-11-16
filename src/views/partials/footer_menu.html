@@ -11,10 +11,10 @@
     </div>
 </div>-->
 
-<div class="footer-menu">
+<div class="row" style="max-width: 100%;" >
     <ul>
         {% for val in footerMenuItems %}
-            <li class="footer-menu-item">
+            <li class="columns small-6 large-3 footer-menu-item left" >
                 <a href="{{ val.path }}" {{ val.extraAttrs|raw }}>{{val.name}}</a>
             </li>
         {% endfor %}
