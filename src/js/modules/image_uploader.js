@@ -14,6 +14,11 @@
     2. Add image-upload-form to form element's class attribute (see constructor call at bottom of file)
     3. Add a div somewhere near the top of the page with the form-errors-container class
 */
+
+// the import name is just a placeholder, as the module doesn't export anything,
+// but runs in the global scope to check for FormData support
+import * as UNUSEDNAMEformdataPolyfill from 'formdata-polyfill';
+
 class ImageUploader {
 
     constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors, requestType }) {
@@ -21,6 +26,8 @@ class ImageUploader {
         if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors || !requestType) {
             throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
         }
+
+        this.polyfill();
 
         let postId;
         if (requestType === 'post') {
@@ -67,28 +74,20 @@ class ImageUploader {
             // like we do when we manually create them in displayImage
             const self = this;
             currentUploads.forEach(function(imgBlock) {
-                const img = imgBlock.querySelector('img');
+                const img = imgBlock.querySelector('.image-container');
                 const deleteButton = imgBlock.querySelector('.del-img');
 
-                self.filesList.push({ file: img.src, rotation: 0 }); // fill upload queue with bunk placeholders; submit routine will check for these
+                console.log('THIS IS WHAT WE HAVE FOR BG URL', img.style.backgroundImage);
+                self.filesList.push({ file: img.style.backgroundImage, rotation: 0 }); // fill upload queue with bunk placeholders; submit routine will check for these
                 deleteButton.addEventListener('click', self.deleteUpload.bind(self)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
 
                 const rotateClockwiseButton = imgBlock.querySelector('.rotate-clockwise');
-                const rotateCounterClockwiseButton = imgBlock.querySelector('.rotate-counterclockwise');
-
                 rotateClockwiseButton.addEventListener('click', (e) => {
 
                     e.preventDefault();
                     // NOTE Called here so reflective of state of elements at call time, not init time; is that right / necessary?
                     const uploadOrder = imgBlock.dataset.uploadOrder;
                     self.rotateImage(90, uploadOrder);
-                });
-                rotateCounterClockwiseButton.addEventListener('click', (e) => {
-
-                    e.preventDefault();
-
-                    const uploadOrder = imgBlock.dataset.uploadOrder;
-                    self.rotateImage(-90, uploadOrder);
                 });
             });
 
@@ -128,13 +127,13 @@ class ImageUploader {
         // Register click listener on delete button
         const self = this;
         const block = document.createElement('div');
-        const img = document.createElement('img');
+        const imgContainer = document.createElement('div');
         const deleteButton = document.createElement('button');
         const rotateClockwiseButton = document.createElement('button');
-        const rotateCounterClockwiseButton = document.createElement('button');
         const rotationContainer = document.createElement('div');
 
-        img.src = src;
+        imgContainer.style.backgroundImage = `url(${src})`;
+        imgContainer.setAttribute('class', 'image-container');
         block.setAttribute('data-upload-order', uploadOrder);
         block.setAttribute('class', 'img-block');
         deleteButton.setAttribute('class', 'btn-default del-img');
@@ -144,9 +143,7 @@ class ImageUploader {
 
 
         rotateClockwiseButton.setAttribute('class', 'btn-default rotate-clockwise');
-        rotateCounterClockwiseButton.setAttribute('class', 'btn-default rotate-counterclockwise');
-        rotateClockwiseButton.appendChild(document.createTextNode('Clockwise'));
-        rotateCounterClockwiseButton.appendChild(document.createTextNode('Counter-clockwise'));
+        rotateClockwiseButton.innerHTML = '&#x21BB;'; // HTML entity for clockwise arrow (appending as text node results in raw entity text, uninterpreted)
         rotateClockwiseButton.addEventListener('click', (e) => {
 
             e.preventDefault();
@@ -154,18 +151,10 @@ class ImageUploader {
             const uploadOrder = block.dataset.uploadOrder;
             self.rotateImage(90, uploadOrder);
         });
-        rotateCounterClockwiseButton.addEventListener('click', (e) => {
-
-            e.preventDefault();
-
-            const uploadOrder = block.dataset.uploadOrder;
-            self.rotateImage(-90, uploadOrder);
-        });
         rotationContainer.setAttribute('class', 'rotate-buttons');
-        rotationContainer.appendChild(rotateCounterClockwiseButton);
         rotationContainer.appendChild(rotateClockwiseButton);
 
-        block.appendChild(img);
+        block.appendChild(imgContainer);
         block.appendChild(rotationContainer);
         block.appendChild(deleteButton);
         this.uploadedFilesContainer.appendChild(block);
@@ -246,7 +235,7 @@ class ImageUploader {
         const files = e.target.files;
         const filesArr = Array.from(files);
 
-        filesArr.forEach(function(f) {
+        filesArr.forEach(function(f, index) {
 
             if (f.type.match(/image\/(jpeg|png)/) === null) {
                 return this.displayError(`We can't process ${f.name} because it's a ${f.type}. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
@@ -257,11 +246,11 @@ class ImageUploader {
                 return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);
             }
 
-            // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another, overwrites the input's file list
-            const numUploads = this.filesList.push({ file: f, rotation: 0 });
+            // The number of images we'd have uploaded if the current one processed uploads successfully
+            const numUploadedIfSuccessful = this.filesList.length + (index + 1);
 
             // Disable the uploader if limit has been reached
-            if (numUploads === this.uploadLimit) {
+            if (numUploadedIfSuccessful === this.uploadLimit) {
                 const input = document.querySelector('#images');
                 const enabledMsg = document.querySelector('.enabled-upload');
                 const disabledMsg = document.querySelector('.disabled-upload');
@@ -273,19 +262,28 @@ class ImageUploader {
                 dropbox.style.backgroundColor = 'lightgray';
             }
 
+            if (numUploadedIfSuccessful > this.uploadLimit) {
+                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);
+            }
+
             // Display thumbnail of successfully-uploaded image
             const reader = new FileReader();
             reader.onload = function (e) {
                 // we pass the index of filesList at which the new image was inserted
                 // so we can track and identify images (in case of deletion) independent of load order i.e. in-sync with filesList order
                 const dataURL = e.target.result;
-                self.displayImage(dataURL, numUploads - 1);
+
+                // Store each newly uploaded file because each upload attempt i.e. drag once, then drag another, overwrites the input's file list
+                // We track upload order here to ensure, in the case of multiple images of varying sizes (and therefore load times) uploaded simultaneously,
+                // that the order of display to the user matches the internally stored order
+                const uploadOrder = self.filesList.push({ file: f, rotation: 0 });
+                self.displayImage(dataURL, uploadOrder - 1); // - 1 to set to convert to zero-indexed
 
                 // Resize images larger than our 1MB / image limit
                 // NOTE We resize just the file stored in ImageUploader.filesList i.e. the image we send to the server
                 // This doesn't care about the preview image rendered via displayImage; we don't care about that because it's just a preview
                 if (f.size > 1048576) {
-                    self.resizeImage(dataURL, f, numUploads - 1);
+                    self.resizeImage(dataURL, f, uploadOrder - 1); // - 1 to set to convert to zero-indexed
                 }
             };
             reader.readAsDataURL(f);
@@ -562,7 +560,33 @@ class ImageUploader {
         const currentRotation = this.filesList[uploadOrder].rotation;
         const isFull = Math.abs(rotation % 360);
         this.filesList[uploadOrder].rotation = isFull !== 0 ? currentRotation + rotation : 0;
-        document.querySelector('[data-upload-order="' + uploadOrder + '"]').querySelector('img').style.transform = `rotate(${currentRotation + rotation}deg)`;
+        document.querySelector('[data-upload-order="' + uploadOrder + '"]').querySelector('.image-container').style.transform = `rotate(${currentRotation + rotation}deg)`;
+    }
+
+    static polyfill() {
+
+        // Copied from: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob#Polyfill
+        // Noted as low-performance...sorry
+        if (!HTMLCanvasElement.prototype.toBlob) {
+            Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+                value: function (callback, type, quality) {
+                    const dataURL = this.toDataURL(type, quality).split(',')[1];
+                    setTimeout(function() {
+
+                        var binStr = atob( dataURL ),
+                        len = binStr.length,
+                        arr = new Uint8Array(len);
+
+                        for (var i = 0; i < len; i++ ) {
+                            arr[i] = binStr.charCodeAt(i);
+                        }
+
+                        callback( new Blob( [arr], {type: type || 'image/png'} ) );
+
+                    });
+                }
+            });
+        }
     }
 }
 
@@ -582,6 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestType: imageForm.dataset.requestType
             });
         } catch (error) {
+            console.log(error, 'WHHYYYYY');
             console.warn('Image Uploader not intialized'); // eslint-disable-line no-console
         }
     }

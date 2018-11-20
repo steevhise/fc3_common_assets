@@ -47,3 +47,15 @@ button.del-img {
 button.del-img:hover {
     background-color: maroon;
 }
+
+.image-container {
+    width: 200px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.rotate-buttons {
+    margin-top: 10px;
+}
