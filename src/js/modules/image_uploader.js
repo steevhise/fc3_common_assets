@@ -15,10 +15,6 @@
     3. Add a div somewhere near the top of the page with the form-errors-container class
 */
 
-// the import name is just a placeholder, as the module doesn't export anything,
-// but runs in the global scope to check for FormData support
-import * as UNUSEDNAMEformdataPolyfill from 'formdata-polyfill';
-
 class ImageUploader {
 
     constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors, requestType }) {
@@ -26,8 +22,6 @@ class ImageUploader {
         if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors || !requestType) {
             throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
         }
-
-        this.polyfill();
 
         let postId;
         if (requestType === 'post') {
@@ -77,7 +71,6 @@ class ImageUploader {
                 const img = imgBlock.querySelector('.image-container');
                 const deleteButton = imgBlock.querySelector('.del-img');
 
-                console.log('THIS IS WHAT WE HAVE FOR BG URL', img.style.backgroundImage);
                 self.filesList.push({ file: img.style.backgroundImage, rotation: 0 }); // fill upload queue with bunk placeholders; submit routine will check for these
                 deleteButton.addEventListener('click', self.deleteUpload.bind(self)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
 
@@ -587,6 +580,14 @@ class ImageUploader {
                 }
             });
         }
+
+        // Polyfills FormData, as certain browsers (Edge, IE, mobile Safari)
+        // don't support various FormData methods
+        // This check isn't strictly necessary, as the module does it itself,
+        // duplicated here in the interest of skipping unnecessary code
+        if (typeof FormData === 'undefined' || !FormData.prototype.delete) {
+          require('formdata-polyfill');
+        }
     }
 }
 
@@ -605,6 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formErrors: document.querySelector('.form-errors-container'),
                 requestType: imageForm.dataset.requestType
             });
+            ImageUploader.polyfill();
         } catch (error) {
             console.log(error, 'WHHYYYYY');
             console.warn('Image Uploader not intialized'); // eslint-disable-line no-console
