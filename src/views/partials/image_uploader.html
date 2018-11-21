@@ -4,10 +4,10 @@
     <div class="dropbox text-center">
         <input name="images" type="file" id="images" multiple accept="image/jpeg,image/png" class="input-file" />
         <div class="enabled-upload">
-        <br>
+            <br>
             <h4>Drag your image files here,</h4> or
             <p style="padding:0;">
-            <button class="btn-subtle text-center">click on this and select files</button>
+                <button class="btn-subtle text-center">click on this and select files</button>
             </p>
         </div>
         <p class="disabled-upload" hidden>You've uploaded the max allowed images</p>
@@ -16,7 +16,10 @@
         {% if images && images.length %}
             {% for image in images %}
                 <div class="img-block" data-upload-order="{{loop.index0}}">
-                    <img src="{{image}}" />
+                    <div class="image-container" style="background-image: url({{ image }})"></div>
+                    <div class="rotate-buttons">
+                        <button class="btn-default rotate-clockwise">&#x21BB;</button>
+                    </div>
                     <button class="btn-default del-img" type="button">Remove</button>
                 </div>
             {% endfor %}

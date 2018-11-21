@@ -1,7 +1,8 @@
 <template>
 	<div class="message-list-item-details-chat-window" ref="chatWindow">
-		<h3 v-if="category === 'Notifications'" class="row columns  large-1">{{ category }}</h3>
-		<p v-if="category === 'Notifications'"></p>
+		<!-- categoryIndex 4 represents our Notifications tab (see fc3_main, MessagesBoardConnected component) -->
+		<h3 v-if="category && category.categoryIndex === 4" class="row columns  large-1">{{ category.displayName }}</h3>
+		<p v-if="category && category.categoryIndex === 4"></p>
 		<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 			<p class="chat-message-from" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 				<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender && message.sender.id) }"></span>
@@ -21,7 +22,7 @@
 	export default {
 		name: 'fc-messages',
 		props: {
-		    category: String,
+		    category: Object,
 			messages: Array,
 			me: Object,
 			showHtml: {

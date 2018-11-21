@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-if="topicsLoaded" class="row column message-reply-list-container">
-		    <h3>{{ category }}</h3>
+		    <h3>{{ category.displayName }}</h3>
 		    <ul v-if="topics && topics.length" class="message-reply-list">
 				<div v-for="topic in topics">
 			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
@@ -42,7 +42,7 @@
 	export default {
 		name: 'fc-messages-topics',
 		props: {
-			category: String,
+			category: Object,
 			topics: Array,
 			onClickTopic: Function,
 			topicModalId: String,

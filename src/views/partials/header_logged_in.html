@@ -8,9 +8,13 @@
 {% endif %}
 </div>
 
-<div class="header-stretch">
-    {% include './header_search.html' %}
-    {% include './header_user_buttons.html' %}
+<div class="header-stretch row" style="flex-wrap: wrap;">
+    <div class="header-search-wrapper">
+        {% include './header_search.html' %}
+    </div>
+    <div class="user-button-wrapper" >
+        {% include './header_user_buttons.html' %}
+    </div>
 </div>
 
 <div class="header-links">

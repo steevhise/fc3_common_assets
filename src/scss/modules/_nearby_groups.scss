@@ -36,6 +36,7 @@
   @include heading-text();
   padding: 0.875rem 1.1rem;
   margin: 10px;
+  float: left;
 
   @include breakpoint(large) {
     margin: 0;
