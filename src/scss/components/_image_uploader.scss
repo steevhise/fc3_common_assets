@@ -1,3 +1,4 @@
+// TODO: this file should be in modules rather than components, i think
 .dropbox {
     outline: 2px dashed grey; /* the dash box */
     outline-offset: -10px;
@@ -57,5 +58,11 @@ button.del-img:hover {
 }
 
 .rotate-buttons {
-    margin-top: 10px;
+    margin: 10px;
+}
+
+// todo: i cant get the vertical centering of the text in this button to be quite even for both chrome and ff! this is a compromise
+.rotate-clockwise {
+    font-size: 2em;
+    padding-top: 4px;
 }
