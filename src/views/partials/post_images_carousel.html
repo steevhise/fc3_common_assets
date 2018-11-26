@@ -11,11 +11,7 @@
       {% for image in images %}
         <li class="orbit-slide {% if loop.first %}is-active{% endif %}">
           <figure class="orbit-figure">
-            {% if modal %}
-            <img style="width: 600px !important; object-fit: cover;" src="{{ image }}" >
-            {% else %}
-            <img style="width: 600px !important; object-fit: cover; max-height: 300px;" src="{{ image }}" >
-            {% endif %}
+            <img class="orbit-slide-image" src="{{ image }}" >
           </figure>
         </li>
       {% endfor %}

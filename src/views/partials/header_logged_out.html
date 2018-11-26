@@ -4,16 +4,18 @@
     {% include './hamburger_menu.html' %}
 </div>
 
-<div class="header-stretch">
-    {% include './header_search.html' %}
+<div class="header-stretch row">
+    <div class="header-search-wrapper" >
+        {% include './header_search.html' %}
+    </div>
 </div>
 
 <div class="header-links">
     <a href="{{ path.pages_signup }}"><button class="btn-default header-button">{{ t('Sign Up') }}</button></a>
     <span class="heading-with-icon header-user-icon">
         {% include '../icons/user.html' %}
-        <fc-modal id="login" custom-trigger="<a style='position: relative; top: 6px;'>{{ t('Login') }}</a>" style="float: right;">
-            <fc-login></fc-login>
+        <fc-modal id="login" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>Login</a>" style="float: right;">
+            <fc-login unique-name="popup-form"></fc-login>
         </fc-modal>
     </span>
 </div>
