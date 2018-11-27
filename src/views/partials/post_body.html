@@ -10,9 +10,9 @@
 					{% if post.share && !post.share.returnDate %}
 					{% if post|lendOverdue %}
 					<p class="callout warning">
-						Item Overdue!{% if post.share.dueDate %} It was due on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{%
+						{{ t('Item Overdue!') }}{% if post.share.dueDate %} {{ t('It was due on') }} {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{%
 						endif %}
-						{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">Message your friend</a>{%
+						{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">{{ t('Message your friend') }}</a>{%
 						endif %}
 					</p>
 					{% else %}
@@ -23,7 +23,7 @@
 						BORROWED
 						{% endif %}
 
-						{% if post.share.dueDate %}Due back on {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
+						{% if post.share.dueDate %}{{ t('Due back on') }} {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{% endif %}</span>
 					</p>
 					{% endif %}
 					{% endif %}
@@ -66,17 +66,17 @@
 									</a>
 								</li>
 								<li>
-									<fc-icon name="tag" style="cursor: default; display: inline; position: relative;"></fc-icon> <span style="font-weight: bold;">TAGS</span>&nbsp;
+									<fc-icon name="tag" style="cursor: default; display: inline; position: relative;"></fc-icon> <span style="font-weight: bold;">{{ t('TAGS') }}</span>&nbsp;
 									{% for tag in post.tags %}
-									{# TODO where ought this link go? #}
+									{# TODO: where ought this link go? #}
 									{% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
 									<a href="{{tag.url}}">{{tag.name}}</a>{% if !loop.last %}, {% endif %}
 									{% endfor %}
 								</li>
 								{% if post.static && post.static.lendDuration %}
 								<li>
-									<strong>Lend Duration</strong>
-									<span>{{ post.static.lendDuration }} Days</span>
+									<strong>{{ t('Lend Duration') }}</strong>
+									<span>{{ post.static.lendDuration }} {{ t('Days') }}</span>
 								</li>
 								{% endif %}
 							</ul>
@@ -93,16 +93,16 @@
 						{% if session %}
 						{% if session.id === post.user.id %}
                             <div style="display: flex; width:5rem;">
-                                <span style="flex:1;"><a href="/home/edit-post/{{post.id}}" class="btn-action" style="float: left; margin-right: 10px; line-height: 1; height: 3.25em;">Edit</a></span>
+                                <span style="flex:1;"><a href="/home/edit-post/{{post.id}}" class="btn-action" style="float: left; margin-right: 10px; line-height: 1; height: 3.25em;">{{ t('Edit') }}</a></span>
                             {% elseif post.blocked %}
                                 {# show nothing if the poster has blocked me #}
                             {% elseif post.canReply %}
                                 <div style="display: flex; width:17rem;">
                                     <span style="flex:1;"><fc-messages-detail-input v-cloak topic-type="post" topic-id="{{ post.id }}" custom-trigger='<button class="btn-{{ post.type.name|lower }}" style="float: left; margin-right: 10px;">{{ postAction|default('Reply') }}</button>'>
-                                        <p><strong>New Message Re:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
+                                        <p><strong>t('New Message Re:')</strong> {{ post.subject|sanitizeHtml|raw }}</p>
                                     </fc-messages-detail-input></span>
                                     <span style="flex:1;"><fc-messages-detail-input v-cloak default-body="I am reporting post #{{ post.id }}" topic-type="group" topic-id="{{ post.group.id || 0 }}" custom-trigger='<button class="btn btn-action">{{ postAction|default('Report') }}</button>'>
-                                    <p><strong>Report this post to a Moderator:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
+                                    <p><strong>{{ t('Report this post to a Moderator') }}:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
                                         </fc-messages-detail-input></span>
 
 
@@ -110,16 +110,16 @@
                                     <div style="display: flex; width:40rem;">
                                         <span style="flex:3;">
                                 <a href="{{path.groups_main}}{{post.group.uniqueName}}" style="float: left; margin-right: 10px;" >
-                                    Join the {{ post.group.name }} group</a> to reply to this post.</span>
+                                    Join the {{ post.group.name }} group</a> to reply to this post.</span>  {# TODO: need interpolation for t() func #}
                             {% endif %}
 						{% else %}
-                        <div style="display: flex; width:20rem;">
-						<fc-modal id="login" custom-trigger='<a style="float: left; margin-right: 10px; padding: 0.7rem; height: 40px; position: relative; top: -2px;" >Login to reply to this post</a>'>
-							<fc-login></fc-login>
-						</fc-modal>
+                        <div style="width:20rem; display:flex;">
+							<fc-modal id="login" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>{{ t('Log in to reply to this post') }}</a>" style="flex:1; float: right;">
+								<fc-login unique-name="popup-form"></fc-login>
+							</fc-modal>
 						{% endif %}
-                            <div class="btn-action fab text-center" style="flex:1; float: left; padding-right: 5px; padding-left:5px; line-height: 1; height: 3.25em; width: 7em;" >
-                                <span class="text">Share</span>
+                            <div class="btn-action fab text-center" style="flex:0; float: left; padding-right: 5px; padding-left:5px; line-height: 1; height: 3.25em; width: 7em;" >
+                                <span class="text">{{ t('Share') }}</span>
                                 <social-sharing :url="`${$root.currentUrl}?utm_source=social&utm_medium=post-detail`" title="Freecycle: {{post.subject|e('js')}}" description="{{post.description|sanitizeHtml|raw|striptags|e('js')}}" hashtags="freecycle,freecycle3" inline-template>
                                     <div>
                                         <network network="facebook"> <div class="option fb"> <i class="fa fa-facebook"></i> </div> </network>
@@ -140,7 +140,7 @@
                 {% if post.images.length > 1 %}
                     {% include "./post_images_carousel.html" with { images: post.images } %}
                     <div class="row text-center">
-                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">View Images Full Size</a>'>
+                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Images Full Size") }}</a>'>
                             {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
                         </fc-modal>
                     </div>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="row text-center">
-                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">View Image Full Size</a>'>
+                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Image Full Size") }}</a>'>
                             <img src="{{ post.images[0] }}" style="width: 600px !important;" />
                         </fc-modal>
                     </div>

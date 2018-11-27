@@ -1,5 +1,5 @@
 /**
- * It's the Freecycle 3.0 static site server
+ * It's the Freecycle 3.0 static site server - or at least we thought it would be...
  */
 
 const Hapi = require('hapi');
