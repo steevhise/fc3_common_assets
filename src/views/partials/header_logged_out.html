@@ -9,12 +9,11 @@
         {% include './header_search.html' %}
     </div>
 </div>
-{{ t('Sign Up') }}  ----> {{ t('OFFER') }} <----
 <div class="header-links">
     <a href="{{ path.pages_signup }}"><button class="btn-default header-button">{{ t('Sign Up') }}</button></a>
     <span class="heading-with-icon header-user-icon">
         {% include '../icons/user.html' %}
-        <fc-modal id="login" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>Log in</a>" style="float: right;">
+        <fc-modal id="login" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>{{ t('Log in') }}</a>" style="float: right;">
             <fc-login unique-name="popup-form"></fc-login>
         </fc-modal>
     </span>
