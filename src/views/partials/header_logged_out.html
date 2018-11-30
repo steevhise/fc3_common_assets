@@ -9,6 +9,8 @@
         {% include './header_search.html' %}
     </div>
 </div>
+
+{% if path %}
 <div class="header-links">
     <a href="{{ path.pages_signup }}"><button class="btn-default header-button">{{ t('Sign Up') }}</button></a>
     <span class="heading-with-icon header-user-icon">
@@ -18,3 +20,4 @@
         </fc-modal>
     </span>
 </div>
+{% endif %}

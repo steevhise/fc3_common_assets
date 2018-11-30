@@ -16,7 +16,8 @@
 
 .header-outer {
   border-top: 2px solid $medium-gray;
-  margin-top: 15px;
+  margin-top: 0px;
+  padding-top: 10px;
 
   @include breakpoint(header) {
     border-bottom: 2px solid $medium-gray;
