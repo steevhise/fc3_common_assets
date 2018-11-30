@@ -8,6 +8,7 @@
 <div class="item-list">
     <div class="item-list-inner row">
         <!-- Header row and controls -->
+        {% if !custom_hide_filter_override %} {# Allows us to hide filter if needed, defaults to on unless set #}
         <div class="item-list-header">
             <div class="item-list-header-filter">
                 {% if filterType === 'circle' %}
@@ -36,6 +37,7 @@
                 </ul>
             </div>
         </div>
+        {% endif %}
         <!-- tag row -->
         <div class="item-list-subheader">
           {% if showDashboard %}
