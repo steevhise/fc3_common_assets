@@ -23,6 +23,17 @@
             {{ friend.info.about }}
         </h5>
 
+        {% if friend.group_memberships %}
+          <p>
+            {% for parentGroup in friend.group_memberships %}
+              {% if parentGroup.group %}
+                {{ parentGroup.group.group_name }}, {{ parentGroup.group.region.region_name }}<br />
+                {{ parentGroup.group.region.country.country_name }}
+              {% endif %}
+            {% endfor %}
+          </p>
+        {% endif %}
+
         {% if friend.info.signup_date %}
         <h5 class="thumbsup">
             Became Member {{ friend.info.signup_date | mreldate }}
