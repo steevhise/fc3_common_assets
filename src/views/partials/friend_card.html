@@ -23,15 +23,15 @@
             {{ friend.info.about }}
         </h5>
 
-        {% if friend.group_memberships %}
-          <p>
-            {% for parentGroup in friend.group_memberships %}
-              {% if parentGroup.group %}
+        {% if friend.group_memberships and friend.homeGroup %}
+          {% for parentGroup in friend.group_memberships %}
+            {% if parentGroup.group && parentGroup.group_id == friend.homeGroup %}
+              <p>
                 {{ parentGroup.group.group_name }}, {{ parentGroup.group.region.region_name }}<br />
                 {{ parentGroup.group.region.country.country_name }}
-              {% endif %}
-            {% endfor %}
-          </p>
+              </p>
+            {% endif %}
+          {% endfor %}
         {% endif %}
 
         {% if friend.info.signup_date %}
