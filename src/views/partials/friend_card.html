@@ -3,9 +3,6 @@
 {% set requestPending = friend.friendRequestStatus && friend.friendRequestStatus.toUpperCase() === "PENDING" %}
 <a class="friend-card {% if requestPending %}pending{% endif %} columns large-4" data-friend-id="{{ friend.id }}" href="/member/{{ friend.username }}">
   <div class="friend-card-inner">
-    {% if requestPending %}
-      <div class="friend-card-status">Pending</div>
-    {% endif %}
     <div class="friend-card-avatar">
       <img src="{{ friend.image }}"/>
     </div>
@@ -42,6 +39,12 @@
         <h5 class="thumbsup">
             Became Member {{ friend.info.signup_date | mreldate }}
         </h5>
+        {% endif %}
+
+        {% if requestPending %}
+          <div class="friend-card-actions">
+            Accept / Cancel
+          </div>
         {% endif %}
     </div>
   </div>
