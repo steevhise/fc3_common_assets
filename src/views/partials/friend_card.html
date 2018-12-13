@@ -1,8 +1,14 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <!-- todo: i don't think this needs to be in common assets... -->
 {% set requestPending = friend.friendRequestStatus && friend.friendRequestStatus.toUpperCase() === "PENDING" %}
-<a class="friend-card {% if requestPending %}pending{% endif %} columns large-4" data-friend-id="{{ friend.id }}" href="/member/{{ friend.username }}">
+{% set requestWaiting = friend.friendRequestStatus && friend.friendRequestStatus.toUpperCase() === "WAITING" %}
+<a class="friend-card {% if requestPending %}pending{% endif %} {%- if requestWaiting %}waiting{% endif %} columns large-4" data-friend-id="{{ friend.id }}" href="/member/{{ friend.username }}">
   <div class="friend-card-inner">
+    {% if requestWaiting %}
+      <div class="friend-card-actions">
+          <span class="cancel" title="Cancel Request">X</span>
+      </div>
+    {% endif %}
     <div class="friend-card-avatar">
       <img src="{{ friend.image }}"/>
     </div>
