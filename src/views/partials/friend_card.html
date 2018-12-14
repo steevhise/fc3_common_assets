@@ -6,7 +6,9 @@
   <div class="friend-card-inner">
     {% if requestWaiting %}
       <div class="friend-card-actions">
-          <span class="cancel" title="Cancel Request">X</span>
+          <form method="post" action="/api/unfriend/{{id}}" target="hidden">
+            <button class="cancel" title="Cancel Request" name="action" value="cancel" onclick="return confirm('Are you sure?')">X</button>
+          </form>
       </div>
     {% endif %}
     <div class="friend-card-avatar">
