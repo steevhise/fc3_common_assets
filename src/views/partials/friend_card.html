@@ -5,10 +5,14 @@
 <a class="friend-card {% if requestPending %}pending{% endif %} {%- if requestWaiting %}waiting{% endif %} columns large-4" data-friend-id="{{ friend.id }}" href="/member/{{ friend.username }}">
   <div class="friend-card-inner">
     {% if requestWaiting %}
-      <div class="friend-card-actions">
-          <form method="post" action="/api/unfriend/{{id}}" target="hidden">
-            <button class="cancel" title="Cancel Request" name="action" value="cancel" onclick="return confirm('Are you sure?')">X</button>
-          </form>
+      <div class="profile-action-btn cancel">
+        {% include '../partials/friendship_action_button.html' with {
+          username: friend.username,
+          action: 'cancel',
+          confirm: true,
+          icon: 'close',
+          label: '',
+        } only %}
       </div>
     {% endif %}
     <div class="friend-card-avatar">
