@@ -153,6 +153,17 @@
 				this.$delete(post, 'share');
 				posts[$lodash.findIndex(posts, matchId)] = post;
 				this.$bus.$emit('alert', { level : 'success', message: `<strong>${post.subject}</strong> has been returned!`, timer: 20000 });
+			},
+			getTagsFromUrl: function(){
+				let params = this.getUrlParams();
+				return (params.tags) ? params.tags.split(",") : [];
+			},
+			getUrlParams() {
+			    var vars = {};
+			    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			        vars[key] = value;
+			    });
+			    return vars;
 			}
 		},
 		mounted() {
@@ -162,6 +173,11 @@
 				self.selectedTags = window.$('.tag-select').val();
 				self.$emit('redrawVueMasonry');
 			});
+
+			// check for tags in query param and set them on component and select field
+			let tags = self.getTagsFromUrl();
+			self.selectedTags = tags;
+			window.$('.tag-select').val(tags);
 		}
 	}
 </script>
