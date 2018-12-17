@@ -159,8 +159,8 @@
 				return (params.tags) ? params.tags.split(",") : [];
 			},
 			getUrlParams() {
-			    var vars = {};
-			    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			    let vars = {};
+			    let parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
 			        vars[key] = value;
 			    });
 			    return vars;
