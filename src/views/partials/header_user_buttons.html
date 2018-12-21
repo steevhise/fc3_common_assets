@@ -5,13 +5,13 @@
         <li class="is-dropdown-submenu-parent">
           <a class="main-link" href="#">{% include '../icons/user.html' %}</a>
           <ul class="menu">
-            <li><a href="/home/dashboard/">My Dashboard</a></li>
-            <li><a href="/home/my-replies/">My Messages</a></li>
-            <li><a href="/home/my-posts/">My Posts</a></li>
-            <li><a href="/home/my-friends/">My Friends</a></li>
-            <li><a href="/home/my-towns/">My Towns</a></li>
-            <li><a href="/member/{{ session.username }}/">My Profile</a></li>
-            <li><a href="/home/settings/">My Settings</a></li>
+            <li><a href="/home/dashboard/">{{ t('My Dashboard') }}</a></li>
+            <li><a href="/home/my-replies/">{{ t('My Messages') }}</a></li>
+            <li><a href="/home/my-posts/">{{ t('My Posts') }}</a></li>
+            <li><a href="/home/my-friends/">{{ t('My Friends') }}</a></li>
+            <li><a href="/home/my-towns/">{{ t('My Towns') }}</a></li>
+            <li><a href="/member/{{ session.username }}/">{{ t('My Profile') }}</a></li>
+            <li><a href="/home/settings/">{{ t('My Settings') }}</a></li>
           </ul>
         </li>
       </ul>
