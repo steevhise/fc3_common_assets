@@ -1,24 +1,22 @@
 <div class="header-user-buttons">
   <ul class="header-user-buttons-list header-user-buttons-list-left">
-
     <li class="header-user-button">
-      <!ul class="dropdown nested vertical menu" data-dropdown-menu>
-        <a data-tooltip class="has-tip" title="Profile" href="/member/{{ session.username }}">{% include '../icons/user.html' %}</a>
-      {# ok i thought this would be easier.. trying for a nested vertical dropdown...   <li><a href="/home/dashboard">{{
-    t('My Dashboard') }}</a></li>
-        <li><a href="/home/my-posts">{{ t('My Posts') }}</a></li>
-        <li>{{ t('My Messages') }}</li>
-        <li>{{ t('My Friends') }}</li>
-        <li>{{ t('My Towns') }}</li>
-      </ul>      #}
+      <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu>
+        <li class="is-dropdown-submenu-parent">
+          <a class="main-link" href="#">{% include '../icons/user.html' %}</a>
+          <ul class="menu">
+            <li><a href="/home/dashboard/">My Dashboard</a></li>
+            <li><a href="/home/my-replies/">My Messages</a></li>
+            <li><a href="/home/my-posts/">My Posts</a></li>
+            <li><a href="/home/my-friends/">My Friends</a></li>
+            <li><a href="/home/my-towns/">My Towns</a></li>
+            <li><a href="/member/{{ session.username }}/">My Profile</a></li>
+            <li><a href="/home/settings/">My Settings</a></li>
+          </ul>
+        </li>
+      </ul>
     </li>
-
-    <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="Settings" href="{{ path.home_settings }}">{% include '../icons/settings.html' %}</a>
-    </li>
-
   </ul>
-
   <ul class="header-user-buttons-list header-user-buttons-list-right">
 
     {# TODO: make this only display if current user is a moderator
