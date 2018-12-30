@@ -8,6 +8,7 @@ import gmap from 'google-maps';
 gmap.KEY = 'AIzaSyAyYZ8PZI2VaG6pPyP9kWEpebj_pDPWnhs';
 gmap.CLIENT = 'gme-thefreecyclenetwork';    // use this instead of api key, supposedly better reporting options.
 gmap.LIBRARIES = ['places'];
+gmap.VERSION = '3.35';
 
 /**
  * A class wrapper for geomap, that simplifies the instantiation process.
