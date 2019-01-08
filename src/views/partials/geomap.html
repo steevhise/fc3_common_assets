@@ -3,5 +3,6 @@
 	id="geomap"
 	data-geomap
 	data-geomap-markers='{{geomap.markers|json}}'
-	data-geomap-settings='{{geomap.settings|json}}'>
+	data-geomap-settings='{{geomap.settings|json}}'
+	{% if hideMap %}data-map-hidden{% endif %}>
 </div>
