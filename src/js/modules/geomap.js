@@ -188,6 +188,12 @@ export default class GeoMap {
 
 }
 
-$('body').find('[data-geomap]').each(function(idx, item) {
+$('body').find('[data-geomap]:not([data-map-hidden])').each(function(idx, item) {
 	new GeoMap(item);
+});
+
+$('body').on("click", 'a[href="#mygroups_map"]', function(){
+	let map = $($(this).attr("href")).find("[data-geomap][data-map-hidden]");
+	$('body').off("click", 'a[href="#mygroups_map"]');
+	new GeoMap(map);
 });
