@@ -8,6 +8,7 @@ import gmap from 'google-maps';
 gmap.KEY = 'AIzaSyAyYZ8PZI2VaG6pPyP9kWEpebj_pDPWnhs';
 gmap.CLIENT = 'gme-thefreecyclenetwork';    // use this instead of api key, supposedly better reporting options.
 gmap.LIBRARIES = ['places'];
+gmap.VERSION = '3.35';
 
 /**
  * A class wrapper for geomap, that simplifies the instantiation process.
@@ -187,6 +188,12 @@ export default class GeoMap {
 
 }
 
-$('body').find('[data-geomap]').each(function(idx, item) {
+$('body').find('[data-geomap]:not([data-map-hidden])').each(function(idx, item) {
 	new GeoMap(item);
+});
+
+$('body').on("click", 'a[href="#mygroups_map"]', function(){
+	let map = $($(this).attr("href")).find("[data-geomap][data-map-hidden]");
+	$('body').off("click", 'a[href="#mygroups_map"]');
+	new GeoMap(map);
 });

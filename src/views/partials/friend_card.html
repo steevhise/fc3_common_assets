@@ -1,44 +1,77 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
-<!-- todo: i don't think this needs to be in common assets... -->
-<a class="friend-card columns large-4" data-friend-id="{{ friend.id }}" href="/member/{{ friend.username }}">
-  <div class="friend-card-inner">
-    <div class="friend-card-avatar">
-      <img src="{{ friend.image }}"/>
-    </div>
-    <div class="friend-card-name">
-      <h4 class="friend-card-real-name">{{ friend.firstName }} {{ friend.lastName }}</h4>
-      <h5 class="friend-card-user-name">{{ friend.username }}</h5>
-        {#
-      <h5 class="thumbsup">
-          {% include '../icons/like.html' %}
-          {{ friend.info.reputation|default(0) }} thumbs up
-          {% if friend.info.verified %}
-            |
-            {% include './user_verified.html' with { text: "Verified", fontSize: "16px" } %}
-          {% endif %}
+{# <!-- todo: i don't think this needs to be in common assets... move it to Main --> #}
+{% set requestPending = friend.friendRequestStatus && friend.friendRequestStatus.toUpperCase() === "PENDING" %}
+{% set requestWaiting = friend.friendRequestStatus && friend.friendRequestStatus.toUpperCase() === "WAITING" %}
+{% set isFriend = friend.friendRequestStatus && friend.friendRequestStatus.toUpperCase() === "FRIENDS" %}
+<div class="friend-card {% if requestPending %}pending{% endif %} {%- if requestWaiting %}waiting{% endif %} columns large-4" data-friend-id="{{ friend.id }}">
+  <div class="friend-card-container">
+    <a href="/member/{{ friend.username }}">
+      <div class="friend-card-inner">
+        {% if requestWaiting %}
+          <div class="profile-action-btn cancel">
+            <div data-tooltip title="Cancel Friend Request">
+              {% include '../partials/friendship_action_button.html' with {
+                username: friend.username,
+                action: 'cancel',
+                confirm: true,
+                icon: 'close',
+                label: '',
+              } only %}
+            </div>
+          </div>
+        {% endif %}
+        <div class="friend-card-avatar">
+          <img src="{{ friend.image }}"/>
+        </div>
+        <div class="friend-card-name">
+          <h4 class="friend-card-real-name">{{ friend.firstName }} {{ friend.lastName }}</h4>
+          <h5 class="friend-card-user-name">{{ friend.username }}</h5>
+            {#
+          <h5 class="thumbsup">
+              {% include '../icons/like.html' %}
+              {{ friend.info.reputation|default(0) }} thumbs up
+              {% if friend.info.verified %}
+                |
+                {% include './user_verified.html' with { text: "Verified", fontSize: "16px" } %}
+              {% endif %}
 
-      </h5>
-        #}
-        <h5>
-            {{ friend.info.about }}
-        </h5>
+          </h5>
+            #}
+            <h5>
+                {{ friend.info.about }}
+            </h5>
 
-        {% if friend.group_memberships and friend.homeGroup %}
-          {% for parentGroup in friend.group_memberships %}
-            {% if parentGroup.group && parentGroup.group_id == friend.homeGroup %}
-              <p>
-                {{ parentGroup.group.group_name }}, {{ parentGroup.group.region.region_name }}<br />
-                {{ parentGroup.group.region.country.country_name }}
-              </p>
+            {% if friend.group_memberships and friend.homeGroup %}
+              {% for parentGroup in friend.group_memberships %}
+                {% if parentGroup.group && parentGroup.group_id == friend.homeGroup %}
+                  <p>
+                    {{ parentGroup.group.group_name }}, {{ parentGroup.group.region.region_name }}<br />
+                    {{ parentGroup.group.region.country.country_name }}
+                  </p>
+                {% endif %}
+              {% endfor %}
             {% endif %}
-          {% endfor %}
-        {% endif %}
 
-        {% if friend.info.signup_date %}
-        <h5 class="thumbsup">
-            Became Member {{ friend.info.signup_date | mreldate }}
-        </h5>
-        {% endif %}
-    </div>
+            {% if friend.info.signup_date %}
+            <h5 class="thumbsup">
+                Became Member {{ friend.info.signup_date | mreldate }}
+            </h5>
+            {% endif %}
+
+            {% if requestPending %}
+              <div class="friend-card-actions">
+                {{ t('Accept / Cancel') }}
+              </div>
+            {% endif %}
+        </div>
+      </div>
+    </a>
+    {% if isFriend %}
+      <div class="message profile-action-btn">
+          <fc-messages-detail-input topic-type="friend" topic-id="{{ friend.id }}" custom-trigger='<button class="btn btn-action"><i class="icon fa fa-envelope"></i> {{ t("Start Chat") }}</button>'>
+            <p><strong>New Message To</strong> {{ friend.username }}</p>
+        </fc-messages-detail-input>
+      </div>
+    {% endif %}
   </div>
-</a>
+</div>
