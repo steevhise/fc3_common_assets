@@ -5,8 +5,8 @@ import $ from 'jquery';
 import gmap from 'google-maps';
 
 // default values that must be available to all map instances
-gmap.KEY = 'AIzaSyAyYZ8PZI2VaG6pPyP9kWEpebj_pDPWnhs';
-gmap.CLIENT = 'gme-thefreecyclenetwork';    // use this instead of api key, supposedly better reporting options.
+gmap.KEY = 'AIzaSyBcKRMcJ2rrKvqGV3jRp7foIa6NccUu0ZE';
+// gmap.CLIENT = 'gme-thefreecyclenetwork';    // use this instead of api key, supposedly better reporting options. TODO: is this still true?
 gmap.LIBRARIES = ['places'];
 gmap.VERSION = '3.35';
 
