@@ -9,7 +9,7 @@
       <div class="friend-card-inner">
         {% if requestWaiting %}
           <div class="profile-action-btn cancel">
-            <div data-tooltip title="Cancel Friend Request">
+            <div data-tooltip title="{{ t('Cancel Friend Request') }}">
               {% include '../partials/friendship_action_button.html' with {
                 username: friend.username,
                 action: 'cancel',
@@ -54,7 +54,7 @@
 
             {% if friend.info.signup_date %}
             <h5 class="thumbsup">
-                Became Member {{ friend.info.signup_date | mreldate }}
+              {{ t('Became Member') }} {{ friend.info.signup_date | mreldate({lang: userLanguage}) }}
             </h5>
             {% endif %}
 
@@ -69,7 +69,7 @@
     {% if isFriend %}
       <div class="message profile-action-btn">
           <fc-messages-detail-input topic-type="friend" topic-id="{{ friend.id }}" custom-trigger='<button class="btn btn-action"><i class="icon fa fa-envelope"></i> {{ t("Start Chat") }}</button>'>
-            <p><strong>New Message To</strong> {{ friend.username }}</p>
+            <p><strong>{{ t('New Message To') }}</strong> {{ friend.username }}</p>
         </fc-messages-detail-input>
       </div>
     {% endif %}

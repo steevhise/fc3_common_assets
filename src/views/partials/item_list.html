@@ -28,12 +28,12 @@
                 {% if !isGroup %}
                     {% include './listing_type_filter_list.html' %}
                 {% endif %}
-                <label class="text-lighten item-list-header-controls-label">View: </label>
+                <label class="text-lighten item-list-header-controls-label">{{ t('View:') }} </label>
                 <ul class="item-list-header-controls-list">
                     <li :class="`item-list-header-filter-icon item-list-grid-view hover-state ${$root.posts.layout !== 'grid' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'grid'">
-                        {% include '../icons/grid.html' %} <span>Grid</span></li>
+                        {% include '../icons/grid.html' %} <span>{{ t('Grid') }}</span></li>
                     <li :class="`item-list-header-filter-icon item-list-list-view hover-state ${$root.posts.layout !== 'list' ? 'inactive' : ''}`" @click.prevent="$root.posts.layout = 'list'" >
-                        {% include '../icons/list.html' %} <span>List</span></li>
+                        {% include '../icons/list.html' %} <span>{{ t('List') }}</span></li>
                 </ul>
             </div>
         </div>
@@ -67,7 +67,7 @@
             {#NOTE: The limit of number of items shown is controlled via Data.vue props.limit#}
             {%if data.posts.length >= 50 %}
             <div id="item-list-load-more" class="row item-list-load-more">
-                <button class="btn-action" @click="$root.$emit('loadMorePosts')">Load More</button>
+                <button class="btn-action" @click="$root.$emit('loadMorePosts')">{{ t('Load More') }}</button>
             </div>
             {% endif %}
         {% else %}
@@ -78,15 +78,16 @@
                         {% include './partials/no_friends_cta.html' %}
                     {% else %}
                         <p>
-                            You've got <a href="{{ path.home_myfriends }}">friends</a>, but they haven't posted anything recently, and neither have you.
+                            <a href="{{ path.home_myfriends }}">{{ t("You've got friends, but they haven't posted anything recently, and neither have you.") }}</a>
                         </p>
                     {% endif %}
                 {% else %}
                     {% if !connections.towns %}
-                        Join a local Town group to see and make posts.  <a href="{{ path.find_groups }}" class="btn-default">Find a Town</a>
+                    {{ t('Join a local Town group to see and make posts.') }}  <a href="{{ path.find_groups }}" class="btn-default">{{
+                    t('Find a Town') }}</a>
 
                     {% else %}
-                        There are no posts in your towns.
+                    {{ t('There are no posts in your towns.') }}
                     {% endif %}
                 {% endif %}
                 </div>

@@ -41,7 +41,7 @@
 						<div class="clearfix"  style="margin-top: 10px;"></div>
 						<div class="row">
 							<ul class="post-items" style="margin-left: 0px; color: #c9c6c0;" >
-								{% set datetimeOpts = { time: post.time, timezone: post.group.timezone }%}
+								{% set datetimeOpts = { lang: userLanguage, time: post.time, timezone: post.group.timezone } %}
 								<li><span><i class="fa fa-map-signs"></i> {{post.location|title }}</span></li>
 								<li><span>{{ post.date|mreldate(datetimeOpts)|title }}</span></li>
 								<li><span>{{ post.date|mdate(datetimeOpts, 'MM/DD/YYYY')}}</span></li>
