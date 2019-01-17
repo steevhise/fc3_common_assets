@@ -47,6 +47,8 @@ export const FCVue = {
 
 			const { momentTimezone } = options;
 
+			momentTimezone.locale(Vue.i18nOptions.lng);    // language set in top-level fc3_components.js.
+
 			if (!(time && timezone)) {
 				// when no time given, fromNow sets time to 00:00:00 in machine's timezone, can result in odd relative times
 				return momentTimezone(date, 'YYYY-MM-DD').fromNow();
@@ -86,7 +88,7 @@ export const FCVue = {
 
 			return tcText + clamp;
 		});
-		
+
 		// convert a given string to lowerCase
 		Vue.filter('lower', function(text) {
 			return String(text).toLowerCase();

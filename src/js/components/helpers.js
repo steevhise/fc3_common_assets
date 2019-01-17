@@ -105,7 +105,7 @@ const postItemConfig = {
           .done((data, status) => {
             self.$emit('post-deleted');
           })
-          .fail(() => displayError('We couldn\'t delete your post at this time. Sorry!'));
+          .fail(() => displayError(t("We couldn't delete your post at this time. Sorry!")));
           break;
         case 'replies':
           window.$.get(`/api/messaging/topics/post/${this.post.id}`)
@@ -113,7 +113,7 @@ const postItemConfig = {
             const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
             window.location.assign(myReplies);
           })
-          .fail(() => displayError('There are no replies for that post yet!'));
+          .fail(() => displayError(t('There are no replies for that post yet!')));
           break;
         case 'mark':
           window.$.post(`/api/posts/${self.post.id}/mark`, { newType: self.closedType })
