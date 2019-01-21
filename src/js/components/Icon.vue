@@ -66,7 +66,7 @@
 		</svg>
 
 		<svg v-if="name == 'friend_circle'" id="Layer_1" data-name="Layer 1" class="friend-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" v-bind="$attrs" >
-			<defs></defs><title>Icon</title><path class="cls-1" d="M10,2a8,8,0,1,1-8,8,8,8,0,0,1,8-8m0-2A10,10,0,1,0,20,10,10,10,0,0,0,10,0h0Z"></papth><circle class="cls-2" cx="10" cy="6" r="2"></circle><circle class="cls-3" cx="10" cy="14" r="2"></circle><circle class="cls-4" cx="14" cy="10" r="2"></circle><circle class="cls-5" cx="6" cy="10" r="2"></circle>
+			<defs></defs><title>Icon</title><path class="cls-1" d="M10,2a8,8,0,1,1-8,8,8,8,0,0,1,8-8m0-2A10,10,0,1,0,20,10,10,10,0,0,0,10,0h0Z"></path><circle class="cls-2" cx="10" cy="6" r="2"></circle><circle class="cls-3" cx="10" cy="14" r="2"></circle><circle class="cls-4" cx="14" cy="10" r="2"></circle><circle class="cls-5" cx="6" cy="10" r="2"></circle>
 		</svg>
 
 		<svg v-if="name == 'flag'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" v-bind="$attrs" >
