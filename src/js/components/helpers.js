@@ -15,6 +15,16 @@ const topicTitle = ({ topic }) => {
   return makeTitle(topic);
 };
 
+const postGroup = ({ topic }) => {
+  const post = topic.post;
+  console.log('post:', post.id);
+  const found = connections.groups.find( (group) => {
+    return group.id === post.group_id;
+  });
+  console.log('found group: ', found);
+  return !!found ? found.name : ` group #${post.group_id}`;
+};
+
 const postItemConfig = {
   props: ['item', 'path', 'index', 'viewer', 'isMember', 'route', 'blockedUsers'],
   data() {
@@ -143,4 +153,4 @@ const postItemConfig = {
   }
 };
 
-export { topicTitle, postItemConfig };
+export { topicTitle, postGroup, postItemConfig };

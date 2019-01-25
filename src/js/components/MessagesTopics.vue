@@ -7,11 +7,16 @@
 			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
 						<div class="message-list-item-left">
 							<div v-if="topic.topic.type === 'post'" class="message-type">
-								<fc-post-icon :post="topic.topic.post" />
+								<fc-post-icon :post="topic.topic.post"></fc-post-icon>
 							</div>
-							<div class="message-title">
+							<div class="message-title post-list-item">
 								<img v-if="image(topic)" class="message-image" :src="image(topic)"/>
-								<h4>{{title(topic)}}</h4>
+								<h4>{{title(topic)}}</h4>&nbsp;&nbsp;&nbsp;
+								<span class="post-list-item-header-icon" v-if="topic.topic.type === 'post'">
+									<template v-if="topic.topic.post.group_id">
+									<fc-icon name="map_pin"></fc-icon><span>{{ group(topic) }}</span>
+									</template>
+								</span>
 							</div>
 							<div class="message-time">
 								<span class="text-lighten">{{ ago(topic.updatedAt) }}</span>
@@ -37,7 +42,7 @@
 
 <script>
 	import moment from 'moment';
-	import { topicTitle } from './helpers';
+	import { topicTitle, postGroup } from './helpers';
 
 	export default {
 		name: 'fc-messages-topics',
@@ -54,6 +59,7 @@
 		methods: {
 			ago: (time) => moment(time).fromNow(),
 			title: topicTitle,
+			group: postGroup,
 			image: ({ topic }) => {
 
 				const byType = {

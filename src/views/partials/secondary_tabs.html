@@ -1,11 +1,11 @@
-{# Note: This file is provided by the fc3_common_assets  package #}
+{# Note: This file is provided by the fc3_common_assets  package - TODO: although it maybe shouldnt be...#}
 {#NOTE: setting links to pass to the secondary nav partial.#}
 {% set  links = [
-  { id : "dashboard", href : "/home/dashboard", text : "Dashboard" },
-  { id : "my-replies", href : "/home/my-replies", text : "My Messages" },
-  { id : "my-posts", href : "/home/my-posts", text : "My Posts" },
-  { id : "my-friends", href : "/home/my-friends", text : "My Friends" },
-  { id : "my-groups", href : "/home/my-towns", text : "My Towns" }
+  { id : "dashboard", href : "/home/dashboard", text : t("Dashboard") },
+  { id : "my-replies", href : "/home/my-replies", text : t("My Messages") },
+  { id : "my-posts", href : "/home/my-posts", text : t("My Posts") },
+  { id : "my-friends", href : "/home/my-friends", text : t("My Friends") },
+  { id : "my-groups", href : "/home/my-towns", text : t("My Towns") }
 ]%}
 
 <div class="title-bar show-for-small" style="display: none;" data-responsive-toggle="main_nav" data-hide-for="medium">
