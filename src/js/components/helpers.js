@@ -6,7 +6,7 @@ const topicTitle = ({ topic }) => {
     post: ({ post }) => post.subject,
     friend: ({ user }) => user.username,
     group: ({ group }) => group.name,
-    system: () => 'Info', // TODO what is a proper title for system messages?
+    system: () => t('Info'), // TODO what is a proper title for system messages? where does this show up, anyway? anywhere?
     default: () => ''
   };
 
@@ -34,7 +34,7 @@ const postItemConfig = {
   },
   computed: {
     postType() {
-      return this.post.type.name;
+      return this.post.type.name;    // TODO: how to translate this? not here. up a level, i guess.
     },
     closedType() {
 

@@ -14,14 +14,14 @@
 				<div class="post-list-item-header-left">
 					<div class="post-list-item-category-icon">
 						<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-						<span :class="`text-${lowercase(postType)}`">{{lowercase(postType)}}</span>
+						<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
 					</div>
 					<div class="post-list-item-header-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
 						<span>{{ post.group.name }}</span>
 					</div>
 					<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
-						<strong>Lend Duration: </strong>{{ post.static.lendDuration }} days
+						<strong>Lend Duration: </strong>{{ post.static.lendDuration }} {{ t('days') }}
 					</div>
                     <div class="post-list-item-header-icon" v-if="post.location" style="margin-left: 15px;" >
                         <i class="icon fa fa-map-signs"></i>
@@ -64,7 +64,7 @@
 						<p v-else class="callout success">BORROWING!<span v-if="due"> Due back on {{ due }}</span></p>
 					</template>
 					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
-					  <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+					  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
 				</div>
 			</div>
