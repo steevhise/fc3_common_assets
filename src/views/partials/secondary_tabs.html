@@ -16,7 +16,7 @@
 <div id="main_nav" class="horizontal_tabs">
 	<ul class="tabs" id="h-example-tabs" class="dropdown-menu " data-dropdown-menu data-tab data-options="deep_linking:true">
 		{% for link in links %}
-			<li class="tabs-title"><a id="{{ link.id }}" href="{{ link.href }}">{{ link.text }}</a></li>
+			<li class="tabs-title"><a id="{{ link.id }}" href="{{ link.href }}">{{ t(link.text) }}</a></li>
 		{% endfor %}
 	</ul>
 </div>

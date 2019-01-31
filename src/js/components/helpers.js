@@ -6,7 +6,7 @@ const topicTitle = ({ topic }) => {
     post: ({ post }) => post.subject,
     friend: ({ user }) => user.username,
     group: ({ group }) => group.name,
-    system: () => 'Info', // TODO what is a proper title- where does this show up, anyway? anywhere?
+    system: () => 'Info', // where does this show up, anyway? anywhere?
     default: () => ''
   };
 

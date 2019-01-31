@@ -21,7 +21,7 @@
 						<span>{{ post.group.name }}</span>
 					</div>
 					<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
-						<strong>Lend Duration: </strong>{{ post.static.lendDuration }} {{ t('days') }}
+						<strong>{{ t('Lend Duration:') }} </strong>{{ post.static.lendDuration }} {{ t('days') }}
 					</div>
                     <div class="post-list-item-header-icon" v-if="post.location" style="margin-left: 15px;" >
                         <i class="icon fa fa-map-signs"></i>
@@ -31,7 +31,7 @@
 				<div v-if="viewer" class="post-list-item-header-right">
 					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved">Awaiting Approval</button>
+					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved">{{ t('Awaiting Approval') }}</button>
 					<template v-else-if="viewer === post.userId">
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
@@ -40,28 +40,28 @@
 								:id="`friend-select-trigger-${post.id}`"
 							></div>
 							<p v-else-if="overdue" class="callout warning">
-								Item Overdue!<span v-if="due"> It was due on {{ due }}.</span>
-								<a :href="`/home/my-replies?type=post&id=${post.id}`">Message your friend</a>
+								{{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}.</span>
+								<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t('Message your friend') }}</a>
 							</p>
-							<p v-else-if="lent" class="callout success">On Loan!<span v-if="due"> Due back on {{ due }}</span></p>
+							<p v-else-if="lent" class="callout success">{{ t('On Loan!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 						</template>
 						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
-							<option value="" disabled selected hidden>Manage Post</option>
-							<option value="edit">Edit Post</option>
-							<option v-if="closedType" value="mark" >Mark As {{ `${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
-							<option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
-								<span v-if="lent">Item Returned</span><span v-else>Lend Item</span>
+							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
+							<option value="edit">{{ t('Edit Post') }}</option>
+							<option v-if="closedType" value="mark" >{{ t('Mark As') }} {{ t(`${closedType[0]}${lowercase(closedType.slice(1))}`) }}</option>
+							<option v-else-if="postType === 'LEND'" :value="lent ? t('return') : t('lend')">
+								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>
-							<option value="delete">Delete Post</option>
-							<option value="replies">See Replies</option>
+							<option value="delete">{{ t('Delete Post') }}</option>
+							<option value="replies">{{ t('See Replies') }}</option>
 						</select>
 					</template>
 					<template v-else-if="lent && viewer === post.share.borrowerId">
 						<p v-if="overdue" class="callout warning">
-							Item Overdue!<span v-if="due"> It was due on {{ due }}</span>
-							<a :href="`/home/my-replies?type=post&id=${post.id}`">Let your friend know what's up</a>
+							{{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}</span>
+							<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t("Let your friend know what's up") }}</a>
 						</p>
-						<p v-else class="callout success">BORROWING!<span v-if="due"> Due back on {{ due }}</span></p>
+						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 					</template>
 					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
 					  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject }}</p>
