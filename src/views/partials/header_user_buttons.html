@@ -1,5 +1,23 @@
 <div class="header-user-buttons">
   <ul class="header-user-buttons-list header-user-buttons-list-left">
+    {# make this only display if current user is a moderator #}
+    <!--{{ session.mods | json | safe}}-->
+    {% if session.mods %}
+    <li class="header-user-button">
+      <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu>
+        <li class="is-dropdown-submenu-parent">
+          <a data-tooltip class="main-link" title="{{ t('Moderator Tools') }}" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}</a>
+          <ul class="menu">
+            {% for group in connections.groups %}
+              {% if session.mods|contains(group.id) %}
+                <li><a href="http://moderator.freecycle.org/manage/{{ group.uniqueName }}">{{ group.name }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </li>
+    {% endif %}
     <li class="header-user-button">
       <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu>
         <li class="is-dropdown-submenu-parent">
@@ -18,13 +36,6 @@
     </li>
   </ul>
   <ul class="header-user-buttons-list header-user-buttons-list-right">
-
-    {# TODO: make this only display if current user is a moderator
-    <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="{{ t('Moderator') }}" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}
-      <span>3</span></a>
-    </li>
-    #}
 
     <li class="header-user-button">
       <a data-tooltip class="has-tip" title="Alerts" href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}

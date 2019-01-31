@@ -6,7 +6,7 @@ const topicTitle = ({ topic }) => {
     post: ({ post }) => post.subject,
     friend: ({ user }) => user.username,
     group: ({ group }) => group.name,
-    system: () => t('Info'), // TODO what is a proper title for system messages? where does this show up, anyway? anywhere?
+    system: () => 'Info', // TODO what is a proper title- where does this show up, anyway? anywhere?
     default: () => ''
   };
 
@@ -17,11 +17,9 @@ const topicTitle = ({ topic }) => {
 
 const postGroup = ({ topic }) => {
   const post = topic.post;
-  console.log('post:', post.id);
   const found = connections.groups.find( (group) => {
     return group.id === post.group_id;
   });
-  console.log('found group: ', found);
   return !!found ? found.name : ` group #${post.group_id}`;
 };
 
@@ -34,7 +32,7 @@ const postItemConfig = {
   },
   computed: {
     postType() {
-      return this.post.type.name;    // TODO: how to translate this? not here. up a level, i guess.
+      return this.post.type.name;    // translate this? not here. up a level, i guess.
     },
     closedType() {
 
@@ -50,7 +48,8 @@ const postItemConfig = {
     },
     replyButton() {
 
-      return `<button class="btn-${this.lowercase(this.postType)}">Reply</button>`;
+      const text = this.t('Reply');
+      return `<button class="btn-${this.lowercase(this.postType)}">${text}</button>`;
     },
     lent() {
 
@@ -115,7 +114,7 @@ const postItemConfig = {
           .done((data, status) => {
             self.$emit('post-deleted');
           })
-          .fail(() => displayError(t("We couldn't delete your post at this time. Sorry!")));
+          .fail(() => displayError(self.t("We couldn't delete your post at this time. Sorry!")));   // TODO: will this work?
           break;
         case 'replies':
           window.$.get(`/api/messaging/topics/post/${this.post.id}`)
@@ -123,14 +122,14 @@ const postItemConfig = {
             const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
             window.location.assign(myReplies);
           })
-          .fail(() => displayError(t('There are no replies for that post yet!')));
+          .fail(() => displayError(self.t('There are no replies for that post yet!')));
           break;
         case 'mark':
           window.$.post(`/api/posts/${self.post.id}/mark`, { newType: self.closedType })
           .done((data, status) => {
             self.$emit('post-marked', { type: data, post: self.post });
           })
-          .fail(() => displayError('We couldn\'t mark your post at this time. Sorry!'));
+          .fail(() => displayError(self.t("We couldn't mark your post at this time. Sorry!")));
           break;
         case 'lend':
           $(`#friend-select-trigger-${self.post.id}`).click(); // Open friend select form, fires onClickModalTrigger
@@ -140,7 +139,7 @@ const postItemConfig = {
           .done((data, status) => {
             self.$emit('post-returned', { post: self.post });
           })
-          .fail(() => displayError('Marking your post as returned failed at this time. We apologize for the inconvenience!'));
+          .fail(() => displayError(self.t('Marking your post as returned failed at this time. We apologize for the inconvenience!')));
           break;
       }
 
