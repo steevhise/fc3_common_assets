@@ -4,12 +4,12 @@
 {% if home === route.id %}
     <a href="{{ path.home_dashboard }}"><fc-icon name='logo'></fc-icon></a>
 {% else %}
-    <a href="{{ path.home_dashboard }}"><fc-icon name="logo_my" style="height: 86px;"></fc-icon></a>
+    <a href="{{ path.home_dashboard }}"><fc-icon name="logo_my" style="height: 86px; width: 231px;"></fc-icon></a>
 {% endif %}
 </div>
 
 <div class="header-stretch row" style="flex-wrap: wrap;">
-    <div class="header-search-wrapper small-centered ">
+    <div class="header-search-wrapper small-centered " style="width: 254px;" >
         {% include './header_search.html' %}
     </div>
     <div class="user-button-wrapper small-centered " >
