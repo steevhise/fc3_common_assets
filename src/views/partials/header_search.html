@@ -2,7 +2,7 @@
 {% set omitOnPages = [ 'home_post_new', 'home_post_edit' ] %}   {# TODO: any other pages shouldnt have search on top? #}
 <form class="post-search" method="post" action="/search-posts">
     <div class="header-search" {% if omitOnPages|contains(route.id)  %}style="visibility: hidden;"{% else %}{% endif %}>
-        <div class="search-input">
+        <div class="search-input" >
             <input class="search input-group-field" name="searchText" type="search" value="{{ search }}" placeholder="{{ t('Search for items...') }}"/>
         </div>
 
