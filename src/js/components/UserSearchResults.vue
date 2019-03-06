@@ -1,7 +1,7 @@
 <template>
-    <div v-if="isVisible" class="form-results" :id="`form-results-${this.customAlertEl}`" data-closable="slide-out-right">
+    <div v-if="isVisible" :id="`form-results-${this.customAlertEl}`" data-closable="slide-out-right">
         <h5 v-if="header">{{header}}</h5>
-        <div class="friends-cards item-grid-view" v-masonry transition-duration="0.3s" item-selector=".friend-card" ref="post_gridview">
+        <div class="form-results friends-cards item-grid-view" v-masonry transition-duration="0.3s" item-selector=".friend-card" ref="post_gridview">
             <div class="friend-card" v-for="user in results" v-bind:key="user.id" :data-friend-id="user.id">
                 <div class="friend-card-container">
                     <a :href="`/member/${user.username}`">
@@ -70,6 +70,11 @@
         this.isVisible = true;
         this.header = this.t('Found: ') + this.results.length;
 
+        // hide the spinner
+        $(".vue-simple-spinner").addClass("invisible");
+        $(".vue-simple-spinner-text").addClass("invisible");
+
+
         console.warn('form results initialized!', this.results);
       }
     }
@@ -85,8 +90,9 @@
     }
 
     .friend-card {
-            max-width: 30em;
-            min-width: 20em;
+        width: 20%;
+        // max-width: 30em;
+        // min-width: 20em;
 
     }
 </style>
