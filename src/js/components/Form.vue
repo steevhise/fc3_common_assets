@@ -2,8 +2,6 @@
 <template>
     <form :method="method" :action="action" @change="serializeData()" @submit.prevent="handleSubmit($event)">
         <slot :formData="formData" ></slot>
-
-        <div v-if="customAlertEl" id="form-results">{{ results }}</div>
     </form>
 </template>
 
@@ -34,13 +32,10 @@
             if (self.customAlertEl) {
               // handle event for legacy bus events.
               this.$bus.$on(`formSuccess-${self.customAlertEl}`, (data) => {
-                // do stuff to a div called form-results-n if it exists.
-                console.log(data.data);
-                self.results = JSON.stringify(data.data.users);
-                console.warn(self.results);
+                //self.results = JSON.stringify(data.data.users);
+                console.debug(self.results);
 
-                // console.warn(`#form-results-${self.customAlertEl}`);
-                //$(`#form-results-${self.customAlertEl}`).html = ' the results:<p>' + JSON.stringify(data.data);
+                //$('<p>' + JSON.stringify(data.data.users) + '</p>').appendTo(`#form-results-${self.customAlertEl}`);
               });
             }
 
@@ -87,11 +82,7 @@
 </script>
 
 <style scoped>
-    #form-results {
-        font-size: 10pt;
-        max-height: 10em;
-        overflow: scroll;
-    }
+
 
 
 </style>
