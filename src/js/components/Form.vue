@@ -18,17 +18,34 @@
                 default: () => `/actions/`
             },
             data: {},
+            //results: {},
             customAlertEl: {
                 // takes the unique id of the element listening for form success; prevents multiple forms on same page
                 // reacting to each other's success events
-                type: Number
+                type: [Number,String]
             }
         },
+         created() {
+
+            const self = this;
+
+            if (self.customAlertEl) {
+              // handle event for legacy bus events.
+              this.$bus.$on(`formSuccess-${self.customAlertEl}`, (data) => {
+                //self.results = JSON.stringify(data.data.users);
+                console.debug(self.results);
+
+                //$('<p>' + JSON.stringify(data.data.users) + '</p>').appendTo(`#form-results-${self.customAlertEl}`);
+              });
+            }
+
+         },
         data() {
             return {
                 formData: this.data ? JSON.parse(this.data) : {},
                 serializedData: null,
-                isSubmitted: false
+                isSubmitted: false,
+                results: null
             }
         },
         mounted() {
@@ -46,6 +63,7 @@
                 $.post(this.action, this.serializedData).done(function(data) {
 
                     if (self.customAlertEl) {
+                      console.log(`formSuccess-${self.customAlertEl}`);
                         // Allow caller to handle alert in a custom way (allows parent to take over)
                         self.$bus.$emit(`formSuccess-${self.customAlertEl}`, data);
                     } else {
@@ -62,3 +80,9 @@
         }
     }
 </script>
+
+<style scoped>
+
+
+
+</style>

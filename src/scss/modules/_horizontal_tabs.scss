@@ -15,6 +15,18 @@
     }
   }
 
+  &.large-up{
+    .tabs {
+      @media #{$medium-up} {
+        flex-direction: column;
+      }
+      @media #{$large-up} {
+         flex-direction: row;
+      }
+    }
+  }
+
+
   .tabs-title {
     flex: 0;
     white-space: nowrap;
