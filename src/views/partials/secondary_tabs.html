@@ -8,12 +8,12 @@
   { id : "my-groups", href : "/home/my-towns", text : t("My Towns") }
 ]%}
 
-<div class="title-bar show-for-small" style="display: none;" data-responsive-toggle="main_nav" data-hide-for="medium">
+<div class="title-bar" data-responsive-toggle="main_nav" data-hide-for="large">
 	<button class="menu-icon" type="button" data-toggle="main_nav"></button>
 	<div class="title-bar-title">Menu</div>
 </div>
 
-<div id="main_nav" class="horizontal_tabs">
+<div id="main_nav" class="horizontal_tabs large-up">
 	<ul class="tabs" id="h-example-tabs" class="dropdown-menu " data-dropdown-menu data-tab data-options="deep_linking:true">
 		{% for link in links %}
 			<li class="tabs-title"><a id="{{ link.id }}" href="{{ link.href }}">{{ t(link.text) }}</a></li>
