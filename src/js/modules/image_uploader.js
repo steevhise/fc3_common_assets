@@ -99,8 +99,7 @@ class ImageUploader {
         }
 
         const constraintsEl = document.querySelector('.image-uploader-rules');
-        const constraintsText = document.createTextNode(`Up to ${this.uploadLimit} image${this.uploadLimit > 1 ? 's' : ''} allowed. Only jpg/jpegs and pngs.
-            Images larger than 1MB will be scaled down for faster upload`);
+        const constraintsText = document.createTextNode(`Up to ${this.uploadLimit} image${this.uploadLimit > 1 ? 's' : ''} allowed. Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload`);   //TODO: translation. this will be sorta hard.
         constraintsEl.appendChild(constraintsText);
     }
 
