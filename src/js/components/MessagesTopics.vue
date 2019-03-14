@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-if="topicsLoaded" class="row column message-reply-list-container">
-		    <h3>{{ category.displayName }}</h3>
+		    <h3>{{ t(category.displayName) }}</h3>
 		    <ul v-if="topics && topics.length" class="message-reply-list">
 				<div v-for="topic in topics">
 			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
@@ -23,7 +23,7 @@
 							</div>
 							<div class="message-list-item-right">
 								<div v-if="topic.unreadCount > 0" class="message-notification">
-									<span>{{ topic.unreadCount }} Unread Replies</span>
+									<span>{{ topic.unreadCount }} {{ t('Unread Replies') }}</span>
 								</div>
 								<div class="message-arrow">
 									<svg xmlns="http://www.w3.org/2000/svg" width="7.69" height="11.4" viewBox="0 0 7.69 11.4" class="icon-message-arrow">
