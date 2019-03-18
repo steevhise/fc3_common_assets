@@ -68,12 +68,12 @@
 						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 					</template>
 					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
-					  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject }}</p>
+					  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
 					</fc-messages-detail-input>
 				</div>
 			</div>
 			<div class="post-list-item-content-description hide-for-small-only">
-				<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
+				<h4><a :href="path.posts_detail + post.id">{{ post.subject | stripTags }}</a></h4>
 				<p> {{post.description | stripTags | truncate(120)}}</p>
 			</div>
 		</div>
