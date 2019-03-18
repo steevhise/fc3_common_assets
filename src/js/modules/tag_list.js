@@ -3,7 +3,7 @@
 */
 // setup
 document.addEventListener("DOMContentLoaded", ()=> {
-    $(".tag-select").select2({  placeholder: window.vm.t("Select a tag to filter the list below"),});
+    $(".tag-select").select2({  placeholder: window.vm.t("Select a tag to filter"),});
     $(".add-tag-icon-button").click(()=>{
         $(".select2-search__field").focus();
     })

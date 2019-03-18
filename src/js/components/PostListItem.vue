@@ -16,6 +16,10 @@
 						<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
 						<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
 					</div>
+					<div class="post-list-item-content-description hide-for-medium hide-for-large">
+						<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
+						<p> {{post.description | stripTags | truncate(120)}}</p>
+					</div>
 					<div class="post-list-item-header-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
 						<span>{{ post.group.name }}</span>
@@ -29,7 +33,7 @@
                     </div>
 				</div>
 				<div v-if="viewer" class="post-list-item-header-right">
-					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
+					<span class="post-list-item-date text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
 					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="post.isApproved == false">{{ t('Awaiting Approval') }}</button>
 					<template v-else-if="viewer === post.userId">
@@ -68,7 +72,7 @@
 					</fc-messages-detail-input>
 				</div>
 			</div>
-			<div class="post-list-item-content-description">
+			<div class="post-list-item-content-description hide-for-small-only">
 				<h4><a :href="path.posts_detail + post.id">{{ post.subject | stripTags }}</a></h4>
 				<p> {{post.description | stripTags | truncate(120)}}</p>
 			</div>
