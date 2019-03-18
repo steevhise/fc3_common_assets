@@ -24,9 +24,11 @@
 			</div>
 			<hr/>
 			<div class="post-grid-item-content">
-				<a :href="path.posts_detail + post.id" :alt="post.subject" :title="post.subject" >
-					<h4 style="font-size: 20px; border: none;" >{{post.subject|truncate(25)}}</h4>
-				</a>
+				<h4 style="font-size: 20px; border: none;" >
+					<a :href="path.posts_detail + post.id" :alt="post.subject" :title="post.subject" >
+						{{post.subject|truncate(25)}}
+					</a>
+				</h4>
 			</div>
 			<div class="post-grid-item-addinfo row is-hidden">
 				<ul class="accordion" data-accordion data-allow-all-closed="true" data-deep-link="false" data-update-history="false" data-deep-link-smudge="false">
