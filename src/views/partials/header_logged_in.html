@@ -9,7 +9,7 @@
 </div>
 
 <div class="header-stretch row" style="flex-wrap: wrap;">
-    <div class="header-search-wrapper small-centered " style="width: 254px;" >
+    <div class="header-search-wrapper small-centered">
         {% include './header_search.html' %}
     </div>
     <div class="user-button-wrapper small-centered " >
@@ -22,7 +22,5 @@
     {% if connections.groups || connections.friends %}
         <a href="{{ path.home_post_new }}"><button class="btn-default header-button">{{ t('Make A Post') }}</button></a>
     {% endif %}
-    <a href="{{ path.pages_logout }}"><button class="btn-default header-button">{{ t('logout') }}</button></a>
-
 
 </div>
