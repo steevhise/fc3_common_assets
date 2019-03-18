@@ -12,7 +12,6 @@
 			<p class="chat-message-message" v-if="!showHtml">{{message.body}}</p>
 			<p class="chat-message-message" v-if="showHtml" v-html="message.body"></p>
 			<p class="chat-message-time" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">{{ago(timezone(message.createdAt))}}</p>
-			<!--TODO: set language ^^^-->
 		</div>
 	</div>
 </template>
@@ -41,9 +40,10 @@
 			// on opening a thread and on sending a message
 			const { chatWindow } = this.$refs;
 			chatWindow.scrollTop = chatWindow.scrollHeight;
+			moment.locale(window.language);    // language set in top-level... apparently we can't use this.i18nOptions.lng here?
 		},
 		methods: {
-			ago: (time) => moment(time).fromNow(),
+			ago: (time) => moment(time).fromNow(),    // TODO???
 			timezone: (datetime) => {
 				// datetime values from server are in UTC
 				const utc = new Date(datetime);

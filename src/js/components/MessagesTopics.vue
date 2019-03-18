@@ -44,6 +44,8 @@
 	import moment from 'moment';
 	import { topicTitle, postGroup } from './helpers';
 
+	moment.locale(window.language);
+
 	export default {
 		name: 'fc-messages-topics',
 		props: {
