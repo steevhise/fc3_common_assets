@@ -6,20 +6,24 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-
+  position: relative;
+  padding-top: rem-calc(45px);
   @media #{$medium-up} {
     flex-direction: row;
+    padding-top: rem-calc(5px);
   }
 
   .post-list-item-photo {
-    //flex: 1;
     display: flex;
     height: auto;
-    width: 128px;
+    width: 100%;
+    margin-bottom: 8px;
     align-items: center;
     padding-bottom: rem-calc(5px);
     @media #{$medium-up} {
       padding-bottom: rem-calc(0);
+      width: 128px;
+      margin-bottom: 0;
     }
 
     .post-image-placeholder {
@@ -54,11 +58,11 @@
     align-items: center;
     justify-content: center;
     padding-bottom: 0;
-    border-bottom: 2px solid $body-background;
 
     @media #{$medium-up} {
       flex-direction: row;
       padding-bottom: rem-calc(5px);
+      border-bottom: 2px solid $body-background;
     }
 
   }
@@ -73,19 +77,40 @@
     }
   }
   .post-list-item-header-left {
-    justify-content: center;
+    flex-direction: column;
+    justify-content: left;
+    border-bottom: 2px solid $body-background;
     @media #{$medium-up} {
       justify-content: flex-start;
+      border-bottom: none;
+      flex-direction: initial;
     }
   }
   .post-list-item-header-right {
     justify-content: center;
+    padding-top: 7px;
     @media #{$medium-up} {
+      padding-top: 0;
       justify-content: flex-end;
     }
   }
 
+  .post-list-item-date {
+    top: 6px;
+    right: 15px;
+    position: absolute;
+    @media #{$medium-up} {
+      position: relative;
+      top: 0;
+      right: 0;
+    }
+  }
+
   .post-list-item-header-icon {
+    width: 100%;
+    @media #{$medium-up} {
+      width: auto;
+    }
     svg {
       height: rem-calc(20px);
     }
@@ -99,11 +124,21 @@
 
   .post-list-item-category-icon {
     margin-right: rem-calc(40px);
+    position: absolute;
+    top: 7px;
+    left: 18px;
+    @media #{$medium-up} { 
+      position: relative;
+      top: 0;
+      left: 0;
+    }
   }
 
   .post-list-item-header-right {
     button {
-      margin-left: rem-calc(40px);
+      @media #{$medium-up} {
+        margin-left: rem-calc(40px);
+      }
     }
   }
   .post-list-item-content-description {
@@ -115,14 +150,21 @@
     max-height: 4.6em;
     text-align: justify;
     width: 100%;
-    max-width: 75%;
+    margin-bottom: 10px;
     margin-right: -1em;
     padding-right: 1em;
+    @media #{$medium-up} {
+      margin-bottom: 0;
+      max-width: 75%;
+    }
     h4 {
-      font-size: rem-calc(14px);
+      font-size: rem-calc(18px);
       font-weight: bold;
       padding-bottom: 0;
       margin-bottom: 0;
+      @media #{$medium-up} {
+        font-size: rem-calc(14px);
+      }
     }
     p {
       &:last-child {
