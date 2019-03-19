@@ -8,12 +8,15 @@
   width: 100%;
   height: 2.5rem;
   position: relative;
-
+  /* Medium only */
+  @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+    flex-direction: row;
+  }
   .search-input {
     flex: 1;
     input.search::placeholder {
       position: relative;
-      left: 20px;
+      left: 10px;
     }
     
     input.search {
@@ -23,9 +26,11 @@
       font-size: rem-calc(14px);
       height: 2.5rem;
       margin: 0 1rem 0 0.5rem;
+      padding-left: 20px;
 
       @include breakpoint(header) {
         margin: 0;
+        padding-left: 0;
       }
     }
 
@@ -41,7 +46,13 @@
     justify-content: center;
     height: 2rem;
     border: none;
-
+    /* Medium only */
+    @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+      flex: 0;
+      position: relative;
+      top: 2px;
+      right: 2px;
+    }
     .search-map-icon {
       @include icon();
       fill: $black;
@@ -79,7 +90,10 @@
     position: absolute;
     left: 0.3rem;
     line-height: 0.5rem;
-
+    @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+      top: 8px;
+      left: 6px;
+    }
     svg {
       @include icon();
       fill: palette(primary);

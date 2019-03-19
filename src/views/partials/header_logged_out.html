@@ -1,17 +1,16 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <div class="header-logo small-centered ">
     <a href="{{ path.home_dashboard }}"><fc-icon name="logo_my" style="height: 86px; width: 231px;"></fc-icon></a>
-    {% include './hamburger_menu.html' %}
 </div>
 
 <div class="header-stretch row">
-    <div class="header-search-wrapper small-centered" style="width: 254px;" >
+    <div class="header-search-wrapper small-centered">
         {% include './header_search.html' %}
     </div>
 </div>
 
 {% if path %}
-<div class="header-links">
+<div class="header-links hamburger-menu-open"> <!-- default open in this case -->
     <a href="{{ path.pages_signup }}"><button class="btn-default header-button">{{ t('Sign Up') }}</button></a>
     <span class="heading-with-icon header-user-icon">
         {% include '../icons/user.html' %}
