@@ -17,6 +17,14 @@
                 type: String,
                 default: () => `/actions/`
             },
+            timeout: {
+                type: [Number,String],
+                default: '0'
+            },
+            customErrorMessage: {
+                type: String,
+                default: ''
+            },
             data: {},
             //results: {},
             customAlertEl: {
@@ -32,10 +40,7 @@
             if (self.customAlertEl) {
               // handle event for legacy bus events.
               this.$bus.$on(`formSuccess-${self.customAlertEl}`, (data) => {
-                //self.results = JSON.stringify(data.data.users);
                 console.debug(self.results);
-
-                //$('<p>' + JSON.stringify(data.data.users) + '</p>').appendTo(`#form-results-${self.customAlertEl}`);
               });
             }
 
@@ -60,7 +65,7 @@
 
                 const self = this;
 
-                $.post(this.action, this.serializedData).done(function(data) {
+                $.post({ url: this.action, data: this.serializedData, timeout: this.timeout }).done(function(data) {
 
                     if (self.customAlertEl) {
                       console.log(`formSuccess-${self.customAlertEl}`);
@@ -73,8 +78,16 @@
                     event.target.reset();
                 }).fail(function(error) {
 
-                    const err = error.responseJSON;
-                    self.$bus.$emit('alert', { level : 'alert', message : err.message, timer: 10000 });
+                    console.debug(error);
+                    if (error.statusText === 'timeout') {
+                        let message = self.customErrorMessage || 'timeout';
+                        self.$bus.$emit('alert', { level : 'alert', message, timer: 10000 });
+
+                    }
+                    else {
+                         const err = error.responseJSON;   // not sure if this is accurate but i don't want to break something else.
+                         self.$bus.$emit('alert', {level: 'alert', message: err.message, timer: 10000});
+                    }
                 })
             }
         }
