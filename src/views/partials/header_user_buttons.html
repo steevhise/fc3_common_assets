@@ -6,7 +6,7 @@
     <li class="header-user-button">
       <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu>
         <li class="is-dropdown-submenu-parent">
-          <a data-tooltip class="main-link" title="{{ t('Moderator Tools') }}" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}</a>
+          <a data-tooltip class="main-link has-tip" title="{{ t('Moderator Tools') }}" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}</a>
           <ul class="menu">
             {% for group in connections.groups %}
               {% if session.mods|contains(group.id) %}
