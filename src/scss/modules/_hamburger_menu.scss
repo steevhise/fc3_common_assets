@@ -63,3 +63,11 @@
   -webkit-transform: translateY(-5px) translateX(0) rotate(-45deg);
   -moz-transform: translateY(-5px) translateX(0) rotate(-45deg)
 }
+
+.profile-options-dropdown {
+  .main-link {
+    i {
+      color: $black;
+    }
+  }
+}

@@ -21,7 +21,14 @@
     <li class="header-user-button">
       <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu>
         <li class="is-dropdown-submenu-parent">
-          <a class="main-link" href="#">{% include '../icons/user.html' %}</a>
+          <a class="main-link" href="#">
+            <span class="hide-for-small-only">
+              {% include '../icons/user.html' %}
+            </span>
+            <span class="show-for-small-only">
+              <i class="fa fa-bars"></i>
+            </span>
+          </a>
           <ul class="menu">
             <li><a href="/home/dashboard/">{{ t('My Dashboard') }}</a></li>
             <li><a href="/home/my-replies/">{{ t('My Messages') }}</a></li>
