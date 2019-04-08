@@ -90,9 +90,12 @@
     }
 
     .friend-card {
-        width: 20%;
-        // max-width: 30em;
-        // min-width: 20em;
-
+        width: 100%;
+    }
+    @media screen and (min-width: 40em) {
+        .friend-card { width: 33.333337%; }
+    }
+    @media screen and (min-width: 64em) {
+        .friend-card { width: 20%; }
     }
 </style>
