@@ -78,3 +78,13 @@ p {
   }
 }
 
+svg {
+  title {
+     font-size: 0 !important;
+     visibility: hidden;
+  }
+  desc {
+     font-size: 0 !important;
+     visibility: hidden;
+  }
+}
