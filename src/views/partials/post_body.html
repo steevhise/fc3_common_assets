@@ -1,10 +1,41 @@
 {# Note: This file is provided by the fc3_common_assets package TODO: but it probably shouldn't be.  #}
-<div class="post-detail-item" style="width: 100%; padding: 20px;" >
-	<div class="row"  >
-		<div class="columns medium-8">
+<div class="post-detail-item">
+	<div class="row" >
+		<div class="columns medium-5 medium-push-7 large-push-8 large-4">
+			<div class="post-detail-item-category-icon hide-for-medium hide-for-large">
+				<fc-icon name="chevron" class="icon-chevron-{{ post.type.name|lower }}"></fc-icon>
+				<span class="text-{{ post.type.name|lower }}">{{ t(post.type.name) }}</span>
+			</div>
+			<h4 class="section-title hide-for-medium hide-for-large">
+				{{post.subject}}
+			</h4>
+			{% if post.images %}
+                {# Use carousel only if multiple images #}
+                {% if post.images.length > 1 %}
+                    {% include "./post_images_carousel.html" with { images: post.images } %}
+                    <div class="row text-center">
+                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Images Full Size") }}</a>'>
+                            {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
+                        </fc-modal>
+                    </div>
+                {% elseif post.images.length === 1 %}
+                    <div class="row">
+                        <div class="post-detail-item-photo">
+                            <img src="{{ post.images[0] }}" style="width: 600px !important; object-fit: cover; max-height: 300px;">
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Image Full Size") }}</a>'>
+                            <img src="{{ post.images[0] }}" style="width: 600px !important;" />
+                        </fc-modal>
+                    </div>
+			    {% endif %}
+			{% endif %}
+		</div>
+		<div class="columns medium-7 medium-pull-5 large-pull-4 large-8">
 			<div class="row">
 				<div class="columns small-6 left">
-					<div class="post-detail-item-category-icon">
+					<div class="post-detail-item-category-icon hide-for-small-only">
 						<fc-icon name="chevron" class="icon-chevron-{{ post.type.name|lower }}"></fc-icon>
 						<span class="text-{{ post.type.name|lower }}">{{ t(post.type.name) }}</span>
 					</div>
@@ -30,7 +61,7 @@
 					{% endif %}
 				</div>
 			</div>
-			<div class="row" style="margin-left: 10px;" >
+			<div class="row hide-for-small-only" style="margin-left: 10px;" >
 				<h4 class="section-title left">
 					{{post.subject}}
 				</h4>
@@ -45,7 +76,6 @@
 								{% set datetimeOpts = { lang: userLanguage, time: post.time, timezone: post.group.timezone } %}
 								<li><span><i class="fa fa-map-signs"></i> {{post.location|title }}</span></li>
 								<li><span>{{ post.date|mdate(datetimeOpts, 'LL')}}</span></li>
-								<li><span>#{{post.id}}</span></li>
 							</ul>
 							<div class="row" style="margin: 0px;" >
 								<hr/>
@@ -53,21 +83,21 @@
 							<ul class="post-items" style="margin-left: 0px;" >
 								{% if post.group %}
 								<li>
-									<a href="{{path.groups_main}}{{post.group.uniqueName}}">
+									<a class="town-link" href="{{path.groups_main}}{{post.group.uniqueName}}">
 										<fc-icon name="towns" style="cursor: default; display: inline; position: relative; top: 3px;" width="20"></fc-icon>
 										<span>{{ post.group.name|upper }}</span>
 									</a>
 								</li>
 								{% endif %}
-								<li>
+								<li class="user-text">
 									<a href="{{path.user}}{{post.user.username}}">
 										<img src="{{global.imagesURL}}/user/{{post.userId}}/thumb" class="fc-avatar" style="padding: 1px; height: 20px; width: 20px;"/>
 										<span style="position: relative; top: 2px;" >{{ post.user.username|upper }}</span>
 									</a>
 								</li>
 								{% if post.tags.length %}
-								<li>
-									<fc-icon name="tag" style="cursor: default; display: inline; position: relative;"></fc-icon> <span style="font-weight: bold;">{{ t('TAGS') }}</span>&nbsp;
+								<li class="tag-text">
+									<fc-icon name="tag" style="cursor: default; display: inline; position: relative;"></fc-icon> <span class="tag-label">{{ t('TAGS') }}</span>&nbsp;
 									{% for tag in post.tags %}
 									{% set tag.url = path.home_dashboard + '?tags=' + tag.name %}
 									<a href="{{tag.url}}">{{tag.name}}</a>{% if !loop.last %}, {% endif %}
@@ -133,31 +163,6 @@
 					</div>
 				</div>
 			</div>
-            </div>
-
-		<div class="columns medium-4 right">
-			{% if post.images %}
-                {# Use carousel only if multiple images #}
-                {% if post.images.length > 1 %}
-                    {% include "./post_images_carousel.html" with { images: post.images } %}
-                    <div class="row text-center">
-                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Images Full Size") }}</a>'>
-                            {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
-                        </fc-modal>
-                    </div>
-                {% elseif post.images.length === 1 %}
-                    <div class="row">
-                        <div class="post-detail-item-photo">
-                            <img src="{{ post.images[0] }}" style="width: 600px !important; object-fit: cover; max-height: 300px;">
-                        </div>
-                    </div>
-                    <div class="row text-center">
-                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Image Full Size") }}</a>'>
-                            <img src="{{ post.images[0] }}" style="width: 600px !important;" />
-                        </fc-modal>
-                    </div>
-			    {% endif %}
-			{% endif %}
 		</div>
     </div>
 </div>
