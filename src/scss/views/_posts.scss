@@ -12,18 +12,81 @@ ul.post-items li {
 	text-transform: uppercase;
 }
 
+.post-detail-page {
+	padding: 0 rem-calc(20px);
+	@media #{$medium-up} {
+		padding: 0;
+	}
+	.back-button-container {
+		margin: 12px 0px 7px;
+		font-weight: bold;
+		font-size: 15px;
+		@media #{$medium-up} {
+			margin: 20px 0px 20px 0px;
+		}
+	}
+	.section-title {
+		color: map_get($freecycle-palette,primary);
+		margin-top: 13px;
+	    margin-bottom: 4px;
+	    font-size: 24px;
+	    @media #{$medium-up} {
+	    	font-size: 1.875rem;
+	    }
+	}
+	.post-detail-item {
+		position: relative;
+		.orbit-bullets {
+			margin-bottom: 0;
+		}
+		.text-offer {
+			font-size: 14px;
+			@media #{$medium-up} {
+				font-size: initial;
+			}
+		}
+		.town-link {
+			position: absolute;
+			top: -2px;
+    		right: 2px;
+			@media #{$medium-up} {
+				position: initial;
+				top: initial;
+				right: initial;
+			}
+		}
+		.tag-label {
+			font-weight: bold;
+		}
+		.user-text, .profile-text{
+			font-size: 13px;
+			@media #{$medium-up} {
+				font-size: initial;
+			}
+		}
+	}
+}
+
 .post-detail {
 	min-height: rem-calc(272px);
 	background: $white;
-	padding: rem-calc(20px);
+	padding: rem-calc(10px) rem-calc(20px) rem-calc(20px);
 	margin-bottom: rem-calc(6px);
 	display: flex;
 	flex-direction: column;
 
 	@media #{$medium-up} {
 		flex-direction: row;
+		padding: rem-calc(20px);
 	}
 
+	.post-detail-item {
+		width: 100%;
+		padding: 0;
+		@media #{$medium-up} {
+			padding: 20px;
+		}
+	}
 	.post-detail-item-photo {
 		flex: 1;
 		display: flex;
@@ -89,6 +152,7 @@ ul.post-items li {
 	.post-detail-item-category-icon, .post-detail-item-header-icon {
 		display: flex;
 		align-items: center;
+		margin-bottom: 3px;
 		@include iconWithLeftText();
 	}
 
