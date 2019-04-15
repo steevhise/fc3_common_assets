@@ -83,14 +83,22 @@
 .header-links {
   order: 2;
   text-align: center;
-  border-bottom: 2px solid $medium-gray;
-
   position: relative;
-  top: -7px;
   margin-bottom: -7px;
-  max-height: 0;
   overflow: hidden;
   transition: all 250ms ease;
+  height: 60px;
+  padding-top: 15px;
+  border-top: 2px solid $medium-gray;
+
+  @media #{$large-up} {
+    top: -7px;
+    border-bottom: 2px solid $medium-gray;
+    border-top: none;
+    max-height: 0;
+    height: auto;
+    padding-top: 0;
+  }
 
   &.hamburger-menu-open {
     padding: 1.25rem;
