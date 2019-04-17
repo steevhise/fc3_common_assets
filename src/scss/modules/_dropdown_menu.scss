@@ -1,49 +1,49 @@
 .custom-dropdown {
-	position: relative;
-	.custom-dropdown-toggle {
-		padding-right: 25px;
-		cursor: pointer;
-		&:after {
-			content: "";
-			display: block;
-			width: 0;
-			height: 0;
-			border: 5px inset;
-			border-color: map_get($foundation-palette,primary) transparent transparent;
-			border-top-style: solid;
-			border-bottom-width: 0;
-			right: 5px;
-			margin-top: -2px;
-			position: absolute;
-			padding-right: 2px;
-			margin: auto;
-			top: 0;
-			bottom: 0;
-		}
-	}
-	.custom-dropdown-content {
-		background-color: #fff;
-		display: none;
-		top: 99.5%;
-		position: absolute;
-		border: 1px solid $medium-gray;
-		min-width: 200px;
-		padding: 4px 0;
-		left: -30px;
-		z-index: 999;
-		.custom-dropdown-item {
-			display: inline-block;
-			width: 100%;
-			padding: 1px 3px;
-		}
-	}
-	&.active {
-		.custom-dropdown-content { display: block; }
-		.custom-dropdown-toggle:after{ transform: rotate(-180deg); }
-	}
-	@media #{$large-up} {
-		&:hover{
-			.custom-dropdown-content { display: block; }
-		}
-	}
+  position: relative;
+  .custom-dropdown-toggle {
+    padding-right: 25px;
+    cursor: pointer;
+    &:after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border: 5px inset;
+      border-color: map_get($foundation-palette,primary) transparent transparent;
+      border-top-style: solid;
+      border-bottom-width: 0;
+      right: 5px;
+      margin-top: -2px;
+      position: absolute;
+      padding-right: 2px;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+    }
+  }
+  .custom-dropdown-content {
+    background-color: #fff;
+    display: none;
+    top: 99.5%;
+    position: absolute;
+    border: 1px solid $medium-gray;
+    min-width: 200px;
+    padding: 4px 0;
+    left: -30px;
+    z-index: 999;
+    .custom-dropdown-item {
+      display: inline-block;
+      width: 100%;
+      padding: 1px 3px;
+    }
+  }
+  &.active {
+    .custom-dropdown-content { display: block; }
+    .custom-dropdown-toggle:after{ transform: rotate(-180deg); }
+  }
+  @media #{$large-up} {
+    &:hover{
+      .custom-dropdown-content { display: block; }
+    }
+  }
 }
