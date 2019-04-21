@@ -4,7 +4,6 @@
 #}
 
 {% set sessionId = session.id || 0 %}
-
 <div class="item-list">
     <div class="item-list-inner row">
         <!-- Header row and controls -->
@@ -24,7 +23,7 @@
                     {% endif %}
                 {%  endif %}
             </div>
-            <div class="item-list-header-controls">
+            <div class="item-list-header-controls {{customClass}}">
                 {% if !isGroup %}
                     {% include './listing_type_filter_list.html' %}
                 {% endif %}
