@@ -146,6 +146,9 @@
 			<path class="cls-3"
 				d="M180.51,34.83a3.06,3.06,0,1,0,3.05,3.05A3.07,3.07,0,0,0,180.51,34.83Zm0,5.78a2.72,2.72,0,1,1,2.71-2.73A2.67,2.67,0,0,1,180.5,40.61Z"></path>
 		</svg>
+		<span v-if="name == 'location'">
+			<img class="location-icon" src="/images/location-icon.png">
+		</span>
 	</div>
 </template>
 
