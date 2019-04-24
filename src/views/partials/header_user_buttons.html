@@ -4,40 +4,68 @@
     <!--{{ session.mods | json | safe}}-->
     {% if session.mods %}
     <li class="header-user-button">
-      <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu data-closing-time="100">
-        <li class="is-dropdown-submenu-parent">
-          <a data-tooltip class="main-link has-tip" title="{{ t('Moderator Tools') }}" href="https://moderator.freecycle.org">{% include '../icons/moderate.html' %}</a>
+      <ul class="profile-options-dropdown custom-dropdown menu" data-custom-dropdown>
+        <div class="custom-dropdown-toggle">
+          <a class="main-link has-tip" href="javascript:void(0);">
+            {% include '../icons/moderate.html' %}
+          </a>
+        </div>
+        <li class="custom-dropdown-content">
+
           <ul class="menu">
-            {% for group in connections.groups %}
-              {% if session.mods|contains(group.id) %}
-                <li><a href="http://moderator.freecycle.org/manage/{{ group.uniqueName }}">{{ group.name }}</a></li>
-              {% endif %}
-            {% endfor %}
+            <li>
+              <li class="custom-dropdown-item">
+                  <a data-tooltip title="{{ t('Moderator Tools') }}" href="https://moderator.freecycle.org">Moderator Tools</a>
+                </li>
+              {% for group in connections.groups %}
+                {% if session.mods|contains(group.id) %}
+                  <li class="custom-dropdown-item">
+                    <a href="http://moderator.freecycle.org/manage/{{ group.uniqueName }}">{{ group.name }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </li>
           </ul>
         </li>
       </ul>
     </li>
     {% endif %}
     <li class="header-user-button">
-      <ul class="profile-options-dropdown dropdown menu" data-dropdown-menu data-closing-time="100">
-        <li class="is-dropdown-submenu-parent">
-          <a class="main-link" href="#">
-            <span class="hide-for-small-only">
-              {% include '../icons/user.html' %}
-            </span>
-            <span class="show-for-small-only">
-              <i class="fa fa-bars"></i>
-            </span>
-          </a>
+      <ul class="profile-options-dropdown custom-dropdown menu" data-custom-dropdown>
+        <div class="custom-dropdown-toggle">
+          <span class="hide-for-small-only">
+            {% include '../icons/user.html' %}
+          </span>
+          <span class="show-for-small-only">
+            <i class="fa fa-bars"></i>
+          </span>
+        </div>
+        <li class="custom-dropdown-content">
           <ul class="menu">
-            <li><a href="/home/dashboard/">{{ t('My Dashboard') }}</a></li>
-            <li><a href="/home/my-replies/">{{ t('My Messages') }}</a></li>
-            <li><a href="/home/my-posts/">{{ t('My Posts') }}</a></li>
-            <li><a href="/home/my-friends/">{{ t('My Friends') }}</a></li>
-            <li><a href="/home/my-towns/">{{ t('My Towns') }}</a></li>
-            <li><a href="/member/{{ session.username }}/">{{ t('My Profile') }}</a></li>
-            <li><a href="/home/settings/">{{ t('My Settings') }}</a></li>
-            <li><a href="/logout/">{{ t('Logout') }}</a></li>
+            <li class="custom-dropdown-item">
+              <a href="/home/dashboard/">{{ t('My Dashboard') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/home/my-replies/">{{ t('My Messages') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/home/my-posts/">{{ t('My Posts') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/home/my-friends/">{{ t('My Friends') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/home/my-towns/">{{ t('My Towns') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/member/{{ session.username }}/">{{ t('My Profile') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/home/settings/">{{ t('My Settings') }}</a>
+            </li>
+            <li class="custom-dropdown-item">
+              <a href="/logout/">{{ t('Logout') }}</a>
+            </li>
           </ul>
         </li>
       </ul>
