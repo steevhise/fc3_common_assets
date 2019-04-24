@@ -1,24 +1,38 @@
+.header-search-wrapper {
+  width: 100%;
+  padding: 0 20px;
+  @media #{$medium-up} {
+    width: auto;
+    padding: 0;
+  }
+}
 .header-search {
   border: 2px solid $medium-gray;
   border-radius: 1.25rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: stretch;
   justify-content: center;
   width: 100%;
   height: 2.5rem;
   position: relative;
-  /* Medium only */
-  @media screen and (min-width: 40em) and (max-width: 63.9375em) {
-    flex-direction: row;
+  @media #{$large-up} {
+    flex-direction: column;
   }
   .search-input {
     flex: 1;
+    border-right: 2px solid $medium-gray;
     input.search::placeholder {
       position: relative;
-      left: 10px;
+      @media #{$medium-up} {
+        left: 10px;
+      }
     }
     
+    &:not(.logged-in) {
+      margin-right: 10px;
+    }
+
     input.search {
       background: none;
       border: none;
@@ -26,7 +40,6 @@
       font-size: rem-calc(14px);
       height: 2.5rem;
       margin: 0 1rem 0 0.5rem;
-      padding-left: 20px;
 
       @include breakpoint(header) {
         margin: 0;
@@ -34,9 +47,6 @@
       }
     }
 
-    @include breakpoint(header) {
-      border-right: 2px solid $medium-gray;
-    }
   }
 
   .search-location {
@@ -46,8 +56,8 @@
     justify-content: center;
     height: 2rem;
     border: none;
-    /* Medium only */
-    @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+    /* small + medium */
+    @media screen and (max-width: 63.9375em) {
       flex: 0;
       position: relative;
       top: 2px;
@@ -58,15 +68,27 @@
       fill: $black;
       line-height: 0.5rem;
       width: 1.25rem;
+      position: relative;
+      left: 5px;
 
       @include breakpoint(header) {
+        position: initial;
+        left: 0;
         margin-left: 0.5rem;
+        padding-left: 0;
       }
     }
 
     .post-search-dropdown {
-      height:99%;
       border: none;
+      padding-top: 13px;
+      height: 15px;
+      width: 20px;
+      @media #{$medium-up} {
+        padding-top: .5rem;
+        height:99%;
+        width: 100%;
+      }
     }
 
     .location {
@@ -87,13 +109,7 @@
   }
 
   .search-icon {
-    position: absolute;
-    left: 0.3rem;
     line-height: 0.5rem;
-    @media screen and (min-width: 40em) and (max-width: 63.9375em) {
-      top: 8px;
-      left: 6px;
-    }
     svg {
       @include icon();
       fill: palette(primary);
