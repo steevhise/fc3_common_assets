@@ -3,8 +3,8 @@
         <!--post by user:{{post.userId}} blocked cuz in: {{blockedUsers|json}}-->
     </div>
     <div class="post-list-item" v-else >
-		<div class="post-list-item-photo" v-if="post.thumb" >
-			<img :src="post.thumb">
+		<div class="post-list-item-photo" v-if="post.thumb" v-lazy-container="{ selector: 'img' }" >
+			<img :data-src="post.thumb">
 			<!-- <div v-else class="post-image-placeholder" >
 				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`" style="position: absolute; width:100%; height: 100%; left: 60px; top:50px;" ></fc-icon>
 			</div> -->

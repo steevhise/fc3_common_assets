@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="post-grid-item-photo">
-				<div v-if="post.image" :style="`width: 100%; height: 200px; background-size: cover; background-position: center center; background-repeat: no-repeat; background-image: url(${post.image});`"></div>
+				<div v-if="post.image" v-lazy:background-image="post.image" :style="`width: 100%; height: 200px; background-size: cover; background-position: center center; background-repeat: no-repeat;`"></div>
 			</div>
 			<hr/>
 			<div class="post-grid-item-content">
