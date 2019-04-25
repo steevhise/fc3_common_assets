@@ -28,7 +28,7 @@
 						<strong>{{ t('Lend Duration:') }} </strong>{{ post.static.lendDuration }} {{ t('days') }}
 					</div>
                     <div class="post-list-item-header-icon" v-if="post.location" style="margin-left: 15px;" >
-                        <i class="icon fa fa-map-signs"></i>
+                        <fc-icon name="location"></fc-icon>
                         <span>{{ post.location }}</span>
                     </div>
 				</div>
