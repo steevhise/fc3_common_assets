@@ -33,13 +33,16 @@
 .header-inner {
   height: auto;
   display: flex;
+  display: -ms-flex;
   align-items: stretch;
   justify-content: center;
   flex-direction: column;
+  -ms-flex-direction: column;
 
   @include breakpoint(header) {
     align-items: center;
     flex-direction: row;
+    -ms-flex-direction: row;
     margin: 0 auto;
     height: 90px;
   }
@@ -63,13 +66,16 @@
 
   @include breakpoint(header) {
     flex: 0;
+    -ms-flex: 0;
     border: none;
   }
 }
 
 .header-stretch {
   flex: 1;
+  -ms-flex: 1;
   display: flex;
+  display: -ms-flex;
   align-items: flex-start;
   margin: 1.25rem;
   order: 3;

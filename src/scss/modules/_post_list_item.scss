@@ -4,17 +4,22 @@
   padding: rem-calc(5px);
   margin-bottom: rem-calc(6px);
   display: flex;
+  display: -ms-flex;
   flex: 1;
+  -ms-flex: 1;
   flex-direction: column;
+  -ms-flex-direction: column;
   position: relative;
   padding-top: rem-calc(45px);
   @media #{$medium-up} {
     flex-direction: row;
+    -ms-flex-direction: row;
     padding-top: rem-calc(5px);
   }
 
   .post-list-item-photo {
     display: flex;
+    display: -ms-flex;
     height: auto;
     width: 100%;
     margin-bottom: 8px;
@@ -46,6 +51,7 @@
 
   .post-list-item-content {
     flex: 3;
+    -ms-flex: 3;
     min-height: 6.5em;
     padding-left: rem-calc(10px);
     padding-right: rem-calc(10px);
@@ -54,13 +60,16 @@
 
   .post-list-item-content-header {
     display: flex;
+    display: -ms-flex;
     flex-direction: column;
+    -ms-flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-bottom: 0;
 
     @media #{$medium-up} {
       flex-direction: row;
+      -ms-flex-direction: row;
       padding-bottom: rem-calc(5px);
       border-bottom: 2px solid $body-background;
     }
@@ -69,6 +78,7 @@
   .post-list-item-header-left, .post-list-item-header-right {
     width: 100%;
     display: flex;
+    display: -ms-flex;
     align-items: center;
     padding-bottom: rem-calc(10px);
     @media #{$medium-up} {
@@ -78,12 +88,14 @@
   }
   .post-list-item-header-left {
     flex-direction: column;
+    -ms-flex-direction: column;
     justify-content: left;
     border-bottom: 2px solid $body-background;
     @media #{$medium-up} {
       justify-content: flex-start;
       border-bottom: none;
       flex-direction: initial;
+      -ms-flex-direction: initial;
     }
   }
   .post-list-item-header-right {
@@ -118,6 +130,7 @@
 
   .post-list-item-category-icon, .post-list-item-header-icon {
     display: flex;
+    display: -ms-flex;
     align-items: center;
     @include iconWithLeftText();
   }

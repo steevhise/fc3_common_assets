@@ -22,6 +22,7 @@
 
   .post-grid-item-header,.post-grid-item-footer {
     display: flex;
+    display: -ms-flex;
     align-items: center;
     justify-content: space-around;
     padding-bottom: rem-calc(20px);
@@ -30,10 +31,12 @@
     }
     .post-grid-item-header-left {
       display: flex;
+      display: -ms-flex;
       justify-content: flex-start;
     }
     .post-grid-item-header-right {
       display: flex;
+      display: -ms-flex;
       justify-content: flex-end;
     }
   }
@@ -43,6 +46,7 @@
 
   .post-grid-item-category-icon,.post-grid-item-header-icon {
     display: flex;
+    display: -ms-flex;
     align-items: center;
     @include iconWithLeftText();
   }

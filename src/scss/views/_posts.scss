@@ -73,10 +73,13 @@ ul.post-items li {
 	padding: rem-calc(10px) rem-calc(20px) rem-calc(20px);
 	margin-bottom: rem-calc(6px);
 	display: flex;
+	display: -ms-flex;
 	flex-direction: column;
+	-ms-flex-direction: column;
 
 	@media #{$medium-up} {
 		flex-direction: row;
+		-ms-flex-direction: row;
 		padding: rem-calc(20px);
 	}
 
@@ -89,7 +92,9 @@ ul.post-items li {
 	}
 	.post-detail-item-photo {
 		flex: 1;
+		-ms-flex: 1;
 		display: flex;
+		display: -ms-flex;
 		align-items: center;
 		padding-bottom: rem-calc(10px);
 		@media #{$medium-up} {
@@ -100,6 +105,7 @@ ul.post-items li {
 
 	.post-detail-item-content {
 		flex: 3;
+		-ms-flex: 3;
 		min-height: 6.5em;
 		padding-left: rem-calc(10px);
 		padding-right: rem-calc(10px);
@@ -108,7 +114,9 @@ ul.post-items li {
 
 	.post-detail-item-content-header {
 		display: flex;
+		display: -ms-flex;
 		flex-direction: column;
+		-ms-flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		padding-bottom: 0;
@@ -116,6 +124,7 @@ ul.post-items li {
 
 		@media #{$medium-up} {
 			flex-direction: row;
+			-ms-flex-direction: row;
 			padding-bottom: rem-calc(5px);
 		}
 
@@ -123,6 +132,7 @@ ul.post-items li {
 	.post-detail-item-header-left, .post-detail-item-header-right {
 		width: 100%;
 		display: flex;
+		display: -ms-flex;
 		align-items: center;
 		padding-bottom: rem-calc(10px);
 		@media #{$medium-up} {
@@ -151,6 +161,7 @@ ul.post-items li {
 
 	.post-detail-item-category-icon, .post-detail-item-header-icon {
 		display: flex;
+		display: -ms-flex;
 		align-items: center;
 		margin-bottom: 3px;
 		@include iconWithLeftText();

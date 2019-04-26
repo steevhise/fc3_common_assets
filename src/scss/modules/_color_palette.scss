@@ -18,7 +18,9 @@
 
 .color-palette-group-panels {
   display: flex;
+  display: -ms-flex;
   flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
 }
 
 .color-palette-group-panel {
@@ -26,6 +28,7 @@
   margin-top: 1rem;
   width: 50%;
   display: flex;
+  display: -ms-flex;
   align-items: center;
   justify-content: center;
 }

@@ -10,7 +10,9 @@
   border: 2px solid $medium-gray;
   border-radius: 1.25rem;
   display: flex;
+  display: -ms-flex;
   flex-direction: row;
+  -ms-flex-direction: row;
   align-items: stretch;
   justify-content: center;
   width: 100%;
@@ -18,9 +20,11 @@
   position: relative;
   @media #{$large-up} {
     flex-direction: column;
+    -ms-flex-direction: column;
   }
   .search-input {
     flex: 1;
+    -ms-flex: 1;
     border-right: 2px solid $medium-gray;
     input.search::placeholder {
       position: relative;
@@ -51,7 +55,9 @@
 
   .search-location {
     flex: 1;
+    -ms-flex: 1;
     display: flex;
+    display: -ms-flex;
     align-items: center;
     justify-content: center;
     height: 2rem;
@@ -59,6 +65,7 @@
     /* small + medium */
     @media screen and (max-width: 63.9375em) {
       flex: 0;
+      -ms-flex: 0;
       position: relative;
       top: 2px;
       right: 2px;
@@ -94,11 +101,13 @@
     .location {
       @include heading-text();
       flex: 0;
+      -ms-flex: 0;
       margin-left: 0.75rem;
       white-space: nowrap;
 
       @include breakpoint(header) {
         flex: 1;
+        -ms-flex: 1;
       }
     }
 
@@ -138,5 +147,6 @@
     margin-left: 37px;
     align-items: center;
     flex-direction: row;
+    -ms-flex-direction: row;
   }
 }

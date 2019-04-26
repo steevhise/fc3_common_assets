@@ -1,11 +1,13 @@
 .header-user-buttons {
   display: flex;
+  display: -ms-flex;
   height: 40px;
   align-items: center;
 }
 
 .header-user-buttons-list {
   display: flex;
+  display: -ms-flex;
   list-style-type: none;
   margin-bottom: 0;
   margin-left: 0;

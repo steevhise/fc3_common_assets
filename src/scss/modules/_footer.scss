@@ -31,17 +31,21 @@ footer {
 
 .footer-image-row {
   display: flex;
+  display: -ms-flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  -ms-flex-direction: column;
 
   .footer-image-container {
     flex: 1;
+    -ms-flex: 1;
     margin-bottom:1rem;
   }
 
   @media #{$medium-up} {
     flex-direction: row;
+    -ms-flex-direction: row;
     .footer-image-container {
       margin-bottom:0rem;
     }

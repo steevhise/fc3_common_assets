@@ -1,7 +1,9 @@
 .four-icon-grid {
   width: 66%;
   display: flex;
+  display: -ms-flex;
   flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
   text-align: center;
   align-items: center;
   justify-content: space-around;
@@ -40,6 +42,7 @@ body[data-fc-route="home"] .section-divider,.home .section-divider:nth-of-type(1
 
 .font-block {
   display: flex;
+  display: -ms-flex;
   align-items: stretch;
   justify-content: stretch;
 
