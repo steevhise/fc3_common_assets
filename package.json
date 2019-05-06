@@ -1,6 +1,6 @@
 {
   "name": "@freecycle/fc3_common_assets",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "description": "Freecycle 3.0 Common stuff like images, styles, js, partials",
   "main": "index.js",
   "repository": "https://github.com/freecycle/fc3_common_assets.git",
@@ -13,6 +13,7 @@
     "formdata-polyfill": "^3.0.13",
     "foundation-sites": "^6.4.3",
     "google-maps": "3.3.0",
+    "haversine": "^1.1.1",
     "jquery": "^3.1.0",
     "masonry-layout": "^4.0.0",
     "moment": "^2.19.3",

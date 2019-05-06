@@ -5,7 +5,8 @@
 
 // deps
 import lodash from 'lodash';
-import moment from 'moment-timezone'
+import moment from 'moment-timezone';
+import haversine from 'haversine';
 
 // common components
 import Button from '../components/Button.vue';
@@ -43,6 +44,8 @@ export const FCVue = {
 		Vue.prototype.geoFormat = (lat, lng) => {
 			return { lat : Number(lat), lng : Number(lng) };
 		};
+		
+		Vue.prototype.geoDistance = haversine;
 
 		// filters
 		Vue.filter('mreldate', function(date, time, timezone) {

@@ -15,12 +15,12 @@ export class AlertItem {
     });
   }
 
-  showResult = (id) => {
+  showResult(id) {
     $(`.alert_result[data-result-id=${id}]`).toggle();
     $(`.alerts_existing[data-alert-id=${id}] .message-arrow`).toggleClass('open');
-  };
+  }
 
-  deleteSelected = (id) => {
+  deleteSelected(id) {
     // TODO: placeholder for delete functionality
   }
 }
