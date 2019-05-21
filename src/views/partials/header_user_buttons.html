@@ -75,7 +75,7 @@
 
     <li class="header-user-button">
       <a data-tooltip class="has-tip" title="Alerts" href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}
-      <span>{{ alertCount }}</span></a>
+      {% if alertCount > 0 %}<span>{{ alertCount }}</span></a>{% endif %}
     </li>
 
     <li class="header-user-button">
