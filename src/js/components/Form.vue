@@ -1,9 +1,18 @@
 <!--Note: this file is provided by the fc3_common_assets package */-->
 <template>
-    <form :method="method" :action="action" @change="serializeData()" @submit.prevent="handleSubmit($event)">
+    <form :method="method" :action="action" @change="serializeData()" @submit.prevent="handleSubmit($event)" :data-running="running.toString()">
         <slot :formData="formData" ></slot>
+        <div class="form-overlay">
+            <span class="content"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> Loading</span>
+        </div>
     </form>
 </template>
+
+<style scoped>
+    .form-overlay {
+        display: none;
+    }
+</style>
 
 <script>
     export default {
@@ -50,7 +59,8 @@
                 formData: this.data ? JSON.parse(this.data) : {},
                 serializedData: null,
                 isSubmitted: false,
-                results: null
+                results: null,
+                running: false
             }
         },
         mounted() {
@@ -64,7 +74,7 @@
             handleSubmit(event) {
 
                 const self = this;
-
+                self.setRunning(true);
                 $.post({ url: this.action, data: this.serializedData, timeout: this.timeout }).done(function(data) {
 
                     if (self.customAlertEl) {
@@ -74,7 +84,7 @@
                     } else {
                         self.$bus.$emit('alert', { level : 'success', message : data.message || data });
                     }
-
+                    self.setRunning(false);
                     event.target.reset();
                 }).fail(function(error) {
 
@@ -88,7 +98,11 @@
                          const err = error.responseJSON;   // not sure if this is accurate but i don't want to break something else.
                          self.$bus.$emit('alert', {level: 'alert', message: err.message, timer: 10000});
                     }
+                    self.setRunning(false);
                 })
+            },
+            setRunning(opt) {
+                this.running = opt;
             }
         }
     }
