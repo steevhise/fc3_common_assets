@@ -3,7 +3,9 @@
     <form :method="method" :action="action" @change="serializeData()" @submit.prevent="handleSubmit($event)" :data-running="running.toString()">
         <slot :formData="formData" ></slot>
         <div class="form-overlay">
-            <span class="content"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> Loading</span>
+            <div class="content">
+                <fc-spinner :size="size" message="Loading..." ></fc-spinner>
+            </div>
         </div>
     </form>
 </template>
@@ -33,6 +35,10 @@
             customErrorMessage: {
                 type: String,
                 default: ''
+            },
+            size: {
+                type: String,
+                default: 'huge'
             },
             data: {},
             //results: {},
