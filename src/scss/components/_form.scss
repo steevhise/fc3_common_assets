@@ -8,22 +8,13 @@ form {
         bottom: 0;
         margin: auto;
         display: block;
-        width: 95px;
-        height: 85px;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-        letter-spacing: 1px;
+        width: 170px;
+        height: 160px;
         text-transform: uppercase;
-        background-color: #fff;
-        padding-top: 6px;
-        box-shadow: 0 0 6px -2px #000;
-        border-radius: 2px;
-    }
-    .form-overlay i {
-        font-size: 47px;
-        margin-bottom: 5px;
-        color: #2199e8;
+        &.medium {
+            height: 60px;
+            width: 80px;
+        }
     }
     &:not([data-running="true"]) .form-overlay {
         display: none;
