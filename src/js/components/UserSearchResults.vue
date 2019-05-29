@@ -66,6 +66,7 @@
     },
     methods: {
       init(data) {
+        this.results = [];
         Object.assign(this.results, data);
         this.isVisible = true;
         this.header = this.t('Found: ') + this.results.length;
