@@ -70,11 +70,6 @@
         this.isVisible = true;
         this.header = this.t('Found: ') + this.results.length;
 
-        // hide the spinner
-        $(".vue-simple-spinner").addClass("invisible");
-        $(".vue-simple-spinner-text").addClass("invisible");
-
-
         console.warn('form results initialized!', this.results);
       }
     }
