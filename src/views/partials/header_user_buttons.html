@@ -1,7 +1,6 @@
 <div class="header-user-buttons">
   <ul class="header-user-buttons-list header-user-buttons-list-left">
     {# make this only display if current user is a moderator #}
-    <!--{{ session.mods | json | safe}}-->
     {% if session.mods %}
     <li class="header-user-button">
       <ul class="profile-options-dropdown custom-dropdown menu" data-custom-dropdown>
