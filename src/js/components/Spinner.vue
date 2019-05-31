@@ -25,7 +25,7 @@
 			},
 			'line-size': {
 				type: Number,
-				default: 3
+				default: 4
 			},
 			'line-bg-color': {
 				type: String,
@@ -74,11 +74,11 @@
 				switch (this.size) {
 					case 'tiny': return 1
 					case 'small': return 2
-					case 'medium': return 3
-					case 'large': return 3
-					case 'big': return 4
-					case 'huge': return 4
-					case 'massive': return 5
+					case 'medium': return 5
+					case 'large': return 10
+					case 'big': return 15
+					case 'huge': return 20
+					case 'massive': return 50
 				}
 
 				return isNumber(this.lineSize) ? this.lineSize : 4

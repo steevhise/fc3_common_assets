@@ -1,9 +1,14 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 {% set omitOnPages = [ 'home_post_new', 'home_post_edit' ] %}   {# TODO: any other pages shouldnt have search on top? #}
-<form class="post-search" method="post" action="/search-posts">
+<form class="post-search" method="post" action="/search-posts" data-running="false" onsubmit="$('form.post-search').attr('data-running',true); return true;">
     <div class="header-search" {% if omitOnPages|contains(route.id)  %}style="visibility: hidden;"{% else %}{% endif %}>
         <div class="search-input {% if session %}logged-in{% endif %}" >
             <input class="search input-group-field" name="searchText" type="search" value="{{ search }}" placeholder="{{ t('Search for items...') }}"/>
+        </div>
+        <div class="form-overlay" style="top:3em;">
+            <span class="content">
+              <fc-spinner size="big" message="Searching..." ></fc-spinner>
+            </span>
         </div>
 
         {# logged-out users won't see location interface #}
