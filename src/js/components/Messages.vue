@@ -9,8 +9,8 @@
 				<span v-if="message.sender">{{ message.sender.username }}</span>&nbsp;<span v-if="message.sender && message.sender.privilege" v-bind:style="{ color: color(message.sender.privilege) }">({{ message.sender.privilege === 4 ? 'Lead Moderator' : 'Moderator' }})</span>
 				<span v-if="!message.sender">system notifier</span>&nbsp;
 			</p>
-			<p class="chat-message-message" v-if="!showHtml">{{message.body}}</p>
-			<p class="chat-message-message" v-if="showHtml" v-html="message.body"></p>
+			<p class="chat-message-message" v-if="!showHtml" v-bind:style="messageStyle(message)">{{message.body}}</p>
+			<p class="chat-message-message" v-if="showHtml" v-html="message.body" v-bind:style="messageStyle(message)"></p>
 			<p class="chat-message-time" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">{{ago(timezone(message.createdAt))}}</p>
 		</div>
 	</div>
@@ -52,7 +52,8 @@
 
 				return milli - localOffset;
 			},
-			color: (id) => colors[id % colors.length]
+			color: (id) => colors[id % colors.length],
+			messageStyle: (message) => !message.sender && { display: 'inline-block !important' }
 		}
 	}
 
