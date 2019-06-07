@@ -41,6 +41,7 @@ class ImageUploader {
         this.uploadErrors = uploadErrors;
         this.formErrors = formErrors;
         this.filesList = [];
+        this.requestType = requestType;
         this.submitEndpoint = UPLOAD_API_ENDPOINTS[requestType];
         // We do this to allow removing listeners (which we do for every request type except new posts)
         // Removing event listeners requires the inputting the same function as used to add the listener
@@ -283,6 +284,23 @@ class ImageUploader {
 
     }
 
+    trackImageChanges() {
+
+        // We care about if the uploaded images changed only if
+        // we're handling a post edit; in that case, we need a way to
+        // let the post update service method know that images changed
+        // and the post should be submitted for moderation even if no other
+        // fields changed (since the images are submitted to a separate API endpoint)
+        if (this.requestType !== 'post') {
+            return;
+        }
+
+        // If any new uploads
+        if (this.filesList.filter(({ file }) => file.constructor === File).length) {
+            document.querySelector('.image-upload-form input[name=imagesEdited]').value = 'true';
+        }
+    }
+
     handleNewPostSubmit(e) {
 
         e.preventDefault();
@@ -481,6 +499,8 @@ class ImageUploader {
             // Excludes images from form submission to non-API route
             document.querySelector('.image-upload-form input[name=images]').remove();
 
+            self.trackImageChanges();
+
             // Sorry, sucks; accounts for different submit buttons across forms
             document.querySelector('.image-upload-form input[type=submit], .image-upload-form button[type=submit]').click();
         });
@@ -607,7 +627,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             ImageUploader.polyfill();
         } catch (error) {
-            console.log(error, 'WHHYYYYY');
             console.warn('Image Uploader not intialized'); // eslint-disable-line no-console
         }
     }
