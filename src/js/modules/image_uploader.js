@@ -129,7 +129,7 @@ class ImageUploader {
         imgContainer.setAttribute('class', 'image-container');
         block.setAttribute('data-upload-order', uploadOrder);
         block.setAttribute('class', 'img-block');
-        deleteButton.setAttribute('class', 'btn-default del-img');
+        deleteButton.setAttribute('class', 'btn-delete del-img');
         deleteButton.setAttribute('type', 'button'); // turn off any default behavior
         deleteButton.addEventListener('click', this.deleteUpload.bind(this)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
         deleteButton.innerHTML = 'Remove';
