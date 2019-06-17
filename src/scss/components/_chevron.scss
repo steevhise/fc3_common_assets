@@ -51,10 +51,22 @@
 
 .icon-chevron-taken {
   @extend .icon-chevron;
+  transform: rotate(-90deg);
   path {
     &:first-child {
-      fill: palette(primary);
+      fill: lightgray;
     }
-    fill: palette(primary-darken);
+    fill: darkgray;
+  }
+}
+
+.icon-chevron-received {
+  @extend .icon-chevron;
+  transform: rotate(90deg);
+  path {
+    &:first-child {
+      fill: darkgray;
+    }
+    fill:lightgray;
   }
 }
