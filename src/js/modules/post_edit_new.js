@@ -7,7 +7,7 @@
  *
  * @method PostEditNew
  */
-const PostEditNew = () => {
+const PostEditNew = function() {
 
    const roots = $('[data-post-buttongroup]');
 
