@@ -141,3 +141,20 @@
       background-color: #cc4b37;
     }
 }
+
+/* DELETE */
+.btn-delete-color {
+  background-color: palette(delete);
+}
+
+.btn-delete-hover {
+  background-color: palette(delete-darken);
+}
+
+.btn-delete {
+  @extend .btn;
+  @extend .btn-delete-color;
+  &:hover {
+    @extend .btn-delete-hover;
+  }
+}

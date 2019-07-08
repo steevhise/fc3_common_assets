@@ -66,7 +66,9 @@ $freecycle-palette:(
         borrow: #673AB7,
         borrow-darken:#311B92,
         offer:#ff5722,
-        offer-darken:#d84315
+        offer-darken:#d84315,
+        delete: crimson,
+        delete-darken: maroon
 );
 $dark-green:#284e36;
 $link-style:map_get($freecycle-palette,primary);
