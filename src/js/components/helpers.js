@@ -72,6 +72,10 @@ const postItemConfig = {
       const now = normalize(Moment());
 
       return due < now;
+    },
+    timezone() {
+      console.log(this.$root.userLocation);
+      return this.$root.userLocation.timezone ? this.$root.userLocation.timezone : 'Australia/Sydney';
     }
   },
   methods: {

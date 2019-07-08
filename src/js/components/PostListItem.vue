@@ -33,7 +33,7 @@
                     </div>
 				</div>
 				<div v-if="viewer" class="post-list-item-header-right">
-					<span class="post-list-item-date text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : undefined)) }}</span>
+					<span class="post-list-item-date text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}</span>  <!-- TODO: need to use user location for time zone if no group -->
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
 					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="post.isApproved == false">{{ t('Awaiting Approval') }}</button>
 					<template v-else-if="viewer === post.userId">
