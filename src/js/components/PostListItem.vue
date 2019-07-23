@@ -28,16 +28,16 @@
 						<span class="post-list-item-date text-lighten">
 							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
 						</span>
-						<!-- TODO: if pending post, don't show "manage" button, right? or..? -->
-						<select v-if="post.isApproved == true" class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+						<!--  if pending post, show "manage" button, but only with delete.? -->
+						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
-							<option value="edit">{{ t('Edit Post') }}</option>
-							<option v-if="closedType" value="mark" >{{ t('Mark As') }} {{ t(`${closedType[0]}${lowercase(closedType.slice(1))}`) }}</option>
+							<option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
+							<option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t('Mark As') }} {{ t(`${closedType[0]}${lowercase(closedType.slice(1))}`) }}</option>
 							<option v-else-if="postType === 'LEND'" :value="lent ? t('return') : t('lend')">
 								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>
 							<option value="delete">{{ t('Delete Post') }}</option>
-							<option value="replies">{{ t('See Replies') }}</option>
+							<option v-if="post.isApproved == true" value="replies">{{ t('See Replies') }}</option>
 						</select>
 					</template>
 					<template v-else-if="lent && viewer === post.share.borrowerId">
