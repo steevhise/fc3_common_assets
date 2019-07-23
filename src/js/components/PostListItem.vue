@@ -10,9 +10,9 @@
 			</div>
 			<!-- chooser -->
 				<div v-if="viewer" class="post-list-item-header-right">
-					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="post.isApproved == false">{{ t('Awaiting Approval') }}</button>
-					<template v-else-if="viewer === post.userId">
+					<template v-if="viewer === post.userId">
+					<!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
+						<button v-if="post.isApproved == false" style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
 								style="display: none;"
@@ -26,9 +26,10 @@
 							<p v-else-if="lent" class="callout success">{{ t('On Loan!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 						</template>
 						<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }} <!-- TODO: need to use user location for time zone if no group -->
+							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
 						</span>
-						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+						<!-- TODO: if pending post, don't show "manage" button, right? or..? -->
+						<select v-if="post.isApproved == true" class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="closedType" value="mark" >{{ t('Mark As') }} {{ t(`${closedType[0]}${lowercase(closedType.slice(1))}`) }}</option>
@@ -45,11 +46,24 @@
 							<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t("Let your friend know what's up") }}</a>
 						</p>
 						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
+						<span class="post-list-item-date text-lighten">
+							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
+						</span>
 					</template>
-					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
-					  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
-					</fc-messages-detail-input>
+					<template v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
+						<span class="post-list-item-date text-lighten">
+								{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
+						</span>
+						<fc-messages-detail-input  topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
+						  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
+						</fc-messages-detail-input>
+					</template>
 				</div>
+			<div v-else class="post-list-item-header-right">
+				<span class="post-list-item-date text-lighten">
+							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }} <!-- this still needs to be here even if not logged in -->
+				</span>
+			</div>
 			<!-- chooser -->
 		</div>
 		<div class="post-list-item-photo" v-if="post.thumb" v-lazy-container="{ selector: 'img' }" >
