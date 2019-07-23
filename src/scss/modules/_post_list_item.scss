@@ -1,29 +1,51 @@
 .post-list-item {
   min-height: rem-calc(7em);
   background: $white;
-  padding: rem-calc(5px);
-  margin-bottom: rem-calc(6px);
+  padding: rem-calc(10px);
+  margin-bottom: rem-calc(8px);
   display: flex;
   flex: 1;
   flex-direction: column;
   position: relative;
   padding-top: rem-calc(45px);
+  flex-wrap: wrap;
   @media #{$medium-up} {
     flex-direction: row;
     padding-top: rem-calc(5px);
   }
 
+  .upper-row {
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid $body-background;
+    padding: 0px 3px 5px;
+    margin-bottom: 10px;
+  }
+  .manage-post-select {
+    margin-bottom: 0;
+  }
+  .post-list-item-header-icon .fc-icon {
+      width: 13px;
+  }
+  .lend-duration {
+    margin: 0;
+    width: 200px;
+  }
+  .callout {
+    margin: 0 2px 0 11px;
+  }
   .post-list-item-photo {
     display: flex;
     height: auto;
     width: 100%;
     margin-bottom: 8px;
-    align-items: center;
+    align-items: baseline;
     padding-bottom: rem-calc(5px);
     @media #{$medium-up} {
       padding-bottom: rem-calc(0);
       width: 128px;
       margin-bottom: 0;
+      margin-right: rem-calc(10px);
     }
 
     .post-image-placeholder {
@@ -47,7 +69,6 @@
   .post-list-item-content {
     flex: 3;
     min-height: 6.5em;
-    padding-left: rem-calc(10px);
     padding-right: rem-calc(10px);
     width: 100%;
   }
@@ -62,7 +83,6 @@
     @media #{$medium-up} {
       flex-direction: row;
       padding-bottom: rem-calc(5px);
-      border-bottom: 2px solid $body-background;
     }
 
   }
@@ -103,6 +123,7 @@
       position: relative;
       top: 0;
       right: 0;
+      margin: 0 4px 0 17px;
     }
   }
 
@@ -114,7 +135,11 @@
     svg {
       height: rem-calc(20px);
     }
+    &.group-icon {
+      margin-right: 15px;
+    }
   }
+
 
   .post-list-item-category-icon, .post-list-item-header-icon {
     display: flex;
@@ -147,7 +172,6 @@
     position: relative;
     line-height: 1.2em;
     font-size: rem-calc(10px);
-    max-height: 4.6em;
     text-align: justify;
     width: 100%;
     margin-bottom: 10px;
@@ -158,12 +182,13 @@
       max-width: 75%;
     }
     h4 {
+      text-transform: capitalize;
       font-size: rem-calc(18px);
       font-weight: bold;
       padding-bottom: 0;
       margin-bottom: 0;
       @media #{$medium-up} {
-        font-size: rem-calc(14px);
+        font-size: rem-calc(20px);
       }
     }
     p {
