@@ -88,6 +88,13 @@
 										<span>{{ post.group.name|upper }}</span>
 									</a>
 								</li>
+								{% else %}}
+								<li>
+									<a class="town-link" href="/home/dashboard/friends">
+										<fc-icon name="friend_circle" style="cursor: default; display: inline; position: relative; top: 3px;" width="20"></fc-icon>
+										<span>FRIENDS CIRCLE</span>
+									</a>
+								</li>
 								{% endif %}
 								<li class="user-text">
 									<a href="{{path.user}}{{post.user.username}}">

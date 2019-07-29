@@ -13,8 +13,16 @@
 				</div>
 				<div class="post-grid-item-header-right">
 					<div class="post-grid-item-header-icon" v-if="post.group">
-						<i class="fa fa-city"></i>
+						<i class="fa fa-city">
+							<fc-icon name="map_pin"></fc-icon>
+						</i>
 						<span :alt="post.group.name" :title="post.group.name"><a :href="`/town/${post.group.uniqueName}`">{{post.group.name|truncate(16)}}</a></span>
+					</div>
+					<div class="post-grid-item-header-icon" v-else>
+						<i class="fa fa-city">
+						<fc-icon name="friend_circle"></fc-icon>
+						</i>
+						<span alt="friends circle" title="friends circle">Friends Circle</span>
 					</div>
 				</div>
 			</div>

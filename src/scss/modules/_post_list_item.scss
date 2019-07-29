@@ -138,6 +138,9 @@
     &.group-icon {
       margin-right: 15px;
     }
+    &.friend-circle {
+      margin-right: 15px;
+    }
   }
 
 
@@ -152,7 +155,7 @@
     position: absolute;
     top: 7px;
     left: 18px;
-    @media #{$medium-up} { 
+    @media #{$medium-up} {
       position: relative;
       top: 0;
       left: 0;

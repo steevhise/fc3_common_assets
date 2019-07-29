@@ -83,6 +83,10 @@
 						<fc-icon name="map_pin"></fc-icon>
 						<span>{{ post.group.name }}</span>
 					</div>
+                    <div class="post-list-item-header-icon friend-circle" v-else>
+                        <fc-icon name="friend_circle"></fc-icon>
+                        <span>Friends Circle</span>
+                    </div>
 					<div v-if="post.static && post.static.lendDuration" class="lend-duration">
 						<strong>{{ t('Lend Duration:') }} </strong>{{ post.static.lendDuration }} {{ t('days') }}
 					</div>
