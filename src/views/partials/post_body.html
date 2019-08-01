@@ -40,12 +40,12 @@
 						<span class="text-{{ post.type.name|lower }}">{{ t(post.type.name) }}</span>
 					</div>
 					{% if post.share && !post.share.returnDate %}
-					{% if post|lendOverdue %}
-					<p class="callout warning">
-						{{ t('Item Overdue!') }}{% if post.share.dueDate %} {{ t('It was due on') }} {{ post.share.dueDate|formatDate('M-D-YYYY') }}.{%
-						endif %}
-						{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">{{ t('Message your friend') }}</a>{%
-						endif %}
+						{% if post|lendOverdue %}
+							<p class="callout warning">
+							{{ t('Item Overdue!') }}{% if post.share.dueDate %} {{ t('It was due on') }} {{ post.share.dueDate|formatDate('M-D-YYYY') }}.
+						{% endif %}
+						{% if me.id === post.user.id %}<a href="/home/my-replies?type=post&id={{post.id}}">{{ t('Message your friend') }}</a>
+						{% endif %}
 					</p>
 					{% else %}
 					<p class="callout success">
@@ -75,7 +75,7 @@
 							<ul class="post-items text-{{ post.type.name|lower }}" style="margin-left: 0px; " >
 								{% set datetimeOpts = { lang: userLanguage, time: post.time, timezone: post.group.timezone } %}
 								<li><span><i class="fa fa-map-signs"></i> {{post.location|title }}</span></li>
-								<li><span>{{ post.date|mdate(datetimeOpts, 'LL')}}</span></li>
+								<li><span>{{ post.date|mdate(datetimeOpts, 'LL') }}</span></li>
 							</ul>
 							<div class="row" style="margin: 0px;" >
 								<hr/>
@@ -88,7 +88,7 @@
 										<span>{{ post.group.name|upper }}</span>
 									</a>
 								</li>
-								{% else %}}
+								{% else %}
 								<li>
 									<a class="town-link" href="/home/dashboard/friends">
 										<fc-icon name="friend_circle" style="cursor: default; display: inline; position: relative; top: 3px;" width="20"></fc-icon>
