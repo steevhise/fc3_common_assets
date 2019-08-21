@@ -8,31 +8,6 @@ import lodash from 'lodash';
 import moment from 'moment-timezone';
 import haversine from 'haversine';
 
-// common components
-import Button from '../components/Button.vue';
-import Callout from '../components/Callout.vue';
-import Data from '../components/Data.vue';
-import Editor from '../components/Editor.vue';
-import FeaturedIn from '../components/FeaturedIn.vue';
-import Form from '../components/Form.vue';
-import FormButton from '../components/FormButton.vue';
-import Help from '../components/Help.vue';
-import Icon from '../components/Icon.vue';
-import ItemHeader from '../components/ItemHeader.vue';
-import LendFriendsSelect from '../components/LendFriendsSelect.vue';
-import LendMessage from '../components/LendMessage.vue';
-import Messages from '../components/Messages.vue';
-import MessagesBoard from '../components/MessagesBoard.vue';
-import MessagesDetailInput from '../components/MessagesDetailInput.vue';
-import MessagesNotifier from '../components/MessagesNotifier.vue';
-import MessagesTopics from '../components/MessagesTopics.vue';
-import PostGridItem from '../components/PostGridItem.vue';
-import PostIcon from '../components/PostIcon.vue';
-import PostListItem from '../components/PostListItem.vue';
-import Spinner from '../components/Spinner.vue';
-import Test from '../components/Test.vue';
-import UserSearchResults from '../components/UserSearchResults.vue';
-
 export const FCVue = {
 	install(Vue, options) {
 		Vue.prototype.$bus = new Vue();
@@ -97,29 +72,28 @@ export const FCVue = {
 			return String(text).toLowerCase();
 		});
 
-		// register components
-		Vue.component('fc-button', Button);
-		Vue.component('fc-callout', Callout);
-		Vue.component('fc-data', Data);
-		Vue.component('fc-editor', Editor);
-		Vue.component('fc-featuredin', FeaturedIn);
-		Vue.component('fc-form', Form);
-		Vue.component('fc-formbutton', FormButton);
-		Vue.component('fc-help', Help);
-		Vue.component('fc-icon', Icon);
-		Vue.component('fc-item-header', ItemHeader);
-		Vue.component('fc-lend-friends-select', LendFriendsSelect);
-		Vue.component('fc-lend-message', LendMessage);
-		Vue.component('fc-messages', Messages);
-		Vue.component('fc-messages-board', MessagesBoard);
-		Vue.component('fc-messages-detail-input', MessagesDetailInput);
-		Vue.component('fc-messages-notifier', MessagesNotifier);
-		Vue.component('fc-messages-topics', MessagesTopics);
-		Vue.component('fc-post-grid-item', PostGridItem);
-		Vue.component('fc-post-icon', PostIcon);
-		Vue.component('fc-post-list-item', PostListItem);
-		Vue.component('fc-spinner', Spinner);
-		Vue.component('fc-test', Test);
-		Vue.component('fc-user-search-results', UserSearchResults);
+		Vue.component('fc-button', () => import('../components/Button.vue'));
+		Vue.component('fc-callout', () => import('../components/Callout.vue'));
+		Vue.component('fc-data', () => import('../components/Data.vue'));
+		Vue.component('fc-editor', () => import('../components/Editor.vue'));
+		Vue.component('fc-featuredin', () => import('../components/FeaturedIn.vue'));
+		Vue.component('fc-form', () => import('../components/Form.vue'));
+		Vue.component('fc-formbutton', () => import('../components/FormButton.vue'));
+		Vue.component('fc-help', () => import('../components/Help.vue'));
+		Vue.component('fc-icon', () => import('../components/Icon.vue'));
+		Vue.component('fc-item-header', () => import('../components/ItemHeader.vue'));
+		Vue.component('fc-lend-friends-select', () => import('../components/LendFriendsSelect.vue'));
+		Vue.component('fc-lend-message', () => import('../components/LendMessage.vue'));
+		Vue.component('fc-messages', () => import('../components/Messages.vue'));
+		Vue.component('fc-messages-board', () => import('../components/MessagesBoard.vue'));
+		Vue.component('fc-messages-detail-input', () => import('../components/MessagesDetailInput.vue'));
+		Vue.component('fc-messages-notifier', () => import('../components/MessagesNotifier.vue'));
+		Vue.component('fc-messages-topics', () => import('../components/MessagesTopics.vue'));
+		Vue.component('fc-post-grid-item', () => import('../components/PostGridItem.vue'));
+		Vue.component('fc-post-icon', () => import('../components/PostIcon.vue'));
+		Vue.component('fc-post-list-item', () => import('../components/PostListItem.vue'));
+		Vue.component('fc-spinner', () => import('../components/Spinner.vue'));
+		Vue.component('fc-test', () => import('../components/Test.vue'));
+		Vue.component('fc-user-search-results', () => import('../components/UserSearchResults.vue'));
 	}
 };
