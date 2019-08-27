@@ -54,7 +54,7 @@
 						<span class="post-list-item-date text-lighten">
 								{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
 						</span>
-						<fc-messages-detail-input  topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
+						<fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="post.id" :custom-trigger="replyButton">
 						  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
 						</fc-messages-detail-input>
 					</template>

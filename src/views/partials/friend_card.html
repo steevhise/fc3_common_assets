@@ -68,7 +68,7 @@
     </a>
     {% if isFriend %}
       <div class="message profile-action-btn">
-          <fc-messages-detail-input topic-type="friend" topic-id="{{ friend.id }}" custom-trigger='<button class="btn btn-action"><i class="icon fa fa-envelope"></i> {{ t("Start Chat") }}</button>'>
+          <fc-messages-detail-input subject="message from a friend" topic-type="friend" topic-id="{{ friend.id }}" custom-trigger='<button class="btn btn-action"><i class="icon fa fa-envelope"></i> {{ t("Start Chat") }}</button>'>
             <p><strong>{{ t('New Message To') }}</strong> {{ friend.username }}</p>
         </fc-messages-detail-input>
       </div>
