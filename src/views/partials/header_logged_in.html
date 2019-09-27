@@ -2,9 +2,9 @@
 <div class="header-logo small-centered">
 {# my logo should only be for "home" pages #}{% set home = route.id | replace('^home_', '') %}
 {% if home === route.id %}
-    <a href="{{ path.home_dashboard }}"><fc-icon name='logo'></fc-icon></a>
+    <a href="/"><fc-icon name='logo'></fc-icon></a>
 {% else %}
-    <a href="{{ path.home_dashboard }}"><fc-icon name="logo_my" style="height: 86px; width: 231px;"></fc-icon></a>
+    <a href="/"><fc-icon name="logo_my" style="height: 86px; width: 231px;"></fc-icon></a>
 {% endif %}
 </div>
 

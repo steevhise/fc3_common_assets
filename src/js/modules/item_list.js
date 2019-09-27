@@ -50,7 +50,7 @@ class ItemList {
         });
     }
 
-    setupMasonry = ()=> {
+    setupMasonry = () => {
 
         $.each(this.$itemGrid,(idx,item)=>{
             new Masonry(item, {
@@ -76,7 +76,7 @@ class ItemList {
         this.$borrowFilter.click(this.onFilterItemClick.bind(this, 'borrow'));
         this.$wantedFilter.click(this.onFilterItemClick.bind(this, 'wanted'));
     };
-    
+
     /**
      * Event handler for toggling a filter item
      * @param toggledValue
@@ -100,31 +100,31 @@ class ItemList {
         //call filter handler and specify if list is being filtered or unfiltered
         this.handleFilters(toggledValue, filterStatus);
     };
-    
+
     /**
      * Dispatch filter or reset function
      * @param filterStatus
      */
     handleFilters = ( searchTerm, filterStatus ) => {
       switch(filterStatus) {
-        case 'filter' : 
-          this.filterResults(searchTerm); 
+        case 'filter' :
+          this.filterResults(searchTerm);
           break;
-        case 'reset' : 
-          this.resetResults(); 
+        case 'reset' :
+          this.resetResults();
           break;
       }
     };
-    
+
     filterResults = ( searchTerm ) => {
       let filterGrid = this.$itemGrid.children();
       let fitlerList = this.$itemList.children();
       let { currentView } = this.state;
-      
+
       //hide all page results
       $('.post-grid-item').hide();
       $('.post-list-item').hide();
-      
+
       //show only matching results across views
       filterGrid.each((i, item) => {
          if (item.className === 'post-grid-item') {
@@ -132,21 +132,21 @@ class ItemList {
            this.setupMasonry();
          }
       });
-      
+
       fitlerList.each((i, item) => {
         if (item.className === 'post-list-item') {
           var results = $(item).find(`span.text-${searchTerm}`).parents('.post-list-item').show();
         }
       });
     };
-    
+
     resetResults = () => {
       // show unfiltered items across views
       this.$itemGrid.children().show();
       this.$itemList.children().show();
       this.setupMasonry();
     };
-    
+
     /**
      * Event handler for clicking on a view item
      */
