@@ -17,13 +17,13 @@
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
 					<input type="text" name="body" v-bind:value="this.defaultBody" required @input="checkCharCount($event)" />
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
-					<input class="btn btn-default" type="submit" value="Send" />
+					<input class="btn btn-default" type="submit" :value="t('Send')" />
 				</fc-form>
 				<div>
-					<p class="charCounter"><strong>Character Count: </strong>{{ charCount }} / {{ limit }} characters allowed</p>
+		<p class="charCounter"><strong>{{ t('Character Count:') }} </strong>{{ charCount }} / {{ limit }} {{t('characters allowed')}}</p>
 				</div>
 			</div>
-			<button style="display: none;" data-close type="button">Close</button>
+			<button style="display: none;" data-close type="button">{{ t('Close') }}</button>
 		</div>
 	</div>
 </template>
@@ -36,7 +36,7 @@
 		name: 'fc-messages-detail-input',
 		props: {
 			topicType: String,
-			topicId: Number,           // if zero then what? might be trying to report a user but they dont have a home group.
+			topicId: String,           // if zero then what? might be trying to report a user but they dont have a home group.
 		    defaultBody: String,
 			subject: String,
 			customTrigger: { default: ''},
@@ -63,7 +63,7 @@
 			// Prevents callouts from being obscured by modal background overlay
 			this.$bus.$on('alert', (data) => {
 
-				// Easier logic for elements manually instantied (see mounted() )
+				// Easier logic for elements manually instantiated (see mounted() )
 				if (this.reveal.close) {
 					return this.reveal.close();
 				}

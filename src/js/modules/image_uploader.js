@@ -100,7 +100,7 @@ class ImageUploader {
         }
 
         const constraintsEl = document.querySelector('.image-uploader-rules');
-        const constraintsText = document.createTextNode(`Up to ${this.uploadLimit} image${this.uploadLimit > 1 ? 's' : ''} allowed. Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload`);   //TODO: translation. this will be sorta hard.
+        const constraintsText = document.createTextNode(`Up to ${this.uploadLimit} image${this.uploadLimit > 1 ? 's' : ''} allowed. ` + vm.$root.t('Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload'));
         constraintsEl.appendChild(constraintsText);
     }
 
@@ -220,7 +220,7 @@ class ImageUploader {
 
         // Should never be hit, with the input being disabled on this condition in the loop below; totally defensive
         if (this.filesList.length === this.uploadLimit) {
-            return this.displayError('You\'ve already uploaded max allowed images', uploadErrContainer);
+            return this.displayError(vm.$root.t("You've already uploaded max allowed images"), uploadErrContainer);
         }
 
         // Validate newly uploaded file(s)
@@ -236,7 +236,7 @@ class ImageUploader {
 
             // User's attempting to upload > uploadLimit images at once
             if (this.filesList.length === this.uploadLimit) {
-                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);
+                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);  // TODO: translate... hmm...
             }
 
             // The number of images we'd have uploaded if the current one processed uploads successfully
@@ -416,7 +416,7 @@ class ImageUploader {
         });
         // Network error
         newPostReq.addEventListener('error', function (err) {
-            self.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+            self.displayError(err.message, vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
             $('[data-loading].is-loading').removeClass('is-loading');
 
             return window.scrollTo({
@@ -507,7 +507,7 @@ class ImageUploader {
 
         // Network error
         req.addEventListener('error', function (err) {
-            self.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+            self.displayError(err.message, vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
             $('[data-loading].is-loading').removeClass('is-loading');
 
             return window.scrollTo({

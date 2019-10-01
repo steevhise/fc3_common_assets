@@ -4,7 +4,7 @@
         <slot :formData="formData" ></slot>
         <div class="form-overlay">
             <div class="content">
-                <fc-spinner :size="size" message="Loading..." ></fc-spinner>
+                <fc-spinner :size="size" :message="t('Loading...')" ></fc-spinner>
             </div>
         </div>
     </form>
