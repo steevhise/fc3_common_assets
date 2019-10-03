@@ -22,7 +22,7 @@
 						<i class="fa fa-city">
 						<fc-icon name="friend_circle"></fc-icon>
 						</i>
-						<span alt="friends circle" title="friends circle">Friends Circle</span>
+						<span :alt="t('Friends Circle')" :title="t('Friends Circle')">{{ t('Friends Circle') }}</span>
 					</div>
 				</div>
 			</div>
