@@ -7,7 +7,7 @@
         </div>
         <div class="form-overlay" style="top:3em;">
             <span class="content">
-              <fc-spinner size="big" message="Searching..." ></fc-spinner>
+              <fc-spinner size="big" :message="t('Searching...')" ></fc-spinner>
             </span>
         </div>
 
@@ -23,10 +23,9 @@
 
             <div class="item-list-header-filter location">
                 <select class="post-search-dropdown" name="town">
-                    <option selected value="any">{{ t('Any Towns') }}</option>
                     <option value="all">{{ t('All My Towns') }}</option>
                     {%raw%}
-                    <option v-for="town in $root.posts.towns" :key="town.id" :value="town.id">{{town.name|truncate(30)}}</option>
+                    <option v-for="town in $root.globalData.towns" :key="town.id" :value="town.id">{{town.name|truncate(30)}}</option>
                     {%endraw%}
                 </select>
             </div>
