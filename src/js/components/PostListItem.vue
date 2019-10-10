@@ -32,7 +32,7 @@
 						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
-							<option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t('Mark As') }} {{`${closedType[0]}${lowercase(closedType.slice(1))}` }}</option>
+							<option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t('Mark As') }} {{ t(`${closedType[0]}${lowercase(closedType.slice(1))}`) }}</option>
 							<option v-else-if="postType === 'LEND'" :value="lent ? t('return') : t('lend')">
 								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>

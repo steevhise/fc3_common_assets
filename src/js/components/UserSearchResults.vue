@@ -69,9 +69,9 @@
         this.results = [];
         Object.assign(this.results, data);
         this.isVisible = true;
-        this.header = this.t('Found: ') + this.results.length;    // t('Found:')   // dumb parser.
+        this.header = this.$parent.t('Found:') + ' ' + this.results.length;    // t('Found:')   // dumb parser.
 
-        console.warn('form results initialized!', this.results);
+        // console.warn('form results initialized!', this.results);
       }
     }
   }
