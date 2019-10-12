@@ -19,7 +19,7 @@ export const FCVue = {
 		Vue.prototype.geoFormat = (lat, lng) => {
 			return { lat : Number(lat), lng : Number(lng) };
 		};
-		
+
 		Vue.prototype.geoDistance = haversine;
 
 		// filters
@@ -70,6 +70,11 @@ export const FCVue = {
 		// convert a given string to lowerCase
 		Vue.filter('lower', function(text) {
 			return String(text).toLowerCase();
+		});
+
+		// convert string to first uppercase, rest lowercase
+		Vue.filter('firstupper', function(text) {
+			return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 		});
 
 		Vue.component('fc-button', () => import('../components/Button.vue'));
