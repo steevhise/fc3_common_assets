@@ -100,7 +100,7 @@ class ImageUploader {
         }
 
         const constraintsEl = document.querySelector('.image-uploader-rules');
-        const constraintsText = document.createTextNode(`Up to ${this.uploadLimit} image${this.uploadLimit > 1 ? 's' : ''} allowed. ` + vm.$root.t('Only jpg/jpegs and pngs. Images larger than 1MB will be scaled down for faster upload'));
+        const constraintsText = document.createTextNode( this.uploadLimit );
         constraintsEl.appendChild(constraintsText);
     }
 
@@ -132,7 +132,7 @@ class ImageUploader {
         deleteButton.setAttribute('class', 'btn-delete del-img');
         deleteButton.setAttribute('type', 'button'); // turn off any default behavior
         deleteButton.addEventListener('click', this.deleteUpload.bind(this)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
-        deleteButton.innerHTML = 'Remove';
+        deleteButton.innerHTML = window.vm.$root.t('Remove');
 
 
         rotateClockwiseButton.setAttribute('class', 'btn-default rotate-clockwise');
@@ -220,7 +220,7 @@ class ImageUploader {
 
         // Should never be hit, with the input being disabled on this condition in the loop below; totally defensive
         if (this.filesList.length === this.uploadLimit) {
-            return this.displayError(vm.$root.t("You've already uploaded max allowed images"), uploadErrContainer);
+            return this.displayError(window.vm.$root.t("You've already uploaded max allowed images"), uploadErrContainer);
         }
 
         // Validate newly uploaded file(s)
@@ -230,6 +230,7 @@ class ImageUploader {
 
         filesArr.forEach(function(f, index) {
 
+            // TODO: translate
             if (f.type.match(/image\/(jpeg|png)/) === null) {
                 return this.displayError(`We can't process ${f.name} because it's a ${f.type}. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
             }
@@ -398,7 +399,7 @@ class ImageUploader {
                 }
 
                 // ON SUCCESS, pop up a modal that gives user options
-                $('#modalPostConfirm').prepend("<p style='margin-left:5em;margin-right:5em;'>" + vm.$root.t(`Your item has been posted and given the post id ${postId}.`) + ` <a href="/posts/${postId}">` + vm.$root.t('Click here to view it.') + '</a></p>' );
+                $('#modalPostConfirm').prepend("<p style='margin-left:5em;margin-right:5em;'>" + window.vm.$root.t(`Your item has been posted and given the post id`) + ' ' + postId + `. <a href="/posts/${postId}">` + window.vm.$root.t('Click here to view it.') + '</a></p>' );
                 $('#modalPostConfirm').foundation('open');
                 $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
                 $(window).on(
@@ -426,7 +427,7 @@ class ImageUploader {
         });
         // Network error
         newPostReq.addEventListener('error', function (err) {
-            self.displayError(err.message, vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
+            self.displayError(err.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
             $('[data-loading].is-loading').removeClass('is-loading');
 
             return window.scrollTo({
@@ -517,7 +518,7 @@ class ImageUploader {
 
         // Network error
         req.addEventListener('error', function (err) {
-            self.displayError(err.message, vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
+            self.displayError(err.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
             $('[data-loading].is-loading').removeClass('is-loading');
 
             return window.scrollTo({
