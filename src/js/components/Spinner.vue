@@ -4,7 +4,9 @@
 		<div class="vue-simple-spinner-text" :style="text_style" v-if="message.length > 0">{{message}}</div>
 	</div>
 
-<!--	// {{ t('Loading...') }}  // cuz of dumb i18n-parser  -->
+<!--	// {{ t('Loading...') }}  // cuz of dumb i18n-parser
+{{ t('Searching...') }}
+-->
 </template>
 
 <script>
@@ -116,6 +118,7 @@
 			spinner_style() {
 				return {
 					'margin': '0 auto',
+					'background-color': 'white',
 					'border-radius': '100%',
 					'border': this.line_size_px + 'px solid ' + this.lineBgColor,
 					'border-top': this.line_size_px + 'px solid ' + this.lineFgColor,
@@ -127,9 +130,12 @@
 			text_style() {
 				return {
 					'margin-top': this.text_margin_top + 'px',
+					'background-color': 'white',
 					'color': this.textFgColor,
 					'font-size': this.text_font_size + 'px',
-					'text-align': 'center'
+					'text-align': 'center',
+					'position': 'relative',
+					'z-index': 9
 				}
 			}
 		}
@@ -139,6 +145,8 @@
 <style>
 	.vue-simple-spinner {
 		transition: all 0.3s linear;
+		position: relative;
+		z-index: 10;
 	}
 
 	@keyframes vue-simple-spinner-spin {
