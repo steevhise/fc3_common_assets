@@ -38,13 +38,16 @@ const postItemConfig = {
 
       switch (this.postType) {
         case 'OFFER':
-          return 'TAKEN';
+          return 'Taken';
         case 'WANTED':
         case 'BORROW':
-          return 'RECEIVED';
+          return 'Received';
       }
 
       return null;
+    },
+    markMessage() {
+      return 'Mark As ' + this.closedType;
     },
     replyButton() {
 

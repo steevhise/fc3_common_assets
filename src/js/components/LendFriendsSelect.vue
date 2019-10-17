@@ -1,6 +1,6 @@
 <template>
 	<fc-modal custom-target="friend-select-form">
-		<fc-spinner v-if="!friendsLoaded" size="huge" message="Loading..." ></fc-spinner>
+		<fc-spinner v-if="!friendsLoaded" size="huge" :message="t('Loading...')" ></fc-spinner>
 		<div v-else id="friend-select-body">
 			<h2>{{ post.subject }}</h2>
 			<h3>Which friend are you lending to?</h3>

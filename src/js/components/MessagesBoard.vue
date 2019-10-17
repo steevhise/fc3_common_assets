@@ -35,7 +35,7 @@
 			</div>
 
 			<div class="message-list-item-details-chat" v-if="loadingThreads" >
-				<fc-spinner size="huge" message="Loading..."></fc-spinner>
+				<fc-spinner size="huge" :message="t('Loading...')"></fc-spinner>
 			</div>
 
 			<div v-else class="message-list-item-details-chat">
