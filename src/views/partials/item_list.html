@@ -56,20 +56,20 @@
                 <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
                     <div class="grid-sizer"></div>
                     <div class="gutter-sizer"></div>
-                    <fc-data v-masonry-tile :data="{{data|json|striptags|e}}" :viewer="{{sessionId}}" context="posts" component="fc-post-grid-item" :path="{{path|json|e}}" :route="{{path|json|e}}" blocked-users="{{data.blockedUsers|json|e}}"></fc-data>
+                    <fc-data v-masonry-tile :data="{{data|json|striptags|e}}" :viewer="{{sessionId}}" context="posts" component="fc-post-grid-item" :path="{{path|json|e}}" :route="{{path|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
 
                 </div>
-                <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout == 'list'">
-                    <fc-data :data="{{data|json|striptags|e}}" context="posts" :viewer="{{sessionId}}" component="fc-post-list-item" :path="{{path|json|e}}" :route="{{route|json|e}}" blocked-users="{{data.blockedUsers|json|e}}"></fc-data>
+                <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout === 'list'">
+                    <fc-data :data="{{data|json|striptags|e}}" :limit=10 context="posts" :viewer="{{sessionId}}" component="fc-post-list-item" :path="{{path|json|e}}" :route="{{route|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
                 </div>
             </div>
             <br/>
             {#NOTE: The limit of number of items shown is controlled via Data.vue props.limit#}
-            {%if data.posts.length >= 50 %}
+            {# if data.posts.length >= 0 #}
             <div id="item-list-load-more" class="row item-list-load-more">
                 <button class="btn-action" @click="$root.$emit('loadMorePosts')">{{ t('Load More') }}</button>
             </div>
-            {% endif %}
+            {# endif #}
         {% else %}
             {% if filterType === 'circle' %}
                 <div class="row text-center" style="margin-top:1em;">

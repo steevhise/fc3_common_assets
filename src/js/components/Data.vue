@@ -4,35 +4,42 @@
 			v-on:friend-selected="postLent"
 		/>
 		<fc-lend-message ref="lendMessage"/>
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users="blockedUsers" :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users=blockedUsers :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
 			v-on:post-returned="postReturned"
 		>
 		</component>
+		<span>total: {{ count }} | items: {{ items.length }} displaying: {{ currLimit }} | display limit: {{ limit }} | offset: {{ offset }} | backendLimit: {{ backendLimit }}</span>
 	</div>
 </template>
 
 <script>
+	import axios from 'axios';
+
 	export default {
 		name : 'fc-data',
 		props : {
-			limit: { type: Number, default: 50 },
+			limit: { type: Number, default: 25 },			// this is how many we load onto visible page at a time.
+			backendLimit: { type: Number, default: 50 },     // this is how many we get from api endpoint
 			component: { type: String, required: true },
-			data: { type: Object, default: {} },
+			data: { type: Object, default: {} },				// this doesn't change... no props should change
+			circle: { type: String, default: 'towns' },      // TODO: we need to detect this from url?
 			viewer: { type: Number, default: 0 },
 			path: { type: Object, default: {} },
 			route: { type: Object, default: {} },
 		    blockedUsers: { type: Array, default: [] },
 			context: { type: String, default: "item" }
 		},
-		data() {
+		data: function() {
 			return {
-				posts: this.data.posts || [],
-				currLimit: this.limit,
+				posts: this.data.posts || [],					// THIS is what we change when we load more... NOT the data prop.
+				offset: 0,								// for backend query to api endpoint
+				currLimit: this.limit,					// i think this is the amount we're displaying currently. starts as limit.
 				postFilter: null,
 				selectedTags: [],
 				deletedPosts: [],
+				count: this.data.count,
 				isMember: this.data.isMember || false
 			}
 		},
@@ -49,7 +56,14 @@
 
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += self.limit;
+				self.offset = self.$data.posts.length;
 				self.$root.$emit('redrawVueMasonry');
+				// if we've now displayed (almost) all we have, but there's more on backend, then get more
+				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count)) {
+					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
+					return;
+				}
+				console.log('didnt need to get more data...');
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -57,7 +71,7 @@
 			});
 
 			this.$root.$on('handlePostFilter', (type) => {
-				if (type == this.$root.posts.filter) {
+				if (type === this.$root.posts.filter) {
 					this.$root.posts.filter = null;
 				} else {
 					this.$root.posts.filter = type;
@@ -66,7 +80,7 @@
 		},
 		watch: {
 			items(newVal, oldVal) {
-				if (this.currLimit > this.items.length) {
+				if (this.currLimit > this.count) {
 					window.$('#item-list-load-more').hide();
 				} else {
 					window.$('#item-list-load-more').show();
@@ -78,14 +92,14 @@
 				let self = this;
 				let results = [];
 
+				console.info(this.posts.length);
 				results = self.$lodash.filter(this.posts, function(item, index) {
-
 					return !self.deletedPosts.includes(item.id);
 				});
 
 				if (self.$root.posts.filter) {
 					results = self.$lodash.filter(results, function(item, index) {
-						return item.type.name.toLowerCase() == self.$root.posts.filter;
+						return item.type.name.toLowerCase() === self.$root.posts.filter;
 					});
 				}
 
@@ -110,6 +124,7 @@
 				});
 
 				self.$root.$emit('redrawVueMasonry');
+				console.log('items: ', results.length);
 				return results;
 			}
 		},
@@ -164,6 +179,29 @@
 			        vars[key] = value;
 			    });
 			    return vars;
+			},
+			getMoreData: function(circle = this.circle, offset = this.posts.length, limit = this.backendLimit) {
+				// TODO: ajaxy lazy-load more posts from backend - only when we run out.
+				let self = this;
+				console.info(offset);
+				let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`)
+						.then(response => {
+
+							if(response.status === 200) {
+								//console.info('grabbed more posts: ', response.data.posts.length);
+								response.data.posts.forEach((p, i) => {
+									console.info(i);
+									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts.
+								}, self);
+								self.offset = self.$root.posts.length;
+								self.count = response.data.count;
+								self.$emit('redrawVueMasonry');
+								//return { count: response.data.count, posts: response.data.posts };
+							} else {
+								console.info('problem getting more posts from dash endpoint.');
+								//return { count: self.count, posts: self.posts };  // TODO: or throw error?
+							}
+						});
 			}
 		},
 		mounted() {
