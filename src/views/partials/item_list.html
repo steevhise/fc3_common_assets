@@ -7,12 +7,19 @@
 <div class="item-list">
     <div class="item-list-inner row">
         <!-- Header row and controls -->
+        <!-- filtype: {{ filterType }} -->
         {% if !custom_hide_filter_override %} {# Allows us to hide filter if needed, defaults to on unless set #}
         <div class="item-list-header">
             <div class="item-list-header-filter">
                 {% if filterType === 'circle' %}
                     {% include './circle_type_filter_list.html' %}
+                    {% if data.criteria.friends %}
+                        {% set circle = 'friends' %}
+                    {% else %}
+                        {% set circle = 'towns' %}
+                    {% endif %}
                 {% endif %}
+
                 {% if isGroup %}
                     {# just to place post type filter on left side of filters display, only on group pages #}
                     {% include './listing_type_filter_list.html' %}
@@ -55,17 +62,17 @@
             <div class="item-list-items" style="height: auto;" >
                 <div v-masonry transition-duration="0.3s" item-selector=".post-grid-item" class="item-grid-view" ref="post_gridview" v-if="$root.posts.layout == 'grid'" >
                     <div class="grid-sizer"></div>
-                    <div class="gutter-sizer"></div>
-                    <fc-data v-masonry-tile :data="{{data|json|striptags|e}}" :viewer="{{sessionId}}" context="posts" component="fc-post-grid-item" :path="{{path|json|e}}" :route="{{path|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
+                    <div class="gutter-sizer"></div><!-- {{circle}} -->
+                    <fc-data v-masonry-tile :data="{{data|json|striptags|e}}" :viewer="{{sessionId}}" :limit=10 context="posts" circle="{{circle}}" component="fc-post-grid-item" :path="{{path|json|e}}" :route="{{path|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
 
                 </div>
                 <div class="item-list-view" ref="post_listview" v-if="$root.posts.layout === 'list'">
-                    <fc-data :data="{{data|json|striptags|e}}" :limit=10 context="posts" :viewer="{{sessionId}}" component="fc-post-list-item" :path="{{path|json|e}}" :route="{{route|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
+                    <fc-data :data="{{data|json|striptags|e}}" :limit=10 context="posts" :viewer="{{sessionId}}" circle="{{circle}}" component="fc-post-list-item" :path="{{path|json|e}}" :route="{{route|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
                 </div>
             </div>
             <br/>
             {#NOTE: The limit of number of items shown is controlled via Data.vue props.limit#}
-            {# if data.posts.length >= 0 #}
+            {# fc-data component will control showing this or not. #}
             <div id="item-list-load-more" class="row item-list-load-more">
                 <button class="btn-action" @click="$root.$emit('loadMorePosts')">{{ t('Load More') }}</button>
             </div>
@@ -97,3 +104,5 @@
     </div>
 
 </div>
+
+

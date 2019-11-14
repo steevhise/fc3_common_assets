@@ -4,13 +4,13 @@
 			v-on:friend-selected="postLent"
 		/>
 		<fc-lend-message ref="lendMessage"/>
-		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users=blockedUsers :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route"
+		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users=blockedUsers :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route" v-bind:limit="Number(limit)"
 			v-on:post-deleted="removeItem(index)"
 			v-on:post-marked="updatePostType"
 			v-on:post-returned="postReturned"
 		>
 		</component>
-		<span>total: {{ count }} | items: {{ items.length }} displaying: {{ currLimit }} | display limit: {{ limit }} | offset: {{ offset }} | backendLimit: {{ backendLimit }}</span>
+		<span>circle: {{circle}} | total: {{ count }} | items: {{ items.length }} | displaying: {{ currLimit }} | display limit: {{ limit }} | offset: {{ offset }} | backendLimit: {{ backendLimit }}</span>
 	</div>
 </template>
 
@@ -24,7 +24,7 @@
 			backendLimit: { type: Number, default: 50 },     // this is how many we get from api endpoint
 			component: { type: String, required: true },
 			data: { type: Object, default: {} },				// this doesn't change... no props should change
-			circle: { type: String, default: 'towns' },      // TODO: we need to detect this from url?
+			circle: { type: String, default: '' },      		//  pass it in from html
 			viewer: { type: Number, default: 0 },
 			path: { type: Object, default: {} },
 			route: { type: Object, default: {} },
@@ -34,12 +34,12 @@
 		data: function() {
 			return {
 				posts: this.data.posts || [],					// THIS is what we change when we load more... NOT the data prop.
-				offset: 0,								// for backend query to api endpoint
+				offset: 0,								// for backend query to api endpoint - this should increment by backendLimit
 				currLimit: this.limit,					// i think this is the amount we're displaying currently. starts as limit.
 				postFilter: null,
 				selectedTags: [],
 				deletedPosts: [],
-				count: this.data.count,
+				count: this.data.count || this.data.posts.length,
 				isMember: this.data.isMember || false
 			}
 		},
@@ -55,11 +55,12 @@
 			});
 
 			this.$root.$on('loadMorePosts', () => {
-				self.currLimit += self.limit;
+				self.currLimit += Number(self.limit);
 				self.offset = self.$data.posts.length;
 				self.$root.$emit('redrawVueMasonry');
-				// if we've now displayed (almost) all we have, but there's more on backend, then get more
-				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count)) {
+				// if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
+				// but (for now at least) only on dashboard
+				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count) && !!self.circle) {
 					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
 					return;
 				}
@@ -181,9 +182,9 @@
 			    return vars;
 			},
 			getMoreData: function(circle = this.circle, offset = this.posts.length, limit = this.backendLimit) {
-				// TODO: ajaxy lazy-load more posts from backend - only when we run out.
+				// ajaxy lazy-load more posts from backend
 				let self = this;
-				console.info(offset);
+				console.info('offset before getting more: ', offset);
 				let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`)
 						.then(response => {
 
@@ -191,15 +192,14 @@
 								//console.info('grabbed more posts: ', response.data.posts.length);
 								response.data.posts.forEach((p, i) => {
 									console.info(i);
-									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts.
+									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
 								}, self);
 								self.offset = self.$root.posts.length;
+								console.info('new offset: ', self.offset);
 								self.count = response.data.count;
 								self.$emit('redrawVueMasonry');
-								//return { count: response.data.count, posts: response.data.posts };
 							} else {
-								console.info('problem getting more posts from dash endpoint.');
-								//return { count: self.count, posts: self.posts };  // TODO: or throw error?
+								console.error('problem getting more posts from dash endpoint:', response.status);
 							}
 						});
 			}

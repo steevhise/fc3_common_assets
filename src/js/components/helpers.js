@@ -24,7 +24,16 @@ const postGroup = ({ topic }) => {
 };
 
 const postItemConfig = {
-  props: ['item', 'path', 'index', 'viewer', 'isMember', 'route', 'blockedUsers'],
+  props: {
+    item: Object,
+    path: Object,
+    index: Number,
+    viewer: Number,
+    isMember: Boolean,
+    route: Object,
+    limit: Number,
+    blockedUsers: Array
+  },
   data() {
     return {
       post: this.item,
@@ -77,7 +86,7 @@ const postItemConfig = {
       return due < now;
     },
     timezone() {
-      console.log(this.$root.userLocation);
+      console.debug(this.$root.userLocation);
       return this.$root.userLocation.timezone ? this.$root.userLocation.timezone : 'Australia/Sydney';
     }
   },
