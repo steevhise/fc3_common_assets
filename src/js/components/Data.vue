@@ -10,7 +10,6 @@
 			v-on:post-returned="postReturned"
 		>
 		</component>
-		<span>circle: {{circle}} | total: {{ count }} | items: {{ items.length }} | displaying: {{ currLimit }} | display limit: {{ limit }} | offset: {{ offset }} | backendLimit: {{ backendLimit }}</span>
 	</div>
 </template>
 
@@ -64,7 +63,7 @@
 					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
 					return;
 				}
-				console.log('didnt need to get more data...');
+				console.debug('didnt need to get more data...');
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -93,7 +92,6 @@
 				let self = this;
 				let results = [];
 
-				console.info(this.posts.length);
 				results = self.$lodash.filter(this.posts, function(item, index) {
 					return !self.deletedPosts.includes(item.id);
 				});
@@ -125,7 +123,7 @@
 				});
 
 				self.$root.$emit('redrawVueMasonry');
-				console.log('items: ', results.length);
+				console.debug('items: ', results.length);
 				return results;
 			}
 		},
@@ -184,18 +182,15 @@
 			getMoreData: function(circle = this.circle, offset = this.posts.length, limit = this.backendLimit) {
 				// ajaxy lazy-load more posts from backend
 				let self = this;
-				console.info('offset before getting more: ', offset);
 				let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`)
 						.then(response => {
 
 							if(response.status === 200) {
 								//console.info('grabbed more posts: ', response.data.posts.length);
 								response.data.posts.forEach((p, i) => {
-									console.info(i);
 									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
 								}, self);
 								self.offset = self.$root.posts.length;
-								console.info('new offset: ', self.offset);
 								self.count = response.data.count;
 								self.$emit('redrawVueMasonry');
 							} else {
