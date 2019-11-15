@@ -56,13 +56,13 @@
 			this.$root.$on('loadMorePosts', () => {
 				self.currLimit += Number(self.limit);
 				self.offset = self.$data.posts.length;
-				self.$root.$emit('redrawVueMasonry');
 				// if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
 				// but (for now at least) only on dashboard
 				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count) && !!self.circle) {
 					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
 					return;
 				}
+				self.$root.$emit('redrawVueMasonry');
 				console.debug('didnt need to get more data...');
 			});
 
@@ -191,8 +191,9 @@
 									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
 								}, self);
 								self.offset = self.$root.posts.length;
-								self.count = response.data.count;
-								self.$emit('redrawVueMasonry');
+								self.count = response.data.count || self.count;
+								console.debug('total: ', self.count);
+								//self.$emit('redrawVueMasonry');
 							} else {
 								console.error('problem getting more posts from dash endpoint:', response.status);
 							}
@@ -211,6 +212,14 @@
 			let tags = self.getTagsFromUrl();
 			self.selectedTags = tags;
 			window.$('.tag-select').val(tags);
+
+			// pre-emptively load more posts from backend pretty soon after page render.
+			if (!!self.circle) {   // if it's the dashboard...
+				setTimeout(() => {
+					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
+				}, 2000)
+			}
+
 		}
 	}
 </script>
