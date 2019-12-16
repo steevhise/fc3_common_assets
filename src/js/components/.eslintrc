@@ -1,3 +1,5 @@
 {
-  "extends": "plugin:vue/essential"
+  "extends": "plugin:vue/base"
+
 }
+

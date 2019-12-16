@@ -69,7 +69,7 @@
                     <fc-data :data="{{data|json|striptags|e}}" :limit=10 context="posts" :viewer="{{sessionId}}" circle="{{circle}}" component="fc-post-list-item" :path="{{path|json|e}}" :route="{{route|json|e}}" :blocked-users={{data.blockedUsers|json|e}}></fc-data>
                 </div>
             </div>
-            <br/>
+        <div class="row"></div>
             {#NOTE: The limit of number of items shown is controlled via Data.vue props.limit#}
             {# fc-data component will control showing this or not. #}
             <div id="item-list-load-more" class="row item-list-load-more">

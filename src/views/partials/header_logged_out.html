@@ -15,7 +15,7 @@
     <span class="heading-with-icon header-user-icon">
         {% include '../icons/user.html' %}
         <fc-modal id="login" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>{{ t('Log in') }}</a>" style="float: right;">
-            <fc-login unique-name="popup-form"></fc-login>
+            <fc-login unique-name="popup-form" ref="loginBox"></fc-login>
         </fc-modal>
     </span>
 </div>
