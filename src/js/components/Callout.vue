@@ -1,6 +1,6 @@
 <template>
     <transition name="fade" :duration="timer">
-        <div id="callout" v-if="isVisible" :class="`callout ${this.level}`" data-closable="slide-out-right">
+        <div id="callout" v-if="isVisible" :class="`callout large ${this.level}`" data-closable="slide-out-right">
             <h5 v-if="header">{{header}}</h5>
             <p v-html="message"></p>
         </div>
@@ -13,7 +13,7 @@
         data() {
             return {
                 isVisible: false,
-                timer: 5000, // time in ms
+                timer: 9000, // time in ms
                 message: null,
                 level: 'primary', // secondary, success, info, warning, alert
                 header: null
@@ -24,7 +24,7 @@
             this.$bus.$on('alert', (data) => {
                 this.init(data);
             });
-            
+
             // handle event for root events
             this.$root.$on('alert', (data) => {
                 this.init(data);
@@ -49,10 +49,17 @@
         top: 10px;
         right: 10px;
     }
+
+    p {
+        font-size: 2rem;
+        line-height: 3rem;
+    }
+
     .fade-enter-active, .fade-leave-active {
       transition: opacity .6s
     }
     .fade-enter, .fade-leave-to {
       opacity: 0
     }
+
 </style>

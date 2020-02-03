@@ -51,7 +51,7 @@
 					<form ref="messageForm" @submit.prevent="handleSubmit">
 						<div class="row" style="width: 100%;">
 							<div class="columns small-10">
-								<input type="text" ref="messageBody" :placeholder="t('Write a Message (1000 characters max)')" maxlength="1000" required>
+								<input type="text" ref="messageBody" :placeholder="t('Write a Message (1000 characters max)')" maxlength="998" required>
 							</div>
 							<div class="columns small-2">
 								<fc-spinner v-if="sendingMessage" size="medium" :message="t('Sending...')"></fc-spinner>

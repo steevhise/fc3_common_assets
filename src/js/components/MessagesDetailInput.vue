@@ -40,7 +40,7 @@
 		    defaultBody: String,
 			subject: String,
 			customTrigger: { default: ''},
-			limit: { default: 1000 }
+			limit: { default: 998 }
 		},
 		data() {
 			return {
