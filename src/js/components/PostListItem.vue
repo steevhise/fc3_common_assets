@@ -1,9 +1,10 @@
 <template>
+	<!-- weird... {{ postType }} -->
 	<div style="visibility: hidden;" v-if="blockedUsers.length && blockedUsers.includes(post.userId)" v-once>
         <!--post by user:{{post.userId}} blocked cuz in: {{blockedUsers|json}}-->
     </div>
     <div class="post-list-item" v-else >
-    	<div class="upper-row">
+		<div class="upper-row">
 			<div class="post-list-item-category-icon">
 				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
 				<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
@@ -12,7 +13,7 @@
 				<div v-if="viewer" class="post-list-item-header-right">
 					<template v-if="viewer === post.userId">
 					<!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
-						<button v-if="post.isApproved == false" style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
+						<button v-if="post.isApproved === false" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
 								style="display: none;"
@@ -33,11 +34,11 @@
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t(markMessage) }}</option>
-							<!-- {{ t('TAKEN') }}
-							{{ t('RECEIVED') }}
-							 {{ t('Mark As Taken') }}
-							 {{ t('Mark As Received') }}
-							 (this cuz of dumb i18n parser...) -->
+<!-- {{ t('TAKEN') }}
+{{ t('RECEIVED') }}
+ {{ t('Mark As Taken') }}
+ {{ t('Mark As Received') }}
+ (this cuz of dumb i18n parser...) -->
 							<option v-else-if="postType === 'LEND'" :value="lent ? t('return') : t('lend')">
 								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>
@@ -60,7 +61,7 @@
 								{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
 						</span>
 						<fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-						  <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
+						<p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
 						</fc-messages-detail-input>
 					</template>
 				</div>
@@ -73,9 +74,6 @@
 		</div>
 		<div class="post-list-item-photo" v-if="post.thumb" v-lazy-container="{ selector: 'img' }" >
 			<img :data-src="post.thumb">
-			<!-- <div v-else class="post-image-placeholder" >
-				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`" style="position: absolute; width:100%; height: 100%; left: 60px; top:50px;" ></fc-icon>
-			</div> -->
 		</div>
 		<div class="post-list-item-content">
 			<div class="post-list-item-content-header">

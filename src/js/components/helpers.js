@@ -65,11 +65,11 @@ const postItemConfig = {
     },
     lent() {
 
-      return this.post.share && !this.post.share.returnDate
+      return this.post.share && this.post.share.length > 0 && !this.post.share.returnDate
     },
     due() {
 
-      return this.post.share.dueDate && Moment(this.post.share.dueDate).format('M-D-YYYY');
+      return this.post.share && this.post.share.dueDate && Moment(this.post.share.dueDate).format('M-D-YYYY');
     },
     overdue() {
 

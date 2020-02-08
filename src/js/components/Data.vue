@@ -123,7 +123,7 @@
 				});
 
 				self.$root.$emit('redrawVueMasonry');
-				console.debug('items: ', results.length);
+				//console.debug('items: ', results);
 				return results;
 			}
 		},
