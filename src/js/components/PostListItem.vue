@@ -1,5 +1,4 @@
 <template>
-	<!-- weird... {{ postType }} -->
 	<div style="visibility: hidden;" v-if="blockedUsers.length && blockedUsers.includes(post.userId)" v-once>
         <!--post by user:{{post.userId}} blocked cuz in: {{blockedUsers|json}}-->
     </div>
@@ -30,7 +29,7 @@
 							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
 						</span>
 						<!--  if pending post, show "manage" button, but only with delete.? -->
-						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t(markMessage) }}</option>
@@ -39,7 +38,10 @@
  {{ t('Mark As Taken') }}
  {{ t('Mark As Received') }}
  (this cuz of dumb i18n parser...) -->
-							<option v-else-if="postType === 'LEND'" :value="lent ? t('return') : t('lend')">
+							<option v-else-if="postType === 'LEND' && lent" value="return">
+								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+							</option>
+							<option v-else-if="postType === 'LEND' && !lent" value="lend">
 								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>
 							<option value="delete">{{ t('Delete Post') }}</option>

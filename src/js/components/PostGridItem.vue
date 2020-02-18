@@ -1,5 +1,8 @@
 <template>
-	<div class="post-grid-item" style="padding: 5px;" v-bind="$attrs" >
+	<div style="visibility: hidden;" v-if="blockedUsers.length && blockedUsers.includes(post.userId)" v-once>
+		<!--post by user:{{post.userId}} blocked cuz in: {{blockedUsers|json}}-->
+	</div>
+	<div class="post-grid-item" v-else style="padding: 5px;" v-bind="$attrs" >
 		<div class="post-grid-item-inner">
 			<div class="post-grid-item-header">
 				<div class="post-grid-item-header-left">
@@ -69,13 +72,16 @@
                                 {{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}.</span>
 								<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t('Message your friend') }}</a>
 							</p>
-							<p v-else-if="lent" class="callout success">On Loan!<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
+							<p v-else-if="lent" class="callout success">{{ t('On Loan!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 						</template>
-						<select class="manage-post-select post-grid-select" :class="`btn-${lowercase(postType)}`" v-on:change="manageOp">
+						<select v-if="currentRoute.split('/')[1] !== 'member'" class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="closedType" value="mark" >{{ t(markMessage) }}</option>
-							<option v-else-if="postType === 'LEND'" :value="lent ? t('return') : t('lend')">
+							<option v-else-if="postType === 'LEND' && lent" value="return">
+								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+							</option>
+							<option v-else-if="postType === 'LEND' && !lent" value="lend">
 								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>
 							<option value="delete">{{ t('Delete Post') }}</option>

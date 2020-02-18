@@ -37,6 +37,7 @@ const postItemConfig = {
   data() {
     return {
       post: this.item,
+      currentRoute: window.location.pathname
     }
   },
   computed: {
@@ -64,8 +65,7 @@ const postItemConfig = {
       return `<button class="btn-${this.lowercase(this.postType)}">${text}</button>`;
     },
     lent() {
-
-      return this.post.share && this.post.share.length > 0 && !this.post.share.returnDate
+      return this.post.share && this.post.share[0] && !this.post.share.returnDate
     },
     due() {
 
@@ -73,7 +73,10 @@ const postItemConfig = {
     },
     overdue() {
 
-      const { dueDate } = this.post.share;
+      let dueDate = null;
+      if(this.post.share) {
+        dueDate = this.post.share.dueDate;
+      }
 
       if (!this.lent || !dueDate) {
         return false;
@@ -82,11 +85,9 @@ const postItemConfig = {
       const normalize = (moment) => moment.utc().startOf('day').toDate().getTime();
       const due = normalize(Moment(dueDate, 'YYYY-MM-DD'));
       const now = normalize(Moment());
-
       return due < now;
     },
     timezone() {
-      console.debug(this.$root.userLocation);
       return this.$root.userLocation.timezone ? this.$root.userLocation.timezone : 'Australia/Sydney';
     }
   },
@@ -112,14 +113,15 @@ const postItemConfig = {
           window.$(`.post-${layout}-item:eq(${self.index})`)
             .find(`.post-${layout}-item-content .alert`)
             .remove();
-      }
+      };
 
       // Remove any error blocks when kicking off a new operation (prevents duplicate messages displayed)
       clearErrors();
 
+      let url;
       switch (operation) {
         case 'edit':
-          const url = `${protocol}//${host}${self.path.home_post_edit}${self.post.id}`;
+          url = `${protocol}//${host}${self.path.home_post_edit}${self.post.id}`;
           window.location.assign(url);
           break;
         case 'delete':
@@ -135,6 +137,7 @@ const postItemConfig = {
         case 'replies':
           window.$.get(`/api/messaging/topics/post/${this.post.id}`)
           .done((data, status) => {
+            console.debug(data,status);
             const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
             window.location.assign(myReplies);
           })
@@ -143,16 +146,19 @@ const postItemConfig = {
         case 'mark':
           window.$.post(`/api/posts/${self.post.id}/mark`, { newType: self.closedType })
           .done((data, status) => {
+            console.debug(data,status);
             self.$emit('post-marked', { type: data, post: self.post });
           })
           .fail(() => displayError(self.t("We couldn't mark your post at this time. Sorry!")));
           break;
         case 'lend':
+          console.debug('lend post ', self.post.id);
           $(`#friend-select-trigger-${self.post.id}`).click(); // Open friend select form, fires onClickModalTrigger
           break;
         case 'return':
           $.post(`/api/posts/${self.post.id}/return`)
           .done((data, status) => {
+            console.debug(data,status);
             self.$emit('post-returned', { post: self.post });
           })
           .fail(() => displayError(self.t('Marking your post as returned failed at this time. We apologize for the inconvenience!')));
@@ -163,6 +169,7 @@ const postItemConfig = {
       event.currentTarget.selectedIndex = 0;
     },
     onClickModalTrigger() {
+      console.debug('modal trigger!');
       this.$bus.$emit('friend-select:trigger', { post: this.post });
     }
   }

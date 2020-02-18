@@ -13,7 +13,7 @@
         data() {
             return {
                 isVisible: false,
-                timer: 9000, // time in ms
+                timer: 6000, // time in ms that the callout shows
                 message: null,
                 level: 'primary', // secondary, success, info, warning, alert
                 header: null

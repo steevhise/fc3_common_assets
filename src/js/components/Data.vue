@@ -1,15 +1,14 @@
 <template>
 	<div id="fc-data">
-		<fc-lend-friends-select
-			v-on:friend-selected="postLent"
-		/>
-		<fc-lend-message ref="lendMessage"/>
+
 		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users=blockedUsers :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route" v-bind:limit="Number(limit)"
-			v-on:post-deleted="removeItem(index)"
-			v-on:post-marked="updatePostType"
-			v-on:post-returned="postReturned"
+			v-on:post-deleted.passive="removeItem(index)"
+			v-on:post-marked.passive="updatePostType"
+			v-on:post-returned.passive="postReturned"
 		>
 		</component>
+		<fc-lend-friends-select v-on:friend-selected.passive="postLent" />
+		<fc-lend-message ref="lendMessage"/>
 	</div>
 </template>
 
@@ -27,7 +26,7 @@
 			viewer: { type: Number, default: 0 },
 			path: { type: Object, default: {} },
 			route: { type: Object, default: {} },
-		    blockedUsers: { type: Array, default: [] },
+			blockedUsers: { type: Array, default: [] },
 			context: { type: String, default: "item" }
 		},
 		data: function() {
@@ -145,6 +144,7 @@
 			},
 			postLent: function({ share, post, threadId }) {
 
+				console.debug('post lent!');
 				const { $lodash, posts } = this;
 				const matchId = (p) => p.id === post.id;
 
@@ -173,11 +173,11 @@
 				return (params.tags) ? params.tags.split(",") : [];
 			},
 			getUrlParams() {
-			    let vars = {};
-			    let parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-			        vars[key] = value;
-			    });
-			    return vars;
+				let vars = {};
+				let parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+					vars[key] = value;
+				});
+				return vars;
 			},
 			getMoreData: function(circle = this.circle, offset = this.posts.length, limit = this.backendLimit) {
 				// ajaxy lazy-load more posts from backend
