@@ -65,7 +65,7 @@ const postItemConfig = {
       return `<button class="btn-${this.lowercase(this.postType)}">${text}</button>`;
     },
     lent() {
-      return this.post.share && this.post.share[0] && !this.post.share.returnDate
+      return this.post.share && !this.post.share.returnDate
     },
     due() {
 
@@ -152,7 +152,6 @@ const postItemConfig = {
           .fail(() => displayError(self.t("We couldn't mark your post at this time. Sorry!")));
           break;
         case 'lend':
-          console.debug('lend post ', self.post.id);
           $(`#friend-select-trigger-${self.post.id}`).click(); // Open friend select form, fires onClickModalTrigger
           break;
         case 'return':
@@ -169,7 +168,6 @@ const postItemConfig = {
       event.currentTarget.selectedIndex = 0;
     },
     onClickModalTrigger() {
-      console.debug('modal trigger!');
       this.$bus.$emit('friend-select:trigger', { post: this.post });
     }
   }

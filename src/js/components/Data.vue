@@ -62,7 +62,6 @@
 					return;
 				}
 				self.$root.$emit('redrawVueMasonry');
-				console.debug('didnt need to get more data...');
 			});
 
 			this.$root.$on('postViewToggle', () => {
@@ -144,7 +143,6 @@
 			},
 			postLent: function({ share, post, threadId }) {
 
-				console.debug('post lent!');
 				const { $lodash, posts } = this;
 				const matchId = (p) => p.id === post.id;
 
@@ -192,7 +190,6 @@
 								}, self);
 								self.offset = self.$root.posts.length;
 								self.count = response.data.count || self.count;
-								console.debug('total: ', self.count);
 								//self.$emit('redrawVueMasonry');
 							} else {
 								console.error('problem getting more posts from dash endpoint:', response.status);
