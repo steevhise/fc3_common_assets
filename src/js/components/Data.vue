@@ -155,6 +155,7 @@
 
 				this.$refs.lendMessage.post = post;
 				this.$refs.lendMessage.lendThreadId = threadId;
+				console.debug('about to open lendMessage form...');
 				$('#lendMessageTrigger').click(); // open optional lend message form (fc-lend-message)
 			},
 			postReturned: function({ post }) {
