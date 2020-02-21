@@ -1,7 +1,5 @@
 <template>
-	<div>
-		<!-- data-close comes from Foundation's Reveal modal (part of enclosing fc-modal component on my replies page
-			 no-op if component isn't used within a modal -->
+	<div><!-- data-close comes from Foundation's Reveal modal (part of enclosing fc-modal component on my replies page no-op if component isn't used within a modal -->
 		<div @click="onClickClose" style="position: absolute; top: 0; right: 10px; z-index: 1000" data-close >
 			<i class="fa fa-times-circle" style="margin: 10px; font-size: 22px; color: #34b233; cursor: pointer;" ></i>
 		</div>
@@ -24,7 +22,7 @@
 		<div class="message-list-item-details">
 			<div v-if="threads && threads.length > 1" class="message-list-item-details-sidebar">
 				<ul class="message-list-item-details-participants">
-						<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)"
+					<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)"
 							class="message-list-item-details-participant" v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
 						>
 						<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
@@ -47,15 +45,16 @@
 					:messages="messages"
 					:me="me"
 				/>
-				<div class="message-list-item-details-chat-form">
+				<div class="message-list-item-details-chat-form" :style="`opacity: ${notFriend(topic.topic.type, threads) ? '50%' : '100%'};`">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
 						<div class="row" style="width: 100%;">
 							<div class="columns small-10">
-								<input type="text" ref="messageBody" :placeholder="t('Write a Message (1000 characters max)')" maxlength="998" required>
+								<span v-if="notFriend(topic.topic.type, threads)">(no longer a friend)</span>
+								<input v-else type="text" ref="messageBody" :placeholder="t('Write a Message (1000 characters max)')" maxlength="998" required>
 							</div>
 							<div class="columns small-2">
 								<fc-spinner v-if="sendingMessage" size="medium" :message="t('Sending...')"></fc-spinner>
-								<button class="btn-default" v-else>{{ t('Send') }}</button>
+								<button class="btn-default" :disabled="notFriend(topic.topic.type, threads)" v-else>{{ t('Send') }}</button>
 							</div>
 						</div>
 					</form>
@@ -68,6 +67,10 @@
 <script>
 	import { topicTitle, postGroup } from './helpers';
 
+	// TODO: for friend thread with someone no longer a friend, we can disable the input form with:  $(".message-list-item-details-chat-form :input").attr("disabled", "disabled");
+	// TODO: also need to put some message placeholder in the disabled form "no longer a friend"
+	// TODO: so test for topic.topic.type == 'friend' and if the other user ISNT a friend
+	// friends will always be in this.$root.globalData.friends
 	export default {
 		name: 'fc-messages-board',
 		props: {
@@ -112,6 +115,11 @@
 					form.reset();
 					self.sendingMessage = false;
 				});
+			},
+			notFriend: (type, threads) => {
+
+				const userId = threads[0].user.id || 0;
+				return !!((type === 'friend') && !window.vm.$root.globalData.friends.includes(userId));
 			}
 		}
 	}

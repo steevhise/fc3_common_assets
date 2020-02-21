@@ -41,6 +41,9 @@
 				this.$refs.lendMessageForm.$el.reset();
 				this.$bus.$emit('alert', { level : 'success', message: 'Message sent!', timer: 20000 })
 			});
-		}
+		},
+        mounted() {
+            $('#lend-message-form').foundation();   // initialize foundation on this element, so we can be ready to open the modal
+        },
 	}
 </script>
