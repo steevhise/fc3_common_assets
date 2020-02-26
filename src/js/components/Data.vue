@@ -1,5 +1,6 @@
 <template>
 	<div id="fc-data">
+		<fc-lend-message ref="lendMessage"/>
 
 		<component :is="component" v-for="(item, index) in items" :key="item.id" :path="path" :blocked-users=blockedUsers :item="item" :index="index" :viewer="viewer" :isMember="isMember" :route="route" v-bind:limit="Number(limit)"
 			v-on:post-deleted.passive="removeItem(index)"
@@ -8,7 +9,6 @@
 		>
 		</component>
 		<fc-lend-friends-select v-on:friend-selected.passive="postLent" />
-		<fc-lend-message ref="lendMessage"/>
 	</div>
 </template>
 
