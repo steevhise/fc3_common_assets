@@ -15,20 +15,22 @@
     3. Add a div somewhere near the top of the page with the form-errors-container class
 */
 
+import { API, handleError } from '../helpers/axios'
+
 class ImageUploader {
 
-    constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors, requestType }) {
+    constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors, requestType, uploadApiEndpoints }) {
 
         if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors || !requestType) {
             throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
-        }
 
+        }
         let postId;
         if (requestType === 'post') {
-            postId = location.pathname.match(/post\/(\d+)/)[1];
+            postId = location.pathname.match(/post[s]?\/(\d+)/)[1]; // TODO: will matching on 'posts' break something on fc3_main?
         }
 
-        const UPLOAD_API_ENDPOINTS = {
+        const UPLOAD_API_ENDPOINTS = uploadApiEndpoints || {
             newPost: 'images/post',
             // DEPENDS ON POST ID BEING PRESENT IN URL OF PAGE ON WHICH EXISTING POST UPDATE FORM IS SET
             post: `images/post/${postId}`,
@@ -51,10 +53,12 @@ class ImageUploader {
             submit: this.handleSubmit.bind(this),
             newPostSubmit: this.handleNewPostSubmit.bind(this)
         };
+        // Account for modtools dev environment
+        this.locationOrigin = (location.port == 8080 ? `https://${location.hostname}:8000` : location.origin)
 
         // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
         document.querySelector('#images').addEventListener('change', this.listeners.fileInput);
-        document.querySelector('.image-upload-form').addEventListener('submit', requestType === 'newPost' ? this.listeners.newPostSubmit : this.listeners.submit);
+        document.querySelector('.image-upload-form').submit = (e) => requestType === 'newPost' ? this.listeners.newPostSubmit(e) : this.listeners.submit(e);
 
         // Load any detected files into filesList (in the case of editing)
         const currentUploads = Array.from(this.uploadedFilesContainer.children);
@@ -68,7 +72,7 @@ class ImageUploader {
             // WARNING This expects any view that loads in images e.g. edit post to markup those image blocks
             // like we do when we manually create them in displayImage
             const self = this;
-            currentUploads.forEach(function(imgBlock) {
+            currentUploads[0].children.forEach(function(imgBlock) {
                 const img = imgBlock.querySelector('.image-container');
                 const deleteButton = imgBlock.querySelector('.del-img');
 
@@ -80,7 +84,7 @@ class ImageUploader {
 
                     e.preventDefault();
                     // NOTE Called here so reflective of state of elements at call time, not init time; is that right / necessary?
-                    const uploadOrder = imgBlock.dataset.uploadOrder;
+                    const uploadOrder = imgBlock.getAttribute('data-upload-order') | imgBlock.lastElementChild.getAttribute('data-upload-order');
                     self.rotateImage(90, uploadOrder);
                 });
             });
@@ -104,9 +108,9 @@ class ImageUploader {
         constraintsEl.appendChild(constraintsText);
     }
 
-
     displayError(msg, container) {
 
+        console.error(msg)
         const errEl = document.createElement('p');
         const errMsg = document.createTextNode(msg);
         errEl.setAttribute('class', 'callout alert');
@@ -162,7 +166,6 @@ class ImageUploader {
         const imgBlock = e.currentTarget.parentNode; // parent of button clicked i.e. image block div
         const imgRow = imgBlock.parentNode;
         const delIndex = imgBlock.dataset.uploadOrder;
-
 
         // Case of a pre-existing image i.e. where item in queue is a string
         // Later used to diff images in db w/ images sent back from edit form
@@ -358,38 +361,15 @@ class ImageUploader {
             return rotation;
         })));
 
-        const newPostReq = new XMLHttpRequest();
-
-        newPostReq.open('POST', `${location.origin}/home/new-post`);
-        newPostReq.addEventListener('load', function () {
-
-            if (newPostReq.status !== 200) {
-
-                const resp = JSON.parse(newPostReq.responseText);
-                const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
-                errors.forEach((e) => {
-                    self.displayError(e.message, self.formErrors);
-                    $('[data-loading].is-loading').removeClass('is-loading');
-                });
-
-                return window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                })
-            }
-
-            const { postId } = JSON.parse(newPostReq.responseText);
-            const imgUploadReq = new XMLHttpRequest();
-            imgUploadReq.open('POST', `${location.origin}/api/${self.submitEndpoint}/${postId}`);
-            imgUploadReq.addEventListener('load', function () {
-
-                if (imgUploadReq.status !== 200) {
-
-                    const resp = JSON.parse(imgUploadReq.responseText);
+        API.post(`${this.locationOrigin}/home/new-post`, body)
+            .then(response => {
+                if (response.status !== 200) {
+                    const resp = JSON.parse(response.responseText);
                     const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                     errors.forEach((e) => {
                         self.displayError(e.message, self.formErrors);
-                        $('[data-loading].is-loading').removeClass('is-loading');
+                        const loading = document.querySelector('[data-loading].is-loading')
+                        if(loading) loading.classList.remove('is-loading');
                     });
 
                     return window.scrollTo({
@@ -398,50 +378,74 @@ class ImageUploader {
                     })
                 }
 
-                // ON SUCCESS, pop up a modal that gives user options
-                $('#modalPostConfirm').prepend("<p style='margin-left:5em;margin-right:5em;'>" + window.vm.$root.t('Your item has been posted and given the post id') + ' ' + postId + `. <a href="/posts/${postId}">` + window.vm.$root.t('Click here to view it.') + '</a></p>' );
-                $('#modalPostConfirm').foundation('open');
-                $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
-                $(window).on(
-                  'closed.zf.reveal', function () {
-                      console.log('modal closed');
-                      location.assign(`${location.origin}/home/my-posts`);
-                  }
-                );
+                const { postId } = JSON.parse(response.responseText);
+                API.post(`${this.locationOrigin}/api/${self.submitEndpoint}/${postId}`, imgUploadBody)
+                    .then(response => {
+                        if (response.status !== 200) {
+                            const resp = JSON.parse(response.responseText);
+                            const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
+                            errors.forEach((e) => {
+                                self.displayError(e.message, self.formErrors);
+                                const loading = document.querySelector('[data-loading].is-loading')
+                                if(loading) loading.classList.remove('is-loading');
+                            });
 
-                // location.assign(`${location.origin}/posts/${postId}`);
-            });
+                            return window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            })
+                        }
 
-            imgUploadReq.addEventListener('error', function (err) {
-                self.displayError(err.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
-                $('[data-loading].is-loading').removeClass('is-loading');
+                        const $ = window.jQuery
+                        const foundation = window.foundation
+                        if (typeof $ === 'function' && typeof foundation === 'function') {
+                            $('#modalPostConfirm').prepend("<p style='margin-left:5em;margin-right:5em;'>" + window.vm.$root.t('Your item has been posted and given the post id') + ' ' + postId + `. <a href="/posts/${postId}">` + window.vm.$root.t('Click here to view it.') + '</a></p>' );
+                            const modalPostConfirm = document.getElementById('#modalPostConfirm')
+                            $('#modalPostConfirm').foundation('open');
+                            modalPostConfirm.foundation('open');
+                            $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
+                            $(window).on(
+                                'closed.zf.reveal', function () {
+                                    location.assign(`${this.locationOrigin}/home/my-posts`);
+                                }
+                            );
+                            $(window).on(
+                                'closed.zf.reveal', function () {
+                                    location.assign(`${this.locationOrigin}/home/my-posts`);
+                                }
+                            );
+
+                            location.assign(`${this.locationOrigin}/posts/${postId}`); // TODO
+                        }
+                    })
+                    .catch(error => {
+                        handleError(error)
+                        self.displayError(error.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+                        const loading = document.querySelector('[data-loading].is-loading')
+                        if(loading) loading.classList.remove('is-loading');
+
+                        return window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
+                    })
+                })
+            .catch(error => {
+                handleError(error)
+                self.displayError(error.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
+                const loading = document.querySelector('[data-loading].is-loading')
+                if(loading) loading.classList.remove('is-loading');
 
                 return window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 })
-            }.bind(self));
-
-            // SUBMIT IMAGES TO POST IMG ROUTE
-            imgUploadReq.send(imgUploadBody);
-        });
-        // Network error
-        newPostReq.addEventListener('error', function (err) {
-            self.displayError(err.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
-            $('[data-loading].is-loading').removeClass('is-loading');
-
-            return window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
             })
-        }.bind(self));
-
-        // SUBMIT TO ROUTE, RECEIVE BACK POST ID
-        newPostReq.send(body);
     }
 
     handleSubmit(e) {
 
+        e.stopImmediatePropagation();
         e.preventDefault();
         const self = this; // expected to be instance of ImageUploader
 
@@ -485,49 +489,45 @@ class ImageUploader {
             return rotation;
         })));
 
-        const req = new XMLHttpRequest();
         // TODO Make more easily configurable
-        req.open('POST', `${location.origin}/api/${self.submitEndpoint}`);
-        req.addEventListener('load', function () {
+        API.post(`${this.locationOrigin}/api/${self.submitEndpoint}`, body)
+            .then(response => {
+                if (response.status !== 200) {
+                    const resp = JSON.parse(response.responseText);
+                    const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
+                    errors.forEach((e) => {
+                        self.displayError(e.message, self.formErrors);
+                        const loading = document.querySelector('[data-loading].is-loading');
+                        if(loading) loading.classList.remove('is-loading');
+                    });
+                    return window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    })
+                }
 
-            if (req.status !== 200) {
+                // On successfully uploading images, submit the rest of the form data to our non-API route
+                document.querySelector('.image-upload-form').removeEventListener('submit', self.listeners.submit);
 
-                const resp = JSON.parse(req.responseText);
-                const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
-                errors.forEach((e) => {
-                    self.displayError(e.message, self.formErrors);
-                    $('[data-loading].is-loading').removeClass('is-loading');
-                });
+                // Excludes images from form submission to non-API route
+                document.querySelector('.image-upload-form input[name=images]').remove();
+
+                self.trackImageChanges();
+
+                // Sorry, sucks; accounts for different submit buttons across forms
+                document.querySelector('.image-upload-form input[type=submit], .image-upload-form button[type=submit]').click();
+            })
+            .catch(error => {
+                handleError(error)
+                self.displayError(e.message, self.formErrors)
+                const loading = document.querySelector('[data-loading].is-loading')
+                if(loading) loading.classList.remove('is-loading');
 
                 return window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 })
-            }
-
-            // On successfully uploading images, submit the rest of the form data to our non-API route
-            document.querySelector('.image-upload-form').removeEventListener('submit', self.listeners.submit);
-            // Excludes images from form submission to non-API route
-            document.querySelector('.image-upload-form input[name=images]').remove();
-
-            self.trackImageChanges();
-
-            // Sorry, sucks; accounts for different submit buttons across forms
-            document.querySelector('.image-upload-form input[type=submit], .image-upload-form button[type=submit]').click();
-        });
-
-        // Network error
-        req.addEventListener('error', function (err) {
-            self.displayError(err.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
-            $('[data-loading].is-loading').removeClass('is-loading');
-
-            return window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
             })
-        }.bind(self));
-
-        req.send(body);
     }
 
     // Adapted from Steev's work on legacy (for reference: https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/ )
@@ -596,11 +596,11 @@ class ImageUploader {
                     const dataURL = this.toDataURL(type, quality).split(',')[1];
                     setTimeout(function() {
 
-                        var binStr = atob( dataURL ),
+                        const binStr = atob( dataURL ),
                         len = binStr.length,
                         arr = new Uint8Array(len);
 
-                        for (var i = 0; i < len; i++ ) {
+                        for (let i = 0; i < len; i++ ) {
                             arr[i] = binStr.charCodeAt(i);
                         }
 
