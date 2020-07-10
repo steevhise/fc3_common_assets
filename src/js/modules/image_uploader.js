@@ -58,7 +58,11 @@ class ImageUploader {
 
         // Event handlers are bound to ImageUploader, as otherwise, this would refer to the node on which the listener is registered
         document.querySelector('#images').addEventListener('change', this.listeners.fileInput);
-        document.querySelector('.image-upload-form').submit = (e) => requestType === 'newPost' ? this.listeners.newPostSubmit(e) : this.listeners.submit(e);
+        if (typeof window.jQuery === 'function') {
+            document.querySelector('.image-upload-form').addEventListener('submit', requestType === 'newPost' ? this.listeners.newPostSubmit : this.listeners.submit);
+        } else {
+            document.querySelector('.image-upload-form').submit = (e) => requestType === 'newPost' ? this.listeners.newPostSubmit(e) : this.listeners.submit(e);
+        }
 
         // Load any detected files into filesList (in the case of editing)
         const currentUploads = Array.from(this.uploadedFilesContainer.children);
@@ -72,7 +76,7 @@ class ImageUploader {
             // WARNING This expects any view that loads in images e.g. edit post to markup those image blocks
             // like we do when we manually create them in displayImage
             const self = this;
-            currentUploads[0].children.forEach(function(imgBlock) {
+            currentUploads.forEach(function(imgBlock) {
                 const img = imgBlock.querySelector('.image-container');
                 const deleteButton = imgBlock.querySelector('.del-img');
 
@@ -137,7 +141,6 @@ class ImageUploader {
         deleteButton.setAttribute('type', 'button'); // turn off any default behavior
         deleteButton.addEventListener('click', this.deleteUpload.bind(this)); // `this` is expected to be ImageUploader instance, bind to replace event target as this value
         deleteButton.innerHTML = window.vm.$root.t('Remove');
-
 
         rotateClockwiseButton.setAttribute('class', 'btn-default rotate-clockwise');
         rotateClockwiseButton.innerHTML = '&#x21BB;'; // HTML entity for clockwise arrow (appending as text node results in raw entity text, uninterpreted)
@@ -307,6 +310,7 @@ class ImageUploader {
 
     handleNewPostSubmit(e) {
 
+        e.stopImmediatePropagation();
         e.preventDefault();
         const self = this; // expected to be instance of ImageUploader
 
@@ -378,7 +382,7 @@ class ImageUploader {
                     })
                 }
 
-                const { postId } = JSON.parse(response.responseText);
+                const { postId } = response.data;
                 API.post(`${this.locationOrigin}/api/${self.submitEndpoint}/${postId}`, imgUploadBody)
                     .then(response => {
                         if (response.status !== 200) {
@@ -397,12 +401,9 @@ class ImageUploader {
                         }
 
                         const $ = window.jQuery
-                        const foundation = window.foundation
-                        if (typeof $ === 'function' && typeof foundation === 'function') {
+                        if (typeof $ === 'function') {
                             $('#modalPostConfirm').prepend("<p style='margin-left:5em;margin-right:5em;'>" + window.vm.$root.t('Your item has been posted and given the post id') + ' ' + postId + `. <a href="/posts/${postId}">` + window.vm.$root.t('Click here to view it.') + '</a></p>' );
-                            const modalPostConfirm = document.getElementById('#modalPostConfirm')
                             $('#modalPostConfirm').foundation('open');
-                            modalPostConfirm.foundation('open');
                             $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
                             $(window).on(
                                 'closed.zf.reveal', function () {
@@ -419,7 +420,7 @@ class ImageUploader {
                         }
                     })
                     .catch(error => {
-                        handleError(error)
+                        handleError(error);
                         self.displayError(error.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
                         const loading = document.querySelector('[data-loading].is-loading')
                         if(loading) loading.classList.remove('is-loading');

@@ -5,5 +5,5 @@ export const API = axios.create({
 })
 
 export const handleError = e => {
-  console.error('Error on request to ' + [e.config.baseURL, e.config.url].join('/'), e);
+  console.error(e);
 }
