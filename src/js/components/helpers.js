@@ -124,7 +124,7 @@ const postItemConfig = {
           url = `${protocol}//${host}${self.path.home_post_edit}${self.post.id}`;
           window.location.assign(url);
           break;
-        case 'delete':
+        case 'delete':   // this is really "cancel" the post
           window.$.ajax({
             method: 'DELETE',
             url: `/api/posts/${self.post.id}`
@@ -132,7 +132,7 @@ const postItemConfig = {
           .done((data, status) => {
             self.$emit('post-deleted');
           })
-          .fail(() => displayError(self.t("We couldn't delete your post at this time. Sorry!")));   // TODO: will this work?
+          .fail(() => displayError(self.t("We couldn't cancel your post at this time. Sorry!")));   // TODO: will this work?
           break;
         case 'replies':
           window.$.get(`/api/messaging/topics/post/${this.post.id}`)

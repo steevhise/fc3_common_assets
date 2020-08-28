@@ -84,7 +84,7 @@
 							<option v-else-if="postType === 'LEND' && !lent" value="lend">
 								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
 							</option>
-							<option value="delete">{{ t('Delete Post') }}</option>
+							<option value="delete">{{ t('Cancel Post') }}</option>
 							<option value="replies">{{ t('See Replies') }}</option>
 						</select>
 					</template>
