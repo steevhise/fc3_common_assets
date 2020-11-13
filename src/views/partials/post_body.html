@@ -126,7 +126,8 @@
 						<p>{{ post.description|sanitizeHtml|raw }}</p>
 					</div>
 					<br />
-					<hr/>
+					<hr style="margin-bottom: 0px;" />
+                    <div class="text-lighten" style="font-size: smaller;">{{ post.id }}</div> <!-- or you could just look at the url :) -->
 					<div class="container" style="margin-top: 40px; position: relative;vertical-align: center;">
 						{% if session %}
 							{% if session.id === post.user.id %}
