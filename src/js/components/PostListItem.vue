@@ -26,7 +26,7 @@
 							<p v-else-if="lent" class="callout success">{{ t('On Loan!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 						</template>
 						<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
+							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
 						</span>
 						<!--  if pending post, show "manage" button, but only with delete.? -->
 						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
@@ -55,12 +55,12 @@
 						</p>
 						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 						<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
+							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
 						</span>
 					</template>
 					<template v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
 						<span class="post-list-item-date text-lighten">
-								{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}
+								{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
 						</span>
 						<fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
 						<p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
@@ -69,7 +69,7 @@
 				</div>
 			<div v-else class="post-list-item-header-right">
 				<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }} <!-- this still needs to be here even if not logged in -->
+							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }} <!-- this still needs to be here even if not logged in -->
 				</span>
 			</div>
 			<!-- chooser -->

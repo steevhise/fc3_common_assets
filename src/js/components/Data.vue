@@ -58,7 +58,8 @@
 				// if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
 				// but (for now at least) only on dashboard
 				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count) && !!self.circle) {
-					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
+					// TODO: create and use a self.getMorePosts() method instead of self.getMoreData()
+				  self.getMoreData(self.circle, self.posts.length, self.backendLimit);
 					return;
 				}
 				self.$root.$emit('redrawVueMasonry');
