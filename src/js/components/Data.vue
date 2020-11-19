@@ -211,7 +211,6 @@
       getMorePostsFromElasticsearch: function(offset, limit) {
         // ajaxy lazy-load more posts from backend
         let self = this;
-        // TODO: this route currently returns a view instead of simply JSON data
         const requestData = {
           searchText: 'test', // TODO: make search text available from header_search.html
           town: (self.data.criteria.town === 'ALL_TOWNS') ? 'all' : self.data.criteria.town,
@@ -219,6 +218,7 @@
           from: offset,
           responseType: 'json'
         }
+        // TODO: convert the filter from text to integer-constant for post types
         if(this.$root.posts.filter) requestData.postType = this.$root.posts.filter
         let results = axios.post(`/search-posts`, requestData)
             .then(response => {
