@@ -58,7 +58,6 @@
 				self.offset = self.$data.posts.length;
 				// if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
 				// but (for now at least) only on dashboard
-        console.log('loadMorePosts', self.currLimit, self.posts.length, self.count, !!self.circle)
 				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count)) {
 				  if(!!self.circle) {
             // (50 >= 20 - 10) && (50 < 265) && !self.circle
@@ -68,9 +67,12 @@
             self.getMoreData(self.circle, self.posts.length, self.backendLimit);
             return;
           } else {
-				    self.getMorePostsFromElasticsearch()
+				    self.getMorePostsFromElasticsearch(self.posts.length, self.backendLimit);
+				    return;
           }
-				}
+				} else {
+				  console.log('we did not get more because: ', self.currLimit >= self.posts.length - self.limit, self.currLimit < self.count)
+        }
 				self.$root.$emit('redrawVueMasonry');
 			});
 
@@ -190,13 +192,11 @@
 			},
 			getMoreData: function(circle = this.circle, offset = this.posts.length, limit = this.backendLimit) {
 				// ajaxy lazy-load more posts from backend
-        console.log('getMoreData', circle, offset, limit);
 				let self = this;
 				let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`)
 						.then(response => {
 
 							if(response.status === 200) {
-								//console.info('grabbed more posts: ', response.data.posts.length);
 								response.data.posts.forEach((p, i) => {
 									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
 								}, self);
@@ -208,25 +208,26 @@
 							}
 						});
 			},
-      getMorePostsFromElasticsearch: function() {
+      getMorePostsFromElasticsearch: function(offset, limit) {
         // ajaxy lazy-load more posts from backend
         let self = this;
         // TODO: this route currently returns a view instead of simply JSON data
-        let results = axios.post(`/search-posts`, {
+        const requestData = {
           searchText: 'test', // TODO: make search text available from header_search.html
-          size: this.limit,
-          from: this.offset,
-          town: (this.data.criteria.town === 'ALL_TOWNS') ? 'all' : this.data.criteria.town
-        })
+          town: (self.data.criteria.town === 'ALL_TOWNS') ? 'all' : self.data.criteria.town,
+          size: limit,
+          from: offset,
+          responseType: 'json'
+        }
+        if(this.$root.posts.filter) requestData.postType = this.$root.posts.filter
+        let results = axios.post(`/search-posts`, requestData)
             .then(response => {
               if(response.status === 200) {
-                console.info('grabbed more posts: ', response.data);
-                response.data.posts.forEach((p, i) => {
-                  this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
-                }, self);
+                response.data.data.posts.forEach((p, i) => {
+                  this.posts.push(p); // push one new post at a time onto the old array of posts.
+                }, this);
                 self.offset = self.$root.posts.length;
-                self.count = response.data.count || self.count;
-                //self.$emit('redrawVueMasonry');
+                self.count = response.data.data.count || self.count;
               } else {
                 console.error('problem getting more posts from dash endpoint:', response.status);
               }
