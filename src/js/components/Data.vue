@@ -53,7 +53,7 @@
 			});
 
 			this.$root.$on('loadMorePosts', () => {
-			  console.log('loadMorePosts start', self.currLimit, self.limit, self.offset, self.posts.length, self.$data.posts.length, self.count)
+			  // console.log('loadMorePosts start', self.currLimit, self.limit, self.offset, self.posts.length, self.$data.posts.length, self.count)
 				self.currLimit += Number(self.limit);
 				self.offset = self.$data.posts.length;
 				// if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
