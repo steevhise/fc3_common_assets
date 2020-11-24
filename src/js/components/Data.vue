@@ -33,7 +33,7 @@
 			return {
 				posts: this.data.posts || [],					// THIS is what we change when we load more... NOT the data prop.
 				offset: 0,								// for backend query to api endpoint - this should increment by backendLimit
-				currLimit: this.limit,					// i think this is the amount we're displaying currently. starts as limit.
+				currLimit: this.limit,					// this is the amount we're displaying currently. starts as limit.
 				postFilter: null,
 				selectedTags: [],
 				deletedPosts: [],
@@ -53,14 +53,26 @@
 			});
 
 			this.$root.$on('loadMorePosts', () => {
+			  // console.log('loadMorePosts start', self.currLimit, self.limit, self.offset, self.posts.length, self.$data.posts.length, self.count)
 				self.currLimit += Number(self.limit);
 				self.offset = self.$data.posts.length;
 				// if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
 				// but (for now at least) only on dashboard
-				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count) && !!self.circle) {
-					self.getMoreData(self.circle, self.posts.length, self.backendLimit);
-					return;
-				}
+				if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count)) {
+				  if(!!self.circle) {
+            // (50 >= 20 - 10) && (50 < 265) && !self.circle
+            // TODO: create and use a self.getMorePosts() method instead of self.getMoreData()
+            // TODO: This never runs on posts search because "!!self.circle" is always false
+            console.log('call getMoreData()')
+            self.getMoreData(self.circle, self.posts.length, self.backendLimit);
+            return;
+          } else {
+				    self.getMorePostsFromElasticsearch(self.posts.length, self.backendLimit);
+				    return;
+          }
+				} else {
+				  console.log('we did not get more because: ', self.currLimit >= self.posts.length - self.limit, self.currLimit < self.count)
+        }
 				self.$root.$emit('redrawVueMasonry');
 			});
 
@@ -185,7 +197,6 @@
 						.then(response => {
 
 							if(response.status === 200) {
-								//console.info('grabbed more posts: ', response.data.posts.length);
 								response.data.posts.forEach((p, i) => {
 									this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
 								}, self);
@@ -196,7 +207,32 @@
 								console.error('problem getting more posts from dash endpoint:', response.status);
 							}
 						});
-			}
+			},
+      getMorePostsFromElasticsearch: function(offset, limit) {
+        // ajaxy lazy-load more posts from backend
+        let self = this;
+        const requestData = {
+          searchText: 'test', // TODO: make search text available from header_search.html
+          town: (self.data.criteria.town === 'ALL_TOWNS') ? 'all' : self.data.criteria.town,
+          size: limit,
+          from: offset,
+          responseType: 'json'
+        }
+        // TODO: convert the filter from text to integer-constant for post types
+        if(this.$root.posts.filter) requestData.postType = this.$root.posts.filter
+        let results = axios.post(`/search-posts`, requestData)
+            .then(response => {
+              if(response.status === 200) {
+                response.data.data.posts.forEach((p, i) => {
+                  this.posts.push(p); // push one new post at a time onto the old array of posts.
+                }, this);
+                self.offset = self.$root.posts.length;
+                self.count = response.data.data.count || self.count;
+              } else {
+                console.error('problem getting more posts from dash endpoint:', response.status);
+              }
+            });
+      }
 		},
 		mounted() {
 			let self = this;
