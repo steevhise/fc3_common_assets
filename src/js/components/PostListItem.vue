@@ -9,64 +9,69 @@
 				<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
 			</div>
 			<!-- chooser -->
-				<div v-if="viewer" class="post-list-item-header-right">
-					<template v-if="viewer === post.userId">
-					<!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
-						<button v-if="post.isApproved === false" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
-						<template v-if="postType === 'LEND'">
-							<div v-if="!lent"  data-open="friend-select-form"
-								style="display: none;"
-								v-on:click="onClickModalTrigger"
-								:id="`friend-select-trigger-${post.id}`"
-							></div>
-							<p v-else-if="overdue" class="callout warning">
-								{{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}.</span>
-								<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t('Message your friend') }}</a>
-							</p>
-							<p v-else-if="lent" class="callout success">{{ t('On Loan!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
-						</template>
-						<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
-						</span>
-						<!--  if pending post, show "manage" button, but only with delete.? -->
-						<select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
-							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
-							<option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
-							<option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t(markMessage) }}</option>
+      <div v-if="viewer" class="post-list-item-header-right">
+        <template v-if="viewer === post.userId">
+        <!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
+          <button v-if="post.isApproved === false" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
+          <template v-if="postType === 'LEND'">
+            <div v-if="!lent"  data-open="friend-select-form"
+              style="display: none;"
+              v-on:click="onClickModalTrigger"
+              :id="`friend-select-trigger-${post.id}`"
+            ></div>
+            <p v-else-if="overdue" class="callout warning">
+              {{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}.</span>
+              <a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t('Message your friend') }}</a>
+            </p>
+            <p v-else-if="lent" class="callout success">{{ t('On Loan!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
+          </template>
+          <span class="post-list-item-date text-lighten">
+            {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
+          </span>
+          <!--  if pending post, show "manage" button, but only with delete.? -->
+          <select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
+            <option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
+            <option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
+            <option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t(markMessage) }}</option>
 <!-- {{ t('TAKEN') }}
 {{ t('RECEIVED') }}
- {{ t('Mark As Taken') }}
- {{ t('Mark As Received') }}
- (this cuz of dumb i18n parser...) -->
-							<option v-else-if="postType === 'LEND' && lent" value="return">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
-							<option v-else-if="postType === 'LEND' && !lent" value="lend">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
-							<option value="delete">{{ t('Cancel Post') }}</option>
-							<option v-if="post.isApproved == true" value="replies">{{ t('See Replies') }}</option>
-						</select>
-					</template>
-					<template v-else-if="lent && viewer === post.share.borrowerId">
-						<p v-if="overdue" class="callout warning">
-							{{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}</span>
-							<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t("Let your friend know what's up") }}</a>
-						</p>
-						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
-						<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
-						</span>
-					</template>
-					<template v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
-						<span class="post-list-item-date text-lighten">
-								{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
-						</span>
-						<fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-						<p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
-						</fc-messages-detail-input>
-					</template>
-				</div>
+{{ t('Mark As Taken') }}
+{{ t('Mark As Received') }}
+(this cuz of dumb i18n parser...) -->
+            <option v-else-if="postType === 'LEND' && lent" value="return">
+              <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+            </option>
+            <option v-else-if="postType === 'LEND' && !lent" value="lend">
+              <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+            </option>
+            <option value="delete">{{ t('Cancel Post') }}</option>
+            <option v-if="post.isApproved == true" value="replies">{{ t('See Replies') }}</option>
+          </select>
+        </template>
+        <template v-else-if="lent && viewer === post.share.borrowerId">
+          <p v-if="overdue" class="callout warning">
+            {{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}</span>
+            <a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t("Let your friend know what's up") }}</a>
+          </p>
+          <p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
+          <span class="post-list-item-date text-lighten">
+            {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
+          </span>
+        </template>
+        <template v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
+          <span class="post-list-item-date text-lighten">
+              {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
+          </span>
+          <fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
+          <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
+          </fc-messages-detail-input>
+        </template>
+        <template v-else>
+<!--        <div class="post-grid-item-header-left">-->
+          <span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}</span>
+<!--        </div>-->
+        </template>
+      </div>
 			<div v-else class="post-list-item-header-right">
 				<span class="post-list-item-date text-lighten">
 							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }} <!-- this still needs to be here even if not logged in -->
