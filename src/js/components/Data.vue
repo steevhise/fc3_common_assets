@@ -214,7 +214,7 @@
                 // ajaxy lazy-load more posts from backend
                 let self = this;
                 const requestData = {
-                    searchText: 'test', // TODO: make search text available from header_search.html
+                    searchText: self.data.criteria.search,
                     town: (self.data.criteria.town === 'ALL_TOWNS') ? 'all' : self.data.criteria.town,
                     size: limit,
                     from: offset,
