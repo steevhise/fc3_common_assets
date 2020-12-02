@@ -84,7 +84,6 @@
                 $.post({ url: this.action, data: this.serializedData, timeout: this.timeout }).done(function(data) {
 
                     if (self.customAlertEl) {
-                      console.log(`formSuccess-${self.customAlertEl}`);
                         // Allow caller to handle alert in a custom way (allows parent to take over)
                         self.$bus.$emit(`formSuccess-${self.customAlertEl}`, data);
                     } else {
