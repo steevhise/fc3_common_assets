@@ -32,7 +32,9 @@ export const FCVue = {
 				return moment(date, 'YYYY-MM-DD').fromNow();
 			}
 
-			const dateToModify = time ? `${date} ${time}` : date;
+			// post search results from Elasticsearch are a full datetime string, which breaks this concat, so we
+			// step over it in that case.
+			const dateToModify = time && time.length < 11 ? `${date} ${time}` : date;
 			// We standardize to utc (how times are stored in db), as otherwise, moment will first convert the time to the server's local time
 			const utc = moment.utc(dateToModify);
 
