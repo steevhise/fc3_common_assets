@@ -69,13 +69,13 @@
         </template>
         <template v-else>
 <!--        <div class="post-grid-item-header-left">-->
-          <span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}</span>
+          <span class="text-lighten">{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}</span>
 <!--        </div>-->
         </template>
       </div>
 			<div v-else class="post-list-item-header-right">
 				<span class="post-list-item-date text-lighten">
-							{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }} <!-- this still needs to be here even if not logged in -->
+            {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }} <!-- this still needs to be here even if not logged in -->
 				</span>
 			</div>
 			<!-- chooser -->

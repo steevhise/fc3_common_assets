@@ -56,7 +56,7 @@
 			<hr/>
 			<div class="row" style="text-align: center;" >
 				<div class="post-grid-item-header-left">
-					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group ? post.group.timezone : timezone )) }}</span>
+					<span class="text-lighten">{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}</span>
 				</div>
 				<div v-if="viewer" class="post-grid-item-header-right">
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
