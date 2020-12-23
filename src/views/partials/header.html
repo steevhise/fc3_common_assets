@@ -1,19 +1,19 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <header class="header">
-    {% if !suppressAds && ads.top %}
+    {% if data.suppressAds.top !== true && ads.top %}
         {% include './header_banner_ad.html' %}
     {% endif %}
     {% if session %}
-    <div class="header-outer">
-        <div class="header-inner row">
-            {% include './header_logged_in.html' %}
+        <div class="header-outer">
+            <div class="header-inner row">
+                {% include './header_logged_in.html' %}
+            </div>
         </div>
-    </div>
     {% else %}
-    <div class="header-outer">
-        <div class="header-inner row">
-            {% include './header_logged_out.html' %}
+        <div class="header-outer">
+            <div class="header-inner row">
+                {% include './header_logged_out.html' %}
+            </div>
         </div>
-    </div>
     {% endif %}
 </header>
