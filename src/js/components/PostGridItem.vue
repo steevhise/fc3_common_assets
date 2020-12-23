@@ -91,8 +91,7 @@
 					<template v-else-if="lent && viewer === post.share.borrowerId">
 						<p v-if="overdue" class="callout warning">
                             {{ t('Item Overdue!') }}<span v-if="due"> {{ t('It was due on') }} {{ due }}</span>
-							<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t("Let your friend know what's up")
-                                }}</a>
+							<a :href="`/home/my-replies?type=post&id=${post.id}`">{{ t("Let your friend know what's up") }}</a>
 						</p>
 						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 					</template>
