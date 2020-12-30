@@ -415,8 +415,6 @@ class ImageUploader {
                                     location.assign(`${this.locationOrigin}/home/my-posts`);
                                 }
                             );
-
-                            location.assign(`${this.locationOrigin}/posts/${postId}`); // TODO
                         }
                     })
                     .catch(error => {
