@@ -43,7 +43,7 @@
 			moment.locale(window.language);    // language set in top-level... apparently we can't use this.i18nOptions.lng here?
 		},
 		methods: {
-			ago: (time) => moment(time).fromNow(),    // TODO???
+			ago: (time) => !isNaN(time) ? moment(time).fromNow() : '',    // TODO???
 			timezone: (datetime) => {
 				// datetime values from server are in UTC
 				const utc = new Date(datetime);
