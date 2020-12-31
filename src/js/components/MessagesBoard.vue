@@ -121,7 +121,7 @@
 			},
 			notFriend: (type, threads) => {
 
-				const userId = threads[0].user.id || 0;
+				const userId = (threads[0] && threads[0].user && threads[0].user.id) ? threads[0].user.id : 0;
 				return !!((type === 'friend') && !window.vm.$root.globalData.friends.includes(userId));
 			}
 		}
