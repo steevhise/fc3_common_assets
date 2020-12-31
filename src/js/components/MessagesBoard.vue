@@ -26,7 +26,8 @@
               v-for="thread in threads"
               v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
               v-if="thread.user != null"
-              :key="thread.id" @click="onClickThread(thread.id)">
+              :key="thread.id"
+              @click="onClickThread(thread.id)">
 						<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 						{{thread.user.username}}
 						<span class="unread-amount">{{thread.unreadCount || null}}</span>
