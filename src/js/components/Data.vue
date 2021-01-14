@@ -135,8 +135,12 @@
                 });
 
                 self.$root.$emit('redrawVueMasonry');
+
+                let ids = results.map(o => o.id);
+                const deduplicatedResults = results.filter(({id}, index) => !ids.includes(id, index+1));
+
                 //console.debug('items: ', results);
-                return results;
+                return deduplicatedResults;
             }
         },
         // Essentially, fake reloads; manually mutate state to reflect actual changes to data we'd receive from server on page reload
