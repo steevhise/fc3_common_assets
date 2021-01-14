@@ -12,7 +12,7 @@
       <div v-if="viewer" class="post-list-item-header-right">
         <template v-if="viewer === post.userId">
         <!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
-          <button v-if="post.isApproved === false" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
+          <button v-if="!post.isApproved && post.isApproved !== undefined" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
           <template v-if="postType === 'LEND'">
             <div v-if="!lent"  data-open="friend-select-form"
               style="display: none;"
@@ -31,8 +31,8 @@
           <!--  if pending post, show "manage" button, but only with delete.? -->
           <select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
             <option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
-            <option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
-            <option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t(markMessage) }}</option>
+            <option v-if="post.isApproved === true" value="edit">{{ t('Edit Post') }}</option>
+            <option v-if="post.isApproved === true && closedType" value="mark" >{{ t(markMessage) }}</option>
 <!-- {{ t('TAKEN') }}
 {{ t('RECEIVED') }}
 {{ t('Mark As Taken') }}
