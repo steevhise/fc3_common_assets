@@ -136,11 +136,8 @@
 
                 self.$root.$emit('redrawVueMasonry');
 
-                let ids = results.map(o => o.id);
-                const deduplicatedResults = results.filter(({id}, index) => !ids.includes(id, index+1));
-
                 //console.debug('items: ', results);
-                return deduplicatedResults;
+                return results;
             }
         },
         // Essentially, fake reloads; manually mutate state to reflect actual changes to data we'd receive from server on page reload
@@ -206,6 +203,8 @@
                             response.data.posts.forEach((p, i) => {
                                 this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
                             }, self);
+                            let ids = self.posts.map(o => o.id);
+                            self.posts = self.posts.filter(({id}, index) => !ids.includes(id, index+1));
                             self.offset = self.$root.posts.length;
                             self.count = response.data.count || self.count;
                             //self.$emit('redrawVueMasonry');
