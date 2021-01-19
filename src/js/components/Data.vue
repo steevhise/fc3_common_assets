@@ -135,6 +135,7 @@
                 });
 
                 self.$root.$emit('redrawVueMasonry');
+
                 //console.debug('items: ', results);
                 return results;
             }
@@ -202,6 +203,8 @@
                             response.data.posts.forEach((p, i) => {
                                 this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
                             }, self);
+                            let ids = self.posts.map(o => o.id);
+                            self.posts = self.posts.filter(({id}, index) => !ids.includes(id, index+1));
                             self.offset = self.$root.posts.length;
                             self.count = response.data.count || self.count;
                             //self.$emit('redrawVueMasonry');
