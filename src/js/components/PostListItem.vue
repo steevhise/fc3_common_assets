@@ -39,10 +39,7 @@
 {{ t('Mark As Received') }}
 {{ t('Cancel Post') }}
 (this cuz of dumb i18n parser...) -->
-            <option v-else-if="postType === 'LEND' && lent" value="return">
-              <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-            </option>
-            <option v-else-if="postType === 'LEND' && !lent" value="lend">
+            <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
               <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
             </option>
             <option value="delete">{{ t('Cancel Post') }}</option>
