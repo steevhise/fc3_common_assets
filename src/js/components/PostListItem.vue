@@ -31,22 +31,19 @@
           <!--  if pending post, show "manage" button, but only with delete.? -->
           <select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
             <option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
-            <option v-if="post.isApproved === true" value="edit">{{ t('Edit Post') }}</option>
-            <option v-if="post.isApproved === true && closedType" value="mark" >{{ t(markMessage) }}</option>
+            <option v-if="post.isApproved" value="edit">{{ t('Edit Post') }}</option>
+            <option v-if="post.isApproved && closedType" value="mark" >{{ t(markMessage) }}</option>
 <!-- {{ t('TAKEN') }}
 {{ t('RECEIVED') }}
 {{ t('Mark As Taken') }}
 {{ t('Mark As Received') }}
 {{ t('Cancel Post') }}
 (this cuz of dumb i18n parser...) -->
-            <option v-else-if="postType === 'LEND' && lent" value="return">
-              <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-            </option>
-            <option v-else-if="postType === 'LEND' && !lent" value="lend">
+            <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
               <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
             </option>
             <option value="delete">{{ t('Cancel Post') }}</option>
-            <option v-if="post.isApproved == true" value="replies">{{ t('See Replies') }}</option>
+            <option v-if="post.isApproved" value="replies">{{ t('See Replies') }}</option>
           </select>
         </template>
         <template v-else-if="lent && viewer === post.share.borrowerId">

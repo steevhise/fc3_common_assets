@@ -78,12 +78,9 @@
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="closedType" value="mark" >{{ t(markMessage) }}</option>
-							<option v-else-if="postType === 'LEND' && lent" value="return">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
-							<option v-else-if="postType === 'LEND' && !lent" value="lend">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
+              <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
+                <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+              </option>
 							<option value="delete">{{ t('Cancel Post') }}</option>
 							<option value="replies">{{ t('See Replies') }}</option>
 						</select>
