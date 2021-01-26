@@ -22,7 +22,8 @@
 	export default {
 		name: 'fc-messages',
 		props: {
-		    category: Object,
+		  category: Object,
+      disabled: Boolean,
 			messages: Array,
 			me: Object,
 			showHtml: {
