@@ -418,7 +418,7 @@ class ImageUploader {
                     })
                     .catch(error => {
                         handleError(error);
-                        self.displayError(error.message, " {{ t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!") }}");
+                        self.displayError(error.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
                         const loading = document.querySelector('[data-loading].is-loading')
                         if(loading) loading.classList.remove('is-loading');
 
