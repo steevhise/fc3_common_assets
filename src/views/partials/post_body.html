@@ -63,7 +63,7 @@
 			</div>
 			<div class="row hide-for-small-only" style="margin-left: 10px;" >
 				<h4 class="section-title left">
-					{{post.subject}}
+					{{ post.subject }}
 				</h4>
 			</div>
 			<div class="post-detail-item-content">
@@ -74,7 +74,7 @@
 						<div class="row">
 							<ul class="post-items text-{{ post.type.name|lower }}" style="margin-left: 0px; " >
 								{% set datetimeOpts = { lang: userLanguage, time: post.time, timezone: post.group.timezone } %}
-								<li><span><i class="fa fa-map-signs"></i> {{post.location|title }}</span></li>
+								<li><span><i class="fa fa-map-signs"></i> {{ post.location|title }}</span></li>
 								<li><span>{{ post.date|mdate(datetimeOpts, 'LL') }}</span></li>
 							</ul>
 							<div class="row" style="margin: 0px;" >
@@ -138,7 +138,7 @@
 							{% elseif post.canReply %}
                                 <div style="display: flex; width:17rem;">
                                     <span style="flex:1;"><fc-messages-detail-input v-cloak subject="{{ post.subject|sanitizeHtml|raw }}" topic-type="post" topic-id={{ post.id }} custom-trigger='<button class="btn-{{ post.type.name|lower }}" style="float: left; margin-right: 10px;">{{ postAction|default(t("Reply")) }}</button>'>
-                                        <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject|sanitizeHtml|raw }}</p>
+                                        <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
                                     </fc-messages-detail-input></span>
                                     <span style="flex:1;"><fc-messages-detail-input v-cloak default-body="{{ t('I am reporting post') }} #{{ post.id }}" subject="{{ t('Member Reporting post') }} #{{ post.id }}" topic-type="group" topic-id="{{ post.group.id || 0 }}" custom-trigger='<button class="btn btn-action">{{ t("Report") }}</button>'>
                                     <p><strong>{{ t('Report this post to a Moderator') }}:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
@@ -147,7 +147,7 @@
                                     <div style="display: flex; width:40rem;">
                                         <span style="flex:3;">
                                 <a href="{{path.groups_main}}{{post.group.uniqueName}}" style="float: left; margin-right: 10px;" >
-                                    Join the {{ post.group.name }} group</a> to reply to this post.</span>  {# TODO: need interpolation for t() func #}
+                                    {{ t('Join the') }} {{ post.group.name }} {{ t('group') }}</a> {{ t('to reply to this post.') }}</span>  {# TODO: need interpolation for t() func #}
                             {% endif %}
 						{% else %}
                         <div style="width:20rem; display:flex;">

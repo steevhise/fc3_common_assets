@@ -236,14 +236,13 @@ class ImageUploader {
 
         filesArr.forEach(function(f, index) {
 
-            // TODO: translate
             if (f.type.match(/image\/(jpeg|png)/) === null) {
-                return this.displayError(`We can't process ${f.name} because it's a ${f.type}. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
+                return this.displayError(`{{ t("We can't process") }} ${f.name} {{ t("because it's a") }} ${f.type}. {{ t("Retry uploading with a jpg or png image. Sorry!") }}`, uploadErrContainer);
             }
 
             // User's attempting to upload > uploadLimit images at once
             if (this.filesList.length === this.uploadLimit) {
-                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);  // TODO: translate... hmm...
+                return this.displayError(`{{ t("Upload for") }} ${f.name} {{ t("failed; you've already uploaded") }} ${this.uploadLimit} {{ t("images") }}`, uploadErrContainer);
             }
 
             // The number of images we'd have uploaded if the current one processed uploads successfully
@@ -263,7 +262,7 @@ class ImageUploader {
             }
 
             if (numUploadedIfSuccessful > this.uploadLimit) {
-                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);
+                return this.displayError(`{{ t("Upload for") }} ${f.name} {{ t("failed; you've already uploaded") }} ${this.uploadLimit} {{ t("images") }}`, uploadErrContainer);
             }
 
             // Display thumbnail of successfully-uploaded image
@@ -419,7 +418,7 @@ class ImageUploader {
                     })
                     .catch(error => {
                         handleError(error);
-                        self.displayError(error.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+                        self.displayError(error.message, " {{ t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!") }}");
                         const loading = document.querySelector('[data-loading].is-loading')
                         if(loading) loading.classList.remove('is-loading');
 

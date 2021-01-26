@@ -20,7 +20,7 @@
 					<input class="btn btn-default" type="submit" :value="t('Send')" />
 				</fc-form>
 				<div>
-		<p class="charCounter"><strong>{{ t('Character Count:') }} </strong>{{ charCount }} / {{ limit }} {{t('characters allowed')}}</p>
+		<p class="charCounter"><strong>{{ t('Character Count') }}:</strong> {{ charCount }} / {{ limit }} {{ t('characters allowed') }}</p>
 				</div>
 			</div>
 			<button style="display: none;" data-close type="button">{{ t('Close') }}</button>
@@ -127,7 +127,7 @@
 
 				if (v.charCount > v.limit) {
 					display.css('color', 'red');
-					input.setCustomValidity(`Message must be less than ${v.limit} characters`);
+					input.setCustomValidity(`{{ t('Message must be less than') }} ${v.limit} {{ t('characters') }}`);
 				} else {
 					display.css('color', 'black');
 					input.setCustomValidity('');

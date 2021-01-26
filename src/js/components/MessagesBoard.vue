@@ -4,14 +4,14 @@
 			<i class="fa fa-times-circle" style="margin: 10px; font-size: 22px; color: #34b233; cursor: pointer;" ></i>
 		</div>
 		<div v-if="topic" class="message-list-item-header">
-			<h4 v-if="topic.topic.type !== 'post'">{{title(topic)}}</h4>
+			<h4 v-if="topic.topic.type !== 'post'">{{ title(topic) }}</h4>
 			<div class="message-list-item-post-icon post-list-item" v-if="topic.topic.type === 'post'" style="width: 100%;">
 				<div class="grid-x small-12 align-center-middle">
 					<div class="columns small-2 left">
 						<fc-post-icon :post="topic.topic.post" />
 					</div>
 					<div class="columns small-10 left">
-						<a :href="'/posts/' + topic.topic.post.id"><h4 :title="title(topic)" :alt="title(topic)">{{title(topic)}}</h4></a>
+						<a :href="'/posts/' + topic.topic.post.id"><h4 :title="title(topic)" :alt="title(topic)">{{ title(topic) }}</h4></a>
 						<span class="post-list-item-header-icon" v-if="topic.topic.post.group_id">
 									<fc-icon name="map_pin"></fc-icon><span>{{ group(topic) }}</span>
 						</span>
@@ -30,7 +30,7 @@
               @click="onClickThread(thread.id)">
 						<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 						{{thread.user.username}}
-						<span class="unread-amount">{{thread.unreadCount || null}}</span>
+						<span class="unread-amount">{{ thread.unreadCount || null }}</span>
 					</li>
 				</ul>
 			</div>

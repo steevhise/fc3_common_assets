@@ -2,7 +2,7 @@
 	<span id="fc-help">
 		<i class="fa fa-question-circle fc-help-trigger" :data-open="getTarget" :style="`font-size: ${fontsize}; color: ${fontcolor}`" ></i>
 		<div class="reveal" :id="getTarget" data-reveal>
-			<h3>Freecycle Help</h3>
+			<h3>{{ t('Freecycle Help') }}</h3>
 			<slot>Freecycle Help Placeholder</slot>
 			<br/>
 			<a href="#" class="fc-help-beacon-trigger" @click.prevent="hsOpen" >Help Scout</a>
@@ -19,7 +19,7 @@
 		},
 		data() {
 			return {
-				
+
 			}
 		},
 		computed: {
@@ -28,7 +28,7 @@
 			}
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			hsOpen() {

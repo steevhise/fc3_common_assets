@@ -11,7 +11,7 @@ this is not even used any more now that we have the Vue post item components. TO
     </div>
     <div class="post-list-item-content">
         {% if showNewTag %}
-            <div class="callout success text-center">NEW!</div>
+            <div class="callout success text-center">{{ t('NEW!') }}'</div>
         {% endif %}
         <div class="post-list-item-content-header">
             <div class="post-list-item-header-left">
@@ -29,7 +29,7 @@ this is not even used any more now that we have the Vue post item components. TO
                     <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
                       custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
                     >
-                      <p><strong>New Message Re:</strong> {{ post.subject }}</p>
+                      <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject }}</p>
                     </fc-messages-detail-input>
                 </div>
             {% endif %}

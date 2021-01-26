@@ -43,7 +43,7 @@
     <ul>
         {% for val in footerMenuItems %}
             <li class="columns small-6 large-3 footer-menu-item left" >
-                <a href="{{ val.path }}" {{ val.extraAttrs|raw }}>{{val.name}}</a>
+                <a href="{{ val.path }}" {{ val.extraAttrs|raw }}>{{ val.name }}</a>
             </li>
         {% endfor %}
     </ul>

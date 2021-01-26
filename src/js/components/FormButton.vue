@@ -10,7 +10,7 @@
     export default {
         name : 'fc-formbutton',
         components: {
-            
+
         },
         props: {
             type: {
@@ -27,7 +27,7 @@
             },
             text: {
                 type: String,
-                default: () => `No Label`
+                default: () => `{{ t('No Label') }}`
             },
             method: {
                 type: String,

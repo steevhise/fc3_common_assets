@@ -24,9 +24,9 @@
             <div class="item-list-header-filter location">
                 <select class="post-search-dropdown" name="town">
                     <option value="all">{{ t('All My Towns') }}</option>
-                    {%raw%}
-                    <option v-for="town in $root.globalData.towns" :key="town.id" :value="town.id">{{town.name|truncate(30)}}</option>
-                    {%endraw%}
+                    {% raw %}
+                    <option v-for="town in $root.globalData.towns" :key="town.id" :value="town.id">{{ town.name|truncate(30) }}</option>
+                    {% endraw %}
                 </select>
             </div>
         </div>
