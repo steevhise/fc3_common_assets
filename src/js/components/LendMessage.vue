@@ -39,7 +39,7 @@ export default {
 		this.$bus.$on(`formSuccess-${this._uid}`, () => {
 
 			this.$refs.lendMessageForm.$el.reset();
-			this.$bus.$emit('alert', { level : 'success', message: '{{ t("Message sent!") }}', timer: 20000 })
+			this.$bus.$emit('alert', { level : 'success', message: this.t("Message sent!"), timer: 20000 })
 		});
 	},
   mounted() {
