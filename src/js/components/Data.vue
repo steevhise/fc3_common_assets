@@ -153,7 +153,7 @@
 
                 post.type = type;
                 posts[$lodash.findIndex(posts, matchId)] = post;
-                this.$bus.$emit('alert', { level: 'success', message: `<p>{{ t('Post') }} <strong>${post.subject}</strong> {{ t('marked as') }} ${type.name}</p>`, timer: 8000 });
+                this.$bus.$emit('alert', { level: 'success', message: `<p>{{ t('Post') }} <strong>${post.subject}</strong> ${t('marked as') } ${type.name}</p>`, timer: 8000 });
             },
             postLent: function ({ share, post, threadId }) {
 
@@ -179,7 +179,7 @@
 
                 this.$delete(post, 'share');
                 posts[$lodash.findIndex(posts, matchId)] = post;
-                this.$bus.$emit('alert', { level: 'success', message: `<strong>${post.subject}</strong> {{ t('has been returned!') }}'`, timer: 20000 });
+                this.$bus.$emit('alert', { level: 'success', message: `<strong>${post.subject}</strong> ${this.t('has been returned!')}`, timer: 20000 });
             },
             getTagsFromUrl: function () {
                 let params = this.getUrlParams();

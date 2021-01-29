@@ -27,7 +27,7 @@
             },
             text: {
                 type: String,
-                default: () => `{{ t('No Label') }}`
+                default: () => `${t('No Label')}`
             },
             method: {
                 type: String,

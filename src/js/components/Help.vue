@@ -5,7 +5,7 @@
 			<h3>{{ t('Freecycle Help') }}</h3>
 			<slot>Freecycle Help Placeholder</slot>
 			<br/>
-			<a href="#" class="fc-help-beacon-trigger" @click.prevent="hsOpen" >Help Scout</a>
+			<a href="#" class="fc-help-beacon-trigger" @click.prevent="hsOpen">Help Scout</a>
 		</div>
 	</span>
 </template>

@@ -6,7 +6,7 @@
 		<div class="upper-row">
 			<div class="post-list-item-category-icon">
 				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-				<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
+				<span :class="`text-${lowercase(postType)}`">{{ lowercase(t(postType)) }}</span>
 			</div>
 			<!-- chooser -->
       <div v-if="viewer" class="post-list-item-header-right">

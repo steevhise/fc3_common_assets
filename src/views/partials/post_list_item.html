@@ -27,7 +27,7 @@ this is not even used any more now that we have the Vue post item components. TO
                 <div class="post-list-item-header-right">
                     <span class="text-lighten">{{ post.date | mreldate }}</span>
                     <fc-messages-detail-input topic-type="post" topic-id="{{ post.id }}"
-                      custom-trigger='<button class="btn-{{ post.type.name|lower }}">Reply</button>'
+                      custom-trigger='<button class="btn-{{ post.type.name|lower }}">{{ t("Reply") }}</button>'
                     >
                       <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject }}</p>
                     </fc-messages-detail-input>

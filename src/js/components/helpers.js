@@ -132,7 +132,7 @@ const postItemConfig = {
           .done((data, status) => {
             self.$emit('post-deleted');
           })
-          .fail(() => displayError(self.t("We couldn't cancel your post at this time. Sorry!")));   // TODO: will this work?
+          .fail(() => displayError(self.t("We couldn't cancel your post at this time. Sorry!")));
           break;
         case 'replies':
           window.$.get(`/api/messaging/topics/post/${this.post.id}`)
@@ -141,7 +141,7 @@ const postItemConfig = {
             const myReplies = `${protocol}//${host}/home/my-replies?type=post&id=${this.post.id}`;
             window.location.assign(myReplies);
           })
-          .fail(() => displayError(self.t('There are no replies for that post yet!')));
+          .fail(() => displayError(self.t("There are no replies for that post yet!")));
           break;
         case 'mark':
           window.$.post(`/api/posts/${self.post.id}/mark`, { newType: self.closedType })
