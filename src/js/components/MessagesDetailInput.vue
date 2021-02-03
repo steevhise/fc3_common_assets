@@ -127,7 +127,7 @@
 
 				if (v.charCount > v.limit) {
 					display.css('color', 'red');
-					input.setCustomValidity(`{{ t('Message must be less than') }} ${v.limit} {{ t('characters') }}`);
+					input.setCustomValidity(`${t('Message must be less than')} ${v.limit} ${t('characters')}`);
 				} else {
 					display.css('color', 'black');
 					input.setCustomValidity('');
