@@ -60,7 +60,7 @@
 				</div>
 				<div v-if="viewer" class="post-grid-item-header-right">
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved != undefined">{{ t('Awaiting Approval') }}</button>
+					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved !== undefined">{{ t('Awaiting Approval') }}</button>
 					<template v-else-if="viewer === post.userId">
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
@@ -78,12 +78,9 @@
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="closedType" value="mark" >{{ t(markMessage) }}</option>
-							<option v-else-if="postType === 'LEND' && lent" value="return">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
-							<option v-else-if="postType === 'LEND' && !lent" value="lend">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
+              <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
+                <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+              </option>
 							<option value="delete">{{ t('Cancel Post') }}</option>
 							<option value="replies">{{ t('See Replies') }}</option>
 						</select>

@@ -47,6 +47,7 @@
 					}"
 					:messages="messages"
 					:me="me"
+          :disabled="isTakenOrReceived()"
 				/>
 				<div class="message-list-item-details-chat-form" :style="`opacity: ${notFriend(topic.topic.type, threads) ? '50%' : '100%'};`">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
@@ -57,7 +58,7 @@
 							</div>
 							<div class="columns small-2">
 								<fc-spinner v-if="sendingMessage" size="medium" :message="t('Sending...')"></fc-spinner>
-								<button class="btn-default" :disabled="notFriend(topic.topic.type, threads)" v-else>{{ t('Send') }}</button>
+								<button v-else class="btn-default" :disabled="isTakenOrReceived() || notFriend(topic.topic.type, threads)">{{ t('Send') }}</button>
 							</div>
 						</div>
 					</form>
@@ -119,6 +120,14 @@
 					self.sendingMessage = false;
 				});
 			},
+      isTakenOrReceived() {
+        // Being extra careful here to make sure we don't hit any undefineds
+        if (!this.$options.propsData.hasOwnProperty('topic')) return false
+        const topic = this.$options.propsData.topic
+        if (!topic.hasOwnProperty('topic') || !topic.topic.hasOwnProperty('post') || !topic.topic.post.hasOwnProperty('type')) return false
+        const postType = topic.topic.post.type
+        return postType.const === 'FC_POST_TAKEN' || postType.const === 'FC_POST_RECEIVED'
+      },
 			notFriend: (type, threads) => {
 
 				const userId = (threads[0] && threads[0].user && threads[0].user.id) ? threads[0].user.id : 0;

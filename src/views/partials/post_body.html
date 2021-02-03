@@ -137,9 +137,11 @@
                                 	{# show nothing if the poster has blocked me #}
 							{% elseif post.canReply %}
                                 <div style="display: flex; width:17rem;">
-                                    <span style="flex:1;"><fc-messages-detail-input v-cloak subject="{{ post.subject|sanitizeHtml|raw }}" topic-type="post" topic-id={{ post.id }} custom-trigger='<button class="btn-{{ post.type.name|lower }}" style="float: left; margin-right: 10px;">{{ postAction|default(t("Reply")) }}</button>'>
+                                    {% if post.type.const !== 'FC_POST_TAKEN' && post.type.const !== 'FC_POST_RECEIVED' %}
+                                        <span style="flex:1;"><fc-messages-detail-input v-cloak subject="{{ post.subject|sanitizeHtml|raw }}" topic-type="post" topic-id={{ post.id }} custom-trigger='<button class="btn-{{ post.type.name|lower }}" style="float: left; margin-right: 10px;">{{ postAction|default(t("Reply")) }}</button>'>
                                         <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
-                                    </fc-messages-detail-input></span>
+                                        </fc-messages-detail-input></span>
+                                    {% endif %}
                                     <span style="flex:1;"><fc-messages-detail-input v-cloak default-body="{{ t('I am reporting post') }} #{{ post.id }}" subject="{{ t('Member Reporting post') }} #{{ post.id }}" topic-type="group" topic-id="{{ post.group.id || 0 }}" custom-trigger='<button class="btn btn-action">{{ t("Report") }}</button>'>
                                     <p><strong>{{ t('Report this post to a Moderator') }}:</strong> {{ post.subject|sanitizeHtml|raw }}</p>
                                         </fc-messages-detail-input></span>
