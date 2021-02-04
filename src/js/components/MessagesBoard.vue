@@ -47,24 +47,34 @@
 					}"
 					:messages="messages"
 					:me="me"
-          :disabled="isTakenOrReceived()"
 				/>
 				<div class="message-list-item-details-chat-form" :style="`opacity: ${notFriend(topic.topic.type, threads) ? '50%' : '100%'};`">
 					<form ref="messageForm" @submit.prevent="handleSubmit">
 						<div class="row" style="width: 100%;">
 							<div class="columns small-10">
-								<span v-if="notFriend(topic.topic.type, threads)">(no longer a friend)</span>
-								<input v-else type="text" ref="messageBody" :placeholder="t('Write a Message (1000 characters max)')" maxlength="998" required>
+                <label hidden for="messageBody">Message</label>
+								<input :disabled="!chatEnabled"
+                       id="messageBody"
+                       type="text"
+                       ref="messageBody"
+                       :placeholder="(chatEnabled) ? t('Write a Message (1000 characters max)') : chatDisabledMessage"
+                       maxlength="998"
+                       name="messageBody"
+                       required
+                >
 							</div>
 							<div class="columns small-2">
 								<fc-spinner v-if="sendingMessage" size="medium" :message="t('Sending...')"></fc-spinner>
-								<button v-else class="btn-default" :disabled="isTakenOrReceived() || notFriend(topic.topic.type, threads)">{{ t('Send') }}</button>
+								<button v-else
+                        :class="(chatEnabled) ? 'btn-default' : 'btn-default fc-disabled'"
+                        :disabled="!chatEnabled"
+                >{{ t('Send') }}</button>
 							</div>
 						</div>
 					</form>
 				</div>
-			</div>
-		</div>
+      </div>
+    </div>
 	</div>
 </template>
 
@@ -89,8 +99,10 @@
 		},
 		data() {
 			return {
-				// controls the state of a message being sent for the spinner
-				sendingMessage: false,
+				chatEnabled: true,
+        chatDisabledMessage: '',
+			  // controls the state of a message being sent for the spinner
+        sendingMessage: false,
 				loadingThreads: false
 			}
 		},
@@ -102,8 +114,26 @@
 			this.$bus.$on('threads.done', () => {
 				this.loadingThreads = false;
 			});
-		},
+			this.isChatClosed()
+    },
 		methods: {
+		  isChatClosed() {
+		    const topic = this.$options.propsData.topic.topic
+        const threads = this.$options.propsData.threads
+		    if(this.isTakenOrReceived()) {
+		      this.chatEnabled = false
+          this.chatDisabledMessage = this.t('This post is taken or received')
+        } else if(this.notFriend(topic.type, threads)) {
+          this.chatEnabled = false
+          this.chatDisabledMessage = this.t('No longer a friend.')
+        } else if(!topic.post.is_open) {
+          this.chatEnabled = false
+          this.chatDisabledMessage = this.t('This post has been cancelled')
+        } else {
+		      this.chatEnabled = true
+          this.chatDisabledMessage = ''
+        }
+      },
 			color: (id) => colors[id % colors.length],
 			title: topicTitle,
 			group: postGroup,
@@ -118,7 +148,18 @@
 				.then(() => {
 					form.reset();
 					self.sendingMessage = false;
-				});
+				})
+        .catch(e => {
+          console.log('e in MessagesBoard', e)
+          switch (e.status) {
+            case 404:
+              return this.$bus.$emit('alert', { level : 'alert', message: t("That post does not exist"), timer: 10000 });
+            case 409:
+              return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
+            default:
+              return this.$bus.$emit('alert', { level: 'alert', message: t('Unable to reply on this post'), timer: 10000 })
+          }
+        })
 			},
       isTakenOrReceived() {
         // Being extra careful here to make sure we don't hit any undefineds
