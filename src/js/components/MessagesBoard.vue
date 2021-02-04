@@ -150,14 +150,13 @@
 					self.sendingMessage = false;
 				})
         .catch(e => {
-          console.log('e in MessagesBoard', e)
           switch (e.status) {
             case 404:
-              return this.$bus.$emit('alert', { level : 'alert', message: t("That post does not exist"), timer: 10000 });
+              return this.$bus.$emit('alert', { level : 'alert', message: this.t("That post does not exist"), timer: 10000 });
             case 409:
               return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
             default:
-              return this.$bus.$emit('alert', { level: 'alert', message: t('Unable to reply on this post'), timer: 10000 })
+              return this.$bus.$emit('alert', { level: 'alert', message: this.t('Unable to reply on this post'), timer: 10000 })
           }
         })
 			},
