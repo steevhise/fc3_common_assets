@@ -1,6 +1,6 @@
 <template>
     <div v-if="isVisible" :id="`form-results-${this.customAlertEl}`" data-closable="slide-out-right">
-        <h5 v-if="header">{{header}}</h5>
+        <h5 v-if="header">{{ header }}</h5>
         <div class="form-results friends-cards item-grid-view" v-masonry transition-duration="0.3s" item-selector=".friend-card" ref="post_gridview">
             <div class="friend-card" v-for="user in results" v-bind:key="user.id" :data-friend-id="user.id">
                 <div class="friend-card-container">

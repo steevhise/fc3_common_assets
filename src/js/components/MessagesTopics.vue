@@ -11,7 +11,7 @@
 							</div>
 							<div class="message-title post-list-item">
 								<img v-if="image(topic)" class="message-image" :src="image(topic)"/>
-								<h4>{{title(topic)}}</h4>&nbsp;&nbsp;&nbsp;
+								<h4>{{ title(topic) }}</h4>&nbsp;&nbsp;&nbsp;
 								<span class="post-list-item-header-icon" v-if="topic.topic.type === 'post'">
 									<template v-if="topic.topic.post.group_id">
 									<fc-icon name="map_pin"></fc-icon><span>{{ group(topic) }}</span>

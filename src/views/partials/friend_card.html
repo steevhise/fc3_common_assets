@@ -32,7 +32,7 @@
               {{ friend.info.reputation|default(0) }} thumbs up
               {% if friend.info.verified %}
                 |
-                {% include './user_verified.html' with { text: "Verified", fontSize: "16px" } %}
+                {% include './user_verified.html' with { text: t("Verified"), fontSize: "16px" } %}
               {% endif %}
 
           </h5>

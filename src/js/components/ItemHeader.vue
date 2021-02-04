@@ -6,7 +6,7 @@
 				<span :class="`text-${postType.toLowerCase()}`">{{postType.toLowerCase()}}</span>
 			</div>
 			<div v-if="lendDuration" style="margin: 0 2rem">
-				<strong>Lend Duration: </strong>{{lendDuration}} days
+				<strong>{{ t('Lend Duration') }}: </strong>{{ lendDuration }} {{ t('days') }}
 			</div>
 		</div>
 		<div class="post-grid-item-header-right">

@@ -3,7 +3,7 @@
 <footer>
     {% if featuredIn %}
     <div class="row">
-        <h3 style="text-align:center;color:#ffffff;" >{{ t('As featured in:') }}</h3>
+        <h3 style="text-align:center;color:#ffffff;" >{{ t('As featured in') }}:</h3>
         <fc-featuredin></fc-featuredin>
     </div>
     {% endif %}
@@ -24,7 +24,7 @@
         </div>
         <div class="row footer-row">
             <div class="small-12 columns">
-                <p class="footer-lowlight">Copyright ©{{ date|date('Y') }} The Freecycle Network. {{ t('All rights reserved. Freecycle and the Freecycle logo are trademarks of The Freecycle Network in various countries.') }}</p>
+                <p class="footer-lowlight">{{ t('Copyright') }} ©{{ date|date('Y') }} The Freecycle Network. {{ t('All rights reserved. Freecycle and the Freecycle logo are trademarks of The Freecycle Network in various countries.') }}</p>
             </div>
         </div>
     </div>

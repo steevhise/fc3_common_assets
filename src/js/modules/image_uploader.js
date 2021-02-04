@@ -22,7 +22,7 @@ class ImageUploader {
     constructor({ imageForm, uploadedFilesContainer, uploadLimit = 3, uploadErrors, formErrors, requestType, uploadApiEndpoints }) {
 
         if (!imageForm || !uploadedFilesContainer || !uploadErrors || !formErrors || !requestType) {
-            throw new Error('Image Uploader couldn\'t be initialized; some required arguments were missing.');
+            throw new Error("Image Uploader couldn't be initialized; some required arguments were missing.");
 
         }
         let postId;
@@ -220,7 +220,7 @@ class ImageUploader {
         // TODO Sensible way to handle this case? Error messaging?
         // TODO Move higher up the call chain? If no HTML5 APIs detected, bail on init, disable files input and display message
         if (!e.target.files || !window.FileReader) {
-            console.error('Current browser doesn\'t support the native FileReader API, which the image uploader depends on');
+            console.error("Current browser doesn't support the native FileReader API, which the image uploader depends on");
             return;
         }
 
@@ -236,14 +236,13 @@ class ImageUploader {
 
         filesArr.forEach(function(f, index) {
 
-            // TODO: translate
             if (f.type.match(/image\/(jpeg|png)/) === null) {
-                return this.displayError(`We can't process ${f.name} because it's a ${f.type}. Retry uploading with a jpg or png image. Sorry!`, uploadErrContainer);
+                return this.displayError(`${window.vm.$root.t("We can't process")} ${f.name} ${window.vm.$root.t("because it's a")} ${f.type}. ${window.vm.$root.t("Retry uploading with a jpg or png image. Sorry!")}`, uploadErrContainer);
             }
 
             // User's attempting to upload > uploadLimit images at once
             if (this.filesList.length === this.uploadLimit) {
-                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);  // TODO: translate... hmm...
+                return this.displayError(`${window.vm.$root.t("Upload for")} ${f.name} ${window.vm.$root.t("failed; you've already uploaded")} ${this.uploadLimit} ${window.vm.$root.t("images")}`, uploadErrContainer);
             }
 
             // The number of images we'd have uploaded if the current one processed uploads successfully
@@ -263,7 +262,7 @@ class ImageUploader {
             }
 
             if (numUploadedIfSuccessful > this.uploadLimit) {
-                return this.displayError(`Upload for ${f.name} failed; you've already uploaded ${this.uploadLimit} images`, uploadErrContainer);
+                return this.displayError(`${window.vm.$root.t("Upload for")} ${f.name} ${window.vm.$root.t("failed; you've already uploaded")} ${this.uploadLimit} ${window.vm.$root.t("images")}`, uploadErrContainer);
             }
 
             // Display thumbnail of successfully-uploaded image
@@ -402,7 +401,7 @@ class ImageUploader {
 
                         const $ = window.jQuery
                         if (typeof $ === 'function') {
-                            $('#modalPostConfirm').prepend("<p style='margin-left:5em;margin-right:5em;'>" + window.vm.$root.t('Your item has been posted and given the post id') + ' ' + postId + `. <a href="/posts/${postId}">` + window.vm.$root.t('Click here to view it.') + '</a></p>' );
+                            $('#modalPostConfirm').prepend(`<p style="margin-left:5em;margin-right:5em;">${window.vm.$root.t("Your item has been posted and given the post id")} ${postId}. <a href="/posts/${postId}">${window.vm.$root.t("Click here to view it.")}</a></p>`);
                             $('#modalPostConfirm').foundation('open');
                             $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
                             $(window).on(
@@ -419,7 +418,7 @@ class ImageUploader {
                     })
                     .catch(error => {
                         handleError(error);
-                        self.displayError(error.message, "We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!");
+                        self.displayError(error.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
                         const loading = document.querySelector('[data-loading].is-loading')
                         if(loading) loading.classList.remove('is-loading');
 

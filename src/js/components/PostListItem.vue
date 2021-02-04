@@ -6,7 +6,7 @@
 		<div class="upper-row">
 			<div class="post-list-item-category-icon">
 				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-				<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
+				<span :class="`text-${lowercase(postType)}`">{{ lowercase(t(postType)) }}</span>
 			</div>
 			<!-- chooser -->
       <div v-if="viewer" class="post-list-item-header-right">
@@ -61,7 +61,7 @@
               {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
           <fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-          <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
+          <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject | stripTags }}</p>
           </fc-messages-detail-input>
         </template>
         <template v-else>
@@ -85,7 +85,7 @@
 				<div class="post-list-item-header-left">
 					<div class="post-list-item-content-description hide-for-medium hide-for-large">
 						<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
-						<p> {{post.description | stripTags | truncate(120)}}</p>
+						<p> {{ post.description | stripTags | truncate(120) }}</p>
 					</div>
 					<div class="post-list-item-header-icon group-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
@@ -93,10 +93,10 @@
 					</div>
                     <div class="post-list-item-header-icon friend-circle" v-else>
                         <fc-icon name="friend_circle"></fc-icon>
-                        <span>Friends Circle</span>
+                        <span>{{ t('Friends Circle') }}</span>
                     </div>
 					<div v-if="post.static && post.static.lendDuration" class="lend-duration">
-						<strong>{{ t('Lend Duration:') }} </strong>{{ post.static.lendDuration }} {{ t('days') }}
+						<strong>{{ t('Lend Duration') }}:</strong> {{ post.static.lendDuration }} {{ t('days') }}
 					</div>
                     <div class="post-list-item-header-icon location-icon" v-if="post.location">
                         <fc-icon name="location"></fc-icon>
