@@ -2,7 +2,7 @@
 <div class="row in-page-search">
   <form class="town-search column large-4 large-offset-4" @submit.prevent="searchTowns" data-running="false" onsubmit="$('form.town-search').attr('data-running',true); return true;">
     <div class="input-with-icon">
-      <input class="input-round input-with-icon" type="search" v-model.lazy="$root.towns_searchQuery" :placeholder="t('Find Towns')"/>
+      <input class="input-round input-with-icon" type="search" v-model.lazy="$root.towns_searchQuery" :placeholder="t('Find Towns')" required />
 
       <span class="icon search-icon">
 		<button>
