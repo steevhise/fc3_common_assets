@@ -3,7 +3,7 @@
 <form class="post-search" method="post" action="/search-posts" data-running="false" onsubmit="$('form.post-search').attr('data-running',true); return true;">
     <div class="header-search" {% if omitOnPages|contains(route.id)  %}style="visibility: hidden;"{% else %}{% endif %}>
         <div class="search-input {% if session %}logged-in{% endif %}" >
-            <input class="search input-group-field" name="searchText" type="search" value="{{ search }}" :placeholder="t('Search for items...')"/>
+            <input class="search input-group-field" name="searchText" type="search" value="{{ search }}" :placeholder="t('Search for items...')" required />
         </div>
         <div class="form-overlay" style="top:3em;">
             <span class="content">
