@@ -61,7 +61,7 @@
               {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
           <fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-          <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject | stripTags }}</p>
+            <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject | stripTags }}</p>
           </fc-messages-detail-input>
         </template>
         <template v-else>
