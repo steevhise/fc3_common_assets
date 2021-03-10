@@ -6,13 +6,13 @@
 		<div class="upper-row">
 			<div class="post-list-item-category-icon">
 				<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-				<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
+				<span :class="`text-${lowercase(postType)}`">{{ lowercase(t(postType)) }}</span>
 			</div>
 			<!-- chooser -->
       <div v-if="viewer" class="post-list-item-header-right">
         <template v-if="viewer === post.userId">
         <!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
-          <button v-if="post.isApproved === false" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
+          <button v-if="!post.isApproved && post.isApproved !== undefined" style="border-radius: 0; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
           <template v-if="postType === 'LEND'">
             <div v-if="!lent"  data-open="friend-select-form"
               style="display: none;"
@@ -31,22 +31,19 @@
           <!--  if pending post, show "manage" button, but only with delete.? -->
           <select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
             <option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
-            <option v-if="post.isApproved == true" value="edit">{{ t('Edit Post') }}</option>
-            <option v-if="(post.isApproved == true) && closedType" value="mark" >{{ t(markMessage) }}</option>
+            <option v-if="post.isApproved" value="edit">{{ t('Edit Post') }}</option>
+            <option v-if="post.isApproved && closedType" value="mark" >{{ t(markMessage) }}</option>
 <!-- {{ t('TAKEN') }}
 {{ t('RECEIVED') }}
 {{ t('Mark As Taken') }}
 {{ t('Mark As Received') }}
 {{ t('Cancel Post') }}
 (this cuz of dumb i18n parser...) -->
-            <option v-else-if="postType === 'LEND' && lent" value="return">
-              <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-            </option>
-            <option v-else-if="postType === 'LEND' && !lent" value="lend">
+            <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
               <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
             </option>
             <option value="delete">{{ t('Cancel Post') }}</option>
-            <option v-if="post.isApproved == true" value="replies">{{ t('See Replies') }}</option>
+            <option v-if="post.isApproved" value="replies">{{ t('See Replies') }}</option>
           </select>
         </template>
         <template v-else-if="lent && viewer === post.share.borrowerId">
@@ -64,7 +61,7 @@
               {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
           <fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-          <p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject | stripTags }}</p>
+          <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject | stripTags }}</p>
           </fc-messages-detail-input>
         </template>
         <template v-else>
@@ -88,7 +85,7 @@
 				<div class="post-list-item-header-left">
 					<div class="post-list-item-content-description hide-for-medium hide-for-large">
 						<h4><a :href="path.posts_detail + post.id">{{ post.subject }}</a></h4>
-						<p> {{post.description | stripTags | truncate(120)}}</p>
+						<p> {{ post.description | stripTags | truncate(120) }}</p>
 					</div>
 					<div class="post-list-item-header-icon group-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
@@ -96,10 +93,10 @@
 					</div>
                     <div class="post-list-item-header-icon friend-circle" v-else>
                         <fc-icon name="friend_circle"></fc-icon>
-                        <span>Friends Circle</span>
+                        <span>{{ t('Friends Circle') }}</span>
                     </div>
 					<div v-if="post.static && post.static.lendDuration" class="lend-duration">
-						<strong>{{ t('Lend Duration:') }} </strong>{{ post.static.lendDuration }} {{ t('days') }}
+						<strong>{{ t('Lend Duration') }}:</strong> {{ post.static.lendDuration }} {{ t('days') }}
 					</div>
                     <div class="post-list-item-header-icon location-icon" v-if="post.location">
                         <fc-icon name="location"></fc-icon>

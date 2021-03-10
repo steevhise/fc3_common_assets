@@ -4,14 +4,14 @@
 			<i class="fa fa-times-circle" style="margin: 10px; font-size: 22px; color: #34b233; cursor: pointer;" ></i>
 		</div>
 		<div v-if="topic" class="message-list-item-header">
-			<h4 v-if="topic.topic.type !== 'post'">{{title(topic)}}</h4>
+			<h4 v-if="topic.topic.type !== 'post'">{{ title(topic) }}</h4>
 			<div class="message-list-item-post-icon post-list-item" v-if="topic.topic.type === 'post'" style="width: 100%;">
 				<div class="grid-x small-12 align-center-middle">
 					<div class="columns small-2 left">
 						<fc-post-icon :post="topic.topic.post" />
 					</div>
 					<div class="columns small-10 left">
-						<a :href="'/posts/' + topic.topic.post.id"><h4 :title="title(topic)" :alt="title(topic)">{{title(topic)}}</h4></a>
+						<a :href="'/posts/' + topic.topic.post.id"><h4 :title="title(topic)" :alt="title(topic)">{{ title(topic) }}</h4></a>
 						<span class="post-list-item-header-icon" v-if="topic.topic.post.group_id">
 									<fc-icon name="map_pin"></fc-icon><span>{{ group(topic) }}</span>
 						</span>
@@ -22,12 +22,15 @@
 		<div class="message-list-item-details">
 			<div v-if="threads && threads.length > 1" class="message-list-item-details-sidebar">
 				<ul class="message-list-item-details-participants">
-					<li v-for="thread in threads" :key="thread.id" @click="onClickThread(thread.id)"
-							class="message-list-item-details-participant" v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
-						>
+					<li class="message-list-item-details-participant"
+              v-for="thread in threads"
+              v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
+              v-if="thread.user != null"
+              :key="thread.id"
+              @click="onClickThread(thread.id)">
 						<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 						{{thread.user.username}}
-						<span class="unread-amount">{{thread.unreadCount || null}}</span>
+						<span class="unread-amount">{{ thread.unreadCount || null }}</span>
 					</li>
 				</ul>
 			</div>
@@ -49,18 +52,29 @@
 					<form ref="messageForm" @submit.prevent="handleSubmit">
 						<div class="row" style="width: 100%;">
 							<div class="columns small-10">
-								<span v-if="notFriend(topic.topic.type, threads)">(no longer a friend)</span>
-								<input v-else type="text" ref="messageBody" :placeholder="t('Write a Message (1000 characters max)')" maxlength="998" required>
+                <label hidden for="messageBody">Message</label>
+								<input :disabled="!chatEnabled"
+                       id="messageBody"
+                       type="text"
+                       ref="messageBody"
+                       :placeholder="(chatEnabled) ? t('Write a Message (1000 characters max)') : chatDisabledMessage"
+                       maxlength="998"
+                       name="messageBody"
+                       required
+                >
 							</div>
 							<div class="columns small-2">
 								<fc-spinner v-if="sendingMessage" size="medium" :message="t('Sending...')"></fc-spinner>
-								<button class="btn-default" :disabled="notFriend(topic.topic.type, threads)" v-else>{{ t('Send') }}</button>
+								<button v-else
+                        :class="(chatEnabled) ? 'btn-default' : 'btn-default fc-disabled'"
+                        :disabled="!chatEnabled"
+                >{{ t('Send') }}</button>
 							</div>
 						</div>
 					</form>
 				</div>
-			</div>
-		</div>
+      </div>
+    </div>
 	</div>
 </template>
 
@@ -85,8 +99,10 @@
 		},
 		data() {
 			return {
-				// controls the state of a message being sent for the spinner
-				sendingMessage: false,
+				chatEnabled: true,
+        chatDisabledMessage: '',
+			  // controls the state of a message being sent for the spinner
+        sendingMessage: false,
 				loadingThreads: false
 			}
 		},
@@ -98,8 +114,26 @@
 			this.$bus.$on('threads.done', () => {
 				this.loadingThreads = false;
 			});
-		},
+			this.isChatClosed()
+    },
 		methods: {
+		  isChatClosed() {
+		    const topic = this.$options.propsData.topic.topic
+        const threads = this.$options.propsData.threads
+		    if(this.isTakenOrReceived()) {
+		      this.chatEnabled = false
+          this.chatDisabledMessage = this.t('This post is taken or received')
+        } else if(this.notFriend(topic.type, threads)) {
+          this.chatEnabled = false
+          this.chatDisabledMessage = this.t('No longer a friend.')
+        } else if(!topic.post.is_open) {
+          this.chatEnabled = false
+          this.chatDisabledMessage = this.t('This post has been cancelled')
+        } else {
+		      this.chatEnabled = true
+          this.chatDisabledMessage = ''
+        }
+      },
 			color: (id) => colors[id % colors.length],
 			title: topicTitle,
 			group: postGroup,
@@ -114,11 +148,29 @@
 				.then(() => {
 					form.reset();
 					self.sendingMessage = false;
-				});
+				})
+        .catch(e => {
+          switch (e.status) {
+            case 404:
+              return this.$bus.$emit('alert', { level : 'alert', message: this.t("That post does not exist"), timer: 10000 });
+            case 409:
+              return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
+            default:
+              return this.$bus.$emit('alert', { level: 'alert', message: this.t('Unable to reply on this post'), timer: 10000 })
+          }
+        })
 			},
+      isTakenOrReceived() {
+        // Being extra careful here to make sure we don't hit any undefineds
+        if (!this.$options.propsData.hasOwnProperty('topic')) return false
+        const topic = this.$options.propsData.topic
+        if (!topic.hasOwnProperty('topic') || !topic.topic.hasOwnProperty('post') || !topic.topic.post.hasOwnProperty('type')) return false
+        const postType = topic.topic.post.type
+        return postType.const === 'FC_POST_TAKEN' || postType.const === 'FC_POST_RECEIVED'
+      },
 			notFriend: (type, threads) => {
 
-				const userId = threads[0].user.id || 0;
+				const userId = (threads[0] && threads[0].user && threads[0].user.id) ? threads[0].user.id : 0;
 				return !!((type === 'friend') && !window.vm.$root.globalData.friends.includes(userId));
 			}
 		}

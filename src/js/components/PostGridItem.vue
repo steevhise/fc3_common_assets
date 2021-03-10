@@ -8,10 +8,10 @@
 				<div class="post-grid-item-header-left">
 					<div class="post-grid-item-category-icon">
 						<fc-icon name="chevron" :classname="`icon-chevron-${lowercase(postType)}`"></fc-icon>
-						<span :class="`text-${lowercase(postType)}`">{{lowercase(t(postType))}}</span>
+						<span :class="`text-${lowercase(postType)}`">{{ lowercase(t(postType)) }}</span>
 					</div>
 					<div v-if="post.static && post.static.lendDuration" style="margin: 0 2rem">
-						<strong>{{ t('Lend Duration:') }} </strong>{{ post.static.lendDuration }} {{ t('days') }}
+						<strong>{{ t('Lend Duration') }}:</strong> {{ post.static.lendDuration }} {{ t('days') }}
 					</div>
 				</div>
 				<div class="post-grid-item-header-right">
@@ -44,10 +44,10 @@
 			<div class="post-grid-item-addinfo row is-hidden">
 				<ul class="accordion" data-accordion data-allow-all-closed="true" data-deep-link="false" data-update-history="false" data-deep-link-smudge="false">
 					<li class="accordion-item" data-accordion-item>
-						<a class="accordion-title" style="text-align: center; font-size: 16px; color: #34b233;">Details</a>
+						<a class="accordion-title" style="text-align: center; font-size: 16px; color: #34b233;">{{ t('Details') }}</a>
 						<div class="accordion-content" data-tab-content>
 							<div class="row" style="font-size:12px;">
-								Crossroads: <span><i class="fa fa-map-signs"></i> {{post.location }}</span>
+								{{ t('Crossroads') }}: <span><i class="fa fa-map-signs"></i> {{ post.location }}</span>
 							</div>
 						</div>
 					</li>
@@ -60,7 +60,7 @@
 				</div>
 				<div v-if="viewer" class="post-grid-item-header-right">
 					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved != undefined">{{ t('Awaiting Approval') }}</button>
+					<button style="border-radius: 0px; border: solid 2px #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved !== undefined">{{ t('Awaiting Approval') }}</button>
 					<template v-else-if="viewer === post.userId">
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
@@ -78,12 +78,9 @@
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
 							<option value="edit">{{ t('Edit Post') }}</option>
 							<option v-if="closedType" value="mark" >{{ t(markMessage) }}</option>
-							<option v-else-if="postType === 'LEND' && lent" value="return">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
-							<option v-else-if="postType === 'LEND' && !lent" value="lend">
-								<span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
-							</option>
+              <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
+                <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
+              </option>
 							<option value="delete">{{ t('Cancel Post') }}</option>
 							<option value="replies">{{ t('See Replies') }}</option>
 						</select>
@@ -96,7 +93,7 @@
 						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 					</template>
 					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-						<p><strong>{{ t('New Message Re:') }}</strong> {{ post.subject }}</p>
+						<p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
 				</div>
 			</div>

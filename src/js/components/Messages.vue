@@ -1,5 +1,8 @@
 <template>
 	<div class="message-list-item-details-chat-window" ref="chatWindow">
+    <div v-if="disabled" class="disabled-overlay">
+      {{ `Closed to replies as this item is taken or received.` }}
+    </div>
 		<!-- categoryIndex 4 represents our Notifications tab (see fc3_main, MessagesBoardConnected component) -->
 		<h3 v-if="category && category.categoryIndex === 4" class="row columns  large-1">{{ t(category.displayName) }}</h3>
 		<p v-if="category && category.categoryIndex === 4"></p>
@@ -22,7 +25,8 @@
 	export default {
 		name: 'fc-messages',
 		props: {
-		    category: Object,
+		  category: Object,
+      disabled: Boolean,
 			messages: Array,
 			me: Object,
 			showHtml: {
@@ -43,7 +47,7 @@
 			moment.locale(window.language);    // language set in top-level... apparently we can't use this.i18nOptions.lng here?
 		},
 		methods: {
-			ago: (time) => moment(time).fromNow(),    // TODO???
+			ago: (time) => !isNaN(time) ? moment(time).fromNow() : '',    // TODO???
 			timezone: (datetime) => {
 				// datetime values from server are in UTC
 				const utc = new Date(datetime);
@@ -68,3 +72,21 @@
 		'rgb(126,87,194)'
 	]
 </script>
+
+<style lang="css">
+.disabled-overlay {
+  color: #fff;
+  background: #00000080;
+  width: 110%;
+  height: 110%;
+  margin-left: -5%;
+  margin-top: -5%;
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  padding-top: 24%;
+  z-index: 999;
+  text-shadow: 1px 1px 2px #000;
+  text-transform: uppercase;
+}
+</style>

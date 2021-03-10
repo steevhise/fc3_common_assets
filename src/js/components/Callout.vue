@@ -1,7 +1,7 @@
 <template>
     <transition name="fade" :duration="timer">
         <div id="callout" v-if="isVisible" :class="`callout large ${this.level}`" data-closable="slide-out-right">
-            <h5 v-if="header">{{header}}</h5>
+            <h5 v-if="header">{{ header }}</h5>
             <p v-html="message"></p>
         </div>
     </transition>

@@ -15,7 +15,7 @@
 						</option>
 					</select>
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
-					<input class="btn btn-default" type="submit" value="Lend to Friend!">
+					<input class="btn btn-default" type="submit" :value="t('Lend to Friend!')">
 				</fc-form>
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 			.fail(() => {
 				console.debug('friends list fail');
 				self.friendsLoaded = true;
-				$('#friend-select-body').html('<p class="callout alert">Failed to load your friends list. Contact your local moderator for help. Sorry for the inconvenience!</p>');
+				$('#friend-select-body').html('<p class="callout alert">{{ t("Failed to load your friends list. Contact your local moderator for help. Sorry for the inconvenience!") }}</p>');
 			});
 		}
 	}

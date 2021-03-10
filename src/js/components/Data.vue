@@ -135,6 +135,7 @@
                 });
 
                 self.$root.$emit('redrawVueMasonry');
+
                 //console.debug('items: ', results);
                 return results;
             }
@@ -153,7 +154,7 @@
 
                 post.type = type;
                 posts[$lodash.findIndex(posts, matchId)] = post;
-                this.$bus.$emit('alert', { level: 'success', message: `<p>Post <strong>${post.subject}</strong> marked as ${type.name}</p>`, timer: 8000 });
+                this.$bus.$emit('alert', { level: 'success', message: `<p>${t('Post')} <strong>${post.subject}</strong> ${t('marked as') } ${type.name}</p>`, timer: 8000 });
             },
             postLent: function ({ share, post, threadId }) {
 
@@ -165,7 +166,7 @@
                 // component rerender
                 this.$set(post, 'share', share);
                 posts[$lodash.findIndex(posts, matchId)] = post;
-                this.$bus.$emit('alert', { level: 'success', message: `You lent <strong>${post.subject}</strong>!`, timer: 20000 });
+                this.$bus.$emit('alert', { level: 'success', message: `${this.t('You lent')} <strong>${post.subject}</strong>!`, timer: 20000 });
 
                 this.$refs.lendMessage.post = post;
                 this.$refs.lendMessage.lendThreadId = threadId;
@@ -179,7 +180,7 @@
 
                 this.$delete(post, 'share');
                 posts[$lodash.findIndex(posts, matchId)] = post;
-                this.$bus.$emit('alert', { level: 'success', message: `<strong>${post.subject}</strong> has been returned!`, timer: 20000 });
+                this.$bus.$emit('alert', { level: 'success', message: `<strong>${post.subject}</strong> ${this.t('has been returned!')}`, timer: 20000 });
             },
             getTagsFromUrl: function () {
                 let params = this.getUrlParams();
@@ -202,6 +203,8 @@
                             response.data.posts.forEach((p, i) => {
                                 this.posts[offset + i] = p;    // push one new post at a time onto the old array of posts. TODO: try push again instead?
                             }, self);
+                            let ids = self.posts.map(o => o.id);
+                            self.posts = self.posts.filter(({id}, index) => !ids.includes(id, index+1));
                             self.offset = self.$root.posts.length;
                             self.count = response.data.count || self.count;
                             //self.$emit('redrawVueMasonry');

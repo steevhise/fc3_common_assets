@@ -1,9 +1,9 @@
 <!--Note: this file is provided by the fc3_common_assets package */-->
 <template>
     <div id="test">
-        <h1 v-if="title">{{title}}</h1>
+        <h1 v-if="title">{{ title }}</h1>
         <input v-model="text"></input>
-        <p>{{text}}</p>
+        <p>{{ text }}</p>
     </div>
 </template>
 

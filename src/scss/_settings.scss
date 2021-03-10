@@ -70,14 +70,14 @@ $freecycle-palette:(
         delete: #dc143c,
         delete-darken: #800000,
         expired: #000,
-        closed: #bab6af,
+        closed: #8a8a8a,
         rejected: #a16122
 );
 $dark-green:#284e36;
 $link-style:map_get($freecycle-palette,primary);
 $light-gray: #ede7de;
 $medium-gray: #d4cfc7;
-$dark-gray: #bab6af;
+$dark-gray: #676662;
 $black: #14261a;
 $white: #ffffff;
 $footer-background:#14261a;

@@ -1,13 +1,13 @@
 {
   "name": "@freecycle/fc3_common_assets",
-  "version": "0.4.31",
+  "version": "1.0.1",
   "description": "Freecycle 3.0 Common stuff like images, styles, js, partials",
   "main": "index.js",
   "repository": "https://github.com/freecycle/fc3_common_assets.git",
   "author": "The Freecycle Network",
   "license": "UNLICENSED",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "formdata-polyfill": "^3.0.13",
     "foundation-sites": "^6.6.1",
     "google-maps": "4.2.3",
@@ -25,32 +25,27 @@
   "scripts": {
     "start": "node .",
     "lint": "./node_modules/eslint/bin/eslint.js -f table . ",
-    "lintfix": "./node_modules/eslint/bin/eslint.js --fix . ",
-    "build": "webpack --config webpack.config.js --colors",
-    "watch": "webpack --config webpack.config.js --colors --watch"
+    "lintfix": "./node_modules/eslint/bin/eslint.js --fix . "
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
+    "@babel/core": "^7.12.16",
+    "babel-loader": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "copy-webpack-plugin": "^5.1.2",
-    "css-loader": "^2.1.1",
-    "eslint": "^7.13.0",
-    "eslint-config-hapi": "^11.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
+    "@babel/preset-env": "^7.12.16",
+    "core-js": "^3.8.3",
+    "css-loader": "^5.0.1",
+    "eslint": "^7.18.0",
+    "eslint-config-hapi": "^12.0.0",
     "eslint-plugin-hapi": "^4.1.0",
-    "eslint-plugin-vue": "^6.2.2",
-    "extract-text-webpack-plugin": "3.0.2",
+    "eslint-plugin-vue": "^7.5.0",
     "lodash": "^4.17.20",
     "minimist": "^1.2.5",
-    "node-sass": "^4.14.1",
-    "sass-loader": "6.0.7",
-    "vue-loader": "15.9.0",
-    "webpack": "4.42.1"
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.1.1",
+    "vue-loader": "15.9.6"
   },
   "files": [
-    "src",
-    "webpack.config.js"
+    "src"
   ]
 }
