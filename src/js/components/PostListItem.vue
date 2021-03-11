@@ -56,12 +56,12 @@
             {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
         </template>
-        <template v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
+        <template v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
           <span class="post-list-item-date text-lighten">
               {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
           <fc-messages-detail-input :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
-          <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject | stripTags }}</p>
+            <p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject | stripTags }}</p>
           </fc-messages-detail-input>
         </template>
         <template v-else>
