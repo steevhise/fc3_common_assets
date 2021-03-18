@@ -126,7 +126,7 @@
         } else if(this.notFriend(topic.type, threads)) {
           this.chatEnabled = false
           this.chatDisabledMessage = this.t('No longer a friend.')
-        } else if(!topic.post || !topic.post.is_open) {
+        } else if(topic.post && !topic.post.is_open) {
           this.chatEnabled = false
           this.chatDisabledMessage = this.t('This post has been cancelled')
         } else {
