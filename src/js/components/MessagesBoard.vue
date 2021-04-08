@@ -114,11 +114,11 @@
 			this.isChatClosed()
     },
 		methods: {
-		  isChatClosed() {
-		    const topic = this.$options.propsData.topic.topic
+      isChatClosed() {
+        const topic = this.$options.propsData.topic.topic
         const threads = this.$options.propsData.threads
-		    if(this.isTakenOrReceived()) {
-		      this.chatEnabled = false
+        if(this.isTakenOrReceived()) {
+          this.chatEnabled = false
           this.chatDisabledMessage = this.t('This post is taken or received')
         } else if(this.notFriend(topic.type, threads)) {
           this.chatEnabled = false
@@ -127,10 +127,10 @@
           this.chatEnabled = false
           this.chatDisabledMessage = this.t('This post has been cancelled')
         } else if(topic.type === 'group' && !this.$root.globalData.towns.find((town) => town.id === topic.group.id)) {
-		      this.chatEnabled = false
+          this.chatEnabled = false
           this.chatDisabledMessage = this.t('You are no loner a member of this group')
         } else {
-		      this.chatEnabled = true
+          this.chatEnabled = true
           this.chatDisabledMessage = ''
         }
       },
