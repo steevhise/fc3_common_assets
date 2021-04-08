@@ -81,9 +81,6 @@
 <script>
 	import { topicTitle, postGroup } from './helpers';
 
-	// TODO: for friend thread with someone no longer a friend, we can disable the input form with:  $(".message-list-item-details-chat-form :input").attr("disabled", "disabled");
-	// TODO: also need to put some message placeholder in the disabled form "no longer a friend"
-	// TODO: so test for topic.topic.type == 'friend' and if the other user ISNT a friend
 	// friends will always be in this.$root.globalData.friends
 	export default {
 		name: 'fc-messages-board',
@@ -117,11 +114,11 @@
 			this.isChatClosed()
     },
 		methods: {
-		  isChatClosed() {
-		    const topic = this.$options.propsData.topic.topic
+      isChatClosed() {
+        const topic = this.$options.propsData.topic.topic
         const threads = this.$options.propsData.threads
-		    if(this.isTakenOrReceived()) {
-		      this.chatEnabled = false
+        if(this.isTakenOrReceived()) {
+          this.chatEnabled = false
           this.chatDisabledMessage = this.t('This post is taken or received')
         } else if(this.notFriend(topic.type, threads)) {
           this.chatEnabled = false
@@ -129,8 +126,11 @@
         } else if(topic.post && !topic.post.is_open) {
           this.chatEnabled = false
           this.chatDisabledMessage = this.t('This post has been cancelled')
+        } else if(topic.type === 'group' && !this.$root.globalData.towns.find((town) => town.id === topic.group.id)) {
+          this.chatEnabled = false
+          this.chatDisabledMessage = this.t('You are no loner a member of this group')
         } else {
-		      this.chatEnabled = true
+          this.chatEnabled = true
           this.chatDisabledMessage = ''
         }
       },
