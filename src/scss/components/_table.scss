@@ -1,3 +1,5 @@
+@import "../variables";
+
 table {
   tr {
     border-bottom: 2px solid $light-gray;
@@ -24,3 +26,5 @@ table {
     }
   }
 }
+
+@media #{$small-only} { table tbody td, table thead th {display: block;} }
