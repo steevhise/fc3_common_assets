@@ -8,10 +8,7 @@
         <input name="images" type="file" id="images" multiple accept=".jfif, .jpeg, .jpg, .png" class="input-file" />
         <div class="enabled-upload">
         <br>
-            <h4>{{ t('Drag your image files here') }},</h4> {{ t('or') }}
-            <p style="padding:0;">
-            <button class="btn-subtle text-center">{{ t('click on this and select files') }}</button>
-            </p>
+        {{ t('<h4>Drag your image files here,</h4> or <p style="padding:0;"><button class="btn-subtle text-center">click on this and select files</button></p>') }}
         </div>
         <p class="disabled-upload" hidden>{{ t("You've uploaded the max allowed images") }}</p>
     </div>
