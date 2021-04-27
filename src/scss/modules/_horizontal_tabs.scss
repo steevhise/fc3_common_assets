@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    flex-flow: row wrap;
 
     @media #{$medium-up} {
       flex-direction: row;
