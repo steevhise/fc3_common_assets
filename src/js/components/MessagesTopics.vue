@@ -19,7 +19,7 @@
 								</span>
 							</div>
 							<div class="message-time">
-								<span class="text-lighten">{{ ago(topic.updatedAt) }}</span>
+								<span class="text-lighten-less">{{ ago(topic.updatedAt) }}</span>
 							</div>
 							<div class="message-list-item-right">
 								<div v-if="topic.unreadCount > 0" class="message-notification">
