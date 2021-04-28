@@ -41,10 +41,6 @@
   padding: 0.875rem 1.1rem;
   margin: 10px;
   float: left;
-  &:focus {
-    background: palette(primary-darken);
-    color: #fff;
-  }
 
   @include breakpoint(large) {
     margin: 0;
