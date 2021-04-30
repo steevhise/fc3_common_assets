@@ -187,3 +187,7 @@
 		'rgb(126,87,194)'
 	]
 </script>
+<style lang="scss">
+@import '../../scss/_settings';
+  input#messageBody::placeholder {color: $black;}
+  </style>
