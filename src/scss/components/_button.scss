@@ -31,6 +31,11 @@
   &:hover {
     @extend .btn-default-hover;
   }
+  &:disabled {
+    color: $black;
+    cursor: not-allowed;
+    &:hover { background: $medium-gray; }
+  }
 }
 
 /*  ACTION  */
