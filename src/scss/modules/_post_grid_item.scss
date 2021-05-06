@@ -18,6 +18,7 @@
       width: 100%;
       height: auto;
     }
+    [lazy="loading"] {background-size: contain !important;}
   }
 
   .post-grid-item-header,.post-grid-item-footer {
