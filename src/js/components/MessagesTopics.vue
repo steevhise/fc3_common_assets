@@ -1,53 +1,51 @@
 <template>
 	<div>
 		<div v-if="topicsLoaded" class="row column message-reply-list-container">
-		  <h3>{{ t(category.displayName) }}</h3>
-      <template v-if="topics && topics.length">
-		    <ul class="message-reply-list">
-				  <div v-for="topic in topics">
-			      <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
-						  <div class="message-list-item-left">
-							  <div v-if="topic.topic.type === 'post'" class="message-type">
-								  <fc-post-icon :post="topic.topic.post"></fc-post-icon>
-							  </div>
-							  <div class="message-title post-list-item">
-								  <img v-if="image(topic)" class="message-image" :src="image(topic)"/>
-								  <h4>{{ title(topic) }}</h4>&nbsp;&nbsp;&nbsp;
-								  <span class="post-list-item-header-icon" v-if="topic.topic.type === 'post'">
-									  <template v-if="topic.topic.post.group_id">
-									    <fc-icon name="map_pin"></fc-icon><span>{{ group(topic) }}</span>
-									  </template>
-								  </span>
-							  </div>
-							  <div class="message-time">
-								  <span class="text-lighten-less">{{ ago(topic.updatedAt) }}</span>
-							  </div>
-							  <div class="message-list-item-right">
-								  <div v-if="topic.unreadCount > 0" class="message-notification">
-									  <span>{{ topic.unreadCount }} {{ t('Unread Replies') }}</span>
-								  </div>
-								  <div class="message-arrow">
-									  <svg xmlns="http://www.w3.org/2000/svg" width="7.69" height="11.4" viewBox="0 0 7.69 11.4" class="icon-message-arrow">
-										  <path d="M1274.55,1403.45c-0.55-.56-1.05-0.15-1.6.41s-0.96,1.06-.41,1.62l3.42,3.45-3.32,3.35c-0.55.56-.15,1.06,0.41,1.62s1.05,0.97,1.6.4l5.33-5.37Z" transform="translate(-1272.28 -1403.19)"/>
-									  </svg>
-								  </div>
-							  </div>
-						  </div>
-					  </li>
-				  </div>
-		    </ul>
-        <!-- So users know where to go to contact a specific group's moderators -->
-        <p v-if="category.categoryIndex === 3" style="max-width: 60%; margin: 16px auto 0;">
-				  {{ t('If the Town Group you are seeking to contact is not listed here, click on My Towns, select your town, then click Message Moderators. Your conversation will appear here.') }}
-			  </p>
-      </template>
-      <div v-else>
-				<!-- So users know how to start chats with their friends  -->
-				<div v-if="category.categoryIndex === 2" style="max-width: 60%; margin: auto; text-align: center;">
-					<p>{{ t('No conversations yet? Start a chat from the "My Friends" page') }}</p>
-					<a href="/home/my-friends" class="btn-default">{{ t('Find a friend to chat') }}</a>
+		    <h3>{{ t(category.displayName) }}</h3>
+		    <ul v-if="topics && topics.length" class="message-reply-list">
+				<div v-for="topic in topics">
+			        <li class="message-reply-list-item" @click="onClickTopic(topic)" :data-open="topicModalId">
+						<div class="message-list-item-left">
+							<div v-if="topic.topic.type === 'post'" class="message-type">
+								<fc-post-icon :post="topic.topic.post"></fc-post-icon>
+							</div>
+							<div class="message-title post-list-item">
+								<img v-if="image(topic)" class="message-image" :src="image(topic)"/>
+								<h4>{{ title(topic) }}</h4>&nbsp;&nbsp;&nbsp;
+								<span class="post-list-item-header-icon" v-if="topic.topic.type === 'post'">
+									<template v-if="topic.topic.post.group_id">
+									<fc-icon name="map_pin"></fc-icon><span>{{ group(topic) }}</span>
+									</template>
+								</span>
+							</div>
+							<div class="message-time">
+								<span class="text-lighten-less">{{ ago(topic.updatedAt) }}</span>
+							</div>
+							<div class="message-list-item-right">
+								<div v-if="topic.unreadCount > 0" class="message-notification">
+									<span>{{ topic.unreadCount }} {{ t('Unread Replies') }}</span>
+								</div>
+								<div class="message-arrow">
+									<svg xmlns="http://www.w3.org/2000/svg" width="7.69" height="11.4" viewBox="0 0 7.69 11.4" class="icon-message-arrow">
+										<path d="M1274.55,1403.45c-0.55-.56-1.05-0.15-1.6.41s-0.96,1.06-.41,1.62l3.42,3.45-3.32,3.35c-0.55.56-.15,1.06,0.41,1.62s1.05,0.97,1.6.4l5.33-5.37Z" transform="translate(-1272.28 -1403.19)"/>
+									</svg>
+								</div>
+							</div>
+						</div>
+					</li>
 				</div>
-				<p v-else style="max-width: 60%; margin: auto; text-align: center;">{{ t('No conversations in this category') }}</p>
+		    </ul>
+			<div v-else>
+					<!-- So users know how to start chats with their friends  -->
+					<div v-if="category.categoryIndex === 2" style="max-width: 60%; margin: auto; text-align: center;">
+							<p>{{ t('No conversations yet? Start a chat from the "My Friends" page') }}</p>
+							<a href="/home/my-friends" class="btn-default">{{ t('Find a friend to chat') }}</a>
+					</div>
+					<!-- So users know where to go to contact a specific group's moderators -->
+					<p v-else-if="category.categoryIndex === 3" style="max-width: 60%; margin: auto;">
+						{{ t('If the Town Group you are seeking to contact is not listed here, click on My Towns, select your town, then click Message Moderators. Your conversation will appear here.') }}
+					</p>
+					<p v-else style="max-width: 60%; margin: auto; text-align: center;">{{ t('No conversations in this category') }}</p>
 			</div>
 		</div>
 	</div>
