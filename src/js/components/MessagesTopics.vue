@@ -47,6 +47,10 @@
 					<p>{{ t('No conversations yet? Start a chat from the "My Friends" page') }}</p>
 					<a href="/home/my-friends" class="btn-default">{{ t('Find a friend to chat') }}</a>
 				</div>
+        <!-- So users know where to go to contact a specific group's moderators -->
+ 			  <p v-else-if="category.categoryIndex === 3" style="max-width: 60%; margin: auto;">
+ 				  {{ t('If the Town Group you are seeking to contact is not listed here, click on My Towns, select your town, then click Message Moderators. Your conversation will appear here.') }}
+ 			  </p>
 				<p v-else style="max-width: 60%; margin: auto; text-align: center;">{{ t('No conversations in this category') }}</p>
 			</div>
 		</div>
