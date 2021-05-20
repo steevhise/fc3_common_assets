@@ -125,7 +125,7 @@
                         if (item.group && item.group.name.length > 0) {
                             return item.group.name === self.$root.posts.selectedTown;
                         } else {
-                            return false;
+                            return self.$root.posts.selectedTown === 'Friends Circle';
                         }
                     });
                 }
