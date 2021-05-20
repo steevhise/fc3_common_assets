@@ -34,7 +34,7 @@
 						</div>
 					</li>
 				</div>
-		    </ul>
+        </ul>
 			<div v-else>
 					<!-- So users know how to start chats with their friends  -->
 					<div v-if="category.categoryIndex === 2" style="max-width: 60%; margin: auto; text-align: center;">
