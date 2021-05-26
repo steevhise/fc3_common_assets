@@ -1,7 +1,7 @@
 <template>
 	<div id="fc-messages-detail-input" >
 		<div v-if="customTrigger" :data-open="getTarget" v-html="customTrigger" v-on:click="onClickModalTrigger()"></div>
-		<div class="reveal" :id="getTarget" data-reveal>
+		<div class="reveal" :id="getTarget" data-reveal data-multiple-opened="true">
 			<div>
 				<div class="inputTitle">
 					<!-- Customizable holder for input title e.g.
