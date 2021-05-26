@@ -31,6 +31,7 @@
 <script>
 
 	import _ from 'lodash';
+  import FcForm from './Form.vue';
 
 	export default {
 		name: 'fc-messages-detail-input',
@@ -42,6 +43,7 @@
 			customTrigger: { default: ''},
 			limit: { default: 998 }
 		},
+    components: { FcForm },
 		data() {
 			return {
 				charCount: 0,

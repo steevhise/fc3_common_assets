@@ -17,6 +17,7 @@
 </style>
 
 <script>
+    import FcSpinner from './Spinner.vue'
     export default {
         name : 'fc-form',
         props: {
@@ -48,7 +49,8 @@
                 type: [Number,String]
             }
         },
-         created() {
+        components: { FcSpinner },
+        created() {
 
             const self = this;
 
@@ -59,7 +61,7 @@
               });
             }
 
-         },
+        },
         data() {
             return {
                 formData: this.data ? JSON.parse(this.data) : {},
