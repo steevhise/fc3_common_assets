@@ -54,7 +54,7 @@
 
             if (self.customAlertEl) {
               // handle event for legacy bus events.
-              this.$bus.$on(`formSuccess-${self.customAlertEl}`, (data) => {
+              window.vm.$bus.$on(`formSuccess-${self.customAlertEl}`, (data) => {
                 console.debug(self.results);
               });
             }
@@ -85,9 +85,9 @@
 
                     if (self.customAlertEl) {
                         // Allow caller to handle alert in a custom way (allows parent to take over)
-                        self.$bus.$emit(`formSuccess-${self.customAlertEl}`, data);
+                        window.vm.$bus.$emit(`formSuccess-${self.customAlertEl}`, data);
                     } else {
-                        self.$bus.$emit('alert', { level : 'success', message : data.message || data });
+                        window.vm.$bus.$emit('alert', { level : 'success', message : data.message || data });
                     }
                     self.setRunning(false);
                     event.target.reset();
@@ -96,12 +96,12 @@
                     console.debug(error);
                     if (error.statusText === 'timeout') {
                         let message = self.customErrorMessage || 'timeout';
-                        self.$bus.$emit('alert', { level : 'alert', message, timer: 10000 });
+                        window.vm.$bus.$emit('alert', { level : 'alert', message, timer: 10000 });
 
                     }
                     else {
                          const err = error.responseJSON;   // not sure if this is accurate but i don't want to break something else.
-                         self.$bus.$emit('alert', {level: 'alert', message: err.message, timer: 10000});
+                         window.vm.$bus.$emit('alert', {level: 'alert', message: err.message, timer: 10000});
                     }
                     self.setRunning(false);
                 })

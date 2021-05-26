@@ -52,16 +52,16 @@
 			};
 		},
 		created() {
-			this.$bus.$on(`formSuccess-${this._uid}`, (data) => {
+			window.vm.$bus.$on(`formSuccess-${this._uid}`, (data) => {
 
 				const { message } = data;
 				this.charCount = 0;
-				this.$bus.$emit('alert', { level : 'success', message, timer: 20000 });
+				window.vm.$bus.$emit('alert', { level : 'success', message, timer: 20000 });
 			});
 
 			// For modals that contain forms that submit via AJAX and handle responses with Callout component
 			// Prevents callouts from being obscured by modal background overlay
-			this.$bus.$on('alert', (data) => {
+			window.vm.$bus.$on('alert', (data) => {
 
 				// Easier logic for elements manually instantiated (see mounted() )
 				if (this.reveal.close) {
