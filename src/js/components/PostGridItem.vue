@@ -2,7 +2,7 @@
 	<div style="visibility: hidden;" v-if="blockedUsers.length && blockedUsers.includes(post.userId)" v-once>
 		<!--post by user:{{post.userId}} blocked cuz in: {{blockedUsers|json}}-->
 	</div>
-	<div class="post-grid-item" v-else style="padding: 5px;" v-bind="$attrs" >
+	<div class="post-grid-item" :data-id="post.id" v-else style="padding: 5px;" v-bind="$attrs" >
 		<div class="post-grid-item-inner">
 			<div class="post-grid-item-header">
 				<div class="post-grid-item-header-left">
