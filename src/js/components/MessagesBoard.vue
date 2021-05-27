@@ -80,6 +80,7 @@
 
 <script>
 	import { topicTitle, postGroup } from './helpers';
+  import moment from 'moment';
 
 	// friends will always be in this.$root.globalData.friends
 	export default {
@@ -166,15 +167,21 @@
         const topic = this.$options.propsData.topic
         if (!topic.hasOwnProperty('topic') || !topic.topic.hasOwnProperty('post') || !topic.topic.post.hasOwnProperty('type')) return false
         const postType = topic.topic.post.type
-        return postType.const === 'FC_POST_TAKEN' || postType.const === 'FC_POST_RECEIVED'
+        const now = moment().utc()
+        const postDate = moment(topic.topic.post.post_date).utc()
+        return (postType.const === 'FC_POST_TAKEN' || postType.const === 'FC_POST_RECEIVED')
+            && now.diff(postDate, 'days') > 7 // allow messaging on posts marked taken/received in the last 7 days
       },
 			notFriend: (type, threads) => {
 
 				const userId = (threads[0] && threads[0].user && threads[0].user.id) ? threads[0].user.id : 0;
 				return !!((type === 'friend') && !window.vm.$root.globalData.friends.includes(userId));
 			}
-		}
-	}
+		},
+    mounted() {
+      moment.locale(window.language);    // language set in top-level... apparently we can't use this.i18nOptions.lng here?
+    }
+  }
 
 	// TODO dry-up with Messages component
 	const colors = [
