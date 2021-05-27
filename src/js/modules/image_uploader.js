@@ -404,16 +404,7 @@ class ImageUploader {
                             $('#modalPostConfirm').prepend(`<p style="margin-left:5em;margin-right:5em;">${window.vm.$root.t("Your item has been posted and given the post id")} ${postId}. <a href="/posts/${postId}">${window.vm.$root.t("Click here to view it.")}</a></p>`);
                             $('#modalPostConfirm').foundation('open');
                             $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
-                            $(window).on(
-                                'closed.zf.reveal', function () {
-                                    location.assign(`${this.locationOrigin}/home/my-posts`);
-                                }
-                            );
-                            $(window).on(
-                                'closed.zf.reveal', function () {
-                                    location.assign(`${this.locationOrigin}/home/my-posts`);
-                                }
-                            );
+                            $(document).on('closed.zf.reveal', '#modalPostConfirm', function () { location.assign(`/home/my-posts`); });
                         }
                     })
                     .catch(error => {
