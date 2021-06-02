@@ -4,7 +4,7 @@
 </div>
 
 <div class="header-stretch row" style="flex-wrap: wrap;">
-    <div class="header-search-wrapper small-centered">
+    <div class="header-search-wrapper small-centered hide-for-small-only">
         {% include './header_search.html' %}
     </div>
     <div class="user-button-wrapper small-centered " >
@@ -13,9 +13,16 @@
 </div>
 
 <div class="header-links">
-
+    <a id="mobile-search-button" class="show-for-small-only">
+        <button class="btn-default header-button">
+            <i class="fa fa-search" style="margin: -4px 0; font-size: 14px; color: #fff;"></i>
+            {{ t('Search') }}
+        </button>
+    </a>
     {% if connections.groups || connections.friends %}
         <a href="{{ path.home_post_new }}"><button class="btn-default header-button">{{ t('Make A Post') }}</button></a>
     {% endif %}
-
+    <div id="mobile-search" style="display: none;">
+        {% include './header_search.html' %}
+    </div>
 </div>
