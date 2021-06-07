@@ -89,7 +89,7 @@
 					</div>
 					<div class="post-list-item-header-icon group-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
-						<span>{{ post.group.name }}</span>
+            <span :alt="post.group.name" :title="post.group.name"><a :href="`/town/${post.group.uniqueName}`">{{ post.group.name }}</a></span>
 					</div>
                     <div class="post-list-item-header-icon friend-circle" v-else>
                         <fc-icon name="friend_circle"></fc-icon>
