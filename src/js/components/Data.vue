@@ -89,9 +89,22 @@
                     this.$root.posts.filter = type;
                 }
             });
+
+            this.$root.$on('handleLayoutChange', () => {
+                const itemInterval = setInterval(() => {
+                    const postListLinks = document.querySelectorAll('.post-list-item-content-description h4 a')
+                    const postGridLinks = document.querySelectorAll('.post-grid-item-content h4 a')
+                    if ((this.$root.posts.layout === 'list' && postListLinks.length >= this.items.length) ||
+                        (this.$root.posts.layout === 'grid' && postGridLinks.length >= this.items.length)) {
+                        clearInterval(itemInterval)
+                        document.dispatchEvent((new Event('posts-loaded')));
+                    }
+                }, 100);
+            });
         },
         watch: {
             items(newVal, oldVal) {
+                if (newVal.length) this.$root.$emit('handleLayoutChange')
                 if (this.currLimit > this.count) {
                     window.$('#item-list-load-more').hide();
                 } else {

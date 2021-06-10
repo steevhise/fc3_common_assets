@@ -21,12 +21,12 @@
         },
         created() {
             // handle event for legacy bus events.
-            this.$bus.$on('alert', (data) => {
+            window.vm.$bus.$on('alert', (data) => {
                 this.init(data);
             });
 
             // handle event for root events
-            this.$root.$on('alert', (data) => {
+            window.vm.$root.$on('alert', (data) => {
                 this.init(data);
             });
         },

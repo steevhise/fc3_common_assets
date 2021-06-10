@@ -1,7 +1,7 @@
 <template>
 	<div id="fc-messages-detail-input" >
 		<div v-if="customTrigger" :data-open="getTarget" v-html="customTrigger" v-on:click="onClickModalTrigger()"></div>
-		<div class="reveal" :id="getTarget" data-reveal>
+		<div class="reveal" :id="getTarget" data-reveal data-multiple-opened="true">
 			<div>
 				<div class="inputTitle">
 					<!-- Customizable holder for input title e.g.
@@ -31,6 +31,7 @@
 <script>
 
 	import _ from 'lodash';
+  import FcForm from './Form.vue';
 
 	export default {
 		name: 'fc-messages-detail-input',
@@ -42,6 +43,7 @@
 			customTrigger: { default: ''},
 			limit: { default: 998 }
 		},
+    components: { FcForm },
 		data() {
 			return {
 				charCount: 0,
@@ -52,16 +54,16 @@
 			};
 		},
 		created() {
-			this.$bus.$on(`formSuccess-${this._uid}`, (data) => {
+			window.vm.$bus.$on(`formSuccess-${this._uid}`, (data) => {
 
 				const { message } = data;
 				this.charCount = 0;
-				this.$bus.$emit('alert', { level : 'success', message, timer: 20000 });
+				window.vm.$bus.$emit('alert', { level : 'success', message, timer: 20000 });
 			});
 
 			// For modals that contain forms that submit via AJAX and handle responses with Callout component
 			// Prevents callouts from being obscured by modal background overlay
-			this.$bus.$on('alert', (data) => {
+			window.vm.$bus.$on('alert', (data) => {
 
 				// Easier logic for elements manually instantiated (see mounted() )
 				if (this.reveal.close) {

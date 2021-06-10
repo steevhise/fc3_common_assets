@@ -14,7 +14,10 @@
                 {% if post.images.length > 1 %}
                     {% include "./post_images_carousel.html" with { images: post.images } %}
                     <div class="row text-center">
-                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Images Full Size") }}</a>'>
+                        <fc-modal type="custom"
+                                  data-options="closeOnClick:true;multipleOpened:true;"
+                                  custom-target="post-image-modal"
+                                  custom-trigger='<a @click.prevent="">{{ t("View Images Full Size") }}</a>'>
                             {% include "./post_images_carousel.html" with { images: post.images, modal: true } %}
                         </fc-modal>
                     </div>
@@ -25,7 +28,10 @@
                         </div>
                     </div>
                     <div class="row text-center">
-                        <fc-modal type="custom" custom-trigger='<a @click.prevent="">{{ t("View Image Full Size") }}</a>'>
+                        <fc-modal type="custom"
+                                  data-options="closeOnClick:true;multipleOpened:true;"
+                                  custom-target="post-image-modal"
+                                  custom-trigger='<a @click.prevent="">{{ t("View Image Full Size") }}</a>'>
                             <img src="{{ post.images[0] }}" style="width: 600px !important;" />
                         </fc-modal>
                     </div>
@@ -153,7 +159,7 @@
                             {% endif %}
 						{% else %}
                         <div style="width:20rem; display:flex;">
-							<fc-modal id="login" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>{{ t('Log in to reply to this post') }}</a>" style="flex:1; float: right;">
+							<fc-modal id="login" data-options="closeOnClick:true;multipleOpened:true;" namespace="fc-login-popup" custom-trigger="<a style='position: relative; top: 6px;'>{{ t('Log in to reply to this post') }}</a>" style="flex:1; float: right;">
 								<fc-login unique-name="popup-form"></fc-login>
 							</fc-modal>
 						{% endif %}
