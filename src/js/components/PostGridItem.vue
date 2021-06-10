@@ -59,9 +59,9 @@
 					<span class="text-lighten-less">{{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}</span>
 				</div>
 				<div v-if="viewer" class="post-grid-item-header-right">
-					<!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-					<button style="border-radius: 10px; border: 1px solid #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved !== undefined">{{ t('Awaiting Approval') }}</button>
-					<template v-else-if="viewer === post.userId">
+					<template v-if="viewer === post.userId">
+            <!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
+            <button style="border-radius: 10px; border: 1px solid #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved !== undefined">{{ t('Awaiting Approval') }}</button>
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
 								style="display: none;"
@@ -76,13 +76,19 @@
 						</template>
 						<select v-if="currentRoute.split('/')[1] !== 'member'" class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
 							<option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
-							<option value="edit">{{ t('Edit Post') }}</option>
-							<option v-if="closedType" value="mark" >{{ t(markMessage) }}</option>
+							<option v-if="post.isApproved" value="edit">{{ t('Edit Post') }}</option>
+							<option v-if="post.isApproved && closedType" value="mark" >{{ t(markMessage) }}</option>
+<!-- {{ t('TAKEN') }}
+{{ t('RECEIVED') }}
+{{ t('Mark As Taken') }}
+{{ t('Mark As Received') }}
+{{ t('Cancel Post') }}
+(this cuz of dumb i18n parser...) -->
               <option v-else-if="postType === 'LEND'" :value="lent ? 'return' : 'lend'">
                 <span v-if="lent">{{ t('Item Returned') }}</span><span v-else>{{ t('Lend Item') }}</span>
               </option>
 							<option value="delete">{{ t('Cancel Post') }}</option>
-							<option value="replies">{{ t('See Replies') }}</option>
+							<option v-if="post.isApproved" value="replies">{{ t('See Replies') }}</option>
 						</select>
 					</template>
 					<template v-else-if="lent && viewer === post.share.borrowerId">

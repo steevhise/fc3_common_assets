@@ -29,7 +29,7 @@
             {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
           <!--  if pending post, show "manage" button, but only with delete.? -->
-          <select class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
+          <select v-if="currentRoute.split('/')[1] !== 'member'" class="manage-post-select post-list-select" :class="`btn-${lowercase(postType)}`" v-on:change.passive="manageOp">
             <option value="" disabled selected hidden>{{ t('Manage Post') }}</option>
             <option v-if="post.isApproved" value="edit">{{ t('Edit Post') }}</option>
             <option v-if="post.isApproved && closedType" value="mark" >{{ t(markMessage) }}</option>
@@ -89,7 +89,7 @@
 					</div>
 					<div class="post-list-item-header-icon group-icon" v-if="post.group">
 						<fc-icon name="map_pin"></fc-icon>
-						<span>{{ post.group.name }}</span>
+            <span :alt="post.group.name" :title="post.group.name"><a :href="`/town/${post.group.uniqueName}`">{{ post.group.name }}</a></span>
 					</div>
                     <div class="post-list-item-header-icon friend-circle" v-else>
                         <fc-icon name="friend_circle"></fc-icon>
