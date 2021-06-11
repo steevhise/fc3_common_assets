@@ -16,3 +16,4 @@ export {default as ImageUploader} from './image_uploader';
 export {default as Loading} from './loading';
 export {default as FAB} from './fab';
 export {default as DropdownMenu} from "./dropdown_menu";
+export {default as MobileSearch} from "./mobile_search";
