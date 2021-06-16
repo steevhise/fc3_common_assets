@@ -60,7 +60,7 @@
                 self.offset = self.$data.posts.length;
                 // if we've now displayed (almost) all we have, but there's more on backend, then get more from endpoint
                 // but (for now at least) only on dashboard
-                if ((self.currLimit >= self.posts.length - self.limit) && (self.currLimit < self.count)) {
+                if (self.currLimit >= self.posts.length - self.limit) {
                     if (!!self.circle) {
                         // (50 >= 20 - 10) && (50 < 265) && !self.circle
                         // TODO: create and use a self.getMorePosts() method instead of self.getMoreData()
