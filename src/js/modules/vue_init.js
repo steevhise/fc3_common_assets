@@ -44,6 +44,7 @@ export const FCVue = {
 
 		// this filter strips html tags from text and returns the raw text
 		Vue.filter('stripTags', function(text) {
+			if(!text) return "";
 			let regex = /(<([^>]+)>)|&nbsp;|&quot;/gim;
 			return text.replace(regex, "");
 		});
