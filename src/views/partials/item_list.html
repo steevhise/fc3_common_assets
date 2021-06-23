@@ -75,6 +75,9 @@
             <div id="item-list-load-more" class="row item-list-load-more">
                 <button class="btn-action" @click="$root.$emit('loadMorePosts')">{{ t('Load More') }}</button>
             </div>
+            <small style="display: block; text-align: center;">
+                If this isn't showing more posts, please adjust your filters or just go directly to the town you're interested in. Find your towns on your My Towns page.
+            </small>
             {# endif #}
         {% else %}
             {% if filterType === 'circle' %}
