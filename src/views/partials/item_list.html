@@ -72,13 +72,15 @@
         <div class="row"></div>
             {#NOTE: The limit of number of items shown is controlled via Data.vue props.limit#}
             {# fc-data component will control showing this or not. #}
-            <div id="item-list-load-more" class="row item-list-load-more">
+            <div id="item-list-load-more" class="row item-list-load-more" style="margin-bottom: 0;">
                 <button class="btn-action" @click="$root.$emit('loadMorePosts')">{{ t('Load More') }}</button>
             </div>
-            <small style="display: block; text-align: center;">
-                If this isn't showing more posts, please adjust your filters or just go directly to the town you're interested in. Find your towns on your My Towns page.
-            </small>
-            {# endif #}
+            {% if circle === 'towns' %}
+                <div class="small-5 paragraph-small small-centered item-list-load-more" style="display: block; text-align: center; margin-top: 0px">
+                    {{  t("If this isn't showing more posts, please adjust your filters or just go directly to the town you're interested in. Find your towns on your <a href='/home/my-towns'>My Towns page</a>.") }}
+                </div>
+
+            {% endif %}
         {% else %}
             {% if filterType === 'circle' %}
                 <div class="row text-center" style="margin-top:1em;">
