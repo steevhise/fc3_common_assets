@@ -48,8 +48,6 @@ export default {
             return CKEDITOR.instances[this.id];
         },
         editorConfig() {
-              console.log(defaultConfig, this.config);
-              console.log(Object.assign(defaultConfig, this.config));
             return Object.assign(defaultConfig, this.config);
         }
     },
