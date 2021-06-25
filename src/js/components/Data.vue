@@ -66,7 +66,12 @@
                         // TODO: create and use a self.getMorePosts() method instead of self.getMoreData()
                         // TODO: This never runs on posts search because "!!self.circle" is always false
                         console.log('call getMoreData()')
-                        self.getMoreData(self.circle, self.posts.length, self.backendLimit);
+                        let town = 0
+                        if (self.$root.posts.selectedTown.length) {
+                            const match = self.$root.posts.towns.find(town => town.name === self.$root.posts.selectedTown)
+                          if (match !== undefined) town = parseInt(match.id)
+                        }
+                        self.getMoreData(self.circle, self.posts.length, self.backendLimit, town);
                         return;
                     } else {
                         self.getMorePostsFromElasticsearch(self.posts.length, self.backendLimit);
@@ -206,10 +211,10 @@
                 });
                 return vars;
             },
-            getMoreData: function (circle = this.circle, offset = this.posts.length, limit = this.backendLimit) {
+            getMoreData: function (circle = this.circle, offset = this.posts.length, limit = this.backendLimit, town = 0) {
                 // ajaxy lazy-load more posts from backend
                 let self = this;
-                let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`)
+                let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`, { params: { town } })
                     .then(response => {
 
                         if (response.status === 200) {
