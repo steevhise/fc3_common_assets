@@ -78,7 +78,7 @@
                         return;
                     }
                 } else {
-                    console.log('we did not get more because: ', self.currLimit >= self.posts.length - self.limit, self.currLimit < self.count)
+                    console.log('did not get more because self.currLimit < self.items.length - self.limit')
                 }
                 self.$root.$emit('redrawVueMasonry');
             });
