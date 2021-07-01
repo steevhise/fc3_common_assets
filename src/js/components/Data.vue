@@ -54,6 +54,11 @@
                 }, 100)
             });
 
+            this.$root.$on('townSelectionChanged', () => {
+                this.offset = 0
+                this.currLimit = this.limit
+            });
+
             this.$root.$on('loadMorePosts', () => {
                 // console.log('loadMorePosts start', self.currLimit, self.limit, self.offset, self.posts.length, self.$data.posts.length, self.count)
                 self.currLimit += Number(self.limit);
