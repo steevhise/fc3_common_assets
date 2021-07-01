@@ -113,6 +113,7 @@
                 if (this.currLimit > this.count) {
                     window.$('#item-list-load-more').hide();
                 } else {
+                    if (newVal.length === 0) this.$root.$emit('loadMorePosts')
                     window.$('#item-list-load-more').show();
                 }
             }
