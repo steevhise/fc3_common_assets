@@ -54,6 +54,11 @@
                 }, 100)
             });
 
+            this.$root.$on('townSelectionChanged', () => {
+                this.offset = 0
+                this.currLimit = this.limit
+            });
+
             this.$root.$on('loadMorePosts', () => {
                 // console.log('loadMorePosts start', self.currLimit, self.limit, self.offset, self.posts.length, self.$data.posts.length, self.count)
                 self.currLimit += Number(self.limit);
@@ -78,7 +83,7 @@
                         return;
                     }
                 } else {
-                    console.log('we did not get more because: ', self.currLimit >= self.posts.length - self.limit, self.currLimit < self.count)
+                    console.log('did not get more because self.currLimit < self.items.length - self.limit')
                 }
                 self.$root.$emit('redrawVueMasonry');
             });
@@ -113,6 +118,7 @@
                 if (this.currLimit > this.count) {
                     window.$('#item-list-load-more').hide();
                 } else {
+                    if (newVal.length === 0) this.$root.$emit('loadMorePosts')
                     window.$('#item-list-load-more').show();
                 }
             }
