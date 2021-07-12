@@ -504,7 +504,10 @@ class ImageUploader {
                 self.trackImageChanges();
 
                 // Sorry, sucks; accounts for different submit buttons across forms
-                document.querySelector('.image-upload-form input[type=submit], .image-upload-form button[type=submit]').click();
+                const submitButton = document.querySelector('.image-upload-form input[type=submit], .image-upload-form button[type=submit]')
+                submitButton.removeAttribute('disabled')
+                submitButton.removeAttribute('loading')
+                submitButton.click();
             })
             .catch(error => {
                 handleError(error)
