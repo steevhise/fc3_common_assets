@@ -9,6 +9,8 @@
     let inc = 0;
     let CKEDITOR_BASEPATH = '/ckeditor/';
     let defaultConfig = {
+        disallowedContent: 'script *{on*} style iframe button input textarea',
+        allowedContent: 'b i strong italic p br',
         toolbar: [
             { name: 'basicstyles', items: [ 'Bold', 'Italic', 'RemoveFormat' ] }
         ],
