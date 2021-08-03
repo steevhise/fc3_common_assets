@@ -1,8 +1,13 @@
 <template>
     <transition name="fade" :duration="timer">
-        <div id="callout" v-if="isVisible" :class="`callout large ${this.level}`" data-closable="slide-out-right">
+        <div id="callout" v-if="isVisible" :class="`callout large ${this.level}`" data-closable>
+          <div id="callbox">
             <h5 v-if="header">{{ header }}</h5>
             <p v-html="message"></p>
+          </div>
+          <button class="close-button" aria-label="Dismiss alert" type="button" data-close onclick="this.isVisible = false;">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
     </transition>
 </template>
@@ -13,7 +18,7 @@
         data() {
             return {
                 isVisible: false,
-                timer: 6000, // time in ms that the callout shows
+                timer: 5000, // time in ms that the callout shows
                 message: null,
                 level: 'primary', // secondary, success, info, warning, alert
                 header: null
@@ -48,6 +53,13 @@
         z-index:10;
         top: 10px;
         right: 10px;
+    }
+
+    #callbox {
+        position: relative;
+        height: 100%;
+        margin: 0;
+        padding: -100px;
     }
 
     p {
