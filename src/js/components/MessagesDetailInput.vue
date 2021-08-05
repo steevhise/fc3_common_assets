@@ -38,7 +38,7 @@
 		props: {
 			topicType: String,
 			topicId: String,           // if zero then what? might be trying to report a user but they dont have a home group.
-		    defaultBody: String,
+      defaultBody: String,
 			subject: String,
 			customTrigger: { default: ''},
 			limit: { default: 998 }
