@@ -9,7 +9,7 @@
 		<div v-for="message in messages" v-bind:key="message.id" class="message-list-item-details-chat-message" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 			<p class="chat-message-from" v-bind:class="{ 'message-from-self': message.sender && message.sender.id === me.id }">
 				<span class="chat-message-avatar" v-bind:style="{ background: color(message.sender && message.sender.id) }"></span>
-				<span v-if="message.sender">{{ message.sender.username }}</span>&nbsp;<span v-if="message.sender && message.sender.privilege" v-bind:style="{ color: color(message.sender.privilege) }">({{ message.sender.privilege === 4 ? t('Lead Moderator') : t('Moderator') }})</span>
+				<span v-if="message.sender"><a class="userlink" target="_blank" :href="`/member/${message.sender.username}`">{{ message.sender.username }}</a></span>&nbsp;<span v-if="message.sender && message.sender.privilege" v-bind:style="{ color: color(message.sender.privilege) }">({{ message.sender.privilege === 4 ? t('Lead Moderator') : t('Moderator') }})</span>
 				<span v-if="!message.sender">{{ t('system notifier') }}</span>&nbsp;
 			</p>
 			<p class="chat-message-message" v-if="!showHtml" v-bind:style="messageStyle(message)">{{message.body}}</p>
@@ -89,4 +89,11 @@
   text-shadow: 1px 1px 2px #000;
   text-transform: uppercase;
 }
+
+.userlink {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: #34b233;
+}
+
 </style>
