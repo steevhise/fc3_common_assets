@@ -1,7 +1,7 @@
 {# Note: This file is provided by the fc3_common_assets  package #}
 <header class="header">
     {% if data.suppressAds.banner !== true && ads.banner %}
-        {% include './header_banner_ad.html' %}
+        {% include './header_banner_ad.html' with ads %}
     {% endif %}
     {% if session %}
     <div class="header-outer">
