@@ -112,9 +112,10 @@ class ImageUploader {
         constraintsEl.appendChild(constraintsText);
     }
 
-    displayError(msg, container) {
+    displayError(msg, container = self.formErrors) {
 
         console.error(msg)
+        // console.log('container is ', container);
         const errEl = document.createElement('p');
         const errMsg = document.createTextNode(msg);
         errEl.setAttribute('class', 'callout alert');
@@ -367,13 +368,13 @@ class ImageUploader {
         API.post(`${this.locationOrigin}/home/new-post`, body)
             .then(response => {
                 if (response.status !== 200) {
-                    const resp = JSON.parse(response.responseText);
-                    const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
-                    errors.forEach((e) => {
-                        self.displayError(e.message, self.formErrors);
-                        const loading = document.querySelector('[data-loading].is-loading')
-                        if(loading) loading.classList.remove('is-loading');
-                    });
+                    console.error(response.status, response.data);
+                    const resp = response.data;
+                    console.log(resp);
+                    const loading = document.querySelector('[data-loading].is-loading')
+                    if(loading) loading.classList.remove('is-loading');
+                    const msg = resp.error + ': ' + resp.message;
+                    self.displayError(msg, self.formErrors);
 
                     return window.scrollTo({
                         top: 0,
@@ -385,18 +386,11 @@ class ImageUploader {
                 API.post(`${this.locationOrigin}/api/${self.submitEndpoint}/${postId}`, imgUploadBody)
                     .then(response => {
                         if (response.status !== 200) {
-                            const resp = JSON.parse(response.responseText);
-                            const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
-                            errors.forEach((e) => {
-                                self.displayError(e.message, self.formErrors);
-                                const loading = document.querySelector('[data-loading].is-loading')
-                                if(loading) loading.classList.remove('is-loading');
-                            });
-
-                            return window.scrollTo({
-                                top: 0,
-                                behavior: 'smooth'
-                            })
+                            console.error(response.status, response.data);
+                            const resp = JSON.parse(response.data);
+                            console.log(resp);
+                            const msg = resp.error + ': ' + resp.message;
+                            self.displayError(msg, self.formErrors);
                         }
 
                         const $ = window.jQuery
@@ -406,22 +400,14 @@ class ImageUploader {
                             $('body').css({"overflow":"hidden","position":"fixed"});   // built-in Foundation Reveal disable-scroll option doesn't seem to work.
                             $(document).on('closed.zf.reveal', '#modalPostConfirm', function () { location.assign(`/home/my-posts`); });
                         }
-                    })
-                    .catch(error => {
-                        handleError(error);
-                        self.displayError(error.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
-                        const loading = document.querySelector('[data-loading].is-loading')
-                        if(loading) loading.classList.remove('is-loading');
-
-                        return window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        })
-                    })
+                    });
                 })
             .catch(error => {
                 handleError(error)
-                self.displayError(error.message, window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"));
+                self.displayError(error.error + ': ' + error.message + ' - ' + window.vm.$root.t("We couldn't create your post due to an issue with the network. Check your internet connection and if that's all good, try back later. Sorry!"), self.formErrors);
+
+            })
+            .finally( () => {
                 const loading = document.querySelector('[data-loading].is-loading')
                 if(loading) loading.classList.remove('is-loading');
 
