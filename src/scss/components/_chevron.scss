@@ -11,9 +11,9 @@
   transform: rotate(-90deg);
   path {
     &:first-child {
-      fill: palette(offer);
+      fill: palette(offer-darken);
     }
-    fill: palette(offer-darken);
+    fill: palette(offer);
   }
 }
 
@@ -22,9 +22,9 @@
   transform: rotate(90deg);
   path {
     &:first-child {
-      fill: palette(wanted);
+      fill: palette(wanted-darken);
     }
-    fill: palette(wanted-darken);
+    fill: palette(wanted);
   }
 }
 
@@ -33,9 +33,9 @@
   transform: rotate(180deg);
   path {
     &:first-child {
-      fill: palette(lend);
+      fill: palette(lend-darken);
     }
-    fill: palette(lend-darken);
+    fill: palette(lend);
   }
 }
 
@@ -43,9 +43,9 @@
   @extend .icon-chevron;
   path {
     &:first-child {
-      fill: palette(borrow);
+      fill: palette(borrow-darken);
     }
-    fill: palette(borrow-darken);
+    fill: palette(borrow);
   }
 }
 
@@ -54,9 +54,9 @@
   transform: rotate(-90deg);
   path {
     &:first-child {
-      fill: lightgray;
+      fill: darkgrey;
     }
-    fill: darkgray;
+    fill: lightgrey;
   }
 }
 
@@ -65,8 +65,8 @@
   transform: rotate(90deg);
   path {
     &:first-child {
-      fill: darkgray;
+      fill: lightgrey;
     }
-    fill:lightgray;
+    fill:darkgrey;
   }
 }

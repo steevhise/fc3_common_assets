@@ -74,7 +74,7 @@ $freecycle-palette:(
         rejected: #a16122
 );
 $dark-green:#284e36;
-$link-style:map_get($freecycle-palette,primary);
+$link-style:map_get($freecycle-palette,primary-darken);
 $light-gray: #ede7de;
 $medium-gray: #d4cfc7;
 $dark-gray: #676662;

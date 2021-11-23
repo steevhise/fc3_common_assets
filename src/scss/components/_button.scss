@@ -18,11 +18,11 @@
 
 /*  DEFAULT  */
 .btn-default-color {
-  background-color: palette(primary);
+  background-color: palette(primary-darken);
 }
 
 .btn-default-hover {
-  background-color: palette(primary-darken);
+  background-color: palette(primary);
 }
 
 .btn-default {
@@ -58,11 +58,11 @@
 
 /*  OFFER  */
 .btn-offer-color {
-  background-color: palette(offer);
+  background-color: palette(offer-darken);
 }
 
 .btn-offer-hover {
-  background-color: palette(offer-darken);
+  background-color: palette(offer);
 }
 
 .btn-offer {
@@ -75,11 +75,11 @@
 
 /*  WANTED  */
 .btn-wanted-color {
-  background-color: palette(wanted);
+  background-color: palette(wanted-darken);
 }
 
 .btn-wanted-hover {
-  background-color: palette(wanted-darken);
+  background-color: palette(wanted);
 }
 
 .btn-wanted {
@@ -92,11 +92,11 @@
 
 /*  LEND  */
 .btn-lend-color {
-  background-color: palette(lend);
+  background-color: palette(lend-darken);
 }
 
 .btn-lend-hover {
-  background-color: palette(lend-darken);
+  background-color: palette(lend);
 }
 
 .btn-lend {
@@ -109,11 +109,11 @@
 
 /*  BORROW  */
 .btn-borrow-color {
-  background-color: palette(borrow);
+  background-color: palette(borrow-darken);
 }
 
 .btn-borrow-hover {
-  background-color: palette(borrow-darken);
+  background-color: palette(borrow);
 }
 
 .btn-borrow {
@@ -150,11 +150,11 @@
 
 /* DELETE */
 .btn-delete-color {
-  background-color: palette(delete);
+  background-color: palette(delete-darken);
 }
 
 .btn-delete-hover {
-  background-color: palette(delete-darken);
+  background-color: palette(delete);
 }
 
 .btn-delete {
