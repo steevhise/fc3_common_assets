@@ -61,7 +61,7 @@
 				<div v-if="viewer" class="post-grid-item-header-right">
 					<template v-if="viewer === post.userId">
             <!-- Service layer guarantees posts awaiting approval are returned ONLY for owning user -->
-            <button style="border-radius: 10px; border: 1px solid #d4cfc7; background-color: #34b233; cursor: default;" class="btn" v-if="!post.isApproved && post.isApproved !== undefined">{{ t('Awaiting Approval') }}</button>
+            <button style="cursor: default;" class="btn btn-default" v-if="!post.isApproved && post.isApproved !== undefined">{{ t('Awaiting Approval') }}</button>
 						<template v-if="postType === 'LEND'">
 							<div v-if="!lent"  data-open="friend-select-form"
 								style="display: none;"

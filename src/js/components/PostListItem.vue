@@ -12,7 +12,7 @@
       <div v-if="viewer" class="post-list-item-header-right">
         <template v-if="viewer === post.userId">
         <!-- Service layer guarantees pending posts are returned ONLY for owning user but this still needs to be here inside above conditional-->
-          <button v-if="!post.isApproved && post.isApproved !== undefined" style="border-radius: 10px; border: 1px solid #d4cfc7; background-color: #34b233; cursor: default;" class="btn" >{{ t('Awaiting Approval') }}</button>
+          <button v-if="!post.isApproved && post.isApproved !== undefined" style="cursor: default;" class="btn btn-default" >{{ t('Awaiting Approval') }}</button>
           <template v-if="postType === 'LEND'">
             <div v-if="!lent"  data-open="friend-select-form"
               style="display: none;"
