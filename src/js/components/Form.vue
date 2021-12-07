@@ -83,6 +83,7 @@
 
                 const self = this;
                 self.setRunning(true);
+                // TODO: switch to using Axios
                 $.post({ url: this.action, data: this.serializedData, timeout: this.timeout }).done(function(data) {
 
                     if (self.customAlertEl) {

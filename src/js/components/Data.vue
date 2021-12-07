@@ -16,7 +16,6 @@
 
 <script>
     import axios from 'axios';
-    import { API, handleError } from '../helpers/axios'
 
     export default {
         name: 'fc-data',
@@ -221,7 +220,7 @@
             getMoreData: function (circle = this.circle, offset = this.posts.length, limit = this.backendLimit, town = 0) {
                 // ajaxy lazy-load more posts from backend
                 let self = this;
-                API.get(`/api/dash/${circle}/${offset}/${limit}`, { params: { town } })
+                let results = axios.get(`/api/dash/${circle}/${offset}/${limit}`, { params: { town } })
                     .then(response => {
 
                         if (response.status === 200) {
@@ -234,7 +233,6 @@
                             self.count = response.data.count || self.count;
                             //self.$emit('redrawVueMasonry');
                         } else {
-                            handleError(response.statusText);
                             console.error('problem getting more posts from dash endpoint:', response.status);
                         }
                     });
