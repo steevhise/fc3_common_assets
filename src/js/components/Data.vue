@@ -16,7 +16,7 @@
 
 <script>
     import axios from 'axios';
-    import { API, handleError } from '../helpers/axios'
+    import { API, handleError, getJWT } from '../helpers/axios'
 
     export default {
         name: 'fc-data',
@@ -218,9 +218,10 @@
                 });
                 return vars;
             },
-            getMoreData: function (circle = this.circle, offset = this.posts.length, limit = this.backendLimit, town = 0) {
+            getMoreData: async function (circle = this.circle, offset = this.posts.length, limit = this.backendLimit, town = 0) {
                 // ajaxy lazy-load more posts from backend
                 let self = this;
+                await getJWT();  // make sure we have auth token to hit the api with.
                 API.get(`/api/dash/${circle}/${offset}/${limit}`, { params: { town } })
                     .then(response => {
 
