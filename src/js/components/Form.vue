@@ -83,6 +83,7 @@
 
                 const self = this;
                 self.setRunning(true);
+                // TODO: need to replace this with Axios call.
                 $.post({ url: this.action, data: this.serializedData, timeout: this.timeout }).done(function(data) {
 
                     if (self.customAlertEl) {
@@ -95,15 +96,16 @@
                     event.target.reset();
                 }).fail(function(error) {
 
-                    console.debug(error);
+                    // console.debug(error);
                     if (error.statusText === 'timeout') {
                         let message = self.customErrorMessage || 'timeout';
                         window.vm.$bus.$emit('alert', { level : 'alert', message, timer: 10000 });
 
                     }
                     else {
-                         const err = error.responseJSON;   // not sure if this is accurate but i don't want to break something else.
-                         window.vm.$bus.$emit('alert', {level: 'alert', message: err.message, timer: 10000});
+                        const err = error.responseJSON;
+                        // console.debug(err);
+                        window.vm.$bus.$emit('alert', {level: 'alert', message: err.message || error || 'doh', timer: 10000});
                     }
                     self.setRunning(false);
                 })

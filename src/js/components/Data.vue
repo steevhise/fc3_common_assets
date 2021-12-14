@@ -221,7 +221,7 @@
             getMoreData: async function (circle = this.circle, offset = this.posts.length, limit = this.backendLimit, town = 0) {
                 // ajaxy lazy-load more posts from backend
                 let self = this;
-                await getJWT();  // make sure we have auth token to hit the api with.
+                await getJWT();  // make sure we have fresh auth token (if we need it) to hit the api with.
                 API.get(`/api/dash/${circle}/${offset}/${limit}`, { params: { town } })
                     .then(response => {
 
