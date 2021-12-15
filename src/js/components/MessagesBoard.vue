@@ -156,9 +156,14 @@
               return this.$bus.$emit('alert', { level : 'alert', message: this.t("That post does not exist"), timer: 10000 });
             case 409:
               return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
+            case 500:
+              return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
             default:
               return this.$bus.$emit('alert', { level: 'alert', message: this.t('Unable to reply on this post'), timer: 10000 })
           }
+        })
+        .finally(() => {
+          self.sendingMessage = false;
         })
 			},
       isTakenOrReceived() {

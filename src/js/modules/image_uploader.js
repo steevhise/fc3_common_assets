@@ -373,7 +373,7 @@ class ImageUploader {
                     console.log(resp);
                     const loading = document.querySelector('[data-loading].is-loading')
                     if(loading) loading.classList.remove('is-loading');
-                    const msg = resp.error + ': ' + resp.message;
+                    const msg = 'Error: ' + resp.message;
                     self.displayError(msg, self.formErrors);
 
                     return window.scrollTo({
