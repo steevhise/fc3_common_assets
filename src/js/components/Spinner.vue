@@ -27,8 +27,9 @@
       return {
         loadStartTime: null,  // this is when the spinner started spinning, since epoch
         isLoading: false,
-        now: Date.now(),   // will this work? will it keep changing? apparently not.
-        timer: null
+        now: Date.now(),
+        timer: null,
+        errorTextColor: null
       }
     },
     props: {
@@ -159,7 +160,7 @@
         return {
           'margin-top': this.text_margin_top + 'px',
           'background-color': 'white',
-          'color': this.textFgColor,
+          'color': this.errorTextColor || this.textFgColor,
           'font-size': this.text_font_size + 'px',
           'text-align': 'center',
           'position': 'relative',
@@ -214,14 +215,16 @@
         // console.debug(`we be spinning for ${duration}ms. the timeout is ${this.timeOut}`, this.loadStartTime, this.isLoading, (duration > this.timeOut));
         if (this.isLoading && (duration > this.timeOut)) {
           this.size = 'medium';
+          this.errorTextColor = '#222';
           this.message = 'hmm, sorry this is taking so long...';
           // console.debug('time out!')
 
           // now wait a little longer
           const moreWaiting = setTimeout( () => {
-            this.size = 'small';
+            this.size = 'medium';
             this.lineFgColor = 'orange';
-            this.message = 'Looks like something has gone wrong. Sorry! Please reload this page and try again. If you still have trouble, contact support.';
+            this.errorTextColor = '#000';
+            this.message = 'Looks like something went wrong. Sorry! Please reload this page and try again. If you still have trouble, click the green question mark below to contact support.';
             // console.debug('waited more');
             this.isLoading = false;
             this.loadStartTime = null;
