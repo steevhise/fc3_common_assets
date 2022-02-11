@@ -27,7 +27,7 @@
               v-bind:class="{ active: selectedThread && (selectedThread.id === thread.id) }"
               v-if="thread.user != null"
               :key="thread.id"
-              @click="onClickThread(thread.id)">
+            @click="localThreadClicked(thread.id)">
 						<span class="chat-message-avatar" v-bind:style="{ background: color(thread.user.id) }"></span>
 						{{thread.user.username}}
 						<span class="unread-amount">{{ thread.unreadCount || null }}</span>
@@ -111,17 +111,17 @@
 			});
 			this.$bus.$on('threads.done', () => {
 				this.loadingThreads = false;
-			});
-			this.isChatClosed()
+				this.isChatClosed();
+      });
     },
 		methods: {
       isChatClosed() {
         const topic = this.$options.propsData.topic.topic
-        const threads = this.$options.propsData.threads
-        if(this.isTakenOrReceived()) {
+        const threads = this.$options.propsData.threads  // these are non-reactive now, i think. so don't do this.
+        if(this.isTakenOrReceived()) {  // and is too old
           this.chatEnabled = false
-          this.chatDisabledMessage = this.t('This post is taken or received')
-        } else if(this.notFriend(topic.type, threads)) {
+          this.chatDisabledMessage = this.t('This post was taken or received too long ago to permit replies.')
+        } else if(this.notFriend(this.$options.propsData.type, this.$options.propsData.threads)) {
           this.chatEnabled = false
           this.chatDisabledMessage = this.t('No longer a friend.')
         } else if(topic.post && !topic.post.is_open) {
@@ -153,29 +153,40 @@
         .catch(e => {
           switch (e.status) {
             case 404:
-              return this.$bus.$emit('alert', { level : 'alert', message: this.t("That post does not exist"), timer: 10000 });
+              return this.$bus.$emit('alert', { level : 'alert', message: this.t("That post does not exist"), timer: 8000 });
             case 409:
               return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
             case 500:
               return this.$bus.$emit('alert', { level : 'alert', message: e.responseJSON.message, timer: 10000 });
             default:
-              return this.$bus.$emit('alert', { level: 'alert', message: this.t('Unable to reply on this post'), timer: 10000 })
+              return this.$bus.$emit('alert', { level: 'alert', message: this.t('Unable to reply on this post'), timer: 8000 })
           }
         })
         .finally(() => {
           self.sendingMessage = false;
         })
 			},
-      isTakenOrReceived() {
+      isTakenOrReceived: function () {
         // Being extra careful here to make sure we don't hit any undefineds
-        if (!this.$options.propsData.hasOwnProperty('topic')) return false
-        const topic = this.$options.propsData.topic
-        if (!topic.hasOwnProperty('topic') || !topic.topic.hasOwnProperty('post') || !topic.topic.post.hasOwnProperty('type')) return false
-        const postType = topic.topic.post.type
-        const now = moment().utc()
-        const postDate = moment(topic.topic.post.post_date).utc()
-        return (postType.const === 'FC_POST_TAKEN' || postType.const === 'FC_POST_RECEIVED')
-            && now.diff(postDate, 'days') > 7 // allow messaging on posts marked taken/received in the last 7 days
+        if (!this.$options.propsData.hasOwnProperty('topic')) {
+          console.debug('no topic');
+          return false;
+        }
+        const topic = this.$options.propsData.topic;   // makes it non-reactive?
+        if (!topic.hasOwnProperty('topic') || !topic.topic.hasOwnProperty('post') || !topic.topic.post.hasOwnProperty('type')) {
+          return false;
+        }
+        const now = moment().utc();
+        // const postDate = moment(this.$options.propsData.topic.topic.post.post_date).utc();
+        // allow messaging on posts marked taken/received in the last 7 days
+        console.debug(now.diff(moment(this.$options.propsData.topic.topic.post.post_date).utc(), 'days'), 'days');
+        const tooOld = now.diff(moment(this.$options.propsData.topic.topic.post.post_date).utc(), 'days') > 7;
+        // const postType = topic.topic.post.type;
+        return tooOld && (this.$options.propsData.topic.topic.post.type.const === 'FC_POST_TAKEN' || this.$options.propsData.topic.topic.post.type.const === 'FC_POST_RECEIVED');
+      },
+      localThreadClicked(threadId) {
+        this.isChatClosed()
+        this.onClickThread(threadId)
       },
 			notFriend: (type, threads) => {
 
