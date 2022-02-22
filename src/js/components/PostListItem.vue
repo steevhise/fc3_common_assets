@@ -56,7 +56,7 @@
             {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
         </template>
-        <template v-else-if="(route.id === 'groups_main' && isMember && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
+        <template v-else-if="($parent.route.id === 'groups_main' && $parent.isMember && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
           <span class="post-list-item-date text-lighten-less">
               {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>
@@ -65,7 +65,7 @@
           </fc-messages-detail-input>
         </template>
         <!-- either group page and a member of group, OR, not group page -->
-        <template v-else-if="(route.id !== 'groups_main' && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
+        <template v-else-if="($parent.route.id !== 'groups_main' && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))">
           <span class="post-list-item-date text-lighten-less">
               {{ post.date | mreldate(post.time, (post.group && post.group.timezone ? post.group.timezone : timezone )) }}
           </span>

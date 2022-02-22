@@ -98,7 +98,7 @@
 						</p>
 						<p v-else class="callout success">{{ t('BORROWING!') }}<span v-if="due"> {{ t('Due back on') }} {{ due }}</span></p>
 					</template>
-					<fc-messages-detail-input v-else-if="((route.id === 'groups_main' && isMember ) || !['groups_main','search_posts'].includes(route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
+					<fc-messages-detail-input v-else-if="((['groups_main', 'user'].includes($parent.route.id)  && $parent.isMember ) || !['groups_main','search_posts', 'user'].includes($parent.route.id) && ['OFFER', 'WANTED', 'LEND', 'BORROW'].includes(postType))" :subject="t('Reply to your post') + ': ' + post.subject" topic-type="post" :topic-id="String(post.id)" :custom-trigger="replyButton">
 						<p><strong>{{ t('New Message Re') }}:</strong> {{ post.subject }}</p>
 					</fc-messages-detail-input>
 				</div>
