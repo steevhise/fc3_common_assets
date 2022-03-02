@@ -15,6 +15,8 @@
 ///   - A string of the format "x of y" will make a column that is *x* columns wide, assuming *y* total columns for the parent.
 ///
 /// @returns {Number} A calculated percentage value.
+@use "sass:math";
+
 @function grid-column($columns) {
   $width: 0%;
 
@@ -27,7 +29,7 @@
       $width: percentage($columns);
     }
     @else {
-      $width: percentage($columns / $grid-column-count);
+      $width: percentage(math.div($columns, $grid-column-count));
     }
   }
 
@@ -37,7 +39,7 @@
       @error 'Wrong syntax for grid-column(). Use the format "n of n".';
     }
     @else {
-      $width: percentage(nth($columns, 1) / nth($columns, 3));
+      $width: percentage(math.div(nth($columns, 1), nth($columns, 3)));
     }
   }
 
@@ -63,7 +65,7 @@
   // Gutters
   @if type-of($gutter) == 'map' {
     @each $breakpoint, $value in $gutter {
-      $padding: rem-calc($value) / 2;
+      $padding: rem-calc($value) * 0.5;
 
       @include breakpoint($breakpoint) {
         padding-left: $padding;
@@ -72,7 +74,7 @@
     }
   }
   @else if type-of($gutter) == 'number' and strip-unit($gutter) > 0 {
-    $padding: rem-calc($gutter) / 2;
+    $padding: rem-calc($gutter) * 0.5;
     padding-left: $padding;
     padding-right: $padding;
   }

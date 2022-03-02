@@ -11,6 +11,8 @@
 /// @param {Number} $triangle-size - Width of the triangle.
 /// @param {Color} $triangle-color - Color of the triangle.
 /// @param {Keyword} $triangle-direction - Direction the triangle points. Can be `up`, `right`, `down`, or `left`.
+@use "sass:math";
+
 @mixin css-triangle(
   $triangle-size,
   $triangle-color,
@@ -65,7 +67,7 @@
   $hover-shadow: ();
 
   // Spacing between bars is calculated based on the total height of the icon and the weight of each bar
-  $spacing: floor(($height - ($weight * $bars)) / ($bars - 1));
+  $spacing: floor(math.div($height - ($weight * $bars), $bars - 1));
 
   // Icon container
   position: relative;
@@ -159,7 +161,7 @@
   @for $i from 2 through $max {
     &:nth-last-child(#{$i}):first-child,
     &:nth-last-child(#{$i}):first-child ~ #{$elem} {
-      width: percentage(1 / $i);
+      width: percentage(math.div(1, $i));
     }
   }
 }

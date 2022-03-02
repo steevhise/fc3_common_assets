@@ -10,12 +10,14 @@
 ///
 /// @param {Number} $n - Number of elements to display per row.
 /// @param {String} $selector ['.column'] - Selector(s) to use for child elements.
+@use "sass:math";
+
 @mixin grid-layout(
   $n,
   $selector: '.column'
 ) {
   & > #{$selector} {
-    width: percentage(1/$n);
+    width: percentage(math.div(1, $n));
     float: $global-left;
 
     &:nth-of-type(1n) {
@@ -39,12 +41,12 @@
   @for $i from 1 to $n {
     @if $i == 1 {
       &:nth-child(#{$n}n+1):last-child {
-        margin-left: (100 - 100/$n * $i) / 2 * 1%;
+        margin-left: (100 - math.div(100, $n) * $i) * 0.5 * 1%;
       }
     }
     @else {
       &:nth-child(#{$n}n+1):nth-last-child(#{$i}) {
-        margin-left: (100 - 100/$n * $i) / 2 * 1%;
+        margin-left: (100 - math.div(100, $n) * $i) * 0.5 * 1%;
       }
     }
   }

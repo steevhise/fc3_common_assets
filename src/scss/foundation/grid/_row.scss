@@ -84,7 +84,7 @@
   }
 
   @each $breakpoint, $value in $gutter {
-    $margin: rem-calc($value) / 2 * -1;
+    $margin: rem-calc($value) * 0.5 * -1;
     max-width: none;
 
     @include breakpoint($breakpoint) {
