@@ -283,6 +283,7 @@ class ImageUploader {
                 // NOTE We resize just the file stored in ImageUploader.filesList i.e. the image we send to the server
                 // This doesn't care about the preview image rendered via displayImage; we don't care about that because it's just a preview
                 if (f.size > 1048576) {
+                    console.debug('resizing image cuz size=', f.size);
                     self.resizeImage(dataURL, f, uploadOrder - 1); // - 1 to set to convert to zero-indexed
                 }
             };
@@ -542,16 +543,21 @@ class ImageUploader {
 
             const ctx = canvas.getContext('2d');
             // Proportionally resize image on canvas
-            ctx.drawImage(tempImg, 0, 0, tempW, tempH);
+            if (file.size > 10000) { // here we are sure our image is loaded
+                ctx.drawImage(tempImg, 0, 0, tempW, tempH);
 
-            canvas.toBlob(function(blob) {
+                canvas.toBlob(function(blob) {
 
-                const resizedFile = new File([blob], file.name, { type: file.type });
+                    const resizedFile = new File([blob], file.name, { type: file.type });
 
-                // replace file in filesList w/ new file, ensuring resized file,
-                // not originally-sized (too large) file is sent to the server
-                self.filesList.splice(uploadOrder, 1, { file: resizedFile, rotation: 0 });
-            }, file.type);
+                    // replace file in filesList w/ new file, ensuring resized file,
+                    // not originally-sized (too large) file is sent to the server
+                    self.filesList.splice(uploadOrder, 1, { file: resizedFile, rotation: 0 });
+                }, file.type);
+            }
+            else {
+                console.log('image was too small');  // ongoing ticket #1278
+            }
         })
     }
 
@@ -594,7 +600,7 @@ class ImageUploader {
         // This check isn't strictly necessary, as the module does it itself,
         // duplicated here in the interest of skipping unnecessary code
         if (typeof FormData === 'undefined' || !FormData.prototype.delete) {
-          require('formdata-polyfill');
+            require('formdata-polyfill');
         }
     }
 }
