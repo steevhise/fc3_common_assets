@@ -386,7 +386,7 @@ class ImageUploader {
                 const { postId } = response.data;
                 API.post(`${this.locationOrigin}/api/${self.submitEndpoint}/${postId}`, imgUploadBody)
                     .then(response => {
-                        if (response.status !== 200) {
+                        if (response.status > 200) {  // it might be 100, which means no image data was sent.
                             console.error(response.status, response.data);
                             const resp = JSON.parse(response.data);
                             console.log(resp);
@@ -468,7 +468,7 @@ class ImageUploader {
         // TODO Make more easily configurable
         API.post(`${this.locationOrigin}/api/${self.submitEndpoint}`, body)
             .then(response => {
-                if (response.status !== 200) {
+                if (response.status > 200) {
                     const resp = JSON.parse(response.responseText);
                     const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                     errors.forEach((e) => {
