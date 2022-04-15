@@ -53,7 +53,7 @@
 						<div class="row" style="width: 100%;">
 							<div class="columns small-10">
                 <label hidden for="messageBody">Message</label>
-								<input :disabled="!chatEnabled"
+								<textarea rows="2" :disabled="!chatEnabled"
                        id="messageBody"
                        type="text"
                        ref="messageBody"
@@ -61,7 +61,7 @@
                        maxlength="998"
                        name="messageBody"
                        required
-                >
+                ></textarea>
 							</div>
 							<div class="columns small-2">
 								<fc-spinner v-if="sendingMessage" size="medium" :message="t('Sending...')"></fc-spinner>
