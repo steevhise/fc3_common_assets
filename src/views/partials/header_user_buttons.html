@@ -73,12 +73,12 @@
   <ul class="header-user-buttons-list header-user-buttons-list-right">
 
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="{{ t('Alerts') }}" href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}
+      <a data-tooltip class="has-tip" title="{{ t('Alerts') }}" href="/home/alerts">{% include '../icons/alert.html' %}
       {% if alertCount > 0 %}<span>{{ alertCount }}</span></a>{% endif %}
     </li>
 
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="{{ t('Messages') }}" href="{{ path.home_myreplies }}">{% include '../icons/messages.html' %}
+      <a data-tooltip class="has-tip" title="{{ t('Messages') }}" href="/home/my-replies">{% include '../icons/messages.html' %}
         <fc-messages-notifier-connected :static-unreads="{{ unreadReplies || 0 }}" :on-my-replies="{{ route.id === 'home_myreplies' }}"/>
       </a>
     </li>
