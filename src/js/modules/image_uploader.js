@@ -117,7 +117,7 @@ class ImageUploader {
         console.error(msg)
         // console.log('container is ', container);
         const errEl = document.createElement('p');
-        const errMsg = document.createTextNode(msg);
+        const errMsg = document.createTextNode(`problem: ${msg}`);
         errEl.setAttribute('class', 'callout alert');
         errEl.appendChild(errMsg);
         container.appendChild(errEl);
@@ -386,7 +386,7 @@ class ImageUploader {
                 const { postId } = response.data;
                 API.post(`${this.locationOrigin}/api/${self.submitEndpoint}/${postId}`, imgUploadBody)
                     .then(response => {
-                        if (response.status > 200) {  // it might be 100, which means no image data was sent.
+                        if (response.status > 299) {  // it might be 100, which means no image data was sent (not an error)
                             console.error(response.status, response.data);
                             const resp = JSON.parse(response.data);
                             console.log(resp);
@@ -468,11 +468,12 @@ class ImageUploader {
         // TODO Make more easily configurable
         API.post(`${this.locationOrigin}/api/${self.submitEndpoint}`, body)
             .then(response => {
-                if (response.status > 200) {
+                if (response.status > 299) {
                     const resp = JSON.parse(response.responseText);
                     const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                     errors.forEach((e) => {
-                        self.displayError(e.message, self.formErrors);
+                        const msg = 'problem: ' + e.message;
+                        self.displayError(msg, self.formErrors);
                         const loading = document.querySelector('[data-loading].is-loading');
                         if(loading) loading.classList.remove('is-loading');
                     });
