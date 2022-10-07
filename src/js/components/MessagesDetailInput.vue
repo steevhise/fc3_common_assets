@@ -15,7 +15,7 @@
 				<fc-form action="/api/messaging/send" :custom-alert-el="_uid" ref="msgForm" >
 					<input name="subject" type="hidden" v-bind:value="this.subject" />
 					<input name="threadIdentifier" :value=getIdentifier type="hidden" />
-					<input type="text" name="body" v-bind:value="this.defaultBody" required @input="checkCharCount($event)" />
+          <textarea name="body" v-bind:value="this.defaultBody" required @input="checkCharCount($event)" />
 					<!-- For some reason, using a button element triggers submit twice, but input doesn't -->
 					<input class="btn btn-default" type="submit" :value="t('Send')" />
 				</fc-form>

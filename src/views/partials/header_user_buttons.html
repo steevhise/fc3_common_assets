@@ -11,18 +11,28 @@
         </div>
         <li class="custom-dropdown-content">
 
-          <ul class="menu">
+            {% if baseurl === "https://newdev.freecycle.org" %}
+                {% set modurl = "https://modstaging.freecycle.org" %}
+            {% elseif baseurl === "https://alpha.freecycle.org" %}
+                {% set modurl = "https://alphamod.freecycle.org" %}
+            {% elseif baseurl === "https://www.freecycle.org" %}
+                {% set modurl = "https://moderator.freecycle.org" %}
+            {% else %}
+                {% set modurl = "https://modstaging.freecycle.org" %}
+            {% endif %}
+
+            <ul class="menu">
             <li>
               <li class="custom-dropdown-item">
-                  <a data-tooltip title="{{ t('Moderator Tools') }}" href="https://moderator.freecycle.org">{{ t('Moderator Tools') }}</a>
-                </li>
-              {% for group in connections.groups %}
-                {% if session.mods|contains(group.id) %}
-                  <li class="custom-dropdown-item">
-                    <a href="http://moderator.freecycle.org/manage/{{ group.uniqueName }}">{{ group.name }}</a>
-                  </li>
-                {% endif %}
-              {% endfor %}
+                  <a data-tooltip title="{{ t('Moderator Tools') }}" href="{{ modurl }}">{{ t('Moderator Tools') }}</a>
+              </li>
+                  {% for group in connections.groups %}
+                    {% if session.mods|contains(group.id) %}
+                      <li class="custom-dropdown-item">
+                        <a href="{{ modurl }}/towns/{{ group.uniqueName }}/posts">{{ group.name }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
             </li>
           </ul>
         </li>
@@ -73,12 +83,12 @@
   <ul class="header-user-buttons-list header-user-buttons-list-right">
 
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="{{ t('Alerts') }}" href="{{ path.home_alerts }}">{% include '../icons/alert.html' %}
+      <a data-tooltip class="has-tip" title="{{ t('Alerts') }}" href="/home/alerts">{% include '../icons/alert.html' %}
       {% if alertCount > 0 %}<span>{{ alertCount }}</span></a>{% endif %}
     </li>
 
     <li class="header-user-button">
-      <a data-tooltip class="has-tip" title="{{ t('Messages') }}" href="{{ path.home_myreplies }}">{% include '../icons/messages.html' %}
+      <a data-tooltip class="has-tip" title="{{ t('Messages') }}" href="/home/my-replies">{% include '../icons/messages.html' %}
         <fc-messages-notifier-connected :static-unreads="{{ unreadReplies || 0 }}" :on-my-replies="{{ route.id === 'home_myreplies' }}"/>
       </a>
     </li>

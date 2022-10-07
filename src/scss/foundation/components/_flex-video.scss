@@ -8,6 +8,8 @@
 
 /// Margin below a flex video container.
 /// @type Number
+@use "sass:math";
+
 $flexvideo-margin-bottom: rem-calc(16) !default;
 
 /// Padding used to create a 4:3 aspect ratio.
@@ -24,7 +26,7 @@ $flexvideo-ratio-widescreen: 16 by 9 !default;
 @function flex-video($ratio) {
   $w: nth($ratio, 1);
   $h: nth($ratio, 3);
-  @return $h / $w * 100%;
+  @return math.div($h, $w) * 100%;
 }
 
 /// Creates a flex video container.

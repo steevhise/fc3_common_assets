@@ -16,7 +16,7 @@
 ///
 /// @param {Number} $gutter [$grid-column-gutter] - Spacing between columns.
 @mixin grid-column-uncollapse($gutter: $grid-column-gutter) {
-  $gutter: rem-calc($gutter) / 2;
+  $gutter: rem-calc($gutter) * 0.5;
   padding-left: $gutter;
   padding-right: $gutter;
 }

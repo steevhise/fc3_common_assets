@@ -117,7 +117,7 @@ class ImageUploader {
         console.error(msg)
         // console.log('container is ', container);
         const errEl = document.createElement('p');
-        const errMsg = document.createTextNode(msg);
+        const errMsg = document.createTextNode(`problem: ${msg}`);
         errEl.setAttribute('class', 'callout alert');
         errEl.appendChild(errMsg);
         container.appendChild(errEl);
@@ -283,6 +283,7 @@ class ImageUploader {
                 // NOTE We resize just the file stored in ImageUploader.filesList i.e. the image we send to the server
                 // This doesn't care about the preview image rendered via displayImage; we don't care about that because it's just a preview
                 if (f.size > 1048576) {
+                    console.debug('resizing image cuz size=', f.size);
                     self.resizeImage(dataURL, f, uploadOrder - 1); // - 1 to set to convert to zero-indexed
                 }
             };
@@ -385,7 +386,7 @@ class ImageUploader {
                 const { postId } = response.data;
                 API.post(`${this.locationOrigin}/api/${self.submitEndpoint}/${postId}`, imgUploadBody)
                     .then(response => {
-                        if (response.status !== 200) {
+                        if (response.status > 299) {  // it might be 100, which means no image data was sent (not an error)
                             console.error(response.status, response.data);
                             const resp = JSON.parse(response.data);
                             console.log(resp);
@@ -467,11 +468,12 @@ class ImageUploader {
         // TODO Make more easily configurable
         API.post(`${this.locationOrigin}/api/${self.submitEndpoint}`, body)
             .then(response => {
-                if (response.status !== 200) {
+                if (response.status > 299) {
                     const resp = JSON.parse(response.responseText);
                     const errors = [].concat(Array.isArray(resp.errors) ? resp.errors : resp);
                     errors.forEach((e) => {
-                        self.displayError(e.message, self.formErrors);
+                        const msg = 'problem: ' + e.message;
+                        self.displayError(msg, self.formErrors);
                         const loading = document.querySelector('[data-loading].is-loading');
                         if(loading) loading.classList.remove('is-loading');
                     });
@@ -542,16 +544,21 @@ class ImageUploader {
 
             const ctx = canvas.getContext('2d');
             // Proportionally resize image on canvas
-            ctx.drawImage(tempImg, 0, 0, tempW, tempH);
+            if (file.size > 10000) { // here we are sure our image is loaded
+                ctx.drawImage(tempImg, 0, 0, tempW, tempH);
 
-            canvas.toBlob(function(blob) {
+                canvas.toBlob(function(blob) {
 
-                const resizedFile = new File([blob], file.name, { type: file.type });
+                    const resizedFile = new File([blob], file.name, { type: file.type });
 
-                // replace file in filesList w/ new file, ensuring resized file,
-                // not originally-sized (too large) file is sent to the server
-                self.filesList.splice(uploadOrder, 1, { file: resizedFile, rotation: 0 });
-            }, file.type);
+                    // replace file in filesList w/ new file, ensuring resized file,
+                    // not originally-sized (too large) file is sent to the server
+                    self.filesList.splice(uploadOrder, 1, { file: resizedFile, rotation: 0 });
+                }, file.type);
+            }
+            else {
+                console.log('image was too small');  // ongoing ticket #1278
+            }
         })
     }
 
@@ -594,7 +601,7 @@ class ImageUploader {
         // This check isn't strictly necessary, as the module does it itself,
         // duplicated here in the interest of skipping unnecessary code
         if (typeof FormData === 'undefined' || !FormData.prototype.delete) {
-          require('formdata-polyfill');
+            require('formdata-polyfill');
         }
     }
 }

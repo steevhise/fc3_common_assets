@@ -41,7 +41,7 @@ $slider-radius: $global-radius !default;
 @mixin foundation-range-input {
   // scss-lint:disable QualifyingElement
   input[type="range"] {
-    $margin: ($slider-handle-height - $slider-height) / 2;
+    $margin: ($slider-handle-height - $slider-height) * 0.5;
 
     -webkit-appearance: none;
     -moz-appearance: none;

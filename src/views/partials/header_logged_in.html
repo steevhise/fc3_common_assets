@@ -20,7 +20,7 @@
         </button>
     </a>
     {% if connections.groups || connections.friends %}
-        <a href="{{ path.home_post_new }}"><button class="btn-default header-button">{{ t('Make A Post') }}</button></a>
+        <a href="/home/new-post"><button class="btn-default header-button">{{ t('Make A Post') }}</button></a>
     {% endif %}
     <div id="mobile-search" style="display: none;">
         {% include './header_search.html' %}
