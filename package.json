@@ -8,6 +8,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "axios": "^0.26.0",
+    "axios-jwt": "^2.0.1",
     "formdata-polyfill": "^3.0.20",
     "foundation-sites": "^6.6.3",
     "google-maps": "4.2.3",
