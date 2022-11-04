@@ -99,7 +99,7 @@
 			return {
 				chatEnabled: true,
         chatDisabledMessage: '',
-			  // controls the state of a message being sent for the spinner
+        // controls the state of a message being sent for the spinner
         sendingMessage: false,
 				loadingThreads: false
 			}
@@ -179,7 +179,7 @@
         const now = moment().utc();
         // const postDate = moment(this.$options.propsData.topic.topic.post.post_date).utc();
         // allow messaging on posts marked taken/received in the last 7 days
-        console.debug(now.diff(moment(this.$options.propsData.topic.topic.post.post_date).utc(), 'days'), 'days');
+        // console.debug(now.diff(moment(this.$options.propsData.topic.topic.post.post_date).utc(), 'days'), 'days');
         const tooOld = now.diff(moment(this.$options.propsData.topic.topic.post.post_date).utc(), 'days') > 7;
         // const postType = topic.topic.post.type;
         return tooOld && (this.$options.propsData.topic.topic.post.type.const === 'FC_POST_TAKEN' || this.$options.propsData.topic.topic.post.type.const === 'FC_POST_RECEIVED');
